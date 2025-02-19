@@ -1,13 +1,10 @@
 import React from "react";
-import { Card } from "antd";
-import { Progress } from "antd";
-import { Button } from "antd";
-import { Tabs } from "antd";
-import { Table } from "antd";
-
+import { Card,Table,Progress,Tabs} from "antd";
+import "./AffiliateDashboard.css"
+import AfiliateTopBar from "../../../../components/affilliate/shared/affiliateTopBar";
 const { TabPane } = Tabs;
 
-const Affiliate = () => {
+const AffiliateDashboard = () => {
     const columns = [
         { title: "Name", dataIndex: "name", key: "name" },
         { title: "Plan", dataIndex: "plan", key: "plan" },
@@ -26,14 +23,7 @@ const Affiliate = () => {
       return (
         <div className="p-6 bg-gray-100 min-h-screen">
           {/* Header Section */}
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-semibold">Affiliates</h1>
-            <div className="space-x-2">
-              <Button className="border-gray-300">Affiliate Links</Button>
-              <Button className="border-gray-300">Level Commission</Button>
-              <Button className="border-gray-300">Settings</Button>
-            </div>
-          </div>
+        <AfiliateTopBar/>
     
           {/* Earnings Overview */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -75,4 +65,4 @@ const Affiliate = () => {
       )
 };
 
-export default Affiliate;
+export default AffiliateDashboard;
