@@ -1,6 +1,6 @@
 import SidebarItem from "./SidebarItem";
 import { useState } from "react";
-import { DashboardIcon, FacebookIcon, InstagramIcon, AiCommentsIcon, LibraryIcon, TrainingVideosIcon, AffiliateIcon, EventsIcon } from "../icons/icons"; // Import icons
+import { DashboardIcon, FacebookIcon, InstagramIcon, AiCommentsIcon, LibraryIcon, TrainingVideosIcon, AffiliateIcon, EventsIcon, NovalyaFullLogoBlack } from "../icons/icons"; // Import icons
 
 const SidebarMenu = () => {
     const [openSubNav, setOpenSubNav] = useState(null);
@@ -38,6 +38,9 @@ const SidebarMenu = () => {
     return (
         <div className="bg-white text-black w-64 h-screen transition-all duration-300 p-4 flex flex-col">
             <nav className="flex flex-col space-y-4">
+                <div className="flex items-center justify-center h-24">
+                    <NovalyaFullLogoBlack />
+                </div>
                 {sidebarData.map((item) => (
                     <div key={item.id} className="w-full">
                         {item.subNav ? (
@@ -47,18 +50,19 @@ const SidebarMenu = () => {
                             >
                                 <div className="flex items-center space-x-2">
                                     {item.icon}
-                                    <span className='capitalize'>{item.text}</span>
+                                    <span className='capitalize text-black/55'>{item.text}</span>
                                 </div>
-                                <span>{openSubNav === item.id 
-                                    ? <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12.0005 11.8284L9.17203 14.6569L7.75781 13.2426L12.0005 9L16.2431 13.2426L14.8289 14.6569L12.0005 11.8284Z" fill="black" fillOpacity="0.75" />
-                                    </svg>
- 
-                                    : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12.0005 12.1716L9.17203 9.3431L7.75781 10.7574L12.0005 15L16.2431 10.7574L14.8289 9.3431L12.0005 12.1716Z" fill="black" fillOpacity="0.45" />
-                                    </svg>
-
-                                    }</span>
+                                <span>
+                                    {
+                                        openSubNav === item.id 
+                                            ? <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12.0005 11.8284L9.17203 14.6569L7.75781 13.2426L12.0005 9L16.2431 13.2426L14.8289 14.6569L12.0005 11.8284Z" fill="black" fillOpacity="0.75" />
+                                            </svg>
+                                            : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12.0005 12.1716L9.17203 9.3431L7.75781 10.7574L12.0005 15L16.2431 10.7574L14.8289 9.3431L12.0005 12.1716Z" fill="black" fillOpacity="0.45" />
+                                            </svg>
+                                    }
+                                </span>
                             </button>
                         ) : (
                             <SidebarItem text={item.text} path={item.path} icon={item.icon} />
