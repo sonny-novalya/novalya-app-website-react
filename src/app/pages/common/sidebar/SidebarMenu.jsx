@@ -48,8 +48,8 @@ const SidebarMenu = () => {
                                 className="w-full rounded px-3 py-1 flex justify-between items-center"
                                 onClick={(e) => toggleSubNav(e, item.id)}
                             >
-                                <div className="flex items-center space-x-2">
-                                    {item.icon}
+                                <div className="flex items-center space-x-5">
+                                    <span className='h-6 w-6'>{item.icon}</span>
                                     <span className='capitalize text-black/55'>{item.text}</span>
                                 </div>
                                 <span>
