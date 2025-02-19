@@ -1,12 +1,12 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "../pages/protected/dashboard/dashboard";
+import { AffiliatePage, DashboardPage } from "../pages/protected";
 
 const AuthentictedRoutes = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/affiliate" element={<AffiliatePage />} />
       </Routes>
     </>
   );
