@@ -1,6 +1,19 @@
 import SidebarItem from "./SidebarItem";
 import { useState } from "react";
-import { DashboardIcon, FacebookIcon, InstagramIcon, AiCommentsIcon, LibraryIcon, TrainingVideosIcon, AffiliateIcon, EventsIcon, NovalyaFullLogoBlack } from "../icons/icons"; // Import icons
+import {
+    DashboardIcon,
+    FacebookIcon,
+    InstagramIcon,
+    AiCommentsIcon,
+    LibraryIcon,
+    TrainingVideosIcon,
+    AffiliateIcon,
+    EventsIcon,
+    NovalyaFullBlackLogo,
+    UpgradeProIcon,
+    UpperArrowIcon,
+    DownArrowIcon
+} from "../icons/icons"; // Import icons
 
 const SidebarMenu = () => {
     const [openSubNav, setOpenSubNav] = useState(null);
@@ -13,21 +26,28 @@ const SidebarMenu = () => {
             path: "/facebook",
             icon: <FacebookIcon />,
             subNav: [
-                { text: "CRM", id: "crm", path: "/facebook/crm" },
-                { text: "Prospecting", id: "prospecting", path: "/facebook/prospecting" },
-                { text: "Wish Birthday", id: "wish-birthday", path: "/facebook/wish-birthday" },
+                { text: "Prospecting", id: "prospecting", path: "/fb/prospecting" },
+                { text: "Wish Birthday", id: "wish-birthday", path: "/fb/wish-birthday" },
+                { text: "CRM", id: "crm", path: "/fb/crm" },
+                { text: "FB Friends list", id: "fb-friends-list", path: "/fb/friends-list" },
+                { text: "Request", id: "fb-request", path: "/fb/request" },
             ]
         },
         {
-            text: "instagram", id: "instagram", path: "/instagram", icon: <InstagramIcon />, subNav: [
+            text: "instagram",
+            id: "instagram",
+            path: "/instagram",
+            icon: <InstagramIcon />,
+            subNav: [
                 { text: "Prospecting", id: "prospecting", path: "/ig/prospecting" },
                 { text: "CRM", id: "crm", path: "/ig/crm" },
-            ] },
-        { text: "AI Comments", id: "ai-comments", path: "/ai-comments", icon: <AiCommentsIcon />, },
-        { text: "Library", id: "library", path: "/library", icon: <LibraryIcon />, },
-        { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon />, },
-        { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon />, },
-        { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon />, },
+            ]
+        },
+        { text: "AI Comments", id: "ai-comments", path: "/ai-comments", icon: <AiCommentsIcon /> },
+        { text: "Library", id: "library", path: "/library", icon: <LibraryIcon /> },
+        { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
+        { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon /> },
+        { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
     ];
 
     const toggleSubNav = (event, id) => {
@@ -36,40 +56,36 @@ const SidebarMenu = () => {
     };
 
     return (
-        <div className="bg-white text-black w-64 h-screen transition-all duration-300 p-4 flex flex-col">
-            <nav className="flex flex-col space-y-4">
-                <div className="flex items-center justify-center h-24">
-                    <NovalyaFullLogoBlack />
-                </div>
+        <div className="bg-white text-black w-64 h-screen flex flex-col">
+            <div className="flex items-center justify-center h-24 shrink-0">
+                <NovalyaFullBlackLogo />
+            </div>
+
+            <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
                 {sidebarData.map((item) => (
                     <div key={item.id} className="w-full">
                         {item.subNav ? (
                             <button
-                                className="w-full rounded px-3 py-1 flex justify-between items-center"
+                                className="w-full rounded px-3 py-2 flex justify-between items-center hover:bg-[#E6F1FB] cursor-pointer"
                                 onClick={(e) => toggleSubNav(e, item.id)}
                             >
                                 <div className="flex items-center space-x-5">
-                                    <span className='h-6 w-6'>{item.icon}</span>
-                                    <span className='capitalize text-black/55'>{item.text}</span>
+                                    <span className="h-6 w-6">{item.icon}</span>
+                                    <span className="capitalize text-black/55">{item.text}</span>
                                 </div>
                                 <span>
                                     {
                                         openSubNav === item.id 
-                                            ? <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12.0005 11.8284L9.17203 14.6569L7.75781 13.2426L12.0005 9L16.2431 13.2426L14.8289 14.6569L12.0005 11.8284Z" fill="black" fillOpacity="0.75" />
-                                            </svg>
-                                            : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12.0005 12.1716L9.17203 9.3431L7.75781 10.7574L12.0005 15L16.2431 10.7574L14.8289 9.3431L12.0005 12.1716Z" fill="black" fillOpacity="0.45" />
-                                            </svg>
+                                        ? <UpperArrowIcon/> 
+                                        : <DownArrowIcon />
                                     }
                                 </span>
                             </button>
                         ) : (
                             <SidebarItem text={item.text} path={item.path} icon={item.icon} />
                         )}
-
                         {item.subNav && openSubNav === item.id && (
-                            <div className="pl-5 mt-1 flex flex-col space-y-1">
+                            <div className="pl-[45px] pr-2.5 mt-1 flex flex-col space-y-1">
                                 {item.subNav.map((subItem) => (
                                     <SidebarItem key={subItem.id} text={subItem.text} path={subItem.path} />
                                 ))}
@@ -77,7 +93,23 @@ const SidebarMenu = () => {
                         )}
                     </div>
                 ))}
-            </nav>
+            </div>
+
+            <div className="mt-auto flex flex-col items-center justify-center h-40 shrink-0">
+                <div className="flex space-x-5">
+                    <UpgradeProIcon />
+                    <span>Upgrade To Pro</span>
+                </div>
+                <div className="flex space-x-5 items-center mt-3">
+                    <span className="h-11 w-12 rounded-lg bg-purple-200 flex items-center justify-center">
+                        J
+                    </span>
+                    <div className="flex flex-col">
+                        <span className="text-xl">Anima Ag.</span>
+                        <span className="text-[#167AD3]">Basic Plan</span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
