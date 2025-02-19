@@ -5,7 +5,7 @@ const SidebarLayout = ({ children }) => {
     return (
         <div className="flex">
             <SidebarMenu />
-            <main className="flex-1 bg-gray-100 p-8">{children}</main>
+            <main className="flex-1 bg-red-500 p-8">{children}</main>
         </div>
     );
 };

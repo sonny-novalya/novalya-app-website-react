@@ -1,7 +1,7 @@
 
 const Affiliate = () => {
     return (
-        <div>
+        <div className="">
             Affiliate page
         </div>
     )
