@@ -5,7 +5,7 @@ const withSidebarLayout = (WrappedComponent) => {
         return (
             <div className="flex">
                 <SidebarMenu />
-                <div className="p-5 w-full">
+                <div className="w-full">
                     <WrappedComponent {...props} />
                 </div>
             </div>
