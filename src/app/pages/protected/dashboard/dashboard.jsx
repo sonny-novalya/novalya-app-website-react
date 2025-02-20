@@ -18,11 +18,14 @@ const Dashboard = () => {
 
   return (
     <Layout >
-      <Steps current={current}>
-        {steps.map((step, index) => (
-          <Step key={index} title={step.title} />
-        ))}
-      </Steps>
+      <h3 className="text-lg font-bold mb-5">Dashboard</h3>
+      <div className="bg-white p-3 rounded-lg">
+        <Steps current={current}>
+          {steps.map((step, index) => (
+            <Step key={index} title={step.title} />
+          ))}
+        </Steps>
+      </div>
 
       <div className="mt-8">{steps[current].content}</div>
 
