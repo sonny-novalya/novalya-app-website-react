@@ -66,7 +66,7 @@ const LoginPage = () => {
                 iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
               />
               <div className="text-right mt-2">
-                <a href="#" className="text-blue-600 text-sm hover:underline">
+                <a href="/forgot-password" className="text-blue-600 text-sm hover:underline">
                   Forgot Password?
                 </a>
               </div>
