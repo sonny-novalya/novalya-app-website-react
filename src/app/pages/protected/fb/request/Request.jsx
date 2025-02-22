@@ -1,7 +1,8 @@
+import Layout from "../../Layout"
 
 const Request = () => {
   return (
-    <div>Request</div>
+    <Layout>Request</Layout>
   )
 }
 
