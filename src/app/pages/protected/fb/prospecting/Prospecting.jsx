@@ -1,7 +1,7 @@
 import { Button, Tabs } from "antd";
 import Layout from "../../Layout";
 import GroupsTable from "./GroupsTable";
-import PostsTable from "./PostsTable";
+import PostTable from "./PostTable";
 
 const { TabPane } = Tabs;
 
@@ -32,7 +32,7 @@ const Prospecting = () => {
                         </div>
                         <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
                     </div>
-                    <PostsTable />
+                    <PostTable />
                 </TabPane>
             </Tabs>
         </Layout>
