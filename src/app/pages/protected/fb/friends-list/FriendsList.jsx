@@ -1,9 +1,10 @@
+import Layout from "../../Layout"
 
 const FriendsList = () => {
   return (
-    <div>
-      
-    </div>
+    <Layout>
+      Friends List
+    </Layout>
   )
 }
 
