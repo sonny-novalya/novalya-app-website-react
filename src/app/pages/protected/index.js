@@ -8,7 +8,7 @@ import Prospecting from "./fb/prospecting/Prospecting";
 import Crm from "./fb/crm/Crm";
 import Birthday from "./fb/birthday/Birthday";
 import FriendsList from "./fb/friends-list/FriendsList";
-import Request from "./fb/request/REquest";
+import Request from "./fb/request/Request";
 
 const DashboardPage = withSidebarLayout(Dashboard);
 const AffiliatePage = withSidebarLayout(AffiliateDashboard);
