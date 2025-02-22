@@ -1,6 +1,8 @@
+import Layout from "../../Layout"
+
 const Crm = () => {
   return (
-    <div>Crm</div>
+    <Layout>Crm</Layout>
   )
 }
 
