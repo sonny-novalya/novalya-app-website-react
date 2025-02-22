@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined } from "@ant-design/icons";
+import GroupImg from "../../../../../assets/img/groupImg.png"
 
 const menu = (
     <Menu>
@@ -33,7 +34,7 @@ const GroupsTable = () => {
             dataIndex: "groupName",
             render: (text) => (
                 <div className="flex items-center space-x-2">
-                    <img src="https://via.placeholder.com/40" alt="Group" className="w-10 h-10 rounded-full" />
+                    <img src={GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
                     <span className="font-semibold">{text}</span>
                 </div>
             ),
@@ -62,7 +63,15 @@ const GroupsTable = () => {
     ];
 
     return (
-        <>
+        <div>
+            <div className="flex items-center justify-between my-4">
+                <div className="space-x-2">
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">All</Button>
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">Archived</Button>
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">+ Create Folder</Button>
+                </div>
+                <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
+            </div>
             <div className="flex items-center justify-between mb-4">
                 <Input
                     placeholder="Search groups"
@@ -74,7 +83,7 @@ const GroupsTable = () => {
                 <Button className="bg-gray-200 px-4 py-2 rounded-md">Sort by</Button>
             </div>
             <Table columns={groupColumns} dataSource={filteredData} pagination={false} className="custom-table" />
-        </>
+        </div>
     );
 };
 

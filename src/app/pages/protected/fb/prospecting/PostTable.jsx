@@ -44,7 +44,15 @@ const PostsTable = () => {
     ];
 
     return (
-        <>
+        <div>
+            <div className="flex items-center justify-between my-4">
+                <div className="space-x-2">
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">All</Button>
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">Archived</Button>
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">+ Create Folder</Button>
+                </div>
+                <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
+            </div>
             <div className="flex items-center justify-between mb-4">
                 <Input
                     placeholder="Search posts"
@@ -56,7 +64,7 @@ const PostsTable = () => {
                 <Button className="bg-gray-200 px-4 py-2 rounded-md">Sort by</Button>
             </div>
             <Table columns={postColumns} dataSource={filteredData} pagination={false} className="custom-table" />
-        </>
+        </div>
     );
 };
 

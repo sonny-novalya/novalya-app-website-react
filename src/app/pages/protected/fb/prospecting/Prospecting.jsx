@@ -1,40 +1,35 @@
-import { Button, Tabs } from "antd";
 import Layout from "../../Layout";
 import GroupsTable from "./GroupsTable";
 import PostTable from "./PostTable";
-
-const { TabPane } = Tabs;
+import { useState } from "react";
 
 const Prospecting = () => {
+    const [selectedGroup, setSelectedGroup] = useState(true);
+
     return (
         <Layout>
             <h2 className="text-xl font-semibold mb-4">Easily connect with new prospects</h2>
+            <div className="flex w-full space-x-4">
+                <button
+                    type="button"
+                    className={`relative w-1/2 flex items-center justify-center px-4 py-3 rounded-md border cursor-pointer ${selectedGroup ? "bg-[#0087FF] border-[#CCE7FF] text-white" : "bg-white border-[#0087FF] text-[#0087FF]"}`}
+                    onClick={() => setSelectedGroup(true)}
+                >
+                    <span>Facebook Groups</span>
+                </button>
 
-            <Tabs defaultActiveKey="1" className="custom-tabs">
-                <TabPane tab={<span className="text-blue-600 font-medium px-6 py-2">Facebook Groups</span>} key="1">
-                    <div className="flex items-center justify-between my-4">
-                        <div className="space-x-2">
-                            <Button className="bg-gray-200 px-4 py-2 rounded-md">All</Button>
-                            <Button className="bg-gray-200 px-4 py-2 rounded-md">Archived</Button>
-                            <Button className="bg-gray-200 px-4 py-2 rounded-md">+ Create Folder</Button>
-                        </div>
-                        <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
-                    </div>
-                    <GroupsTable />
-                </TabPane>
+                <button
+                    type="button"
+                    className={`relative w-1/2 flex items-center justify-center px-4 py-3 rounded-md border cursor-pointer ${!selectedGroup ? "bg-[#0087FF] border-[#CCE7FF] text-white" : "bg-white border-[#0087FF] text-[#0087FF]"}`}
+                    onClick={() => setSelectedGroup(false)}
+                >
+                    <span>Facebook Post</span>
+                </button>
+            </div>
 
-                <TabPane tab={<span className="text-gray-600 font-medium px-6 py-2">Facebook Posts</span>} key="2">
-                    <div className="flex items-center justify-between my-4">
-                        <div className="space-x-2">
-                            <Button className="bg-gray-200 px-4 py-2 rounded-md">All</Button>
-                            <Button className="bg-gray-200 px-4 py-2 rounded-md">Archived</Button>
-                            <Button className="bg-gray-200 px-4 py-2 rounded-md">+ Create Folder</Button>
-                        </div>
-                        <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
-                    </div>
-                    <PostTable />
-                </TabPane>
-            </Tabs>
+            <div className="w-full mt-4">
+                {selectedGroup ? <GroupsTable /> : <PostTable />}
+            </div>
         </Layout>
     );
 };
