@@ -2,7 +2,7 @@ import Layout from "../../Layout"
 
 const Crm = () => {
   return (
-    <Layout>Crm</Layout>
+    <Layout>Crm layout</Layout>
   )
 }
 
