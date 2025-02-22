@@ -1,0 +1,12 @@
+.tag-check input[type="radio"] {
+    display: none;
+}
+.tag-check input[type="radio"]:checked ~ label {
+    background: rgba(0, 135, 255, 0.2);
+}
+.checkmark {
+    display: none;
+}
+.tag-check input[type="radio"]:checked ~ .checkmark {
+    display: block;
+}
