@@ -1,7 +1,17 @@
+import { useEffect, useState } from "react"
 import Layout from "../../Layout"
 import './Request.css'
 
 const Request = () => {
+  const [messageList,setMessageList]= useState([{id:1,title:"msg 1"},{id:2,title:"msg 2"}])
+  const [acceptedData,setAcceptedData]= useState({selectedMessage:0,isTag:"yes",selectedGroup:0,selecetdStage:0})
+  const [rejecedData,setRejecetdData]= useState({selectedMessage:0,isTag:"yes",selectedGroup:0,selecetdStage:0})
+  const [groupData,setGroupData]= useState([{id:1,title:"grp 1",stage:[{id:1,title:"stage 1"},{id:2,title:"stage 2"},{id:3,title:"stage 3"}]},{id:2,title:"grp 2",stage:[{id:1,title:"stage 1"},{id:2,title:"stage 2"},{id:3,title:"stage 3"}]}])
+  
+  // useEffect(() => {
+  // console.log(acceptedData,"acceptedData")
+  // }, [acceptedData])
+  
   return (
     <Layout>
       <div className="nw-manage-requests">
@@ -22,10 +32,15 @@ const Request = () => {
                   </defs>
                 </svg>
               </h1>
-              <select class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
-                <option value="">No message selected</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
+              <select  value={acceptedData?.selectedMessage || 0} onChange={(e)=> setAcceptedData((data)=>({...data,selectedMessage:e.target.value}))} class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
+                <option value={0}>No message selected</option>
+                {
+                  messageList.map((msg)=>{
+                     return <option value={msg?.id}>{msg?.title}</option>
+                  })
+                }
+                
+               
               </select>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7 mb-3">
                 <div class="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px]">
@@ -38,7 +53,7 @@ const Request = () => {
                     </svg>
                   </h1>
                   <div className="tag-check relative mb-2">
-                    <input type="radio" name="tags" id="yes"/>
+                    <input type="radio" name="tags" value={"yes"} id="yes"  checked={acceptedData.isTag === "yes"}  onChange={(e)=> setAcceptedData((data)=>({...data,isTag:e.target.value}))} />
                     <label className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]" htmlFor="yes">Yes</label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +62,7 @@ const Request = () => {
                     </div>
                   </div>
                   <div className="tag-check relative">
-                    <input type="radio" name="tags" id="no" />
+                    <input type="radio" name="tags" id="no" value={"no"}  checked={acceptedData.isTag === "no"}  onChange={(e)=> setAcceptedData((data)=>({...data,isTag:e.target.value}))} />
                     <label className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]" htmlFor="no">No</label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,15 +80,22 @@ const Request = () => {
                       <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
                     </svg>
                   </h1>
-                  <select class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2">
-                    <option value="">Select Group</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
+                  <select value={acceptedData?.selectedGroup || 0} onChange={(e)=> setAcceptedData((data)=>({...data,selectedGroup:e.target.value}))}   class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2">
+                    <option value={0}>Select Group</option>
+                    {
+                      groupData?.map((grp)=>{
+                     return <option value={grp?.id}>{grp?.title}</option>
+                  })
+                }
                   </select>
-                  <select class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
-                    <option value="">Select Stage</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
+                  <select value={acceptedData?.selecetdStage || 0} onChange={(e)=> setAcceptedData((data)=>({...data, selecetdStage:e.target.value}))}  class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
+                    <option value={0}>Select Stage</option>
+                {
+                 
+                      groupData?.find((grps)=>grps.id == acceptedData?.selectedGroup)?.stage?.map((stg)=>{
+                     return <option value={stg?.id}>{stg?.title}</option>
+                  })
+                }
                   </select>
                 </div>
               </div>
@@ -93,10 +115,15 @@ const Request = () => {
                   </defs>
                 </svg>
               </h1>
-              <select class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
-                <option value="">No message selected</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
+              <select  value={rejecedData?.selectedMessage || 0} onChange={(e)=> setRejecetdData((data)=>({...data,selectedMessage:e.target.value}))} class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
+                <option value={0}>No message selected</option>
+                {
+                  messageList.map((msg)=>{
+                     return <option value={msg?.id}>{msg?.title}</option>
+                  })
+                }
+                
+               
               </select>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7">
                 <div class="border border-[#DADADA] bg-white p-4 rounded-[6px]">
@@ -109,7 +136,7 @@ const Request = () => {
                     </svg>
                   </h1>
                   <div className="tag-check relative mb-2">
-                    <input type="radio" name="tags2" id="yes2"/>
+                    <input type="radio" name="tags2" id="yes2" value={"yes"}  checked={rejecedData.isTag === "yes"} onChange={(e)=> setRejecetdData((data)=>({...data,isTag:e.target.value}))}/>
                     <label className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]" htmlFor="yes2">Yes</label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -118,7 +145,7 @@ const Request = () => {
                     </div>
                   </div>
                   <div className="tag-check relative">
-                    <input type="radio" name="tags2" id="no2" />
+                    <input type="radio" name="tags2" id="no2"  value={"no"} checked={rejecedData.isTag === "no"}  onChange={(e)=> setRejecetdData((data)=>({...data,isTag:e.target.value}))} />
                     <label className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]" htmlFor="no2">No</label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -136,15 +163,23 @@ const Request = () => {
                       <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
                     </svg>
                   </h1>
-                  <select class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2">
-                    <option value="">Select Group</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
+                  <select value={rejecedData?.selectedGroup || 0} onChange={(e)=> setRejecetdData((data)=>({...data,selectedGroup:e.target.value}))}   class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2">
+                    <option value={0}>Select Group</option>
+                    {
+                      groupData?.map((grp)=>{
+                     return <option value={grp?.id}>{grp?.title}</option>
+                  })
+                }
+                
                   </select>
-                  <select class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
-                    <option value="">Select Stage</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
+                  <select value={rejecedData?.selecetdStage || 0} onChange={(e)=> setRejecetdData((data)=>({...data, selecetdStage:e.target.value}))}  class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
+                    <option value={0}>Select Stage</option>
+                
+                {
+                      groupData?.find((grps)=>grps.id == rejecedData?.selectedGroup)?.stage?.map((stg)=>{
+                     return <option value={stg?.id}>{stg?.title}</option>
+                  })
+                }
                   </select>
                 </div>
               </div>
