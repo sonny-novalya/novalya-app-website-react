@@ -1,0 +1,28 @@
+.gray-scroll::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.15);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+.gray-scroll::-webkit-scrollbar {
+	width: 6px;
+	background-color: #F5F5F5;
+}
+.gray-scroll::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,.15);
+	background-color: #ccc;
+}
+.message-popup-items:hover {
+    background: #D6E6F4;
+    border: 1px solid #0087FF;
+}
+.message-popup-items button:hover {
+    background: #3DA5FF;
+    color: #fff;
+}
+.message-popup-items button:hover path {
+    fill: #fff;
+}
+.message-popup-main button {
+    cursor: pointer;
+}

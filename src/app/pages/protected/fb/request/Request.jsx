@@ -8,6 +8,7 @@ const Request = () => {
   const [acceptedData,setAcceptedData]= useState({selectedMessage:0,isTag:"yes",selectedGroup:0,selecetdStage:0})
   const [rejecedData,setRejecetdData]= useState({selectedMessage:0,isTag:"yes",selectedGroup:0,selecetdStage:0})
   const [groupData,setGroupData]= useState([{id:1,title:"grp 1",stage:[{id:1,title:"stage 1"},{id:2,title:"stage 2"},{id:3,title:"stage 3"}]},{id:2,title:"grp 2",stage:[{id:1,title:"stage 1"},{id:2,title:"stage 2"},{id:3,title:"stage 3"}]}])
+  const [isMessagePop,setIsMessagePop]= useState(false)
   
   // useEffect(() => {
   // console.log(acceptedData,"acceptedData")
@@ -33,13 +34,13 @@ const Request = () => {
                   </defs>
                 </svg>
               </h1>
-              <select  value={acceptedData?.selectedMessage || 0} onChange={(e)=> setAcceptedData((data)=>({...data,selectedMessage:e.target.value}))} class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
+              <select  value={acceptedData?.selectedMessage || 0} onChange={(e)=> setAcceptedData((data)=>({...data,selectedMessage:e.target.value}))} onFocus={()=>setIsMessagePop(true)} class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]">
                 <option value={0}>No message selected</option>
-                {
+                {/* {
                   messageList.map((msg)=>{
                      return <option value={msg?.id}>{msg?.title}</option>
                   })
-                }
+                } */}
                 
                
               </select>
@@ -201,8 +202,10 @@ const Request = () => {
           </div>
         </div>
       </div>
-
-      <MessagePopUp/>
+{
+  isMessagePop &&<MessagePopUp setIsPop={setIsMessagePop}/>
+}
+      
     </Layout>
   )
 }
