@@ -1,12 +1,12 @@
 import React from 'react'
 import './messagePopUp.css'
 
-const MessagePopUp = () => {
+const MessagePopUp = ({setIsPop}) => {
   return (
     <div className='message-popup-main flex items-center justify-center fixed top-0 left-0 w-full h-screen bg-[#5A5A5A4F] z-[999]'>
       <div className='message-popup-container bg-white relative shadow-md rounded-[10px] w-full max-w-[875px]'>
         <div className='message-popup-close absolute right-0 -top-[25px]'>
-          <button className='message-close-btn absolute top-0 right-3'>
+          <button className='message-close-btn absolute top-0 right-3' onClick={()=> setIsPop(false)}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13.6875 2.3125L2.3125 13.6875M2.3125 2.3125L13.6875 13.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
