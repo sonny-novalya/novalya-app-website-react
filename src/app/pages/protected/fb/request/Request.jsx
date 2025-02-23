@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Layout from "../../Layout"
 import './Request.css'
+import MessagePopUp from "../../../../components/message/common/messagePopUp"
 
 const Request = () => {
   const [messageList,setMessageList]= useState([{id:1,title:"msg 1"},{id:2,title:"msg 2"}])
@@ -200,6 +201,8 @@ const Request = () => {
           </div>
         </div>
       </div>
+
+      <MessagePopUp/>
     </Layout>
   )
 }
