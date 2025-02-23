@@ -1,4 +1,5 @@
 import React from 'react'
+import './messagePopUp.css'
 
 const MessagePopUp = () => {
   return (
