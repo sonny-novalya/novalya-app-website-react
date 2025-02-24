@@ -9,6 +9,7 @@ import Crm from "./fb/crm/Crm";
 import Birthday from "./fb/birthday/Birthday";
 import FriendsList from "./fb/friends-list/FriendsList";
 import Request from "./fb/request/Request";
+import MessageIndex from "./library/message/messageIndex";
 
 const DashboardPage = withSidebarLayout(Dashboard);
 const AffiliatePage = withSidebarLayout(AffiliateDashboard);
@@ -20,5 +21,6 @@ const CrmPage = withSidebarLayout(Crm);
 const BirthdayPage = withSidebarLayout(Birthday);
 const FriendsPage = withSidebarLayout(FriendsList);
 const RequestPage = withSidebarLayout(Request);
+const MessageIndexPage = withSidebarLayout(MessageIndex);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage,MessageIndexPage }
