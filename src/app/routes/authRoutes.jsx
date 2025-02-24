@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "../pages/auth/login/login";
-import { AffiliatePage, DashboardPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage } from "../pages/protected";
+import { AffiliatePage, DashboardPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage } from "../pages/protected";
 import ForgetPassword from "../pages/auth/ForgetPassword/ForgetPassword";
 
 const AuthRoutes = () => {
@@ -16,6 +16,7 @@ const AuthRoutes = () => {
         <Route path="/fb/friends" element={<FriendsPage />} />
         <Route path="/fb/request" element={<RequestPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
+        <Route path="/library/messages" element={<MessageIndexPage />} />
         <Route path="*" element={<Login />} />
       </Routes>
     </>
