@@ -13,7 +13,7 @@ const MessageIndex = () => {
         const platformClass =
           platform === 'Facebook' ? 'bg-blue-600' : 'bg-red-500';
         return (
-          <Button className={`${platformClass} !text-[#808183] px-3 py-1 !rounded-[25px] !font-medium text-[14px] leading-[21px] tracking-normal gap-[4px] p-[6px_12px] flex !h-9`}>
+          <Button className={`${platformClass} !text-[#1877F2] !border-[#1877F2] px-3 py-1 !rounded-[25px] !font-medium text-[14px] leading-[21px] tracking-normal gap-[4px] p-[6px_12px] flex !h-9`}>
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_3567_13827)">
               <path d="M22.5 11C22.5 4.92491 17.5751 0 11.5 0C5.42491 0 0.5 4.92491 0.5 11C0.5 16.4904 4.52256 21.0412 9.78125 21.8664V14.1797H6.98828V11H9.78125V8.57656C9.78125 5.81969 11.4235 4.29688 13.9362 4.29688C15.1396 4.29688 16.3984 4.51172 16.3984 4.51172V7.21875H15.0114C13.6449 7.21875 13.2188 8.0667 13.2188 8.93664V11H16.2695L15.7818 14.1797H13.2188V21.8664C18.4774 21.0412 22.5 16.4905 22.5 11Z" fill="#1877F2"/>
