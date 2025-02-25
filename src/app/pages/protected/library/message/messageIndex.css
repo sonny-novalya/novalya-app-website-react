@@ -21,3 +21,8 @@
 .btn-hover:hover span {
     color: white !important;
 }
+.active {
+    border: 1px solid #0087FF;
+    background: #0087FF;
+    color: white;
+}
