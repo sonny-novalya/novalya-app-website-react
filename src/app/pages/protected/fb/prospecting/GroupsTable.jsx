@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined } from "@ant-design/icons";
-import GroupImg from "../../../../../assets/img/groupImg.png"
+import GroupImg from "../../../../../assets/img/groupImg.png";
+import SettingsModal from "../../../../components/modal/SettingsModal/SettingsModal";
 
 const menu = (
     <Menu>
@@ -11,22 +12,33 @@ const menu = (
     </Menu>
 );
 
-const initialGroups = Array(7).fill({
+const initialGroups = Array(7).fill(null).map(() => ({
     key: Math.random(),
     groupName: "Longnamegroup Example",
     members: "All Members",
     privacy: "🌎",
     messagesSent: 110,
     folder: "Interested Buyer",
-});
+}));
 
 const GroupsTable = () => {
-    // const [groupsData, setGroupsData] = useState(initialGroups);
     const [searchText, setSearchText] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedGroup, setSelectedGroup] = useState(null); // Track selected group
 
     const filteredData = initialGroups.filter(group =>
         group.groupName.toLowerCase().includes(searchText.toLowerCase())
     );
+
+    const handleOpenSettings = (group) => {
+        setSelectedGroup(group);
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setSelectedGroup(null);
+    };
 
     const groupColumns = [
         {
@@ -49,7 +61,15 @@ const GroupsTable = () => {
         },
         {
             title: "Settings",
-            render: () => <Button icon={<SettingOutlined />} className="bg-blue-500 text-white px-3 py-1 rounded-md">Settings</Button>,
+            render: (_, record) => (
+                <Button
+                    icon={<SettingOutlined />}
+                    className="bg-blue-500 text-white px-3 py-1 rounded-md"
+                    onClick={() => handleOpenSettings(record)} // Open modal with group details
+                >
+                    Settings
+                </Button>
+            ),
         },
         { title: "Send", render: () => <Button icon={<SendOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" /> },
         {
@@ -83,6 +103,15 @@ const GroupsTable = () => {
                 <Button className="bg-gray-200 px-4 py-2 rounded-md">Sort by</Button>
             </div>
             <Table columns={groupColumns} dataSource={filteredData} pagination={false} className="custom-table" />
+
+            {/* Settings Modal - Open only when modalOpen is true */}
+            {modalOpen && (
+                <SettingsModal
+                    visible={modalOpen}
+                    onClose={handleCloseModal}
+                    group={selectedGroup} // Pass selected group data
+                />
+            )}
         </div>
     );
 };
