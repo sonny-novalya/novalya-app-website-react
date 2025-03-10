@@ -1,0 +1,28 @@
+.ctm-list-design li.ant-list-item {
+    border: none !important;
+    background: #F5F5F5;
+    padding: 12px 20px !important;
+    border-radius: 10px;
+}
+.ctm-list-design .ant-list {
+    border: none;
+}
+.ctm-list-design ul.ant-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ant-list.ant-list-split.ant-list-bordered {
+    border: none;
+}
+.btn-hover:hover {
+    background: #3DA5FF !important;
+}
+.btn-hover:hover span {
+    color: white !important;
+}
+.active {
+    border: 1px solid #0087FF;
+    background: #0087FF;
+    color: white;
+}
