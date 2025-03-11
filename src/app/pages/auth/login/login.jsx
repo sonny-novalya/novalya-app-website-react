@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../../store/auth/useAuthStore";
 import GlobeImg from "../../../../../src/assets/img/globe.png";
 import NovalyaFullWhiteLogo from "../../../../../src/assets/img/NovalyaFullWhiteLogo.png";
+import { loginUser } from "../../../../services/ApiCalls";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -15,19 +16,33 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    console.log("in func")
     if (!email || !password) {
       message.error("Email and Password are required!");
       return;
     }
 
-    const response = await login(email, password);
+    const creads = {username:email,password}
 
-    if (response.success) {
-      message.success("Login successful!");
-      navigate("/dashboard"); // Redirect to dashboard after login
-    } else {
-      message.error(error || "Login failed!");
+    try {
+      const response = await loginUser(creads);
+      console.log(response)
+
+      if (response?.data?.success === "success") {
+
+      
+        console.log(response)
+        // message.success("Login successful!");
+        // navigate("/dashboard"); // Redirect to dashboard after login
+      } else {
+        message.error(error || "Login failed!");
+      }
+      
+    } catch (error) {
+     
     }
+
+ 
   };
 
   return (
