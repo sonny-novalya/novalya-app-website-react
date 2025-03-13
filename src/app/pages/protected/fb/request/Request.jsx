@@ -8,6 +8,7 @@ import {
   fetchRequestSettings,
   getAllMessagesList,
 } from "../../../../../services/ApiCalls";
+import { useTranslation } from "react-i18next";
 
 const Request = () => {
   const [messageList, setMessageList] = useState([]);
@@ -28,6 +29,7 @@ const Request = () => {
   const [messageData, setMessageData] = useState(false);
   const [messageType, setMessageType] = useState(1);
   const [preSelecetdMessage, setPreSelecetdMessage] = useState(null);
+  const {t} = useTranslation()
 
   const fetchGroups = async () => {
     try {
@@ -155,12 +157,12 @@ const Request = () => {
       <div className="nw-manage-requests">
         <div>
           <h1 className="text-2xl font-semibold mb-4">
-            Auto-Reply to Requests
+             {t("FB_request.Auto-Reply to Requests")} 
           </h1>
           <div className="border border-[#DADADA] p-4 pt-8 bg-white rounded-[8px] mb-7">
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px] mb-6">
               <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px] mb-6">
-                When a request is accepted:
+              {t("FB_request.When a request is accepted")} :
                 <svg
                   width="26"
                   height="26"
@@ -193,7 +195,7 @@ const Request = () => {
               <div class="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7 mb-3">
                 <div class="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px]">
                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
-                    Do you want to add a tag?
+                  {t("FB_request.Do you want to add a tag?")} 
                     <svg
                       width="16"
                       height="16"
@@ -233,7 +235,7 @@ const Request = () => {
                       className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]"
                       htmlFor="yes"
                     >
-                      Yes
+                    {t("FB_request.Yes")}  
                     </label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg
@@ -270,7 +272,7 @@ const Request = () => {
                       className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]"
                       htmlFor="no"
                     >
-                      No
+                    {t("FB_request.No")}  
                     </label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg
@@ -293,7 +295,7 @@ const Request = () => {
                 {acceptedData?.isTag === "yes" ? (
                   <div class="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px] ">
                     <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
-                      Select Group
+                    {t("FB_request.Select Group")}  
                       <svg
                         width="16"
                         height="16"
@@ -330,7 +332,7 @@ const Request = () => {
                       }
                       class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                     >
-                      <option value={0}>Select Group</option>
+                      <option value={0}>{t("FB_request.Select Group")} </option>
                       {groupData?.map((grp) => {
                         return <option value={grp?.id}>{grp?.name}</option>;
                       })}
@@ -345,7 +347,7 @@ const Request = () => {
                       }
                       class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]"
                     >
-                      <option value={0}>Select Stage</option>
+                      <option value={0}> {t("FB_request.Select Stage")}</option>
                       {groupData
                         ?.find((grps) => grps.id == acceptedData?.selectedGroup)
                         ?.stage?.map((stg) => {
@@ -360,7 +362,7 @@ const Request = () => {
             </div>
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px]">
               <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px] mb-6">
-                When a request is declined:
+              {t("FB_request.When a request is declined")} :
                 <svg
                   width="26"
                   height="26"
@@ -396,7 +398,7 @@ const Request = () => {
               <div class="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7">
                 <div class="border border-[#DADADA] bg-white p-4 rounded-[6px]">
                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
-                    Do you want to add a tag?
+                  {t("FB_request.Do you want to add a tag?")} 
                     <svg
                       width="16"
                       height="16"
@@ -441,7 +443,7 @@ const Request = () => {
                       className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]"
                       htmlFor="yes2"
                     >
-                      Yes
+                    {t("FB_request.Yes")} 
                     </label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg
@@ -478,7 +480,7 @@ const Request = () => {
                       className="flex items-center justify-center border border-[#0087FF] text-[#0087FF] bg-white font-normal text-[16px] leading-[22px] p-3 w-full rounded-[10px]"
                       htmlFor="no2"
                     >
-                      No
+                   {t("FB_request.No")}   
                     </label>
                     <div className="checkmark absolute -top-2 -right-2 z-2 bg-white rounded-full">
                       <svg
@@ -501,7 +503,7 @@ const Request = () => {
                 {rejectedData?.isTag === "yes" ? (
                   <div class="border border-[#DADADA] bg-white p-4 rounded-[6px]">
                     <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
-                      Select Group
+                    {t("FB_request.Select Group")} 
                       <svg
                         width="16"
                         height="16"
@@ -538,7 +540,7 @@ const Request = () => {
                       }
                       class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                     >
-                      <option value={0}>Select Group</option>
+                      <option value={0}>{t("FB_request.Select Group")}</option>
                       {groupData?.map((grp) => {
                         return <option value={grp?.id}>{grp?.name}</option>;
                       })}
@@ -553,7 +555,7 @@ const Request = () => {
                       }
                       class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]"
                     >
-                      <option value={0}>Select Stage</option>
+                      <option value={0}>{t("FB_request.Select Stage")}</option>
 
                       {groupData
                         ?.find((grps) => grps.id == rejectedData?.selectedGroup)
@@ -571,13 +573,13 @@ const Request = () => {
               onClick={() => handleSubmit()}
               className="bg-[#21BF7C] text-white rounded-[10px] font-semibold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6bg-[#21BF7C] hover:bg-[#15AE6D] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250"
             >
-              Save & Check Requests
+             {t("FB_request.Save & Check Requests")} 
             </button>
           </div>
-          <h1 className="text-2xl font-semibold mb-4">Pending Requests Sent</h1>
+          <h1 className="text-2xl font-semibold mb-4">{t("FB_request.Pending Requests Sent")}</h1>
           <div className="border border-[#DADADA] p-4 pb-7 bg-white rounded-[8px]">
             <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px] mb-6">
-              Do you want to delete all pending friend requests at one go?
+            {t("FB_request.do_you_delete_all")} 
             </h1>
             <button className="flex items-center justify-center gap-[8px] bg-[#21BF7C] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 bg-[#FF0000] hover:bg-[#F40000] text-white rounded-[10px] font-semibold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250">
               <svg
@@ -594,7 +596,7 @@ const Request = () => {
                   fill="white"
                 />
               </svg>
-              Delete All
+              {t("FB_request.Delete All")} 
             </button>
           </div>
         </div>

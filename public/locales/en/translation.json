@@ -1,0 +1,30 @@
+{
+    "login":{
+        "Welcome back!":"Welcome back!",
+        "Marketing Platform":"Marketing Platform",
+        "for Organic Lead Generation":"for Organic Lead Generation",
+        "Login to your account":"Login to your account",
+        "Email":"Email",
+        "Password":"Password",
+        "Forgot Password?":"Forgot Password?",
+        "Remember me!":"Remember me!",
+        "Not registered?":"Not registered?",
+        "Create an account":"Create an account",
+        "SIGN IN":"SIGN IN"
+    },
+    "FB_request":{
+        "Auto-Reply to Requests":"Auto-Reply to Requests",
+        "When a request is accepted":"When a request is accepted",
+        "When a request is declined":"When a request is declined",
+        "Do you want to add a tag?":"Do you want to add a tag?",
+        "Yes":"Yes",
+        "No":"No",
+        "Select Group":"Select Group",
+        "Select Stage":"Select Stage",
+        "Save & Check Requests":"Save & Check Requests",
+        "Pending Requests Sent":"Pending Requests Sent",
+        "do_you_delete_all":"Do you want to delete all pending friend requests at one go?",
+        "Delete All":"Delete All"
+    }
+    
+}

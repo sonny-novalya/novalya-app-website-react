@@ -1,0 +1,32 @@
+{
+    "login": {
+        "Welcome back!": "Bon retour !",
+        "Marketing Platform": "Plateforme de marketing",
+        "for Organic Lead Generation": "pour la génération de leads organiques",
+        "Login to your account": "Connectez-vous à votre compte",
+        "Email": "E-mail",
+        "Password": "Mot de passe",
+        "Forgot Password?": "Mot de passe oublié ?",
+        "Remember me!": "Se souvenir de moi !",
+        "Not registered?": "Pas encore inscrit ?",
+        "Create an account": "Créer un compte",
+        "SIGN IN": "SE CONNECTER"
+      },
+      
+        "FB_request": {
+          "Auto-Reply to Requests": "Réponse automatique aux demandes",
+          "When a request is accepted": "Lorsque une demande est acceptée",
+          "When a request is declined": "Lorsque une demande est refusée",
+          "Do you want to add a tag?": "Voulez-vous ajouter une étiquette ?",
+          "Yes": "Oui",
+          "No": "Non",
+          "Select Group": "Sélectionner un groupe",
+          "Select Stage": "Sélectionner une étape",
+          "Save & Check Requests": "Enregistrer et vérifier les demandes",
+          "Pending Requests Sent": "Demandes en attente envoyées",
+          "do_you_delete_all": "Voulez-vous supprimer toutes les demandes d'ami en attente en une seule fois ?",
+          "Delete All": "Tout supprimer"
+        }
+      
+      
+}
