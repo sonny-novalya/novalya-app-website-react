@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
 import { AffiliatePage, DashboardPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
 
@@ -19,6 +19,7 @@ const AuthentictedRoutes = () => {
         <Route path="/affiliate/links" element={<AffiliateLinksPage />} />
         <Route path="/affiliate/level-commission" element={<LevelCommissionPage />} />
         <Route path="/affiliate/settings" element={<AffiliateSettingsPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

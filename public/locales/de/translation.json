@@ -1,0 +1,33 @@
+{
+    "login": {
+        "Welcome back!": "Willkommen zurück!",
+        "Marketing Platform": "Marketing-Plattform",
+        "for Organic Lead Generation": "für organische Lead-Generierung",
+        "Login to your account": "Melden Sie sich bei Ihrem Konto an",
+        "Email": "E-Mail",
+        "Password": "Passwort",
+        "Forgot Password?": "Passwort vergessen?",
+        "Remember me!": "Angemeldet bleiben!",
+        "Not registered?": "Nicht registriert?",
+        "Create an account": "Konto erstellen",
+        "SIGN IN": "ANMELDEN"
+      },
+
+      
+        "FB_request": {
+          "Auto-Reply to Requests": "Automatische Antwort auf Anfragen",
+          "When a request is accepted": "Wenn eine Anfrage akzeptiert wird",
+          "When a request is declined": "Wenn eine Anfrage abgelehnt wird",
+          "Do you want to add a tag?": "Möchten Sie ein Tag hinzufügen?",
+          "Yes": "Ja",
+          "No": "Nein",
+          "Select Group": "Gruppe auswählen",
+          "Select Stage": "Stufe auswählen",
+          "Save & Check Requests": "Speichern & Anfragen prüfen",
+          "Pending Requests Sent": "Ausstehende Anfragen gesendet",
+          "do_you_delete_all": "Möchten Sie alle ausstehenden Freundschaftsanfragen auf einmal löschen?",
+          "Delete All": "Alle löschen"
+        }
+      
+      
+}

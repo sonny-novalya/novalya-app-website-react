@@ -31,6 +31,16 @@ export function updateAuthorizationHeader() {
 }
 
 
+export const manualSignIn = async (accesstoken) => {
+  try {
+     const response=  await axios.post(API_BASE_URL+'/manualsignin', {accesstoken});
+     return response;
+  } catch (e) {
+      return e.response;
+  }
+
+};
+
   export const registerUser = async (params) => {
     try {
       updateAuthorizationHeader();
