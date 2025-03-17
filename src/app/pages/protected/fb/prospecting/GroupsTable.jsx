@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
-import SettingsModal from "../../../../components/modal/SettingsModal/SettingsModal";
+import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
+import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
 
 const menu = (
     <Menu>
@@ -24,7 +25,8 @@ const initialGroups = Array(7).fill(null).map(() => ({
 const GroupsTable = () => {
     const [searchText, setSearchText] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState(null); // Track selected group
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [selectedGroup, setSelectedGroup] = useState(null);
 
     const filteredData = initialGroups.filter(group =>
         group.groupName.toLowerCase().includes(searchText.toLowerCase())
@@ -38,6 +40,16 @@ const GroupsTable = () => {
     const handleCloseModal = () => {
         setModalOpen(false);
         setSelectedGroup(null);
+    };
+
+    const handleOpenConfirmModal = (group) => {
+        setConfirmModalOpen(true);
+        console.log("Saved data", group)
+        // handle states of pre saved data here
+    };
+
+    const handleCloseConfirmModal = () => {
+        setConfirmModalOpen(false);
     };
 
     const groupColumns = [
@@ -65,13 +77,20 @@ const GroupsTable = () => {
                 <Button
                     icon={<SettingOutlined />}
                     className="bg-blue-500 text-white px-3 py-1 rounded-md"
-                    onClick={() => handleOpenSettings(record)} // Open modal with group details
+                    onClick={() => handleOpenSettings(record)} 
                 >
                     Settings
                 </Button>
             ),
         },
-        { title: "Send", render: () => <Button icon={<SendOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" /> },
+        {
+            title: "Send", 
+            render: (_, record) => (
+            <Button 
+                icon={<SendOutlined />} 
+                className="bg-gray-200 px-3 py-1 rounded-md" 
+                onClick={() => handleOpenConfirmModal(record)} />
+        ) },
         {
             title: "Action",
             render: () => (
@@ -109,7 +128,15 @@ const GroupsTable = () => {
                 <SettingsModal
                     visible={modalOpen}
                     onClose={handleCloseModal}
-                    group={selectedGroup} // Pass selected group data
+                    group={selectedGroup} 
+                />
+            )}
+
+            {confirmModalOpen && (
+                <ConfirmationModal
+                    visible={confirmModalOpen}
+                    onClose={handleCloseConfirmModal}
+                    // group={selectedGroup}
                 />
             )}
         </div>

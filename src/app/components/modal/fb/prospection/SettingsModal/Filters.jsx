@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { BothGenderIcon, FemaleGenderIcon, MaleGenderIcon, TickFillIcon, TickIcon, UpperArrowIcon } from "../../../pages/common/icons/icons";
+import { BothGenderIcon, FemaleGenderIcon, MaleGenderIcon, TickFillIcon, TickIcon, UpperArrowIcon } from "../../../../../pages/common/icons/icons";
 
 const Filters = () => {
     const [selectedGender, setSelectedGender] = useState("Male");

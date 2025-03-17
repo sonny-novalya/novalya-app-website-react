@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TickFillIcon } from "../../../pages/common/icons/icons";
+import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 
 const Settings = () => {
     const [strategy, setStrategy] = useState(0);

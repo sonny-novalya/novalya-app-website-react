@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input, Button, Select, Table } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
-import { EditIcon, PreviewIcon } from "../../../pages/common/icons/icons";
+import { EditIcon, PreviewIcon } from "../../../../../pages/common/icons/icons";
 
 const SelectMessage = () => {
     const [selectedRow, setSelectedRow] = useState(null);
