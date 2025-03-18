@@ -20,10 +20,10 @@ const SettingsModal = ({ visible, onClose }) => {
                 <h3 className="border border-[#00000014] rounded-md p-4 text-[#0087FF]">
                     Message #12345
                 </h3>
-                    <Settings />
-                    <Filters />
-                    <AdvOptions />
-                    <AddTags />
+                <Settings />
+                <Filters />
+                <AdvOptions />
+                <AddTags />
             </div>
         </Modal>
     );

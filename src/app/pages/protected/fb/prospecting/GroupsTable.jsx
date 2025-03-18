@@ -4,6 +4,7 @@ import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined } from "@an
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
+import CreateFolderModal from "../../../../components/modal/fb/prospection/CreateFolderModal";
 
 const menu = (
     <Menu>
@@ -27,6 +28,7 @@ const GroupsTable = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState(null);
+    const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
 
     const filteredData = initialGroups.filter(group =>
         group.groupName.toLowerCase().includes(searchText.toLowerCase())
@@ -50,6 +52,10 @@ const GroupsTable = () => {
 
     const handleCloseConfirmModal = () => {
         setConfirmModalOpen(false);
+    };
+
+    const handleCloseCreateFolderModal = () => {
+        setOpenCreateFolderModal(false);
     };
 
     const groupColumns = [
@@ -107,7 +113,7 @@ const GroupsTable = () => {
                 <div className="space-x-2">
                     <Button className="bg-gray-200 px-4 py-2 rounded-md">All</Button>
                     <Button className="bg-gray-200 px-4 py-2 rounded-md">Archived</Button>
-                    <Button className="bg-gray-200 px-4 py-2 rounded-md">+ Create Folder</Button>
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md" onClick={() => setOpenCreateFolderModal(true)}>+ Create Folder</Button>
                 </div>
                 <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
             </div>
@@ -136,6 +142,14 @@ const GroupsTable = () => {
                 <ConfirmationModal
                     visible={confirmModalOpen}
                     onClose={handleCloseConfirmModal}
+                    // group={selectedGroup}
+                />
+            )}
+
+            {openCreateFolderModal && (
+                <CreateFolderModal
+                    visible={openCreateFolderModal}
+                    onClose={handleCloseCreateFolderModal}
                     // group={selectedGroup}
                 />
             )}

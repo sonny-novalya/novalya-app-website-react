@@ -28,7 +28,11 @@ const Prospecting = () => {
             </div>
 
             <div className="w-full mt-4">
-                {selectedGroup ? <GroupsTable /> : <PostTable />}
+                {
+                    selectedGroup 
+                        ? <GroupsTable /> 
+                        : <PostTable />
+                }
             </div>
         </Layout>
     );
