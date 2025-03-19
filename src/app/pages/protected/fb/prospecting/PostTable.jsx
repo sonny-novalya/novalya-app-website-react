@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, MoreOutlined } from "@ant-design/icons";
+import CreateFolderModal from "../../../../components/modal/fb/prospection/CreateFolderModal";
+import useFbProspectingStore from "../../../../../store/fb/prospecting";
 
 const menu = (
     <Menu>
@@ -22,7 +24,8 @@ const initialPosts = Array(7).fill({
 const PostsTable = () => {
     // const [postsData, setPostsData] = useState(initialPosts);
     const [searchText, setSearchText] = useState("");
-
+    const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
+    const { folders } = useFbProspectingStore(); 
     const filteredData = initialPosts.filter(post =>
         post.postTitle.toLowerCase().includes(searchText.toLowerCase())
     );
@@ -43,13 +46,22 @@ const PostsTable = () => {
         },
     ];
 
+    const handleCloseCreateFolderModal = () => {
+        setOpenCreateFolderModal(false);
+    };
+
     return (
         <div>
             <div className="flex items-center justify-between my-4">
-                <div className="space-x-2">
+                <div className="space-x-2 overflow-x-auto max-w-full">
                     <Button className="bg-gray-200 px-4 py-2 rounded-md">All</Button>
                     <Button className="bg-gray-200 px-4 py-2 rounded-md">Archived</Button>
-                    <Button className="bg-gray-200 px-4 py-2 rounded-md">+ Create Folder</Button>
+                    {
+                        folders.map((folder, index) => {
+                            return <Button className="bg-gray-200 px-4 py-2 rounded-md" key={index}>{folder.name}</Button>
+                        })
+                    }
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md" onClick={() => setOpenCreateFolderModal(true)}>+ Create Folder</Button>
                 </div>
                 <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
             </div>
@@ -64,6 +76,14 @@ const PostsTable = () => {
                 <Button className="bg-gray-200 px-4 py-2 rounded-md">Sort by</Button>
             </div>
             <Table columns={postColumns} dataSource={filteredData} pagination={false} className="custom-table" />
+
+            {openCreateFolderModal && (
+                    <CreateFolderModal
+                        visible={openCreateFolderModal}
+                        onClose={handleCloseCreateFolderModal}
+                        // group={selectedGroup}
+                        />
+            )}
         </div>
     );
 };
