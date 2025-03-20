@@ -40,6 +40,8 @@ const GroupsTable = () => {
     const [searchParams] = useSearchParams();  // Use useSearchParams to get query parameters
     const f = searchParams.get("f");  // Get the 'f' query parameter from the URL
     const [searchText, setSearchText] = useState("");
+    const [selectedFolder, setSelectedFolder] = useState(f ? decodeURIComponent(f) : "All");
+
     const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState(null);
@@ -138,25 +140,26 @@ const GroupsTable = () => {
     ];
 
     const handleFolderClick = (folderId) => {
-        navigate(`/fb/prospecting?f=${folderId}`);  // Use navigate to route to the folder
+        setSelectedFolder(folderId.toString());
+        navigate(`/fb/prospecting?f=${encodeURIComponent(folderId)}`);  // Use navigate to route to the folder
     };
 
     return (
-        <div>
-            <div className="flex items-center justify-between my-4">
-                <div className="space-x-2 overflow-x-auto max-w-full">
+        <div className="bg-white p-2">
+            <div className="flex items-center justify-between ">
+                <div className="space-x-2 overflow-x-auto max-w-full mb-2">
                     {
                         [...buttonsData, ...folders].map((folder, index) => (
-                            <Button
+                            <button
                                 key={index}
-                                className="bg-gray-200 px-4 py-2 rounded-md"
-                                onClick={() => handleFolderClick(folder.id)}  // Handle folder click to route
+                                className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                onClick={() => handleFolderClick(folder.id)}
                             >
                                 {folder.name}
-                            </Button>
+                            </button>
                         ))
                     }
-                    <Button className="bg-gray-200 px-4 py-2 rounded-md" onClick={() => setOpenCreateFolderModal(true)}>+ Create Folder</Button>
+                    <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}Create Folder</button>
                 </div>
                 <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
             </div>
