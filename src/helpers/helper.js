@@ -28,7 +28,6 @@ export const loginSenerios = (response)=>{
         document.cookie = `authToken=${authToken}; expires=${expirationDate.toUTCString()}; path=/`;
         document.cookie = `user_id=${userId}; expires=${expirationDate.toUTCString()}; path=/`;
 
-        setIsLoading(false);
         
       }else{
         window.location.href = `https://wcy-nuskin.novalya.com?token=${authToken}&userId=${userId}`
@@ -49,7 +48,6 @@ export const loginSenerios = (response)=>{
         document.cookie = `authToken=${authToken}; expires=${expirationDate.toUTCString()}; path=/`;
         document.cookie = `user_id=${userId}; expires=${expirationDate.toUTCString()}; path=/`;
 
-        setIsLoading(false);
       }else if((window.location.href).includes("localhost")){
         let curr = window.location.href.split(":")
         window.location.href = `http://localhost:${curr?.[2] || 5173}?token=${authToken}&userId=${userId}`
