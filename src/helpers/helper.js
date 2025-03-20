@@ -9,7 +9,6 @@ export  const removeAllCookies  = ()=>{
 }
 
 export const loginSenerios = (response)=>{
-    console.log(response,"response loginSenerios")
     const userId = response?.user?.id || 0;
     const authToken = response.token;
     if(response?.user?.website === "nuskin"){
