@@ -54,6 +54,8 @@ export const loginSenerios = (response)=>{
       }else if((window.location.href).includes("localhost")){
         let curr = window.location.href.split(":")
         window.location.href = `http://localhost:${curr?.[2] || 5173}?token=${authToken}&userId=${userId}`
+      }else if((window.location.href).includes("dev.novalya.com")){
+             window.location.href = `https://dev.novalya.com?token=${authToken}&userId=${userId}`
       }else{
         window.location.href = `https://app.novalya.com?token=${authToken}&userId=${userId}`
       }
