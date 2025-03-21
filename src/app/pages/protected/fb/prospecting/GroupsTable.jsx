@@ -9,6 +9,7 @@ import CreateFolderModal from "../../../../components/modal/fb/prospection/Creat
 import useFbProspectingStore from "../../../../../store/fb/prospecting";
 import { useSearchParams } from "react-router-dom";
 import useGroupStore from "../../../../../store/group/groupStore";
+import { formatNumber } from "../../../../../helpers/formatGroupMembers";
 
 const menu = (
     <Menu>
@@ -17,25 +18,6 @@ const menu = (
         <Menu.Item key="3">Delete</Menu.Item>
     </Menu>
 );
-
-const initialGroups = [
-    { key: 1, groupName: "Longnamegroup Example", members: "All Members", privacy: "🌎", messagesSent: 110, folder: "asd" },
-    { key: 2, groupName: "Group 2", members: "All Members", privacy: "🌍", messagesSent: 120, folder: "temp one" },
-    { key: 3, groupName: "Group 3", members: "All Members", privacy: "🌍", messagesSent: 130, folder: "sample name 1" },
-    { key: 4, groupName: "Group 4", members: "All Members", privacy: "🌍", messagesSent: 140, folder: "example name 2" },
-    { key: 5, groupName: "Group 5", members: "All Members", privacy: "🌎", messagesSent: 150, folder: "demo name 3" },
-    { key: 6, groupName: "Group 6", members: "All Members", privacy: "🌍", messagesSent: 160, folder: "test name 4" },
-    { key: 7, groupName: "Group 7", members: "All Members", privacy: "🌎", messagesSent: 170, folder: "dummy name 5" },
-    { key: 8, groupName: "Group 8", members: "All Members", privacy: "🌎", messagesSent: 180, folder: "asd" },
-    { key: 9, groupName: "Group 9", members: "All Members", privacy: "🌍", messagesSent: 190, folder: "temp one" },
-    { key: 10, groupName: "Group 10", members: "All Members", privacy: "🌍", messagesSent: 200, folder: "sample name 1" },
-    { key: 11, groupName: "Group 11", members: "All Members", privacy: "🌎", messagesSent: 210, folder: "example name 2" },
-    { key: 12, groupName: "Group 12", members: "All Members", privacy: "🌍", messagesSent: 220, folder: "demo name 3" },
-    { key: 13, groupName: "Group 13", members: "All Members", privacy: "🌎", messagesSent: 230, folder: "test name 4" },
-    { key: 14, groupName: "Group 14", members: "All Members", privacy: "🌍", messagesSent: 240, folder: "dummy name 5" },
-    // Add more groups here up to 40-50
-];
-
 
 const GroupsTable = () => {
     const [searchParams] = useSearchParams();  // Use useSearchParams to get query parameters
@@ -47,21 +29,13 @@ const GroupsTable = () => {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
-    const { folders } = useFbProspectingStore();
+    const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups } = useGroupStore();
+
+    console.log("folders", folders)
+    const socialType = "fb_groups"; 
+
     const navigate = useNavigate();  
-
-    useEffect(() => {
-        fetchGroups()
-    }, []);
-    console.log("Groups", groups)
-    const filteredData = initialGroups.filter(group => {
-        // Check if the folder from the data matches the 'f' parameter and if the group name matches the search text
-        const isMatchingFolder = group.folder.toLowerCase() === decodeURIComponent(f)?.toLowerCase();
-        const isMatchingSearch = group.groupName.toLowerCase().includes(searchText.toLowerCase());
-        return isMatchingFolder && isMatchingSearch;
-    });
-
 
     const handleOpenSettings = (group) => {
         setSelectedGroup(group);
@@ -90,17 +64,26 @@ const GroupsTable = () => {
     const groupColumns = [
         {
             title: "Group's Name",
-            dataIndex: "groupName",
+            dataIndex: "name",
             render: (text) => (
                 <div className="flex items-center space-x-2">
                     <img src={GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
-                    <span className="font-semibold">{text}</span>
+                    <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{text}</span>
                 </div>
             ),
         },
-        { title: "Members", dataIndex: "members" },
-        { title: "Privacy", dataIndex: "privacy" },
-        { title: "Messages sent", dataIndex: "messagesSent" },
+        { title: "Members", dataIndex: "group_type" },
+        {
+            title: "Privacy", dataIndex: "privacy", render: () => (
+                <span className="">
+                    🌎
+                </span>
+            ), },
+        // { title: "Messages sent", dataIndex: "messagesSent" },
+        {
+            title: "Total Members", dataIndex: "total_member", render: (text) => (
+                <span>{formatNumber(text)}</span>
+        ) },
         {
             title: "Folder",
             dataIndex: "folder",
@@ -137,32 +120,40 @@ const GroupsTable = () => {
         },
     ];
 
-    // Button data to display folders
     const buttonsData = [
-        { id: 0, name: "All", selectedGroups: [] },
-        { id: 1, name: "Archived", selectedGroups: [] },
+        { id: 0, folder_name: "All", selectedGroups: [] },
+        { id: 1, folder_name: "Archived", selectedGroups: [] },
     ];
 
     const handleFolderClick = (folderId) => {
         setSelectedFolder(folderId.toString());
-        navigate(`/fb/prospecting?f=${encodeURIComponent(folderId)}`);  // Use navigate to route to the folder
+        navigate(`/fb/prospecting?f=${encodeURIComponent(folderId)}`);
     };
+
+    useEffect(() => {
+        fetchGroups()
+    }, []);
+
+    useEffect(() => {
+        setFolders(socialType); 
+    }, [setFolders, socialType]);
 
     return (
         <div className="bg-white p-2">
             <div className="flex items-center justify-between ">
                 <div className="space-x-2 overflow-x-auto max-w-full mb-2">
                     {
-                        [...buttonsData, ...folders].map((folder, index) => (
+                        [...buttonsData, ...(Array.isArray(folders) ? folders : [])].map((folder, index) => (
                             <button
                                 key={index}
                                 className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                 onClick={() => handleFolderClick(folder.id)}
                             >
-                                {folder.name}
+                                {folder.folder_name}
                             </button>
                         ))
                     }
+
                     <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}Create Folder</button>
                 </div>
                 <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
@@ -177,7 +168,7 @@ const GroupsTable = () => {
                 />
                 <Button className="bg-gray-200 px-4 py-2 rounded-md">Sort by</Button>
             </div>
-            <Table columns={groupColumns} dataSource={filteredData} pagination={false} className="custom-table" />
+            <Table columns={groupColumns} dataSource={groups} pagination={false} className="custom-table" />
 
             {/* Settings Modal - Open only when modalOpen is true */}
             {modalOpen && (
@@ -192,6 +183,7 @@ const GroupsTable = () => {
                 <ConfirmationModal
                     visible={confirmModalOpen}
                     onClose={handleCloseConfirmModal}
+                    groups={groups}
                 />
             )}
 

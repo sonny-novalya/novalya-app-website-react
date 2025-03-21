@@ -1,15 +1,5 @@
 import { create } from "zustand";
-
-// const data = [
-//     { id: "asd", name: "asd", selectedGroups: [1, 8] },
-//     { id: "temp one", name: "temp one", selectedGroups: [2, 9] },
-//     { id: "sample name 1", name: "sample name 1", selectedGroups: [3, 10] },
-//     { id: "example name 2", name: "example name 2", selectedGroups: [4, 11] },
-//     { id: "demo name 3", name: "demo name 3", selectedGroups: [5, 12] },
-//     { id: "test name 4", name: "test name 4", selectedGroups: [6, 13] },
-//     { id: "dummy name 5", name: "dummy name 5", selectedGroups: [7, 14] },
-//     // Add other folders if necessary
-// ];
+import { BASE_URL } from "../../services/ApiCalls";
 
 const useFbProspectingStore = create((set) => ({
     folders: [], // Array to store folders
@@ -29,7 +19,58 @@ const useFbProspectingStore = create((set) => ({
                 ? { ...folder, name: newName }
                 : folder
         )
-    }))
+    })),
+    setFolders: async (socialType) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(
+                `${BASE_URL}groups/api/get-prospect-folders?social_type=${socialType}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Failed to fetch folders");
+            }
+            const data = await response.json();
+            // Assuming 'data' contains an array of folders
+            set({ folders: data.data });
+            console.log("Folders fetched successfully:", data);
+        } catch (error) {
+            console.error("Error fetching folders:", error);
+        }
+    },
+    createFolder: async (folderName, social_type, selectedGroups) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(
+                `${BASE_URL}groups/api/create-prospect-folder`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        folder_name: folderName,
+                        social_type: social_type,
+                        selectedGroups: selectedGroups
+                    }),
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Failed to create folder");
+            }
+            const data = await response.json();
+            console.log("Folder created successfully:", data);
+        } catch (error) {
+            console.error("Error creating folder:", error);
+        }
+    }
 }));
 
 export default useFbProspectingStore;

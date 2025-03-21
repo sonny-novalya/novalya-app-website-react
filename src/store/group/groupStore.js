@@ -7,7 +7,7 @@ const useGroupStore = create((set) => ({
         try {
             const token = localStorage.getItem("token");
             const response = await fetch(
-                `${BASE_URL}groups/api/get-group-by-folder?social_type=fb_post&folder=all`,
+                `${BASE_URL}groups/api/get-group-by-folder`,
                 {
                     method: "GET",
                     headers: {
@@ -20,7 +20,7 @@ const useGroupStore = create((set) => ({
                 throw new Error("Failed to fetch groups");
             }
             const data = await response.json();
-            set({ groups: data });
+            set({ groups: data.data });
         } catch (error) {
             console.error("Error fetching groups:", error);
         }
