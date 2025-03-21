@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";  // Use useNavigate instead of useHistory
 import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined } from "@ant-design/icons";
@@ -8,6 +8,7 @@ import ConfirmationModal from "../../../../components/modal/fb/prospection/Confi
 import CreateFolderModal from "../../../../components/modal/fb/prospection/CreateFolderModal";
 import useFbProspectingStore from "../../../../../store/fb/prospecting";
 import { useSearchParams } from "react-router-dom";
+import useGroupStore from "../../../../../store/group/groupStore";
 
 const menu = (
     <Menu>
@@ -47,10 +48,13 @@ const GroupsTable = () => {
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
     const { folders } = useFbProspectingStore();
-    console.log("f parameter:", f);
-    const navigate = useNavigate();  // Use navigate for routing in React Router v6+
-    console.log("decodeURIComponent(f)", decodeURIComponent(f))
-    // Filter groups based on the folder ID 'f' and search text
+    const { groups, fetchGroups } = useGroupStore();
+    const navigate = useNavigate();  
+
+    useEffect(() => {
+        fetchGroups()
+    }, []);
+    console.log("Groups", groups)
     const filteredData = initialGroups.filter(group => {
         // Check if the folder from the data matches the 'f' parameter and if the group name matches the search text
         const isMatchingFolder = group.folder.toLowerCase() === decodeURIComponent(f)?.toLowerCase();

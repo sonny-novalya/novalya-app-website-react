@@ -19,9 +19,7 @@ const groups = [
 const CreateFolderModal = ({ visible, onClose }) => {
     const [folderName, setFolderName] = useState("");
     const [selectedGroups, setSelectedGroups] = useState([]);
-    const { folders, addFolder } = useFbProspectingStore(); 
-
-    console.log("folders", folders)
+    const { addFolder } = useFbProspectingStore(); 
 
     const handleSelect = (id, checked) => {
         setSelectedGroups((prev) =>
