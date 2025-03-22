@@ -19,7 +19,7 @@ const menu = (
     </Menu>
 );
 
-const GroupsTable = () => {
+const FollowersTable = () => {
     const [searchParams] = useSearchParams();  // Use useSearchParams to get query parameters
     const f = searchParams.get("f");  // Get the 'f' query parameter from the URL
     const [searchText, setSearchText] = useState("");
@@ -200,4 +200,4 @@ const GroupsTable = () => {
     );
 };
 
-export default GroupsTable;
+export default FollowersTable;

@@ -10,6 +10,7 @@ import Birthday from "./fb/birthday/Birthday";
 import FriendsList from "./fb/friends-list/FriendsList";
 import Request from "./fb/request/Request";
 import MessageIndex from "./library/message/messageIndex";
+import IgProspecting from "./ig/prospecting/IgProspecting";
 
 const DashboardPage = withSidebarLayout(Dashboard);
 const AffiliatePage = withSidebarLayout(AffiliateDashboard);
@@ -22,5 +23,6 @@ const BirthdayPage = withSidebarLayout(Birthday);
 const FriendsPage = withSidebarLayout(FriendsList);
 const RequestPage = withSidebarLayout(Request);
 const MessageIndexPage = withSidebarLayout(MessageIndex);
+const IgProspectingPage = withSidebarLayout(IgProspecting);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage,MessageIndexPage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, IgProspectingPage }

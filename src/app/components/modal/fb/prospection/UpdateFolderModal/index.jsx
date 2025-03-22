@@ -10,7 +10,7 @@ const groups = [
     { id: 4, name: "Longnamegroup Example", image: "https://plus.unsplash.com/premium_photo-1661715812379-23d652805042", members: 129, privacy: "🌐", messages: 110 },
 ];
 
-const CreateFolderModal = ({ visible, onClose, isUpdate }) => {
+const CreateFolderModal = ({ visible, onClose }) => {
 
     const [selectedGroups, setSelectedGroups] = useState([]);
 
@@ -30,11 +30,7 @@ const CreateFolderModal = ({ visible, onClose, isUpdate }) => {
         >
             <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto ">
                 <h2 className="font-medium text-lg">
-                    {
-                        isUpdate
-                            ? "Create Folder"
-                            : "Edit Folder"
-                    }
+                    Edit Folder
                 </h2>
                 <h3 className="border border-[#00000014] rounded-md p-4">
                     Newly Added
@@ -104,12 +100,10 @@ CreateFolderModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     group: PropTypes.object,
-    isUpdate: PropTypes.bool,
 };
 
 CreateFolderModal.defaultProps = {
     group: null,
-    isUpdate: false
 };
 
 export default CreateFolderModal;
