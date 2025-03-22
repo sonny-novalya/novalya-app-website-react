@@ -31,8 +31,6 @@ const GroupsTable = () => {
     const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups } = useGroupStore();
-
-    console.log("folders", folders)
     const socialType = "fb_groups"; 
 
     const navigate = useNavigate();  
@@ -131,8 +129,13 @@ const GroupsTable = () => {
     };
 
     useEffect(() => {
-        fetchGroups()
-    }, []);
+        if (selectedFolder == 0) {
+            fetchGroups(null);  // No ID
+        } else {
+            fetchGroups(selectedFolder);  // Pass folder ID
+        }
+    }, [selectedFolder]);
+
 
     useEffect(() => {
         setFolders(socialType); 

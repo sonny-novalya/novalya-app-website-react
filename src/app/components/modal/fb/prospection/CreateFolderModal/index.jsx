@@ -11,7 +11,7 @@ const CreateFolderModal = ({ visible, onClose }) => {
     const [selectedGroups, setSelectedGroups] = useState([]);
     const { groups } = useGroupStore();
     const { createFolder } = useFbProspectingStore(); 
-
+    // console.log("initialGroups", initialGroups)
     const handleSelect = (id, checked) => {
         setSelectedGroups((prev) =>
             checked ? [...prev, id] : prev.filter((groupId) => groupId !== id)
@@ -59,7 +59,7 @@ const CreateFolderModal = ({ visible, onClose }) => {
                                     checked={selectedGroups.includes(group.id)}
                                     onChange={(e) => handleSelect(group.id, e.target.checked)}
                                     className="mr-3"
-                                    onClick={(e) => e.stopPropagation()} // Prevent event bubbling
+                                    onClick={(e) => e.stopPropagation()}
                                 />
                                 <img src={GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover mx-2" />
                                 <span className="text-gray-700 truncate">{group?.name}</span>
