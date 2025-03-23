@@ -2,8 +2,11 @@ import React from 'react'
 import { Input, Button, List, Card, Dropdown, Menu } from 'antd';
 import { SearchOutlined, FilterOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import './messageIndex.css'
+import useMessageSteps from '../../../../../store/messageTemp/MessageTemp';
 
 const MessageIndex = () => {
+  const {setIsMessage} = useMessageSteps()
+
     const messages = Array(10).fill({
         id: '#12536',
         platform: 'Facebook',
@@ -53,7 +56,7 @@ const MessageIndex = () => {
               <Button icon={<FilterOutlined />} className="!text-[16px] !rounded-[4px] px-4 min-h-[44px] min-w-[155px] !text-[#808183]">
                 Filter
               </Button>
-              <Button type="primary" className="!text-[16px] flex align-center gap-2.5 !rounded-[6px] px-4 min-h-[44px] min-w-[155px] !text-white">
+              <Button type="primary" onClick={()=>setIsMessage(true)} className="!text-[16px] flex align-center gap-2.5 !rounded-[6px] px-4 min-h-[44px] min-w-[155px] !text-white">
                 <span>+</span> Create New
               </Button>
             </div>

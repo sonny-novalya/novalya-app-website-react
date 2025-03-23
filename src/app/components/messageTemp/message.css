@@ -1,0 +1,31 @@
+.creatMessage .varient-btn-hover:hover svg path {
+    fill: white;
+}
+.creatMessage .varient-btn-hover:hover svg.stroke-only path{
+    stroke: #fff;
+    fill: transparent;
+}
+.creatMessage .pros-dropdownCont {
+    box-shadow: -2px 4px 6.3px 0px #00000040;
+}
+.creatMessage  .pros-dropdownWrap:hover .pros-dropdownCont {
+    opacity: 1;
+    visibility: visible;
+}
+.creatMessage .normalIconHover {
+    display: none;
+}
+.creatMessage .pros-dropdownItems:hover .normalIcon {
+    display: none;
+}
+.creatMessage .pros-dropdownItems:hover .normalIconHover {
+    display: block;
+}
+
+ .previeMessage .varient-btn-hover:hover svg path {
+    fill: white;
+}
+ .previeMessage .varient-btn-hover:hover svg.stroke-only path{
+    stroke: #fff;
+    fill: transparent;
+}

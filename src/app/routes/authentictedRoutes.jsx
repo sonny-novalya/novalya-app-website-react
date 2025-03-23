@@ -1,9 +1,14 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
 import { AffiliatePage, DashboardPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, IgProspectingPage } from "../pages/protected";
+import MessageTempIndex from "../components/messageTemp/messageTempIndex";
+import useMessageSteps from "../../store/messageTemp/MessageTemp";
+
 
 
 const AuthentictedRoutes = () => {
+  const {isMessage,step,selectedPlatform} = useMessageSteps();
+
   return (
     <>
       <Routes>
@@ -22,6 +27,8 @@ const AuthentictedRoutes = () => {
         <Route path="/affiliate/settings" element={<AffiliateSettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform}/>:""}
+
     </>
   );
 };
