@@ -26,7 +26,7 @@ const SidebarMenu = () => {
             path: "/facebook",
             icon: <FacebookIcon />,
             subNav: [
-                { text: "Prospecting", id: "prospecting", path: "/fb/prospecting" },
+                { text: "Prospecting", id: "prospecting", path: "/fb/prospecting/groups" },
                 { text: "Wish Birthday", id: "birthday", path: "/fb/birthday" },
                 { text: "CRM", id: "crm", path: "/fb/crm" },
                 { text: "FB Friends list", id: "fb-friends-list", path: "/fb/friends" },

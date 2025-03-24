@@ -1,24 +1,72 @@
-import { Modal } from "antd";
+import { Modal, Checkbox } from "antd";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { Checkbox } from "antd";
+import { useState, useEffect } from "react";
+import useGroupStore from "../../../../../../store/group/groupStore";
+import useFbProspectingStore from "../../../../../../store/fb/prospecting";
+import GroupImg from "../../../../../../assets/img/groupImg.png";
+import { formatNumber } from "../../../../../../helpers/formatGroupMembers";
+import { DeleteFillIcon } from "../../../../../pages/common/icons/icons";
+import { useNavigate } from "react-router-dom";
 
-const groups = [
-    { id: 1, name: "Longnamegroup Example", image: "https://plus.unsplash.com/premium_photo-1661715812379-23d652805042", members: 129, privacy: "🌐", messages: 110 },
-    { id: 2, name: "Longnamegroup Example", image: "https://plus.unsplash.com/premium_photo-1661715812379-23d652805042", members: 129, privacy: "🌐", messages: 110 },
-    { id: 3, name: "Longnamegroup Example", image: "https://plus.unsplash.com/premium_photo-1661715812379-23d652805042", members: 129, privacy: "🌐", messages: 110 },
-    { id: 4, name: "Longnamegroup Example", image: "https://plus.unsplash.com/premium_photo-1661715812379-23d652805042", members: 129, privacy: "🌐", messages: 110 },
-];
-
-const CreateFolderModal = ({ visible, onClose }) => {
-
+const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose }) => {
     const [selectedGroups, setSelectedGroups] = useState([]);
-
+    const [newFolderName, setNewFolderName] = useState(folderName);
+    const { groups, initialGroups, fetchInitialGroups, fetchGroups } = useGroupStore();
+    const { updateFolder } = useFbProspectingStore();
+    const navigate = useNavigate();  
     const handleSelect = (id, checked) => {
         setSelectedGroups((prev) =>
             checked ? [...prev, id] : prev.filter((groupId) => groupId !== id)
         );
     };
+    
+    const handleSave = async () => {
+        if (selectedGroups.length === 0) return;
+
+        const selectedGroupsPayload = selectedGroups.map((groupId) => {
+            const group = initialGroups.find((g) => g.id === groupId);
+            return {
+                id: group.id,
+                group_name: group.name,
+                url: group.url,
+            };
+        });
+
+        updateFolder(newFolderName, folderId, socialType , selectedGroupsPayload);
+        onClose();
+    };
+
+    const handleDelete = async () => {
+            const confirmed = window.confirm("Are you sure you want to delete this folder?");
+            if (!confirmed) return;
+
+            const selectedGroupsPayload = groups.map((group) => ({
+                id: group.id,
+                group_name: group.name,
+                url: group.url,
+            }));
+
+            const result = await useFbProspectingStore.getState().deleteFolder(folderId, selectedGroupsPayload);
+
+            if (result?.status === "success") {
+                onClose();
+                navigate(`/fb/prospecting`);
+            }
+    };
+    useEffect(() => {
+        if (folderId) {
+            fetchGroups(folderId);
+            fetchInitialGroups();
+        }
+    }, [folderId]);
+
+    useEffect(() => {
+        // Sync selected groups with API-loaded groups
+        if (groups.length > 0) {
+            const selected = groups.map((g) => g.id);
+            setSelectedGroups(selected);
+        }
+    }, [groups]);
 
     return (
         <Modal
@@ -27,14 +75,26 @@ const CreateFolderModal = ({ visible, onClose }) => {
             footer={null}
             width={900}
             className="custom-modal p-0"
+            closeIcon={null} 
         >
-            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto ">
-                <h2 className="font-medium text-lg">
-                    Edit Folder
-                </h2>
-                <h3 className="border border-[#00000014] rounded-md p-4">
-                    Newly Added
-                </h3>
+            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto">
+            <div className="flex justify-between">
+                    <h2 className="font-medium text-lg">Edit Folder</h2>
+                    <button
+                        className="h-4 cursor-pointer"
+                        onClick={handleDelete}
+                    >
+                        <DeleteFillIcon />
+                    </button>
+
+            </div>
+                <input
+                    type="text"
+                    value={newFolderName}
+                    onChange={(e) => setNewFolderName(e.target.value)}
+                    placeholder="Enter folder name"
+                    className="border border-[#00000014] rounded-md p-4"
+                />
                 <h2 className="font-medium text-lg mb-4">Select Groups</h2>
                 <div className="rounded-lg">
                     <div className="max-h-64 overflow-y-auto border border-[#00000014] rounded-md p-2">
@@ -49,7 +109,7 @@ const CreateFolderModal = ({ visible, onClose }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {groups.map((group) => (
+                                {initialGroups.map((group) => (
                                     <tr
                                         key={group.id}
                                         className="cursor-pointer hover:bg-gray-100"
@@ -59,16 +119,20 @@ const CreateFolderModal = ({ visible, onClose }) => {
                                             <Checkbox
                                                 checked={selectedGroups.includes(group.id)}
                                                 onChange={(e) => handleSelect(group.id, e.target.checked)}
-                                                onClick={(e) => e.stopPropagation()} // Prevents row click from triggering checkbox
+                                                onClick={(e) => e.stopPropagation()}
                                             />
                                         </td>
                                         <td className="p-3 flex items-center">
-                                            <img src={group.image} alt="group" className="w-10 h-10 rounded-md object-cover mr-3" />
-                                            <span className="text-gray-700 truncate">{group.name}</span>
+                                            <img
+                                                src={GroupImg}
+                                                alt="Group"
+                                                className="w-10 h-10 rounded-full object-cover mx-2"
+                                            />
+                                            <span className="text-gray-700 truncate max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{group.name}</span>
                                         </td>
-                                        <td className="p-3">{group.members}</td>
-                                        <td className="p-3">{group.privacy}</td>
-                                        <td className="p-3">{group.messages}</td>
+                                        <td className="p-3">{formatNumber(group.total_member)}</td>
+                                        <td className="p-3">🌎</td>
+                                        <td className="p-3">110</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -77,9 +141,9 @@ const CreateFolderModal = ({ visible, onClose }) => {
 
                     <div className="flex justify-between mt-8 space-x-5">
                         <button
-                            className={`border bg-[#0087FF] text-white w-1/2 py-2 rounded-md ${selectedGroups.length === 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                                }`}
+                            className={`border bg-[#0087FF] text-white w-1/2 py-2 rounded-md ${selectedGroups.length === 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                             disabled={selectedGroups.length === 0}
+                            onClick={handleSave}
                         >
                             Save
                         </button>
@@ -96,14 +160,12 @@ const CreateFolderModal = ({ visible, onClose }) => {
     );
 };
 
-CreateFolderModal.propTypes = {
+UpdateFolderModal.propTypes = {
+    folderId: PropTypes.any,
+    folderName: PropTypes.string,
+    socialType: PropTypes.string,
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    group: PropTypes.object,
 };
 
-CreateFolderModal.defaultProps = {
-    group: null,
-};
-
-export default CreateFolderModal;
+export default UpdateFolderModal;

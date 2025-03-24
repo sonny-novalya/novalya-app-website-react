@@ -11,12 +11,17 @@ import FriendsList from "./fb/friends-list/FriendsList";
 import Request from "./fb/request/Request";
 import MessageIndex from "./library/message/messageIndex";
 import IgProspecting from "./ig/prospecting/IgProspecting";
+import GroupsTable from "./fb/prospecting/GroupsTable";
+import PostsTable from "./fb/prospecting/PostTable";
 
 const DashboardPage = withSidebarLayout(Dashboard);
 const AffiliatePage = withSidebarLayout(AffiliateDashboard);
 const AffiliateLinksPage= withSidebarLayout(AffiliateLinks);
 const LevelCommissionPage = withSidebarLayout(LevelCommission);
 const AffiliateSettingsPage = withSidebarLayout(AffiliateSettings);
+// const ProspectingPage = withSidebarLayout(Prospecting);
+const FbGroupsTablePage = withSidebarLayout(GroupsTable);
+const FbPostTablePage = withSidebarLayout(PostsTable);
 const ProspectingPage = withSidebarLayout(Prospecting);
 const CrmPage = withSidebarLayout(Crm);
 const BirthdayPage = withSidebarLayout(Birthday);
@@ -25,4 +30,4 @@ const RequestPage = withSidebarLayout(Request);
 const MessageIndexPage = withSidebarLayout(MessageIndex);
 const IgProspectingPage = withSidebarLayout(IgProspecting);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, IgProspectingPage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, IgProspectingPage, FbGroupsTablePage, FbPostTablePage }
