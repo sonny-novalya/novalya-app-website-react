@@ -1,6 +1,6 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
-import { AffiliatePage, DashboardPage, ProspectingPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, IgProspectingPage } from "../pages/protected";
+import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, IgProspectingPage, FbGroupsTablePage, FbPostTablePage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
 
@@ -13,7 +13,8 @@ const AuthentictedRoutes = () => {
     <>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
-        <Route path="/fb/prospecting" element={<ProspectingPage />} />
+        <Route path="/fb/prospecting/groups" element={<FbGroupsTablePage />} />
+        <Route path="/fb/prospecting/post" element={<FbPostTablePage />} />
         <Route path="/fb/birthday" element={<BirthdayPage />} />
         <Route path="/fb/crm" element={<CrmPage />} />
         <Route path="/fb/friends" element={<FriendsPage />} />

@@ -6,13 +6,6 @@ const useFbProspectingStore = create((set) => ({
     addFolder: (name, selectedGroups) => set((state) => ({
         folders: [...state.folders, { name, selectedGroups, id: Date.now() }]
     })),
-    updateFolder: (id, newName, newSelectedGroups) => set((state) => ({
-        folders: state.folders.map((folder) =>
-            folder.id === id
-                ? { ...folder, name: newName, selectedGroups: newSelectedGroups }
-                : folder
-        )
-    })),
     setFolderName: (id, newName) => set((state) => ({
         folders: state.folders.map((folder) =>
             folder.id === id
@@ -39,7 +32,6 @@ const useFbProspectingStore = create((set) => ({
             const data = await response.json();
             // Assuming 'data' contains an array of folders
             set({ folders: data.data });
-            console.log("Folders fetched successfully:", data);
         } catch (error) {
             console.error("Error fetching folders:", error);
         }
@@ -70,7 +62,64 @@ const useFbProspectingStore = create((set) => ({
         } catch (error) {
             console.error("Error creating folder:", error);
         }
+    },
+    updateFolder: async (folderName, folderId, social_type, selectedGroups) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(
+                `${BASE_URL}groups/api/update-prospect-folder`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        folder_name: folderName,
+                        folder_id: folderId,
+                        social_type,
+                        selectedGroups,
+                    }),
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Failed to update folder");
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error updating folder:", error);
+        }
+    },
+    deleteFolder: async (folderId, selectedGroups) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(
+                `${BASE_URL}groups/api/delete-prospect-folder`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        folder_id: folderId,
+                        selectedGroups: selectedGroups
+                    }),
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Failed to delete folder");
+            }
+            const data = await response.json();
+            console.log("Delete Response:", data);
+            return data;
+        } catch (error) {
+            console.error("Error deleting folder:", error);
+        }
     }
+
+
 }));
 
 export default useFbProspectingStore;

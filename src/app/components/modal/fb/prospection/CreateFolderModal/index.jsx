@@ -1,31 +1,39 @@
 import { Modal } from "antd";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "antd";
 import useFbProspectingStore from "../../../../../../store/fb/prospecting";
 import useGroupStore from "../../../../../../store/group/groupStore";
 import GroupImg from "../../../../../../assets/img/groupImg.png";
 
-const CreateFolderModal = ({ visible, onClose }) => {
+const CreateFolderModal = ({ socialType, visible, onClose }) => {
     const [folderName, setFolderName] = useState("");
     const [selectedGroups, setSelectedGroups] = useState([]);
-    const { groups } = useGroupStore();
-    const { createFolder } = useFbProspectingStore(); 
-    // console.log("initialGroups", initialGroups)
-    const handleSelect = (id, checked) => {
+    const { initialGroups, fetchInitialGroups } = useGroupStore();
+    const { createFolder } = useFbProspectingStore();
+
+    console.log("socialType", socialType)
+
+    const handleSelect = (id, checked, groupName, url) => {
         setSelectedGroups((prev) =>
-            checked ? [...prev, id] : prev.filter((groupId) => groupId !== id)
+            checked
+                ? [...prev, { id, group_name: groupName, url }]
+                : prev.filter((group) => group.id !== id)
         );
     };
 
     const handleCreateFolder = () => {
         if (folderName && selectedGroups.length > 0) {
-            createFolder(folderName, "fb_groups", selectedGroups); 
+            createFolder(folderName, socialType, selectedGroups);
             setFolderName("");
             setSelectedGroups([]);
             onClose();
         }
     };
+
+    useEffect(() => {
+        fetchInitialGroups()
+    }, []);
 
     return (
         <Modal
@@ -35,10 +43,8 @@ const CreateFolderModal = ({ visible, onClose }) => {
             width={900}
             className="custom-modal p-0"
         >
-            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto ">
-                <h2 className="font-medium text-lg">
-                    Create Folder
-                </h2>
+            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto">
+                <h2 className="font-medium text-lg">Create Folder</h2>
                 <input
                     type="text"
                     value={folderName}
@@ -49,20 +55,26 @@ const CreateFolderModal = ({ visible, onClose }) => {
                 <h2 className="font-medium text-lg mb-4">Select Groups</h2>
                 <div className="rounded-lg">
                     <div className="max-h-64 overflow-y-auto border border-[#00000014] rounded-md p-2">
-                        {groups?.map((group) => (
+                        {initialGroups?.map((group) => (
                             <div
                                 key={group.id}
                                 className="flex items-center p-3 bg-[#F6F6F6] rounded-md cursor-pointer"
-                                onClick={() => handleSelect(group.id, !selectedGroups.includes(group.id))}
+                                onClick={() =>
+                                    handleSelect(group.id, !selectedGroups.some((g) => g.id === group.id), group.name, group.url)
+                                }
                             >
                                 <Checkbox
-                                    checked={selectedGroups.includes(group.id)}
-                                    onChange={(e) => handleSelect(group.id, e.target.checked)}
+                                    checked={selectedGroups.some((g) => g.id === group.id)}
+                                    onChange={(e) => handleSelect(group.id, e.target.checked, group.name, group.url)}
                                     className="mr-3"
                                     onClick={(e) => e.stopPropagation()}
                                 />
-                                <img src={GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover mx-2" />
-                                <span className="text-gray-700 truncate">{group?.name}</span>
+                                <img
+                                    src={GroupImg}
+                                    alt="Group"
+                                    className="w-10 h-10 rounded-full object-cover mx-2"
+                                />
+                                <span className="text-gray-700 truncate max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{group?.name}</span>
                             </div>
                         ))}
                     </div>
@@ -88,6 +100,7 @@ const CreateFolderModal = ({ visible, onClose }) => {
 };
 
 CreateFolderModal.propTypes = {
+    socialType: PropTypes.string.isRequired,
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     groups: PropTypes.array

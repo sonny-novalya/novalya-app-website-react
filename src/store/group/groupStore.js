@@ -7,8 +7,10 @@ const useGroupStore = create((set) => ({
     fetchGroups: async (folderId = null) => {
         try {
             const token = localStorage.getItem("token");
+            // const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;
+
             const endpoint = folderId
-                ? `${BASE_URL}groups/api/get-group-by-folder?id=5`
+                ? `${BASE_URL}groups/api/get-group-by-folder?id=${folderId}`
                 : `${BASE_URL}groups/api/get-group-by-folder`;
 
             const response = await fetch(endpoint, {
