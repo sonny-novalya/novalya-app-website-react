@@ -5,6 +5,16 @@
     stroke: #fff;
     fill: transparent;
 }
+
+.creatMessage .varient-btn-hover-selected  svg path {
+    fill: white !important; 
+
+}
+.creatMessage .varient-btn-hover-selected svg.stroke-only path{
+    stroke: #fff !important;
+    fill: transparent !important;
+}
+
 .creatMessage .pros-dropdownCont {
     box-shadow: -2px 4px 6.3px 0px #00000040;
 }
@@ -28,4 +38,5 @@
  .previeMessage .varient-btn-hover:hover svg.stroke-only path{
     stroke: #fff;
     fill: transparent;
+
 }

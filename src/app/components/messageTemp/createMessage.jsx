@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import propSearch from "../../../assets/img/pros-serach-icon.svg"
 import prospWhite from "../../../assets/img/prospection-white.svg"
 import messangerIcon from "../../../assets/img/messanger.svg"
@@ -23,7 +23,45 @@ import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 
 
 const CreateMessage = () => {
-  const {setStep,setIsMessage} = useMessageSteps()
+  const {setStep,setIsMessage,visibilityType} = useMessageSteps()
+  const [variants,setVariants] = useState([...defaultVariants])
+  const  [name,setName] = useState('')
+  const  [visibility, setVisibility] = useState({})
+  const  [selectedVariant, setSelectedVariant] = useState({})
+  
+  const handleVisibilityChange =(val)=>{
+    setVisibility(val)
+  }
+
+  useEffect(() => {
+    setVisibility(visibilityOptions.find((v) =>v.id === visibilityType))
+    
+  }, [])
+
+  const addVariants = () =>{
+    if (variants.length >= 10) {
+        message.error("You can add only 10 variants!");
+        return;
+      }
+      setVariants([...variants, { text: "", count: 0 ,id:variants.length}]);
+  }
+
+  const handleVariantText = (text) => {
+    setSelectedVariant({...selectedVariant, text: text})
+    const updatedVariants = variants.map(item =>
+        item.id === selectedVariant.id ? { ...item, Text: text } : item
+      );
+      setVariants(updatedVariants);
+  
+  }
+
+  useEffect(() => {
+    if (!selectedVariant?.text) {
+        setSelectedVariant(variants?.[0] || {}) 
+    }
+  }, [variants])
+  
+  
 
   
   return (
@@ -39,66 +77,31 @@ const CreateMessage = () => {
         <div className="flex items-center justify-between gap-4 mt-2">
             <div className="flex justify-between items-center flex-grow border border-[#00040733] 
                 rounded px-4 py-0.5 pl-4 pr-[2px]">
-                <input className="font-normal text-[16px] leading-[24px] outline-none" value={"Message 12344ff"}/>
+                <input onChange={(e)=>setName(e.target.value)} className="font-normal text-[16px] leading-[24px] outline-none" value={name}/>
                 <span className="text-[#8C8C8C] bg-[#F5F5F5] px-[30px] py-[7px]">20/50</span>
             </div>
             <div className="pros-dropdownWrap relative">
                 <div className="pros-dropdown-text flex items-center justify-around gap-2 border border-[#CCCDCD] min-h-[44px] rounded-[6px] px-[10px] py-[5px] min-w-[193px] font-medium text-[14px] leading-[21px] text-black">
-                    <img src={propSearch}/>
-                    <span className="flex-1 text-[14px]">Prospecting</span>
+                    <img src={visibility?.icon}/>
+                    <span className="flex-1 text-[14px]">{visibility?.label}</span>
                     <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4.99951 3.1716L7.82797 0.343099L9.24219 1.7574L4.99951 6L0.756909 1.7574L2.17111 0.343098L4.99951 3.1716Z" fill="#8C8C8C"/>
                     </svg>
                 </div>
                 <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
-                    <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
-                        <img className="normalIcon" src={propSearch}/>
-                        <img className="normalIconHover" src={prospWhite}/>
-                        <span className="flex-1 text-[14px]">Prospecting</span>
+                   { 
+                    visibilityOptions?.map((visibility)=>{
+                        return <div onClick={()=>handleVisibilityChange(visibility)} className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
+                        <img className="normalIcon" src={visibility.icon}/>
+                        <img className="normalIconHover" src={visibility.iconLight}/>
+                        <span className="flex-1 text-[14px]">{visibility.label}</span>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
-                        <img className="normalIcon" src={messangerIcon}/>
-                        <img className="normalIconHover" src={messangerWhite}/>
-                        <span className="flex-1 text-[14px]">CRM</span>
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
-                        <img className="normalIcon" src={BdayIcon}/>
-                        <img className="normalIconHover" src={BdayWhite}/>
-                        <span className="flex-1 text-[14px]">Birthday</span>
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
-                        <img className="normalIcon" src={requestIcon}/>
-                        <img className="normalIconHover" src={requestWhite}/>
-                        <span className="flex-1 text-[14px]">Request</span>
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
-                        <img className="normalIcon" src={IgCrm}/>
-                        <img className="normalIconHover" src={IgCrmWhite}/>
-                        <span className="flex-1 text-[14px]">IG CRM</span>
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
-                        <img className="normalIcon" src={IgProsp}/>
-                        <img className="normalIconHover" src={prospWhite}/>
-                        <span className="flex-1 text-[14px]">IG Prospecting</span>
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
+                    })
+                    }
+                
                 </div>
             </div>
         </div>
@@ -112,26 +115,18 @@ const CreateMessage = () => {
                     </svg>
                 </div>
                 <div className="mt-4">
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
+                {
+                    variants?.map((data,i)=>{
+                        return <button  onClick={(()=>setSelectedVariant(data))} className={`varient-btn-hover  border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px]  ${data?.id === selectedVariant?.id ? "bg-[#0087FF] text-white varient-btn-hover-selected " :"bg-white"} hover:bg-[#0087FF] hover:text-white`}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
                             <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
                             <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
                         </svg>
-                        Variant - 1
+                       Varient - {i+1}
                     </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 2
-                    </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 3
-                    </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">+ Add Variant</button>
+                    })
+                }
+                    <button onClick={()=>addVariants()} className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">+ Add Variant</button>
                 </div>
             </div>
             <div className="w-[685px] px-3 py-1">
@@ -146,8 +141,9 @@ const CreateMessage = () => {
                     <button onClick={()=>setStep(5)} className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">Preview</button>
                 </div>
                 <div className="border border-[#E6E6E6] h-[93.75%] p-3">
-                    <textarea className="w-full font-outfit font-normal text-[14px] leading-[17.64px] tracking-[0px] text-left h-[90%] text-black focus:outline-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum auctori.
-                    </textarea>
+                    <textarea onChange={(e)=>handleVariantText(e.target.value)} value={selectedVariant?.text} className="w-full font-outfit font-normal text-[14px] leading-[17.64px] tracking-[0px] text-left h-[90%] text-black focus:outline-none"/>
+                    
+                
                     <div className="flex items-center gap-[10px] justify-between">
                         <div className="flex items-center gap-[10px]">
                             <button className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">First name</button>
@@ -251,5 +247,22 @@ const CreateMessage = () => {
 </div>
   )
 }
+const visibilityOptions = [
+    { id: "fb_prospecting", label: "Prospecting", icon: propSearch , iconLight: prospWhite },
+    { id: "fb_crm", label: "CRM", icon: messangerIcon , iconLight: messangerWhite},
+    { id: "birthday", label: "Birthday", icon: BdayIcon , iconLight: BdayWhite},
+    { id: "request", label: "Request", icon: requestIcon , iconLight: requestWhite}, 
+    { id: "ig_prospecting", label: "Prospecting", icon: IgProsp , iconLight:IgCrmWhite},
+    { id: "ig_crm" ,label: "CRM", icon: IgCrm , iconLight:IgCrmWhite },
+];
+
+const defaultVariants = [
+    { id:0,text:'',count:0},
+    { id:1,text:'',count:0},
+    { id:2,text:'',count:0}
+]
+
+
+
 
 export default CreateMessage

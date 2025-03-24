@@ -10,7 +10,7 @@ const MessageSelector = () => {
   if(index === 0){
     setStep(2)
   }else if (index === 1){
-
+    setStep(6)
   }
   }
   return (
