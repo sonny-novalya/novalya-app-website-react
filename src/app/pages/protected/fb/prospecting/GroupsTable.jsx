@@ -12,7 +12,7 @@ import useGroupStore from "../../../../../store/group/groupStore";
 import { formatNumber } from "../../../../../helpers/formatGroupMembers";
 import { EditIcon2 } from "../../../common/icons/icons";
 import UpdateFolderModal from "../../../../components/modal/fb/prospection/UpdateFolderModal";
-import ProspectingLayout from "./ProspectingLayout";
+import ProspectingLayout from "../../helpersLayout/ProspectingLayout";
 
 const menu = (
     <Menu>
@@ -139,10 +139,12 @@ const GroupsTable = () => {
     };
 
     useEffect(() => {
-        if (selectedFolder == 0) {
-            fetchGroups(null);
-        } else {
-            fetchGroups(selectedFolder);
+        if(socialType){
+            if (selectedFolder == 0) {
+                fetchGroups(socialType, null);
+            } else {
+                fetchGroups(socialType, selectedFolder);
+            }
         }
     }, [selectedFolder]);
 

@@ -39,7 +39,7 @@ const SidebarMenu = () => {
             path: "/instagram",
             icon: <InstagramIcon />,
             subNav: [
-                { text: "Prospecting", id: "prospecting", path: "/ig/prospecting" },
+                { text: "Prospecting", id: "prospecting", path: "/ig/prospecting/followers" },
                 { text: "CRM", id: "crm", path: "/ig/crm" },
             ]
         },

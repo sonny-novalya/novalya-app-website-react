@@ -32,7 +32,7 @@ const CreateFolderModal = ({ socialType, visible, onClose }) => {
     };
 
     useEffect(() => {
-        fetchInitialGroups()
+        socialType && fetchInitialGroups(socialType)
     }, []);
 
     return (

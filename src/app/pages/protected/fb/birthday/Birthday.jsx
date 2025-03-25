@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Layout from "../../Layout";
 import Strategy from "./Strategy";
 import AddTag from "./AddTag";
 import SelectGroup from "./SelectGroup";
 import SelectMessageTemplate from "./SelectMessageTemplate";
 import WishTypeSelector from "./WishTypeSelector";
+import Layout from "../../Layout";
 
 const Birthday = () => {
   const [selectedWishType, setSelectedWishType] = useState("Inbox Direct Messages");
