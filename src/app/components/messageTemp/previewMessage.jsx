@@ -4,7 +4,7 @@ import messageImg from "../../../assets/img/messenger-icon.svg"
 import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 
 const PreviewMessage = () => {
-  const {setStep} = useMessageSteps()
+  const {setStep,MessagePreview} = useMessageSteps()
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen previeMessage">
@@ -19,8 +19,8 @@ const PreviewMessage = () => {
         <div className="flex items-center justify-between gap-4 mt-2">
             <div className="flex justify-between items-center flex-grow border border-[#00040733] 
                 rounded px-4 py-0.5 pl-4 pr-[2px]">
-                <input className="font-normal text-[16px] leading-[24px] outline-none" value={"Message 12344ff"}/>
-                <span className="text-white bg-[#0087FF] px-[30px] py-[7px]">20/50</span>
+                <input className="font-normal text-[16px] leading-[24px] outline-none" value={MessagePreview?.name}/>
+                <span className="text-white bg-[#0087FF] px-[30px] py-[7px]">{MessagePreview?.name?.length}/50</span>
             </div>
         </div>
         <div className="flex gap-4 mt-4">
@@ -33,49 +33,19 @@ const PreviewMessage = () => {
                     </svg>
                 </div>
                 <div className="mt-4">
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
+                  {
+                    MessagePreview?.variants?.map((_,index) =>{
+                        return (
+                            <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
                             <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
                             <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
                         </svg>
-                        Variant - 1
+                        Variant - {index+1}
                     </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 2
-                    </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 3
-                    </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 4
-                    </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 5
-                    </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 6
-                    </button>
-                    <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                            <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                            <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                        </svg>Variant - 7
-                    </button>
+                        )
+                    })
+                  }
                 </div>
             </div>
             <div className="w-[885px] border rounded border-[#E6E6E6] p-3">
@@ -93,7 +63,10 @@ const PreviewMessage = () => {
                         </svg>
                     </button>
                     <div className="flex gap-9">
-                        <div>
+
+                       {MessagePreview?.variants?.map((variant,index)=>{
+                             return (
+                                <div>
                             <div className="relative max-w-[285px]">
                                 <img src={mobileImg} className="w-full" />
                                 <div className="absolute top-[9%] left-[28%] w-[70%]">
@@ -103,8 +76,8 @@ const PreviewMessage = () => {
                                 <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] grid grid-cols-[12%_85%] items-end gap-[3%]">
                                     <img src={messageImg} className="w-full" />
                                     <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%]">
-                                        <p className=" my-[10px]">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <p className=" my-[10px]">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                        <p className=" my-[10px]">{variant?.text}</p>
+                                        {/* <p className=" my-[10px]">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p> */}
                                     </div>
                                 </div>
                             </div>
@@ -113,56 +86,12 @@ const PreviewMessage = () => {
                                     <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
                                     <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
                                 </svg>
-                                Variant - 1
+                                Variant - {index+1}
                             </button>
                         </div>
-                        <div>
-                            <div className="relative max-w-[285px]">
-                                <img src={mobileImg} className="w-full" />
-                                <div className="absolute top-[9%] left-[28%] w-[70%]">
-                                    <div className="text-[12px] font-bold text-black leading-[1.25]">User 1</div>
-                                    <div className="text-[11px] text-gray-500 font-normal leading-none">Messenger</div>
-                                </div>
-                                <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] grid grid-cols-[12%_85%] items-end gap-[3%]">
-                                    <img src={messageImg} className="w-full" />
-                                    <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%]">
-                                        <p className=" my-[10px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                        <p className=" my-[10px]">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <p className=" my-[10px]">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full max-w-[160px] mt-4 mx-auto px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                                    <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                                    <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                                </svg>
-                                Variant - 2
-                            </button>
-                        </div>
-                        <div>
-                            <div className="relative max-w-[285px]">
-                                <img src={mobileImg} className="w-full" />
-                                <div className="absolute top-[9%] left-[28%] w-[70%]">
-                                    <div className="text-[12px] font-bold text-black leading-[1.25]">User 1</div>
-                                    <div className="text-[11px] text-gray-500 font-normal leading-none">Messenger</div>
-                                </div>
-                                <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] grid grid-cols-[12%_85%] items-end gap-[3%]">
-                                    <img src={messageImg} className="w-full" />
-                                    <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%]">
-                                        <p className=" my-[10px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                        <p className=" my-[10px]">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full max-w-[160px] mt-4 mx-auto px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                                    <path opacity="0.3" d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z" fill="#0087FF"/>
-                                    <path d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z" fill="#0087FF"/>
-                                </svg>
-                                Variant - 3
-                            </button>
-                        </div>
+                             )
+                       }) }
+                      
                     </div>
                     <button className="border border-black/25 bg-gray-100 rounded-md w-[30px] h-[30px] flex items-center justify-center mb-7">
                         <svg width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">

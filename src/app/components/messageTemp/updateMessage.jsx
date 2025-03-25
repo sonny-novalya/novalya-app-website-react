@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import propSearch from "../../../assets/img/pros-serach-icon.svg";
 import prospWhite from "../../../assets/img/prospection-white.svg";
 import messangerIcon from "../../../assets/img/messanger.svg";
@@ -20,18 +20,14 @@ import smilingFace from "../../../assets/img/smiling-face.svg";
 import smilingFaceGlasses from "../../../assets/img/smiling-face-glasses.svg";
 import "./message.css";
 import useMessageSteps from "../../../store/messageTemp/MessageTemp";
-import EmojiPicker from "emoji-picker-react";
 
-const CreateMessage = () => {
+const UpdateMessage = () => {
   const { setStep, setIsMessage, visibilityType,setPreviewMessage ,setSelecetdMessage,selecetdMessage} = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState({});
   const [selectedVariant, setSelectedVariant] = useState({});
   const [caretPosition, setCaretPosition] = useState(0);
-  const [isEmojiPickerOpen,setIsEmojiPickerOpen] = useState(false)
-  const pickerRef = useRef(null);
-
 
 
   const handleVisibilityChange = (val) => {
@@ -43,8 +39,8 @@ const CreateMessage = () => {
   };
 
   useEffect(() => {
-    setVisibility(visibilityOptions.find((v) => v.id === visibilityType));
-    setVariants(selecetdMessage?[...selecetdMessage?.variants]:[...defaultVariants])
+    setVisibility(visibilityOptions.find((v) => v.id === selecetdMessage?.visibility));
+    setVariants([...selecetdMessage?.variants])
     setName(selecetdMessage?.name || '')
     
   }, []);
@@ -58,13 +54,11 @@ const CreateMessage = () => {
   };
 
   const handleVariantText = (variable,index,isVar) => {
-    console.log(variable)
     const updatedVariants = [...variants]
 
     if(isVar){
-        const pointer = caretPosition || updatedVariants[index].text.length
-        let text_1 = updatedVariants[index].text.slice(0, pointer);
-        let text_2 = updatedVariants[index].text.slice(pointer);
+        let text_1 = updatedVariants[index].text.slice(0, caretPosition);
+        let text_2 = updatedVariants[index].text.slice(caretPosition);
         updatedVariants[index].text = `${text_1}${variable}${text_2}`;
         updatedVariants[index].count = updatedVariants[index].text.length;
         setSelectedVariant({
@@ -92,18 +86,6 @@ const CreateMessage = () => {
     }
   }, [variants]);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-        setIsEmojiPickerOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [pickerRef]);
-
   const hnadlePreview = ()=>{
     const message = {
         variants: variants,
@@ -113,10 +95,6 @@ const CreateMessage = () => {
     setPreviewMessage(message);
     setSelecetdMessage(message)
     setStep(5);
-  }
- const handleSelectedVariant=(data)=> {
-    setSelectedVariant(data)
-    setCaretPosition(0)
   }
 
   return (
@@ -251,7 +229,7 @@ const CreateMessage = () => {
               {variants?.map((data, i) => {
                 return (
                   <button
-                    onClick={() => handleSelectedVariant(data)}
+                    onClick={() => setSelectedVariant(data)}
                     className={`varient-btn-hover  border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px]  ${
                       data?.id === selectedVariant?.id
                         ? "bg-[#0087FF] text-white varient-btn-hover-selected "
@@ -348,7 +326,7 @@ const CreateMessage = () => {
                   >
                     Last name
                   </button>
-                  <button onClick={()=>setIsEmojiPickerOpen(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-1 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
+                  <button className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-1 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
                     <svg
                       width="31"
                       height="32"
@@ -384,23 +362,6 @@ const CreateMessage = () => {
                     </svg>
                     Emoji
                   </button>
-                  {isEmojiPickerOpen &&
-                                   (
-                                    <div
-                                      ref={pickerRef}
-                                      style={{ width: "100%" }}
-                                      className="picker-Wrapper absolute left-[52%] top-[34%]"
-                                    >
-                                      <EmojiPicker
-                                        onEmojiClick={({ emoji }) => {
-                                            handleVariantText(emoji,selectedVariant.id,true);
-                                        }}
-                                        skinTonesDisabled={true}
-                                        emojiVersion="4.0"
-                                      />
-                                  
-                                    </div>
-                                  )}
                   <button className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
                     <svg
                       width="20"
@@ -442,7 +403,7 @@ const CreateMessage = () => {
                   </button>
                 </div>
                 <span className="font-medium text-[14px] leading-[21px] tracking-[0%] text-[#00000080] px-4">
-                  {selectedVariant?.count || 0}/2000
+                  114/2000
                 </span>
               </div>
             </div>
@@ -575,7 +536,7 @@ const CreateMessage = () => {
               Cancel
             </button>
             <button className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
-              Create
+              Update
               <svg
                 width="18"
                 height="17"
@@ -624,10 +585,6 @@ const visibilityOptions = [
   { id: "ig_crm", label: "CRM", icon: IgCrm, iconLight: IgCrmWhite },
 ];
 
-const defaultVariants = [
-  { id: 0, text: "", count: 0 },
-  { id: 1, text: "", count: 0 },
-  { id: 2, text: "", count: 0 },
-];
 
-export default CreateMessage;
+
+export default UpdateMessage;

@@ -35,6 +35,7 @@ const TempList = () => {
                             </svg>
                         </div>
                     </div>
+                  
                 </div>
             </div>
 
@@ -42,54 +43,54 @@ const TempList = () => {
                 <div className="flex flex-col w-1/5 h-full bg-[#F4F8FF] border border-[#0087FF1A] rounded-md overflow-y-auto gap-4">
                     <ul className="divide-y divide-[#0087FF1A] border-b border-[#dbedff]">
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 Accept/Decline 
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 Birthday
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 Engagement
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 Follow-Up
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 Invitation
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 Lead Generation
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                     </ul>
                     <ul className="divide-y divide-[#0087FF1A] mt-auto border-t border-[#dbedff]">
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 My Messages
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                         <li className="hover:bg-[#0087FF] hover:text-white">
-                            <a href="#!" className="template-list-a text-sm flex justify-between items-center p-3">
+                            <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 My Favorites
                                 <img className='template-arrow' src={epRightImg}/>
-                            </a>
+                            </span>
                         </li>
                     </ul>
                 </div>

@@ -5,6 +5,8 @@ const useMessageSteps = create((set) => ({
    isMessage: false,
    selectedPlatform:0,
    visibilityType:'',
+   MessagePreview:null,
+   selecetdMessage:null,
 
    setStep: (val) => set(() => ({ step:val})), 
 
@@ -16,6 +18,8 @@ const useMessageSteps = create((set) => ({
    setSelectedPlatform: (val) => set(() => ({ selectedPlatform: val })), 
 
    setSelectedVisibilty: (val) => set(() => ({ visibilityType: val })), 
+   setPreviewMessage: (val) => set(() => ({ MessagePreview: val })), 
+   setSelecetdMessage: (val) => set(() => ({ selecetdMessage: val })), 
 
 
 }));
