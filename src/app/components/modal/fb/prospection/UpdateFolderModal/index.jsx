@@ -6,7 +6,7 @@ import useFbProspectingStore from "../../../../../../store/fb/prospecting";
 import GroupImg from "../../../../../../assets/img/groupImg.png";
 import { formatNumber } from "../../../../../../helpers/formatGroupMembers";
 import { DeleteFillIcon } from "../../../../../pages/common/icons/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose }) => {
     const [selectedGroups, setSelectedGroups] = useState([]);
@@ -19,6 +19,8 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
             checked ? [...prev, id] : prev.filter((groupId) => groupId !== id)
         );
     };
+    const location = useLocation();
+    console.log("location.pathname", location.pathname)
     
     const handleSave = async () => {
         if (selectedGroups.length === 0) return;
@@ -50,13 +52,13 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
 
             if (result?.status === "success") {
                 onClose();
-                navigate(`/fb/prospecting`);
+                navigate(location.pathname);
             }
     };
     useEffect(() => {
-        if (folderId) {
-            fetchGroups(folderId);
-            fetchInitialGroups();
+        if (folderId && socialType) {
+            fetchGroups(socialType, folderId);
+            fetchInitialGroups(socialType);
         }
     }, [folderId]);
 

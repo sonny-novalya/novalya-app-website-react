@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Layout from "../../Layout";
 import "./Request.css";
 import MessagePopUp from "../../../../components/message/common/messagePop/messagePopUp";
 import {
@@ -9,6 +8,7 @@ import {
   getAllMessagesList,
 } from "../../../../../services/ApiCalls";
 import { useTranslation } from "react-i18next";
+import Layout from "../../Layout";
 
 const Request = () => {
   const [messageList, setMessageList] = useState([]);

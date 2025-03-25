@@ -3,6 +3,7 @@ import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, MoreOutlined, SettingOutlined, SendOutlined } from "@ant-design/icons";
 import CreateFolderModal from "../../../../components/modal/fb/prospection/CreateFolderModal";
 import useFbProspectingStore from "../../../../../store/fb/prospecting";
+import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import UpdateFolderModal from "../../../../components/modal/fb/prospection/UpdateFolderModal";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useGroupStore from "../../../../../store/group/groupStore";
@@ -11,7 +12,6 @@ import GroupImg from "../../../../../assets/img/groupImg.png";
 import { EditIcon2 } from "../../../common/icons/icons";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
 import ProspectingLayout from "../../helpersLayout/ProspectingLayout";
-import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 
 const menu = (
     <Menu>
@@ -21,7 +21,7 @@ const menu = (
     </Menu>
 );
 
-const PostsTable = () => {
+const HashtagsTable = () => {
     const [searchParams] = useSearchParams();
     const f = searchParams.get("f");
     const [searchText, setSearchText] = useState("");
@@ -36,7 +36,7 @@ const PostsTable = () => {
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups } = useGroupStore();
-    const socialType = "fb_posts";
+    const socialType = "ig_hashtags";
 
     const navigate = useNavigate();
 
@@ -44,12 +44,12 @@ const PostsTable = () => {
         setSelectedGroup(group);
         setModalOpen(true);
     };
-
+    
     const handleCloseModal = () => {
         setModalOpen(false);
         setSelectedGroup(null);
     };
-
+    
     const handleOpenConfirmModal = (group) => {
         setConfirmModalOpen(true);
         console.log("group", group)
@@ -69,7 +69,7 @@ const PostsTable = () => {
 
     const handleFolderClick = (folderId) => {
         setSelectedFolder(folderId.toString());
-        navigate(`/fb/prospecting/post?f=${encodeURIComponent(folderId)}`);
+        navigate(`/ig/prospecting/posts?f=${encodeURIComponent(folderId)}`);
     };
 
     useEffect(() => {
@@ -147,9 +147,10 @@ const PostsTable = () => {
             ),
         },
     ];
-
+    
     const buttonsData = [
         { id: 0, folder_name: "All", selectedGroups: [] },
+        // { id: 1, folder_name: "Archived", selectedGroups: [] },
     ];
 
     return (
@@ -174,7 +175,7 @@ const PostsTable = () => {
                                         setOpenUpdateFolderModal(true)
                                     }}>
                                         {
-                                            selectedFolder == folder.id && folder.id !== 0 &&
+                                            selectedFolder == folder.id && folder.id !== 0 && 
                                             <EditIcon2 />
                                         }
                                     </span>
@@ -184,7 +185,7 @@ const PostsTable = () => {
 
                         <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}Create Folder</button>
                     </div>
-
+                    
                 </div>
                 <div className="flex items-center justify-between mb-4">
                     <Input
@@ -203,7 +204,6 @@ const PostsTable = () => {
                         visible={modalOpen}
                         onClose={handleCloseModal}
                         group={selectedGroup}
-                        socialType={socialType}
                     />
                 )}
 
@@ -237,4 +237,4 @@ const PostsTable = () => {
     );
 };
 
-export default PostsTable;
+export default HashtagsTable;
