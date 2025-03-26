@@ -1,5 +1,5 @@
 {
-    "login": {
+  "login": {
     "Welcome back!": "¡Bienvenido de nuevo!",
     "Marketing Platform": "Plataforma de marketing",
     "for Organic Lead Generation": "para la generación de leads orgánicos",
@@ -10,23 +10,78 @@
     "Remember me!": "Recuérdame!",
     "Not registered?": "¿No estás registrado?",
     "Create an account": "Crear una cuenta",
-      "SIGN IN": "INICIAR SESIÓN"
+    "SIGN IN": "INICIAR SESIÓN"
   },
-  
-    "FB_request": {
-      "Auto-Reply to Requests": "Respuesta automática a solicitudes",
-      "When a request is accepted": "Cuando se acepta una solicitud",
-      "When a request is declined": "Cuando se rechaza una solicitud",
-      "Do you want to add a tag?": "¿Quieres agregar una etiqueta?",
-      "Yes": "Sí",
-      "No": "No",
-      "Select Group": "Seleccionar grupo",
-      "Select Stage": "Seleccionar etapa",
-      "Save & Check Requests": "Guardar y verificar solicitudes",
-      "Pending Requests Sent": "Solicitudes pendientes enviadas",
-      "do_you_delete_all": "¿Quieres eliminar todas las solicitudes de amistad pendientes de una sola vez?",
-      "Delete All": "Eliminar todo"
-    }
-  
-  
+
+  "FB_request": {
+    "Auto-Reply to Requests": "Respuesta automática a solicitudes",
+    "When a request is accepted": "Cuando se acepta una solicitud",
+    "When a request is declined": "Cuando se rechaza una solicitud",
+    "Do you want to add a tag?": "¿Quieres agregar una etiqueta?",
+    "Yes": "Sí",
+    "No": "No",
+    "Select Group": "Seleccionar grupo",
+    "Select Stage": "Seleccionar etapa",
+    "Save & Check Requests": "Guardar y verificar solicitudes",
+    "Pending Requests Sent": "Solicitudes pendientes enviadas",
+    "do_you_delete_all": "¿Quieres eliminar todas las solicitudes de amistad pendientes de una sola vez?",
+    "Delete All": "Eliminar todo"
+  },
+  "prospecting": {
+    "Easily connect with new prospects": "Conéctate fácilmente con nuevos prospectos",
+    "Facebook Groups": "Grupos de Facebook",
+    "Facebook Posts": "Publicaciones de Facebook",
+    "All": "Todos",
+    "Create Folder": "Crear carpeta",
+    "Add new group": "Agregar nuevo grupo",
+    "Sort By": "Ordenar por",
+    "Group's Name": "Nombre del grupo",
+    "Members": "Miembros",
+    "Privacy": "Privacidad",
+    "Total Members": "Total de miembros",
+    "Folder": "Carpeta",
+    "Settings": "Configuración",
+    "Send": "Enviar",
+    "Action": "Acción",
+    "Instagram Followers": "Seguidores de Instagram",
+    "Instagram Posts": "Publicaciones de Instagram",
+    "Instagram Hashtags": "Hashtags de Instagram",
+    "Select Message": "Seleccionar mensaje",
+    "Filters": "Filtros",
+    "Advanced Options": "Opciones avanzadas",
+    "Add Tags": "Agregar etiquetas",
+    "Create New Message": "Crear nuevo mensaje",
+    "Message": "Mensaje",
+    "Edit": "Editar",
+    "Preview": "Vista previa",
+    "Cancel": "Cancelar",
+    "Next": "Siguiente",
+    "Strategy": "Estrategia",
+    "How many Requests": "Cuántas solicitudes",
+    "Follow + Message": "Seguir + Mensaje",
+    "Message Only": "Solo mensaje",
+    "Custom": "Personalizado",
+    "Interval": "Intervalo",
+    "2 to 4 minutes": "2 a 4 minutos",
+    "4 to 6 minutes": "4 a 6 minutos",
+    "6 to 10 minutes": "6 a 10 minutos",
+    "10 to 15 minutes": "10 a 15 minutos",
+    "Fast": "Rápido",
+    "Medium": "Medio",
+    "Slow": "Lento",
+    "Very Slow": "Muy lento",
+    "Gender": "Género",
+    "Male": "Masculino",
+    "Female": "Femenino",
+    "Both": "Ambos",
+    "Keywords": "Palabras clave",
+    "Retarget same user": "Volver a apuntar al mismo usuario",
+    "Yes": "Sí",
+    "No": "No",
+    "Existing conversation": "Conversación existente",
+    "Do you want to add a tag?": "¿Quieres añadir una etiqueta?",
+    "Select Group": "Seleccionar grupo",
+    "Select Stage": "Seleccionar etapa",
+    "Message Selected": "Mensaje seleccionado"
+  }
 }
