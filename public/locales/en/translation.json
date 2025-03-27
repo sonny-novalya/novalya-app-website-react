@@ -123,5 +123,12 @@
     "Select a template": "Select a template",
     "My Messages": "My Messages",
     "My Favorites": "My Favorites"
+  },
+  "language" : {
+    "English" : "English",
+    "French" : "French",
+    "German" : "German",
+    "Spanish" : "Spanish",
+    "Portuguese" : "Portuguese"
   }
 }

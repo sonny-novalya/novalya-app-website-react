@@ -12,12 +12,21 @@ import {
     NovalyaFullBlackLogo,
     UpgradeProIcon,
     UpperArrowIcon,
-    DownArrowIcon
+    DownArrowIcon,
+    LogoutIcon
 } from "../icons/icons"; // Import icons
+import LocalizationOptions from "../../../../helpers/shared/LocalizationOptions";
+import { useNavigate } from "react-router-dom";
 
 const SidebarMenu = () => {
     const [openSubNav, setOpenSubNav] = useState(null);
+    const navigate = useNavigate()
 
+    const onLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('selectedLocale');
+        navigate("/login");
+    };
     const sidebarData = [
         { text: "dashboard", id: "dashboard", path: "/", icon: <DashboardIcon /> },
         {
@@ -95,20 +104,30 @@ const SidebarMenu = () => {
                 ))}
             </div>
 
-            <div className="mt-auto flex flex-col items-center justify-center h-40 shrink-0">
-                <div className="flex space-x-5">
+            <div className="mt-auto flex flex-col items-center justify-center h-48 shrink-0 px-5">
+                <div className="w-full">
+                    <LocalizationOptions />
+                </div>
+
+                <div className="flex space-x-2 mt-1 w-full px-2">
                     <UpgradeProIcon />
                     <span>Upgrade To Pro</span>
                 </div>
-                <div className="flex space-x-5 items-center mt-3">
-                    <span className="h-11 w-12 rounded-lg bg-purple-200 flex items-center justify-center">
+
+                <div className="flex space-x-3 items-center mt-2 w-full">
+                    <span className="h-10 w-10 rounded-lg bg-purple-200 flex items-center justify-center">
                         J
                     </span>
-                    <div className="flex flex-col">
-                        <span className="text-xl">Anima Ag.</span>
+                    <div className="flex flex-col text-sm">
+                        <span className="text-base">Anima Ag.</span>
                         <span className="text-[#167AD3]">Basic Plan</span>
                     </div>
                 </div>
+
+                <button type="button" className="flex items-center space-x-2 bg-[#FF000012] p-2 mt-2 rounded-sm w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]" onClick={onLogout}>
+                    <LogoutIcon />
+                    <span className="">Logout</span>
+                </button>
             </div>
         </div>
     );
