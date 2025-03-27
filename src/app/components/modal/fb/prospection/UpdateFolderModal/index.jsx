@@ -82,7 +82,7 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
         >
             <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto">
             <div className="flex justify-between">
-                    <h2 className="font-medium text-lg">{ t("prospecting.Edit")} Folder</h2>
+                    <h2 className="font-medium text-lg">{t("prospecting.Edit")} Folder</h2>
                     <button
                         className="h-4 cursor-pointer"
                         onClick={handleDelete}
@@ -108,7 +108,7 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
                                     <th className="p-3 font-medium">Group&apos;s Name</th>
                                     <th className="p-3 font-medium">Members</th>
                                     <th className="p-3 font-medium">Privacy</th>
-                                    <th className="p-3 font-medium">{ t("prospecting.Message")}s Sent</th>
+                                    <th className="p-3 font-medium">{t("prospecting.Message")}s Sent</th>
                                 </tr>
                             </thead>
                             <tbody>

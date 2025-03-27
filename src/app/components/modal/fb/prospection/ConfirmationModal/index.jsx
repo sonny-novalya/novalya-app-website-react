@@ -17,7 +17,7 @@ const SettingsModal = ({ visible, onClose }) => {
             className="custom-modal p-0"
         >
             <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto ">
-                <h2 className="font-medium text-lg">{ t("prospecting.Message")} Selected</h2>
+                <h2 className="font-medium text-lg">{t("prospecting.Message Selected")}</h2>
                 <h3 className="border border-[#00000014] rounded-md p-4 text-[#0087FF]">
                     Message #12345
                 </h3>

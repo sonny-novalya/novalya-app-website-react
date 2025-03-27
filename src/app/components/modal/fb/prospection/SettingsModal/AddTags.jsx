@@ -35,7 +35,7 @@ const AddTags = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-semibold mb-4">{ t("prospecting.Add Tags")}</h2>
+            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Add Tags")}</h2>
 
             {/* Toggle Add Tag Option */}
             <div className="border border-gray-300 p-4 rounded-lg mb-4">

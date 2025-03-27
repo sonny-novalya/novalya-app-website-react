@@ -10,7 +10,7 @@ const PreviewMessage = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen previeMessage">
     <div className="bg-white px-5 py-4 rounded-[10px] max-w-[1150px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-        <div className="flex items-center gap-[10px] text-[20px]">{ t("prospecting.Message")} name
+        <div className="flex items-center gap-[10px] text-[20px]">{t("prospecting.Message")} name
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.0026 13.1668C10.4084 13.1668 13.1693 10.4059 13.1693 7.00016C13.1693 3.59441 10.4084 0.833496 7.0026 0.833496C3.59685 0.833496 0.835938 3.59441 0.835938 7.00016C0.835938 10.4059 3.59685 13.1668 7.0026 13.1668Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
                 <path d="M7 6.87549V10.2088" stroke="black" stroke-opacity="0.75" stroke-linecap="round"/>
@@ -50,7 +50,7 @@ const PreviewMessage = () => {
                 </div>
             </div>
             <div className="w-[885px] border rounded border-[#E6E6E6] p-3">
-                <div className="flex items-center gap-[10px] text-[20px] mb-4">{ t("prospecting.Message")} preview
+                <div className="flex items-center gap-[10px] text-[20px] mb-4">{t("prospecting.Message")} preview
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.0026 13.1668C10.4084 13.1668 13.1693 10.4059 13.1693 7.00016C13.1693 3.59441 10.4084 0.833496 7.0026 0.833496C3.59685 0.833496 0.835938 3.59441 0.835938 7.00016C0.835938 10.4059 3.59685 13.1668 7.0026 13.1668Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path>
                         <path d="M7 6.87549V10.2088" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path>
@@ -104,7 +104,7 @@ const PreviewMessage = () => {
         </div>
         <div className="flex gap-4 justify-end mt-6">
             <button className="font-regular text-[21px] leading-[36px] bg-[#E8E8E8] 
-             px-4 py-1.5 w-[200px] rounded-md flex justify-center" onClick={()=>setStep(4)}>{ t("prospecting.Cancel")}</button>
+             px-4 py-1.5 w-[200px] rounded-md flex justify-center" onClick={()=>setStep(4)}>{t("prospecting.Cancel")}</button>
             <button onClick={()=>setStep(4)} className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">Select</button>
         </div>
     </div>

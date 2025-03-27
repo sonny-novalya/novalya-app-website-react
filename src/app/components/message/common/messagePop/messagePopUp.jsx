@@ -38,7 +38,7 @@ const MessagePopUp = ({setIsPop,messageList,setMessageData,preSelecetdMessage}) 
                 </svg>
                 Sort by
               </button>
-              <button className='bg-[#0087FF] px-4 py-3 rounded-[10px] text-white text-sm min-h-[44px] min-w-[210px]'>{ t("prospecting.Create New Message")}</button>
+              <button className='bg-[#0087FF] px-4 py-3 rounded-[10px] text-white text-sm min-h-[44px] min-w-[210px]'>{t("prospecting.Create New Message")}</button>
             </div>
             <div className='message-popup-list flex-grow overflow-auto mx-5 pr-0.5 gray-scroll'>
               {messageList?.map((message)=>{

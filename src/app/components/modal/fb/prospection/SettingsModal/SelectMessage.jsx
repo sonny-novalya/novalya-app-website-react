@@ -35,11 +35,11 @@ const SelectMessage = () => {
                 <div className="flex justify-center items-center gap-2">
                     <Button className="flex items-center">
                         <span><EditIcon /></span>
-                        <span>{ t("prospecting.Edit")}</span>
+                        <span>{t("prospecting.Edit")}</span>
                     </Button>
                     <Button className="flex items-center">
                         <span><PreviewIcon /></span>
-                        <span>{ t("prospecting.Preview")}</span>
+                        <span>{t("prospecting.Preview")}</span>
                     </Button>
                 </div>
             ),
@@ -76,8 +76,8 @@ const SelectMessage = () => {
 
             {/* Bottom Section */}
             <div className="flex justify-between">
-                <Button>{ t("prospecting.Cancel")}</Button>
-                <Button type="primary">{ t("prospecting.Next")}</Button>
+                <Button>{t("prospecting.Cancel")}</Button>
+                <Button type="primary">{t("prospecting.Next")}</Button>
             </div>
         </div>
     );

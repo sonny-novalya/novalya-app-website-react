@@ -27,7 +27,7 @@ const Settings = () => {
             <div className="grid grid-cols-2 gap-4">
                 {/* Strategy Section */}
                 <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800 flex items-center">{ t("prospecting.Strategy")}</p>
+                    <p className="font-medium mb-2 text-gray-800 flex items-center">{t("prospecting.Strategy")}</p>
                     <div className="grid grid-cols-1 gap-2">
                         {strategies.map((option) => (
                             <button
@@ -51,7 +51,7 @@ const Settings = () => {
 
                 {/* How Many Requests Section */}
                 <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800">{ t("prospecting.How many Requests")}</p>
+                    <p className="font-medium mb-2 text-gray-800">{t("prospecting.How many Requests")}</p>
                     <div className="grid grid-cols-3 gap-2">
                         {requestOptions.map((option) => (
                             <button
