@@ -13,6 +13,7 @@ import { formatNumber } from "../../../../../helpers/formatGroupMembers";
 import { EditIcon2 } from "../../../common/icons/icons";
 import UpdateFolderModal from "../../../../components/modal/fb/prospection/UpdateFolderModal";
 import ProspectingLayout from "../../helpersLayout/ProspectingLayout";
+import { t } from "i18next";
 
 const menu = (
     <Menu>
@@ -71,7 +72,7 @@ const GroupsTable = () => {
 
     const groupColumns = [
         {
-            title: "Group's Name",
+            title: t("prospecting.Group's Name"),
             dataIndex: "name",
             render: (text) => (
                 <div className="flex items-center space-x-2">
@@ -80,25 +81,25 @@ const GroupsTable = () => {
                 </div>
             ),
         },
-        { title: "Members", dataIndex: "group_type" },
+        { title: t("prospecting.Members"), dataIndex: "group_type" },
         {
-            title: "Privacy", dataIndex: "privacy", render: () => (
+            title: t("prospecting.Privacy"), dataIndex: "privacy", render: () => (
                 <span className="">
                     🌎
                 </span>
             ), },
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
-            title: "Total Members", dataIndex: "total_member", render: (text) => (
+            title: t("prospecting.Total Members"), dataIndex: "total_member", render: (text) => (
                 <span>{formatNumber(text)}</span>
         ) },
         {
-            title: "Folder",
+            title: t("prospecting.Folder"),
             dataIndex: "folder",
             render: (text) => <span className="px-3 py-1 rounded-lg bg-green-200 text-green-800 font-medium">{text}</span>,
         },
         {
-            title: "Settings",
+            title: t("prospecting.Settings"),
             render: (_, record) => (
                 <Button
                     icon={<SettingOutlined />}
@@ -110,7 +111,7 @@ const GroupsTable = () => {
             ),
         },
         {
-            title: "Send",
+            title: t("prospecting.Send"),
             render: (_, record) => (
                 <Button
                     icon={<SendOutlined />}
@@ -119,7 +120,7 @@ const GroupsTable = () => {
             )
         },
         {
-            title: "Action",
+            title: t("prospecting.Action"),
             render: () => (
                 <Dropdown overlay={menu} trigger={["click"]}>
                     <Button icon={<MoreOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" />
@@ -181,9 +182,9 @@ const GroupsTable = () => {
                             ))
                         }
 
-                        <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}Create Folder</button>
+                        <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
-                    <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new group</Button>
+                    <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">{t("prospecting.Add new group")}</Button>
                 </div>
                 <div className="flex items-center justify-between mb-4">
                     <Input
@@ -193,7 +194,7 @@ const GroupsTable = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                         className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
                     />
-                    <Button className="bg-gray-200 px-4 py-2 rounded-md">Sort by</Button>
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">{t("prospecting.Sort By")}</Button>
                 </div>
                 <Table columns={groupColumns} dataSource={groups} pagination={false} className="custom-table" />
 

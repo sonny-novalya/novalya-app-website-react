@@ -1,22 +1,23 @@
 import { useState } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
+import { t } from "i18next";
 
 const Settings = () => {
     const [strategy, setStrategy] = useState(0);
     const [requests, setRequests] = useState(10);
-    const [interval, setInterval] = useState("fast");
+    const [interval, setInterval] = useState(t("prospecting.Fast"));
 
     const strategies = [
         { value: 0, label: "Follow + Message" },
-        { value: 1, label: "Message Only" }
+        { value: 1, label:  t("prospecting.Message Only") }
     ];
 
     const requestOptions = [5, 10, 20, 30, 50, "Custom"];
     const intervalOptions = [
-        { label: "Fast", value: "fast", time: "2 to 4 minutes" },
-        { label: "Medium", value: "medium", time: "4 to 6 minutes" },
-        { label: "Slow", value: "slow", time: "6 to 10 minutes" },
-        { label: "Very Slow", value: "very_slow", time: "10 to 15 minutes" }
+        { label: t("prospecting.Fast"), value: t("prospecting.Fast"), time: t("prospecting.2 to 4 minutes") },
+        { label: t("prospecting.Medium"), value: t("prospecting.Medium"), time: t("prospecting.4 to 6 minutes") },
+        { label: t("prospecting.Slow"), value: t("prospecting.Slow"), time: t("prospecting.6 to 10 minutes") },
+        { label: t("prospecting.Very Slow"), value: "very_slow", time: t("prospecting.10 to 15 minutes") }
     ];
 
     return (
@@ -26,7 +27,7 @@ const Settings = () => {
             <div className="grid grid-cols-2 gap-4">
                 {/* Strategy Section */}
                 <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800 flex items-center">Strategy</p>
+                    <p className="font-medium mb-2 text-gray-800 flex items-center">{ t("prospecting.Strategy")}</p>
                     <div className="grid grid-cols-1 gap-2">
                         {strategies.map((option) => (
                             <button
@@ -50,7 +51,7 @@ const Settings = () => {
 
                 {/* How Many Requests Section */}
                 <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800">How many Requests</p>
+                    <p className="font-medium mb-2 text-gray-800">{ t("prospecting.How many Requests")}</p>
                     <div className="grid grid-cols-3 gap-2">
                         {requestOptions.map((option) => (
                             <button
@@ -75,7 +76,7 @@ const Settings = () => {
 
             {/* Interval Section */}
             <div className="border border-gray-300 p-4 rounded-lg mt-4">
-                <p className="font-medium mb-2 text-gray-800">Interval</p>
+                <p className="font-medium mb-2 text-gray-800">{t("prospecting.Interval")}</p>
                 <div className="grid grid-cols-4 gap-3">
                     {intervalOptions.map((option) => (
                         <button

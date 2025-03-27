@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { TickFillIcon } from "../../../common/icons/icons";
 
 // eslint-disable-next-line react/prop-types
@@ -6,7 +7,7 @@ const AddTag = ({ selectedTag, setSelectedTag }) => {
 
     return (
         <div className="border border-[#DADADA] p-4 rounded-lg">
-            <p className="font-medium mb-2">Do you want to add a tag?</p>
+            <p className="font-medium mb-2">{t("prospecting.Do you want to add a tag?")}</p>
             <div className="grid gap-4">
                 {tagOptions.map((tag) => (
                     <button

@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Select } from "antd";
+import { t } from "i18next";
 
 const { Option } = Select;
 
 const SelectGroup = ({ selectedGroup, setSelectedGroup, selectedStage, setSelectedStage, groups, stages }) => {
     return (
         <div className="border border-gray-300 p-4 rounded-lg">
-            <p className="font-medium mb-2 text-gray-800">Select Group</p>
+            <p className="font-medium mb-2 text-gray-800">{t("prospecting.Select Group")}</p>
 
             {/* Group Select */}
             <div className="flex flex-col gap-4">

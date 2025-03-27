@@ -6,16 +6,16 @@ import Filters from "./Filters";
 import AdvOptions from "./AdvOptions";
 import AddTags from "./AddTags";
 import PropTypes from "prop-types";
+import { t } from "i18next";
 
 const SettingsModal = ({ visible, onClose, group }) => {
     const [activeKey, setActiveKey] = useState("1");
-    console.log("group", group)
     const tabItems = [
-        { label: "Select Message", key: "1", children: <SelectMessage /> },
-        { label: "Settings", key: "2", children: <Settings /> },
-        { label: "Filters", key: "3", children: <Filters /> },
-        { label: "Advanced Options", key: "4", children: <AdvOptions /> },
-        { label: "Add Tags", key: "5", children: <AddTags /> },
+        { label: t("prospecting.Select Message"), key: "1", children: <SelectMessage /> },
+        { label: t("prospecting.Settings"), key: "2", children: <Settings /> },
+        { label: t("prospecting.Filters"), key: "3", children: <Filters /> },
+        { label: t("prospecting.Advanced Options"), key: "4", children: <AdvOptions /> },
+        { label: t("prospecting.Add Tags"), key: "5", children: <AddTags /> },
     ];
 
     return (

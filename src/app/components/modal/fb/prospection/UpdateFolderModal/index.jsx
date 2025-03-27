@@ -7,6 +7,7 @@ import GroupImg from "../../../../../../assets/img/groupImg.png";
 import { formatNumber } from "../../../../../../helpers/formatGroupMembers";
 import { DeleteFillIcon } from "../../../../../pages/common/icons/icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import { t } from "i18next";
 
 const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose }) => {
     const [selectedGroups, setSelectedGroups] = useState([]);
@@ -81,7 +82,7 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
         >
             <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto">
             <div className="flex justify-between">
-                    <h2 className="font-medium text-lg">Edit Folder</h2>
+                    <h2 className="font-medium text-lg">{ t("prospecting.Edit")} Folder</h2>
                     <button
                         className="h-4 cursor-pointer"
                         onClick={handleDelete}
@@ -97,7 +98,7 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
                     placeholder="Enter folder name"
                     className="border border-[#00000014] rounded-md p-4"
                 />
-                <h2 className="font-medium text-lg mb-4">Select Groups</h2>
+                <h2 className="font-medium text-lg mb-4">{t("prospecting.Select Group")}s</h2>
                 <div className="rounded-lg">
                     <div className="max-h-64 overflow-y-auto border border-[#00000014] rounded-md p-2">
                         <table className="w-full border-collapse">
@@ -107,7 +108,7 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
                                     <th className="p-3 font-medium">Group&apos;s Name</th>
                                     <th className="p-3 font-medium">Members</th>
                                     <th className="p-3 font-medium">Privacy</th>
-                                    <th className="p-3 font-medium">Messages Sent</th>
+                                    <th className="p-3 font-medium">{ t("prospecting.Message")}s Sent</th>
                                 </tr>
                             </thead>
                             <tbody>

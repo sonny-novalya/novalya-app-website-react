@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
+import { t } from "i18next";
 
 const AddTags = () => {
     const [addTag, setAddTag] = useState(1);
@@ -34,11 +35,11 @@ const AddTags = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-semibold mb-4">Add Tags</h2>
+            <h2 className="text-xl font-semibold mb-4">{ t("prospecting.Add Tags")}</h2>
 
             {/* Toggle Add Tag Option */}
             <div className="border border-gray-300 p-4 rounded-lg mb-4">
-                <p className="font-medium text-gray-800 mb-2">Do you want to add a tag?</p>
+                <p className="font-medium text-gray-800 mb-2">{t("prospecting.Do you want to add a tag?")}</p>
                 <div className="grid grid-cols-2 gap-3">
                     {addTagsOptions.map((option) => (
                         <button
@@ -64,13 +65,13 @@ const AddTags = () => {
             <div className="grid grid-cols-2 gap-4">
                 {/* Group Selection */}
                 <div className="border border-gray-300 p-4 rounded-lg relative">
-                    <p className="font-medium text-gray-800 mb-2">Select Group</p>
+                    <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Group")}</p>
                     <select
                         className="w-full p-3 border rounded-lg"
                         value={selectedGroup || ""}
                         onChange={(e) => setSelectedGroup(e.target.value)}
                     >
-                        <option value="">Select Group</option>
+                        <option value="">{t("prospecting.Select Group")}</option>
                         {groups.map((group) => (
                             <option key={group.value} value={group.value}>
                                 {group.label}
@@ -81,13 +82,13 @@ const AddTags = () => {
 
                 {/* Stage Selection */}
                 <div className="border border-gray-300 p-4 rounded-lg relative">
-                    <p className="font-medium text-gray-800 mb-2">Select Stage</p>
+                    <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Stage")}</p>
                     <select
                         className="w-full p-3 border rounded-lg"
                         value={selectedStage || ""}
                         onChange={(e) => setSelectedStage(e.target.value)}
                     >
-                        <option value="">Select Stage</option>
+                        <option value="">{t("prospecting.Select Stage")}</option>
                         {stages.map((stage) => (
                             <option key={stage.value} value={stage.value}>
                                 {stage.label}

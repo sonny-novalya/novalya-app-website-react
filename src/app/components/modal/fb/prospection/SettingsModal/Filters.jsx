@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { BothGenderIcon, FemaleGenderIcon, MaleGenderIcon, TickFillIcon, TickIcon, UpperArrowIcon } from "../../../../../pages/common/icons/icons";
+import { t } from "i18next";
 
 const Filters = () => {
     const [selectedGender, setSelectedGender] = useState("Male");
@@ -45,12 +46,12 @@ const Filters = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Filters</h2>
+            <h2 className="text-xl font-bold mb-4">{t("prospecting.Filters")}</h2>
 
             <div className="grid grid-cols-2 gap-4">
                 {/* Gender Filter */}
                 <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800">Gender</p>
+                    <p className="font-medium mb-2 text-gray-800">{t("prospecting.Gender")}</p>
                     <div className="grid grid-cols-1 gap-2">
                         {genders.map((gender) => (
                             <button
@@ -67,7 +68,7 @@ const Filters = () => {
 
                 {/* Keywords Filter */}
                 <div className="border border-gray-300 p-4 rounded-lg relative h-28" ref={dropdownRef}>
-                    <p className="font-medium mb-2 text-gray-800">Keywords</p>
+                    <p className="font-medium mb-2 text-gray-800">{t("prospecting.Keywords")}</p>
 
                     {/* Container for selected keywords */}
                     <div className="flex space-x-4">

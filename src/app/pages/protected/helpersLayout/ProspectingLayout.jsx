@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Layout from "../Layout";
+import { t } from "i18next";
 
 const ProspectingLayout = ({ children }) => {
     const navigate = useNavigate();
@@ -11,29 +12,29 @@ const ProspectingLayout = ({ children }) => {
     const buttonsData = isFb
         ? [
             {
-                label: "Facebook Groups",
+                label: t("prospecting.Facebook Groups"),
                 path: "/fb/prospecting/groups",
                 action: () => navigate("/fb/prospecting/groups"),
             },
             {
-                label: "Facebook Posts",
+                label: t("prospecting.Facebook Posts"),
                 path: "/fb/prospecting/posts",
                 action: () => navigate("/fb/prospecting/posts"),
             },
         ]
         : [
             {
-                label: "Instagram Followers",
+                label: t("prospecting.Instagram Followers"),
                 path: "/ig/prospecting/followers",
                 action: () => navigate("/ig/prospecting/followers"),
             },
             {
-                label: "Instagram Posts",
+                label: t("prospecting.Instagram Posts"),
                 path: "/ig/prospecting/posts",
                 action: () => navigate("/ig/prospecting/posts"),
             },
             {
-                label: "Instagram Hashtags",
+                label: t("prospecting.Instagram Hashtags"),
                 path: "/ig/prospecting/hashtags",
                 action: () => navigate("/ig/prospecting/hashtags"),
             },
@@ -41,7 +42,7 @@ const ProspectingLayout = ({ children }) => {
 
     return (
         <Layout>
-            <h2 className="text-xl font-semibold mb-4">Easily connect with new prospects</h2>
+            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Easily connect with new prospects")}</h2>
             <div className="flex w-full space-x-4">
                 {buttonsData.map((item) => {
                     const isActive = location.pathname === item.path;

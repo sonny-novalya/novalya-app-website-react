@@ -12,6 +12,7 @@ import GroupImg from "../../../../../assets/img/groupImg.png";
 import { EditIcon2 } from "../../../common/icons/icons";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
 import ProspectingLayout from "../../helpersLayout/ProspectingLayout";
+import { t } from "i18next";
 
 const menu = (
     <Menu>
@@ -89,7 +90,7 @@ const FollowersTable = () => {
 
     const postColumns = [
         {
-            title: "Group's Name",
+            title: t("prospecting.Group's Name"),
             dataIndex: "name",
             render: (text) => (
                 <div className="flex items-center space-x-2">
@@ -98,9 +99,9 @@ const FollowersTable = () => {
                 </div>
             ),
         },
-        { title: "Members", dataIndex: "group_type" },
+        { title: t("prospecting.Members"), dataIndex: "group_type" },
         {
-            title: "Privacy", dataIndex: "privacy", render: () => (
+            title: t("prospecting.Privacy"), dataIndex: "privacy", render: () => (
                 <span className="">
                     🌎
                 </span>
@@ -108,17 +109,17 @@ const FollowersTable = () => {
         },
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
-            title: "Total Members", dataIndex: "total_member", render: (text) => (
+            title: t("prospecting.Total Members"), dataIndex: "total_member", render: (text) => (
                 <span>{formatNumber(text)}</span>
             )
         },
         {
-            title: "Folder",
+            title: t("prospecting.Folder"),
             dataIndex: "folder",
             render: (text) => <span className="px-3 py-1 rounded-lg bg-green-200 text-green-800 font-medium">{text}</span>,
         },
         {
-            title: "Settings",
+            title: t("prospecting.Settings"),
             render: (_, record) => (
                 <Button
                     icon={<SettingOutlined />}
@@ -130,7 +131,7 @@ const FollowersTable = () => {
             ),
         },
         {
-            title: "Send",
+            title: t("prospecting.Send"),
             render: (_, record) => (
                 <Button
                     icon={<SendOutlined />}
@@ -139,7 +140,7 @@ const FollowersTable = () => {
             )
         },
         {
-            title: "Action",
+            title: t("prospecting.Action"),
             render: () => (
                 <Dropdown overlay={menu} trigger={["click"]}>
                     <Button icon={<MoreOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" />
@@ -183,7 +184,7 @@ const FollowersTable = () => {
                             ))
                         }
 
-                        <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}Create Folder</button>
+                        <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
                     
                 </div>
@@ -195,7 +196,7 @@ const FollowersTable = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                         className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
                     />
-                    <Button className="bg-gray-200 px-4 py-2 rounded-md">Sort by</Button>
+                    <Button className="bg-gray-200 px-4 py-2 rounded-md">{t("prospecting.Sort By")}</Button>
                 </div>
                 <Table columns={postColumns} dataSource={groups} pagination={false} className="custom-table" />
 

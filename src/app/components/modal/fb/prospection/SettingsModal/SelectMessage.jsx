@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input, Button, Select, Table } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { EditIcon, PreviewIcon } from "../../../../../pages/common/icons/icons";
+import { t } from "i18next";
 
 const SelectMessage = () => {
     const [selectedRow, setSelectedRow] = useState(null);
@@ -34,11 +35,11 @@ const SelectMessage = () => {
                 <div className="flex justify-center items-center gap-2">
                     <Button className="flex items-center">
                         <span><EditIcon /></span>
-                        <span>Edit</span>
+                        <span>{ t("prospecting.Edit")}</span>
                     </Button>
                     <Button className="flex items-center">
                         <span><PreviewIcon /></span>
-                        <span>Preview</span>
+                        <span>{ t("prospecting.Preview")}</span>
                     </Button>
                 </div>
             ),
@@ -50,10 +51,10 @@ const SelectMessage = () => {
         <div className="w-full h-full bg-white rounded-lg flex flex-col">
             {/* Top Section */}
             <div className="">
-                <h2 className="font-medium text-lg">Select Message</h2>
+                <h2 className="font-medium text-lg">{t("prospecting.Select Message")}</h2>
                 <div className="flex gap-4 mt-2">
                     <Input placeholder="Search messages" prefix={<SearchOutlined />} className="w-full" />
-                    <Select placeholder="Sort by" className="w-40">
+                    <Select placeholder="Sort By" className="w-40">
                         <Select.Option value="recent">Recent</Select.Option>
                         <Select.Option value="oldest">Oldest</Select.Option>
                     </Select>
@@ -75,8 +76,8 @@ const SelectMessage = () => {
 
             {/* Bottom Section */}
             <div className="flex justify-between">
-                <Button>Cancel</Button>
-                <Button type="primary">Next</Button>
+                <Button>{ t("prospecting.Cancel")}</Button>
+                <Button type="primary">{ t("prospecting.Next")}</Button>
             </div>
         </div>
     );

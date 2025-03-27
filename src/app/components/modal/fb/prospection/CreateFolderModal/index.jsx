@@ -5,6 +5,7 @@ import { Checkbox } from "antd";
 import useFbProspectingStore from "../../../../../../store/fb/prospecting";
 import useGroupStore from "../../../../../../store/group/groupStore";
 import GroupImg from "../../../../../../assets/img/groupImg.png";
+import { t } from "i18next";
 
 const CreateFolderModal = ({ socialType, visible, onClose }) => {
     const [folderName, setFolderName] = useState("");
@@ -44,7 +45,7 @@ const CreateFolderModal = ({ socialType, visible, onClose }) => {
             className="custom-modal p-0"
         >
             <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto">
-                <h2 className="font-medium text-lg">Create Folder</h2>
+                <h2 className="font-medium text-lg">{t("prospecting.Create Folder")}</h2>
                 <input
                     type="text"
                     value={folderName}
@@ -52,7 +53,7 @@ const CreateFolderModal = ({ socialType, visible, onClose }) => {
                     placeholder="Enter folder name"
                     className="border border-[#00000014] rounded-md p-4"
                 />
-                <h2 className="font-medium text-lg mb-4">Select Groups</h2>
+                <h2 className="font-medium text-lg mb-4">{t("prospecting.Select Group")}</h2>
                 <div className="rounded-lg">
                     <div className="max-h-64 overflow-y-auto border border-[#00000014] rounded-md p-2">
                         {initialGroups?.map((group) => (

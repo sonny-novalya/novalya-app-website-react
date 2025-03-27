@@ -1,10 +1,12 @@
+import { t } from "i18next";
+
 const Filters = () => {
   return (
     <main className="">
-      <h2 className="font-medium text-lg">Filters</h2>
+      <h2 className="font-medium text-lg">{t("prospecting.Filters")}</h2>
       <div className="flex justify-between border border-[#00000014] rounded-md p-4">
         <div className="flex flex-col flex-1 pr-4 space-y-2">
-          <h3 className="font-medium">Gender</h3>
+          <h3 className="font-medium">{t("prospecting.Gender")}</h3>
           <p className="w-full text-center border border-[#00000014] rounded-md p-2">
             ♂ Male
           </p>
