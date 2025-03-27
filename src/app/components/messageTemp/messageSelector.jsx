@@ -3,9 +3,11 @@ import writingImg from "../../../assets/img/Writing-img.svg"
 import tempIconImg from "../../../assets/img/template-icons.svg"
 import aiIconImg from "../../../assets/img/Content-Creation-Writing.svg"
 import useMessageSteps from '../../../store/messageTemp/MessageTemp'
+import { useTranslation } from 'react-i18next'
 
 const MessageSelector = () => {
   const {setStep} = useMessageSteps()
+  const {t} = useTranslation()
  const handleSelector = (index)=>{
   if(index === 0){
     setStep(2)
@@ -20,7 +22,7 @@ const MessageSelector = () => {
             {data.map((item, index) => (
               <div key={index} className="border border-[#D2D2D2] rounded-[6px] text-center px-5 py-[10px]" onClick={()=>handleSelector(index)}>
                 <img className='mx-auto flex' src={item.img} alt={item.title} />
-                <span className={`font-semibold text-[24px] leading-[36px] max-w-[220px] text-center block mx-auto ${item.color}`}>{item.title}</span>
+                <span className={`font-semibold text-[24px] leading-[36px] max-w-[220px] text-center block mx-auto ${item.color}`}>{t(`message.${item.title}`)}</span>
                 <button className={`font-medium text-[14px] leading-[20px] px-5 py-[10px] text-white rounded-[24px] w-full max-w-[200px] mt-2 ${item.bgColor}`}>{item.buttonText}</button>
               </div>
             ))}
