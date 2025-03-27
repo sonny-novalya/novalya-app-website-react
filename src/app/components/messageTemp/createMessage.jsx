@@ -21,18 +21,26 @@ import smilingFaceGlasses from "../../../assets/img/smiling-face-glasses.svg";
 import "./message.css";
 import useMessageSteps from "../../../store/messageTemp/MessageTemp";
 import EmojiPicker from "emoji-picker-react";
+import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/MessageIcons";
+import { useTranslation } from "react-i18next";
 
 const CreateMessage = () => {
-  const { setStep, setIsMessage, visibilityType,setPreviewMessage ,setSelecetdMessage,selecetdMessage} = useMessageSteps();
+  const {
+    setStep,
+    setIsMessage,
+    visibilityType,
+    setPreviewMessage,
+    setSelecetdMessage,
+    selecetdMessage,
+  } = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState({});
   const [selectedVariant, setSelectedVariant] = useState({});
   const [caretPosition, setCaretPosition] = useState(0);
-  const [isEmojiPickerOpen,setIsEmojiPickerOpen] = useState(false)
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const pickerRef = useRef(null);
-
-
+  const { t } = useTranslation();
 
   const handleVisibilityChange = (val) => {
     setVisibility(val);
@@ -44,9 +52,10 @@ const CreateMessage = () => {
 
   useEffect(() => {
     setVisibility(visibilityOptions.find((v) => v.id === visibilityType));
-    setVariants(selecetdMessage?[...selecetdMessage?.variants]:[...defaultVariants])
-    setName(selecetdMessage?.name || '')
-    
+    setVariants(
+      selecetdMessage ? [...selecetdMessage?.variants] : [...defaultVariants]
+    );
+    setName(selecetdMessage?.name || "");
   }, []);
 
   const addVariants = () => {
@@ -57,32 +66,31 @@ const CreateMessage = () => {
     setVariants([...variants, { text: "", count: 0, id: variants.length }]);
   };
 
-  const handleVariantText = (variable,index,isVar) => {
-    console.log(variable)
-    const updatedVariants = [...variants]
+  const handleVariantText = (variable, index, isVar) => {
+    const updatedVariants = [...variants];
 
-    if(isVar){
-        const pointer = caretPosition || updatedVariants[index].text.length
-        let text_1 = updatedVariants[index].text.slice(0, pointer);
-        let text_2 = updatedVariants[index].text.slice(pointer);
-        updatedVariants[index].text = `${text_1}${variable}${text_2}`;
-        updatedVariants[index].count = updatedVariants[index].text.length;
-        setSelectedVariant({
-            ...selectedVariant,
-            text:updatedVariants[index].text,
-            count: updatedVariants[index].text.length
-          });
-    }else{
-        const updatedVariants = [...variants]
-        updatedVariants[index].text = variable;
-        updatedVariants[index].count = updatedVariants[index].text.length;
-        setSelectedVariant({
-            ...selectedVariant,
-            text:updatedVariants[index].text,
-            count: updatedVariants[index].text.length
-          });
+    if (isVar) {
+      const pointer = caretPosition || updatedVariants[index].text.length;
+      let text_1 = updatedVariants[index].text.slice(0, pointer);
+      let text_2 = updatedVariants[index].text.slice(pointer);
+      updatedVariants[index].text = `${text_1}${variable}${text_2}`;
+      updatedVariants[index].count = updatedVariants[index].text.length;
+      setSelectedVariant({
+        ...selectedVariant,
+        text: updatedVariants[index].text,
+        count: updatedVariants[index].text.length,
+      });
+    } else {
+      const updatedVariants = [...variants];
+      updatedVariants[index].text = variable;
+      updatedVariants[index].count = updatedVariants[index].text.length;
+      setSelectedVariant({
+        ...selectedVariant,
+        text: updatedVariants[index].text,
+        count: updatedVariants[index].text.length,
+      });
     }
-  
+
     setVariants(updatedVariants);
   };
 
@@ -104,51 +112,27 @@ const CreateMessage = () => {
     };
   }, [pickerRef]);
 
-  const hnadlePreview = ()=>{
+  const hnadlePreview = () => {
     const message = {
-        variants: variants,
-        name: name,
-        visibility: visibility,
-    }
+      variants: variants,
+      name: name,
+      visibility: visibility,
+    };
     setPreviewMessage(message);
-    setSelecetdMessage(message)
+    setSelecetdMessage(message);
     setStep(5);
-  }
- const handleSelectedVariant=(data)=> {
-    setSelectedVariant(data)
-    setCaretPosition(0)
-  }
+  };
+  const handleSelectedVariant = (data) => {
+    setSelectedVariant(data);
+    setCaretPosition(0);
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage">
       <div className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
         <div className="flex items-center gap-[10px] text-[20px]">
-          Message name
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7.0026 13.1668C10.4084 13.1668 13.1693 10.4059 13.1693 7.00016C13.1693 3.59441 10.4084 0.833496 7.0026 0.833496C3.59685 0.833496 0.835938 3.59441 0.835938 7.00016C0.835938 10.4059 3.59685 13.1668 7.0026 13.1668Z"
-              stroke="black"
-              stroke-opacity="0.75"
-              stroke-width="0.9"
-            />
-            <path
-              d="M7 6.87549V10.2088"
-              stroke="black"
-              stroke-opacity="0.75"
-              stroke-linecap="round"
-            />
-            <path
-              d="M7.00521 5.45866C7.46545 5.45866 7.83854 5.08556 7.83854 4.62533C7.83854 4.16509 7.46545 3.79199 7.00521 3.79199C6.54497 3.79199 6.17188 4.16509 6.17188 4.62533C6.17188 5.08556 6.54497 5.45866 7.00521 5.45866Z"
-              fill="black"
-              fill-opacity="0.75"
-            />
-          </svg>
+            {t("message.Message name")} 
+          <CreateMessageIcon index={0} />
         </div>
         <div className="flex items-center justify-between gap-4 mt-2">
           <div
@@ -168,18 +152,7 @@ const CreateMessage = () => {
             <div className="pros-dropdown-text flex items-center justify-around gap-2 border border-[#CCCDCD] min-h-[44px] rounded-[6px] px-[10px] py-[5px] min-w-[193px] font-medium text-[14px] leading-[21px] text-black">
               <img src={visibility?.icon} />
               <span className="flex-1 text-[14px]">{visibility?.label}</span>
-              <svg
-                width="10"
-                height="6"
-                viewBox="0 0 10 6"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.99951 3.1716L7.82797 0.343099L9.24219 1.7574L4.99951 6L0.756909 1.7574L2.17111 0.343098L4.99951 3.1716Z"
-                  fill="#8C8C8C"
-                />
-              </svg>
+              <CreateMessageIcon index={1} />
             </div>
             <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
               {visibilityOptions?.map((visibility) => {
@@ -194,23 +167,9 @@ const CreateMessage = () => {
                       src={visibility.iconLight}
                     />
                     <span className="flex-1 text-[14px]">
-                      {visibility.label}
+                      {t(`message.${visibility.label}`)}  
                     </span>
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                    <CreateMessageIcon index={2} />
                   </div>
                 );
               })}
@@ -220,32 +179,8 @@ const CreateMessage = () => {
         <div className="flex gap-4 mt-4">
           <div className="w-[200px] bg-[#F5F5F5] rounded p-3">
             <div className="flex items-center gap-[10px] text-[20px]">
-              Your variants
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.0026 13.1668C10.4084 13.1668 13.1693 10.4059 13.1693 7.00016C13.1693 3.59441 10.4084 0.833496 7.0026 0.833496C3.59685 0.833496 0.835938 3.59441 0.835938 7.00016C0.835938 10.4059 3.59685 13.1668 7.0026 13.1668Z"
-                  stroke="black"
-                  stroke-opacity="0.75"
-                  stroke-width="0.9"
-                ></path>
-                <path
-                  d="M7 6.87549V10.2088"
-                  stroke="black"
-                  stroke-opacity="0.75"
-                  stroke-linecap="round"
-                ></path>
-                <path
-                  d="M7.00521 5.45866C7.46545 5.45866 7.83854 5.08556 7.83854 4.62533C7.83854 4.16509 7.46545 3.79199 7.00521 3.79199C6.54497 3.79199 6.17188 4.16509 6.17188 4.62533C6.17188 5.08556 6.54497 5.45866 7.00521 5.45866Z"
-                  fill="black"
-                  fill-opacity="0.75"
-                ></path>
-              </svg>
+               {t("message.Your variants")}
+              <CreateMessageIcon index={3} />
             </div>
             <div className="mt-4">
               {variants?.map((data, i) => {
@@ -258,23 +193,7 @@ const CreateMessage = () => {
                         : "bg-white"
                     } hover:bg-[#0087FF] hover:text-white`}
                   >
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        opacity="0.3"
-                        d="M19 10C19.7956 10 20.5587 10.3161 21.1213 10.8787C21.6839 11.4413 22 12.2044 22 13V16C22 16.7956 21.6839 17.5587 21.1213 18.1213C20.5587 18.6839 19.7956 19 19 19V19.966C19 21.026 17.764 21.605 16.95 20.926L14.638 19H12C11.2044 19 10.4413 18.6839 9.87868 18.1213C9.31607 17.5587 9 16.7956 9 16V13C9 12.2044 9.31607 11.4413 9.87868 10.8787C10.4413 10.3161 11.2044 10 12 10H19Z"
-                        fill="#0087FF"
-                      />
-                      <path
-                        d="M16 4C16.7956 4 17.5587 4.31607 18.1213 4.87868C18.6839 5.44129 19 6.20435 19 7V8H11C9.93913 8 8.92172 8.42143 8.17157 9.17157C7.42143 9.92172 7 10.9391 7 12V16C7 17.044 7.4 17.996 8.056 18.708L7 19.5C6.176 20.118 5 19.53 5 18.5V17C4.20435 17 3.44129 16.6839 2.87868 16.1213C2.31607 15.5587 2 14.7956 2 14V7C2 6.20435 2.31607 5.44129 2.87868 4.87868C3.44129 4.31607 4.20435 4 5 4H16Z"
-                        fill="#0087FF"
-                      />
-                    </svg>
+                    <CreateMessageIcon index={4} />
                     Varient - {i + 1}
                   </button>
                 );
@@ -283,50 +202,28 @@ const CreateMessage = () => {
                 onClick={() => addVariants()}
                 className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white"
               >
-                + Add Variant
+                + {t("message.Add Variant")}
               </button>
             </div>
           </div>
           <div className="w-[685px] px-3 py-1">
             <div className="flex items-center justify-between gap-[10px] mb-1">
               <div className="flex items-center gap-[10px] text-[20px]">
-                Write message
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.0026 13.1668C10.4084 13.1668 13.1693 10.4059 13.1693 7.00016C13.1693 3.59441 10.4084 0.833496 7.0026 0.833496C3.59685 0.833496 0.835938 3.59441 0.835938 7.00016C0.835938 10.4059 3.59685 13.1668 7.0026 13.1668Z"
-                    stroke="black"
-                    stroke-opacity="0.75"
-                    stroke-width="0.9"
-                  ></path>
-                  <path
-                    d="M7 6.87549V10.2088"
-                    stroke="black"
-                    stroke-opacity="0.75"
-                    stroke-linecap="round"
-                  ></path>
-                  <path
-                    d="M7.00521 5.45866C7.46545 5.45866 7.83854 5.08556 7.83854 4.62533C7.83854 4.16509 7.46545 3.79199 7.00521 3.79199C6.54497 3.79199 6.17188 4.16509 6.17188 4.62533C6.17188 5.08556 6.54497 5.45866 7.00521 5.45866Z"
-                    fill="black"
-                    fill-opacity="0.75"
-                  ></path>
-                </svg>
+                 {t("message.Write message")}
+                <CreateMessageIcon index={5} />
               </div>
               <button
                 onClick={() => hnadlePreview()}
                 className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
               >
-                Preview
+                  {t("message.Preview")}
               </button>
             </div>
             <div className="border border-[#E6E6E6] h-[93.75%] p-3">
               <textarea
-                onChange={(e) => handleVariantText(e.target.value,selectedVariant.id,false)}
+                onChange={(e) =>
+                  handleVariantText(e.target.value, selectedVariant.id, false)
+                }
                 onClick={handleCaretPosition}
                 onKeyUp={handleCaretPosition}
                 value={selectedVariant?.text}
@@ -336,110 +233,61 @@ const CreateMessage = () => {
 
               <div className="flex items-center gap-[10px] justify-between">
                 <div className="flex items-center gap-[10px]">
-                  <button
-                    onClick={() => handleVariantText("[first name]",selectedVariant.id,true)}
+                {
+                 visibility?.inputs && <>
+                 <button
+                    onClick={() =>
+                      handleVariantText(
+                        "[first name]",
+                        selectedVariant.id,
+                        true
+                      )
+                    }
                     className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
                   >
-                    First name
+                     {t("message.First name")}
                   </button>
                   <button
-                    onClick={() => handleVariantText("[last name]",selectedVariant.id,true)}
+                    onClick={() =>
+                      handleVariantText("[last name]", selectedVariant.id, true)
+                    }
                     className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
                   >
-                    Last name
+                  {t("message.Last name")}
+                    
                   </button>
-                  <button onClick={()=>setIsEmojiPickerOpen(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-1 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
-                    <svg
-                      width="31"
-                      height="32"
-                      viewBox="0 0 31 32"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                 </>
+                }
+                  <button
+                    onClick={() => setIsEmojiPickerOpen(true)}
+                    className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-1 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
+                  >
+                    <CreateMessageIcon index={7} />
+                    
+                    {t("message.Emoji")}
+                  </button>
+                  {isEmojiPickerOpen && (
+                    <div
+                      ref={pickerRef}
+                      style={{ width: "100%" }}
+                      className="picker-Wrapper absolute left-[52%] top-[34%]"
                     >
-                      <path
-                        d="M15.4974 18.5832C12.2682 18.5832 11.2995 17.2915 10.3307 17.2915C9.62031 17.2915 9.03906 17.8728 9.03906 18.5832C9.03906 19.5519 10.9766 23.7498 15.4974 23.7498C20.0182 23.7498 21.9557 19.5519 21.9557 18.5832C21.9557 17.8728 21.3745 17.2915 20.6641 17.2915C19.6953 17.2915 18.7266 18.5832 15.4974 18.5832Z"
-                        fill="#0087FF"
+                      <EmojiPicker
+                        onEmojiClick={({ emoji }) => {
+                          handleVariantText(emoji, selectedVariant.id, true);
+                        }}
+                        skinTonesDisabled={true}
+                        emojiVersion="4.0"
                       />
-                      <path
-                        d="M15.5 4.375C21.9196 4.375 27.125 9.58042 27.125 16C27.125 22.4196 21.9196 27.625 15.5 27.625C9.08042 27.625 3.875 22.4196 3.875 16C3.875 9.58042 9.08042 4.375 15.5 4.375Z"
-                        stroke="#0087FF"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M11.625 12.125V13.4167"
-                        stroke="#0087FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M19.375 12.125V13.4167"
-                        stroke="#0087FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                    Emoji
-                  </button>
-                  {isEmojiPickerOpen &&
-                                   (
-                                    <div
-                                      ref={pickerRef}
-                                      style={{ width: "100%" }}
-                                      className="picker-Wrapper absolute left-[52%] top-[34%]"
-                                    >
-                                      <EmojiPicker
-                                        onEmojiClick={({ emoji }) => {
-                                            handleVariantText(emoji,selectedVariant.id,true);
-                                        }}
-                                        skinTonesDisabled={true}
-                                        emojiVersion="4.0"
-                                      />
-                                  
-                                    </div>
-                                  )}
+                    </div>
+                  )}
+                 {visibility?.attachment&&
                   <button className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M19.25 11V6.5C19.25 5.17392 18.7232 3.90215 17.7855 2.96447C16.8479 2.02678 15.5761 1.5 14.25 1.5H5.75C4.42392 1.5 3.15215 2.02678 2.21447 2.96447C1.27678 3.90215 0.75 5.17392 0.75 6.5V13.5C0.75 14.1566 0.879329 14.8068 1.1306 15.4134C1.38188 16.02 1.75017 16.5712 2.21447 17.0355C3.15215 17.9732 4.42392 18.5 5.75 18.5H12.01"
-                        stroke="#0087FF"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M1.00781 15.0001L3.74781 11.8001C4.10765 11.4427 4.57992 11.2206 5.08469 11.1714C5.58946 11.1222 6.09573 11.249 6.51781 11.5301C6.9399 11.8113 7.44616 11.938 7.95093 11.8888C8.4557 11.8396 8.92797 11.6175 9.28781 11.2601L11.6178 8.93013C12.2873 8.25836 13.1737 7.84633 14.1188 7.76757C15.064 7.68881 16.0064 7.94844 16.7778 8.50013L19.2478 10.4101M6.00781 8.17013C6.22581 8.16881 6.44141 8.12458 6.64231 8.03994C6.8432 7.9553 7.02546 7.83193 7.17868 7.67685C7.3319 7.52178 7.45307 7.33805 7.53528 7.13614C7.61749 6.93424 7.65913 6.71812 7.65781 6.50013C7.6565 6.28213 7.61226 6.06653 7.52763 5.86563C7.44299 5.66474 7.31961 5.48248 7.16454 5.32926C7.00946 5.17604 6.82573 5.05487 6.62383 4.97266C6.42192 4.89045 6.20581 4.84881 5.98781 4.85013C5.54755 4.85278 5.12638 5.03022 4.81694 5.3434C4.50751 5.65659 4.33516 6.07987 4.33781 6.52013C4.34046 6.96039 4.5179 7.38156 4.83109 7.691C5.14427 8.00043 5.56755 8.17278 6.00781 8.17013Z"
-                        stroke="#0087FF"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M16.7031 13V18"
-                        stroke="#0087FF"
-                        stroke-width="1.5"
-                        stroke-miterlimit="10"
-                        stroke-linecap="round"
-                      />
-                      <path
-                        d="M19.0001 15.1049L17.0331 13.1379C16.9903 13.095 16.9395 13.0609 16.8836 13.0377C16.8276 13.0144 16.7676 13.0024 16.7071 13.0024C16.6465 13.0024 16.5865 13.0144 16.5306 13.0377C16.4746 13.0609 16.4238 13.095 16.3811 13.1379L14.4141 15.1049"
-                        stroke="#0087FF"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                    Upload image
+                    <CreateMessageIcon index={6} />
+                    {t("message.Upload image")}
+                   
                   </button>
+                 }
                 </div>
                 <span className="font-medium text-[14px] leading-[21px] tracking-[0%] text-[#00000080] px-4">
                   {selectedVariant?.count || 0}/2000
@@ -449,113 +297,57 @@ const CreateMessage = () => {
           </div>
           <div className="w-[200px] bg-[#F5F5F5] rounded p-3 ">
             <div className="flex items-center gap-[10px] text-[20px] mb-3">
-              Write with AI
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.0026 13.1668C10.4084 13.1668 13.1693 10.4059 13.1693 7.00016C13.1693 3.59441 10.4084 0.833496 7.0026 0.833496C3.59685 0.833496 0.835938 3.59441 0.835938 7.00016C0.835938 10.4059 3.59685 13.1668 7.0026 13.1668Z"
-                  stroke="black"
-                  stroke-opacity="0.75"
-                  stroke-width="0.9"
-                ></path>
-                <path
-                  d="M7 6.87549V10.2088"
-                  stroke="black"
-                  stroke-opacity="0.75"
-                  stroke-linecap="round"
-                ></path>
-                <path
-                  d="M7.00521 5.45866C7.46545 5.45866 7.83854 5.08556 7.83854 4.62533C7.83854 4.16509 7.46545 3.79199 7.00521 3.79199C6.54497 3.79199 6.17188 4.16509 6.17188 4.62533C6.17188 5.08556 6.54497 5.45866 7.00521 5.45866Z"
-                  fill="black"
-                  fill-opacity="0.75"
-                ></path>
-              </svg>
+              {t("message.Write with AI")}
+              <CreateMessageIcon index={0} />
             </div>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-              <svg
-                width="21"
-                height="20"
-                viewBox="0 0 21 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M16.4895 7.0698L15.4626 8.09668L17.4032 10.0371L18.4301 9.01021C18.3979 8.90044 18.3552 8.77788 18.3019 8.64973C18.1525 8.29061 17.9522 7.96311 17.7445 7.75543C17.5368 7.54774 17.2092 7.34739 16.8501 7.19805C16.7219 7.14475 16.5993 7.10198 16.4895 7.0698ZM15.9889 11.4512L14.0483 9.51085L8.88449 14.6743C8.25838 15.3004 7.88821 16.3187 7.69026 17.3086C7.64791 17.5205 7.61491 17.7233 7.58922 17.9107C7.77634 17.885 7.97894 17.852 8.19047 17.8097C9.17988 17.6116 10.1984 17.2413 10.8252 16.6146L15.9889 11.4512ZM6.5 19C5.5 19 5.5 18.9995 5.5 18.9995L5.5 18.9974L5.50001 18.9936L5.50008 18.9823L5.50054 18.9455C5.50105 18.9148 5.50201 18.8719 5.50387 18.8181C5.50758 18.7105 5.51486 18.5587 5.52915 18.3728C5.55764 18.0023 5.61455 17.4893 5.72909 16.9165C5.9505 15.8093 6.41903 14.3112 7.47033 13.26L15.438 5.29288C15.6235 5.1074 15.8744 5.00223 16.1368 5.00003C16.5758 4.99637 17.1313 5.14895 17.618 5.35134C18.1243 5.56188 18.7052 5.88773 19.1586 6.34116C19.6121 6.79461 19.938 7.37543 20.1486 7.88176C20.351 8.36847 20.5036 8.92396 20.4999 9.36295C20.4977 9.62528 20.3925 9.87625 20.207 10.0617L12.2393 18.0288C11.1877 19.0804 9.69004 19.5492 8.58294 19.7708C8.01028 19.8854 7.49735 19.9423 7.12701 19.9708C6.94116 19.9851 6.78942 19.9924 6.68188 19.9961C6.62806 19.998 6.58518 19.999 6.55448 19.9995L6.51768 19.9999L6.50639 20L6.50258 20L6.50113 20C6.50113 20 6.5 20 6.5 19ZM6.5 19V20C5.94772 20 5.5 19.5518 5.5 18.9995L6.5 19Z"
-                  fill="#0087FF"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M6 0C6.43043 0 6.81257 0.27543 6.94868 0.683772L7.91557 3.58443L10.8162 4.55132C11.2246 4.68743 11.5 5.06957 11.5 5.5C11.5 5.93043 11.2246 6.31257 10.8162 6.44868L7.91557 7.41557L6.94868 10.3162C6.81257 10.7246 6.43043 11 6 11C5.56957 11 5.18743 10.7246 5.05132 10.3162L4.08443 7.41557L1.18377 6.44868C0.77543 6.31257 0.5 5.93043 0.5 5.5C0.5 5.06957 0.77543 4.68743 1.18377 4.55132L4.08443 3.58443L5.05132 0.683772C5.18743 0.27543 5.56957 0 6 0ZM6 4.16228L5.82368 4.69123C5.72415 4.98983 5.48983 5.22415 5.19123 5.32368L4.66228 5.5L5.19123 5.67632C5.48983 5.77585 5.72415 6.01017 5.82368 6.30877L6 6.83772L6.17632 6.30877C6.27585 6.01017 6.51017 5.77585 6.80877 5.67632L7.33772 5.5L6.80877 5.32368C6.51017 5.22415 6.27585 4.98983 6.17632 4.69123L6 4.16228Z"
-                  fill="#0087FF"
-                />
-              </svg>
-              Write with AI
+              <CreateMessageIcon index={9} />
+              {t("message.Write with AI")}
             </button>
             <p className="font-normal text-[14px] leading-[21px] uppercase my-[10px]">
-              Rewrite
+               {t("message.Rewrite")}
             </p>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={pencilIcon} />
-              Improve it
+               {t("message.Improve it")}
             </button>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={scissorsIcon} />
-              Shorten
+               {t("message.Shorten")}
             </button>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={paintbrushIcon} />
-              Simplify
+               {t("message.Simplify")}
             </button>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={framedPictureIcon} />
-              Detailed
+               {t("message.Detailed")}
             </button>
             <p className="font-normal text-[14px] leading-[21px] uppercase my-[10px]">
-              Adjust Tone
+               {t("message.Adjust Tone")}
             </p>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={backHandIcon} />
-              Anticipatory
+               {t("message.Anticipatory")}
             </button>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={rasingHandIcon} />
-              Assertive
+               {t("message.Assertive")}
             </button>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={smilingFace} />
-              Compassionate
+               {t("message.Compassionate")}
             </button>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
               <img src={smilingFaceGlasses} />
-              Confident
+               {t("message.Confident")}
             </button>
             <p className="font-normal text-[14px] leading-[21px] uppercase my-[10px]">
-              Revert Changes
+            {t("message.Revert changes")}
             </p>
             <button className="varient-btn-hover text-[14px] bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
-              <svg
-                className="stroke-only"
-                width="19"
-                height="18"
-                viewBox="0 0 19 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.5 2.25L2.75 6L6.5 9.75M9.5 15H11.75C12.3409 15 12.9261 14.8836 13.4721 14.6575C14.018 14.4313 14.5141 14.0998 14.932 13.682C15.3498 13.2641 15.6813 12.768 15.9075 12.2221C16.1336 11.6761 16.25 11.0909 16.25 10.5C16.25 9.90905 16.1336 9.32389 15.9075 8.77792C15.6813 8.23196 15.3498 7.73588 14.932 7.31802C14.5141 6.90016 14.018 6.56869 13.4721 6.34254C12.9261 6.1164 12.3409 6 11.75 6H3.5"
-                  stroke="black"
-                  stroke-width="2"
-                />
-              </svg>
-              Revert changes
+              <CreateMessageIcon index={10} />
+               {t("message.Revert changes")}
             </button>
           </div>
         </div>
@@ -564,7 +356,7 @@ const CreateMessage = () => {
             onClick={() => hnadlePreview()}
             className="flex justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-full max-w-[200px] rounded-md"
           >
-            Preview
+             {t("message.Preview")}
           </button>
           <div className="flex gap-4">
             <button
@@ -572,22 +364,11 @@ const CreateMessage = () => {
                  px-4 py-1.5 w-[200px] rounded-md flex justify-center"
               onClick={() => setIsMessage(false)}
             >
-              Cancel
+               {t("message.Cancel")}
             </button>
             <button className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
-              Create
-              <svg
-                width="18"
-                height="17"
-                viewBox="0 0 18 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.6895 7.71876H0.75C0.551088 7.71876 0.360322 7.80107 0.21967 7.94758C0.0790178 8.0941 0 8.29281 0 8.50001C0 8.70721 0.0790178 8.90592 0.21967 9.05244C0.360322 9.19895 0.551088 9.28126 0.75 9.28126H14.6895L9.219 14.9781C9.07817 15.1248 8.99905 15.3238 8.99905 15.5313C8.99905 15.7387 9.07817 15.9377 9.219 16.0844C9.35983 16.2311 9.55084 16.3135 9.75 16.3135C9.94916 16.3135 10.1402 16.2311 10.281 16.0844L17.031 9.05313C17.1008 8.98056 17.1563 8.89435 17.1941 8.79944C17.2319 8.70452 17.2513 8.60277 17.2513 8.50001C17.2513 8.39725 17.2319 8.2955 17.1941 8.20058C17.1563 8.10567 17.1008 8.01946 17.031 7.94688L10.281 0.915635C10.1402 0.768937 9.94916 0.686523 9.75 0.686523C9.55084 0.686523 9.35983 0.768937 9.219 0.915635C9.07817 1.06233 8.99905 1.2613 8.99905 1.46876C8.99905 1.67622 9.07817 1.87519 9.219 2.02189L14.6895 7.71876Z"
-                  fill="white"
-                />
-              </svg>
+               {t("message.Create")}
+              <CreateMessageIcon index={11} />
             </button>
           </div>
         </div>
@@ -601,27 +382,47 @@ const visibilityOptions = [
     label: "Prospecting",
     icon: propSearch,
     iconLight: prospWhite,
+    inputs: true,
+    attachment: false
   },
   {
     id: "fb_crm",
     label: "CRM",
     icon: messangerIcon,
     iconLight: messangerWhite,
+    inputs: true,
+    attachment: true
   },
-  { id: "birthday", label: "Birthday", icon: BdayIcon, iconLight: BdayWhite },
+  { id: "birthday", 
+    label: "Birthday", 
+    icon: BdayIcon, 
+    iconLight: BdayWhite,
+    inputs: true,
+    attachment: true
+  },
   {
     id: "request",
     label: "Request",
     icon: requestIcon,
     iconLight: requestWhite,
+    inputs: true,
+    attachment: true
   },
   {
     id: "ig_prospecting",
     label: "Prospecting",
     icon: IgProsp,
     iconLight: IgCrmWhite,
+    inputs: false,
+    attachment: false
   },
-  { id: "ig_crm", label: "CRM", icon: IgCrm, iconLight: IgCrmWhite },
+  { id: "ig_crm",
+    label: "CRM", 
+    icon: IgCrm, 
+    iconLight: IgCrmWhite ,  
+    inputs: false,
+    attachment: true 
+  },
 ];
 
 const defaultVariants = [
