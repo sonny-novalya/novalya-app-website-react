@@ -102,7 +102,7 @@ const TempList = () => {
                             <h3 className="font-medium text-sm leading-6 mt-2 mb-3">Accept | Wish to welcome</h3>
                             <div className="flex gap-2">
                                 <button className="flex-1 font-medium text-sm bg-white px-3 py-1.5 rounded-full">{t("message.Preview")}</button>
-                                <button className="flex-1 font-medium text-sm bg-[#0087FF] text-white px-3 py-1.5 rounded-full">{t("message.Selectx")}</button>
+                                <button className="flex-1 font-medium text-sm bg-[#0087FF] text-white px-3 py-1.5 rounded-full">{t("message.Select")}</button>
                             </div>
                         </div>
                        
