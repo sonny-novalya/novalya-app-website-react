@@ -83,5 +83,50 @@
     "Select Group": "Selecionar grupo",
     "Select Stage": "Selecionar etapa",
     "Message Selected": "Mensagem selecionada"
-  }
+  },
+
+  
+    "message": {
+      "Message name": "Nome da mensagem",
+      "Your variants": "Suas variantes",
+      "Add Variant": "Adicionar variante",
+      "Write message": "Escrever mensagem",
+      "Preview": "Pré-visualização",
+      "First name": "Primeiro nome",
+      "Last name": "Sobrenome",
+      "Emoji": "Emoji",
+      "Upload image": "Carregar imagem",
+      "Write with AI": "Escrever com IA",
+      "Rewrite": "Reescrever",
+      "Cancel": "Cancelar",
+      "Create": "Criar",
+      "Revert changes": "Reverter alterações",
+      "Confident": "Confiante",
+      "Compassionate": "Compassivo",
+      "Assertive": "Assertivo",
+      "Anticipatory": "Antecipatório",
+      "Adjust Tone": "Ajustar tom",
+      "Detailed": "Detalhado",
+      "Simplify": "Simplificar",
+      "Shorten": "Encurtar",
+      "Improve it": "Melhorar",
+      "Select feature": "Selecionar recurso",
+      "Start from a blank page": "Começar de uma página em branco",
+      "Over 30 Templates ready to use": "Mais de 30 modelos prontos para uso",
+      "Use AI to write your Message": "Use IA para escrever sua mensagem",
+      "Prospecting": "Prospecção",
+      "CRM": "CRM",
+      "Birthday": "Aniversário",
+      "Request": "Solicitação",
+      "Back": "Voltar",
+      "View variants": "Ver variantes",
+      "Message preview": "Pré-visualização da mensagem",
+      "Select": "Selecionar",
+      "Update": "Atualizar",
+      "Select a template": "Selecionar um modelo",
+      "My Messages": "Minhas mensagens",
+      "My Favorites": "Meus favoritos"
+    }
+  
+  
 }
