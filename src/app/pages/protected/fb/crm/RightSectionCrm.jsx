@@ -2,12 +2,21 @@ import PropTypes from "prop-types";
 import { Checkbox, Badge, Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { SendIcon } from "../../../common/icons/icons";
+import { DeleteFillRedIcon, MoveStageGreenIcon, SendBlueIcon, SendIcon, SyncGreenIcon } from "../../../common/icons/icons";
 import TopbarRightSection from "./TopBarRightSection";
+import SendCampaignModal from "./SendCampaignModal";
+import MoveToStageModal from "./MoveToStageModal";
+import AddStageModal from "./AddStageModal";
+import NoteUserModal from "./NoteUserModal";
 
 const RightSectionCrm = ({ selectedGroup }) => {
-
     const [selectedUsersMap, setSelectedUsersMap] = useState({});
+    const [openCampaignModal, setOpenCampaignModal] = useState(false);
+    const [openMoveToStageModal, setOpenMoveToStageModal] = useState(false);
+    const [openAddStageModal, setOpenAddStageModal] = useState(false);
+    const [openNoteModal, setOpenNoteModal] = useState(false);
+    const [selectedLead, setSelectedLead] = useState(null);
+    
     if (!selectedGroup || !selectedGroup.stage) {
         return (
             <div className="flex items-center justify-center h-full text-gray-400">
@@ -27,7 +36,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
         />
     );
 
-    // For simplicity, using fake users for now
     const fakeLeads = [...Array(6)].map((_, i) => ({
         id: i,
         name: "John Doe",
@@ -37,28 +45,64 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
     const handleSearch = (value) => {
         console.log("Search value:", value);
-        // Perform search logic here
     };
 
     const handleAddStage = () => {
-        console.log("Add Stage Clicked!");
-        // Trigger modal or add logic here
+        setOpenAddStageModal(true)
     };
-    
+
     const totalLeadsCount = sortedStages.reduce((sum, stage) => {
         const leads = stage.leads || [];
         return sum + leads.length;
     }, 0);
 
-
+    const buttonActions = [
+        {
+            label: "Send Campaign",
+            icon: <SendBlueIcon />,
+            textColor: "text-blue-600",
+            borderColor: "border-blue-100",
+            onClick: () => {
+                setOpenCampaignModal(true)
+            },
+        },
+        {
+            label: "Move to stage",
+            icon: <MoveStageGreenIcon />,
+            textColor: "text-green-600",
+            borderColor: "border-green-100",
+            onClick: () => {
+                setOpenMoveToStageModal(true)
+            },
+        },
+        {
+            label: "Synchronize date",
+            icon: <SyncGreenIcon />,
+            textColor: "text-green-600",
+            borderColor: "border-green-100",
+            onClick: () => {
+               console.log("yes");
+               
+            },
+        },
+        {
+            label: "Delete",
+            icon: <DeleteFillRedIcon />,
+            textColor: "text-red-600",
+            borderColor: "border-red-100",
+            onClick: () => {
+                console.log("Delete clicked");
+            },
+        },
+    ];
 
     return (
         <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full">
-            <TopbarRightSection 
+            <TopbarRightSection
                 companyName={selectedGroup.name}
                 leadsCount={totalLeadsCount}
                 onSearch={handleSearch}
-                onAddStage={handleAddStage} 
+                onAddStage={handleAddStage}
             />
 
             <div className="flex gap-4 p-4 min-w-max">
@@ -116,7 +160,9 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                         />
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <SendIcon />
+                                        <span onClick={() => setOpenCampaignModal(true)} className="cursor-pointer">
+                                            <SendIcon />
+                                        </span>
                                         <Dropdown overlay={menu} trigger={['click']}>
                                             <MoreOutlined style={{ fontSize: "18px", cursor: "pointer" }} />
                                         </Dropdown>
@@ -136,22 +182,88 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                             checked={selectedUsers.includes(lead.id)}
                                             onChange={() => toggleUserSelection(lead.id)}
                                         />
-                                        <img
-                                            src={lead.avatar}
-                                            alt={lead.name}
-                                            className="w-8 h-8 rounded-full"
-                                        />
-                                        <div>
-                                            <p className="font-medium text-sm">{lead.name}</p>
-                                            <p className="text-xs text-gray-400">{lead.time}</p>
+                                        {/* 👇 Clickable Section */}
+                                        <div
+                                            className="flex items-center gap-2 cursor-pointer"
+                                            onClick={() => {
+                                                setSelectedLead(lead);
+                                                setOpenNoteModal(true);
+                                            }}
+                                        >
+                                            <img
+                                                src={lead.avatar}
+                                                alt={lead.name}
+                                                className="w-8 h-8 rounded-full"
+                                            />
+                                            <div>
+                                                <p className="font-medium text-sm">{lead.name}</p>
+                                                <p className="text-xs text-gray-400">{lead.time}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
+
                             </div>
                         </div>
                     );
                 })}
             </div>
+            <div className="flex gap-4 p-4 items-center justify-center border border-[#DADADA] w-fit mx-auto rounded-lg mt-auto">
+                {buttonActions.map((action, index) => (
+                    <button
+                        key={index}
+                        onClick={action.onClick}
+                        className={`flex items-center gap-2 border rounded-md px-4 py-2 hover:shadow transition cursor-pointer ${action.textColor} ${action.borderColor}`}
+                    >
+                        {action.icon}
+                        <span className="font-medium">{action.label}</span>
+                    </button>
+                ))}
+            </div>
+
+            {
+                openCampaignModal && 
+                    <SendCampaignModal
+                        visible={openCampaignModal}
+                        onCancel={() => setOpenCampaignModal(false)}
+                        onSend={(data) => {
+                            console.log("Sending with data:", data);
+                            setOpenCampaignModal(false);
+                        }}
+                    />
+            }
+            {
+                openMoveToStageModal && 
+                    <MoveToStageModal
+                        visible={openMoveToStageModal}
+                        onCancel={() => setOpenMoveToStageModal(false)}
+                        onSend={(data) => {
+                            console.log("moving with data:", data);
+                            setOpenMoveToStageModal(false);
+                        }}
+                    />
+            }
+            {
+                openAddStageModal &&
+                <AddStageModal
+                    visible={openAddStageModal}
+                    onCancel={() => setOpenAddStageModal(false)}
+                        onSend={(data) => {
+                            console.log("moving with data:", data);
+                            setOpenMoveToStageModal(false);
+                        }}
+                    />
+            }
+
+            {
+                openNoteModal && selectedLead && (
+                    <NoteUserModal
+                        visible={openNoteModal}
+                        onCancel={() => setOpenNoteModal(false)}
+                        lead={selectedLead} // ⬅️ Optional, if you want to show this user's info inside modal
+                    />
+                )
+            }
         </div>
     );
 };
