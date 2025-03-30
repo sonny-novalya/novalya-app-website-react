@@ -1,0 +1,52 @@
+.affiliate-btn {
+    min-height: 48px;
+}
+
+.affiliate-btn:hover {
+    background: #0087FF !important;
+    border-color: #0087FF !important;
+    color: white !important;
+}
+
+.affiliate-btn:hover svg path {
+    stroke: white;
+}
+
+.ctm-tabs .ant-tabs>div {
+    margin: 0;
+}
+
+.ctm-tabs .ant-tabs-tab-btn {
+    border: 1px solid #8D8D8D45;
+    font-family: Outfit;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    background: #F9F9F9;
+    border-radius: 6px;
+    padding: 10px 30px;
+}
+.ctm-tabs .ant-tabs-tab {
+    margin-left: 0px !important;
+    margin-right: 16px !important;
+    padding: 0 0 16px !important;
+}
+.ctm-tabs .ant-tabs-tab.ant-tabs-tab-active {
+    margin-left: 0 !important;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px !important;
+    padding: 0 0 16px !important;
+    border-color: #21bf7c !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+.ctm-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #21BF7C !important;
+}
+
+.ctm-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    border-color: transparent;
+    background: transparent;
+}
+.ctm-tabs .ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
+    opacity: 0;
+}

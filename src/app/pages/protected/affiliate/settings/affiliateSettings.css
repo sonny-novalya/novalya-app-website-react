@@ -1,0 +1,59 @@
+input[type='radio']:checked + label.ctm-label {
+    background: #0087FF;
+    color: white;
+}
+
+.ctm-upload .ant-upload {
+    width: 100%;
+}
+.ctm-upload button.ant-btn  {
+    width: 100%;
+    background: #0087FF33;
+    min-height: 120px;
+    border: 1px dashed #0087FF;
+    border-radius: 10px;
+}
+.ctm-upload span.ant-btn-icon {
+    background: #fff;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+.ctm-upload svg {
+    fill: #0087FF;
+    width: 30px;
+    height: 30px;
+}
+.ctm-upload .ant-upload span  {
+    font-family: Outfit;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+}
+.affi-svg svg {
+    width: 30px;
+    height: 30px;
+    color: #0087FF;
+}
+.ctm-input {
+    font-family: Outfit !important;
+    font-weight: 400;
+    font-size: 14px !important;
+    line-height: 150%;
+    background: #F5F5F5 !important;
+    border: 1px solid #F0F0F0 !important;
+    padding: 10px 20px !important;
+}
+.ctm-select .ant-select-selector {
+    background: #F5F5F5 !important;
+    border: 1px solid #F0F0F0 !important;
+    padding: 10px 20px !important;
+    min-height: 43px;
+}
+.ctm-select .ant-select-arrow {
+    margin-top: 0;
+}
