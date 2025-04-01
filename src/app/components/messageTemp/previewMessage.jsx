@@ -31,7 +31,7 @@ const PreviewMessage = () => {
                   {
                     MessagePreview?.variants?.map((_,index) =>{
                         return (
-                            <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
+                            <button key={index} className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
                             <PreviewMessageIcon index={1}/>
                         Variant - {index+1}
                     </button>
@@ -54,7 +54,7 @@ const PreviewMessage = () => {
 
                        {MessagePreview?.variants?.map((variant,index)=>{
                              return (
-                                <div>
+                                <div key={index}>
                             <div className="relative max-w-[285px]">
                                 <img src={mobileImg} className="w-full" />
                                 <div className="absolute top-[9%] left-[28%] w-[70%]">

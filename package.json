@@ -14,7 +14,7 @@
     "antd": "^5.24.1",
     "axios": "^1.7.9",
     "emoji-picker-react": "^4.12.2",
-    "i18next": "^24.2.2",
+    "i18next": "^24.2.3",
     "i18next-http-backend": "^3.0.2",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",

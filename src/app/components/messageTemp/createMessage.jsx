@@ -158,6 +158,7 @@ const CreateMessage = () => {
               {visibilityOptions?.map((visibility) => {
                 return (
                   <div
+                  key={visibility.id}
                     onClick={() => handleVisibilityChange(visibility)}
                     className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white"
                   >
@@ -186,6 +187,7 @@ const CreateMessage = () => {
               {variants?.map((data, i) => {
                 return (
                   <button
+                  key={data.id}
                     onClick={() => handleSelectedVariant(data)}
                     className={`varient-btn-hover  border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px]  ${
                       data?.id === selectedVariant?.id
