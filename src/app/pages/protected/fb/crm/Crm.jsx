@@ -1,9 +1,101 @@
-import Layout from "../../Layout"
+import { useEffect, useState } from "react";
+import { Input, Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import Layout from "../../Layout";
+import { useFbCrmGroupStore } from "../../../../../store/crm-groups/fb-groups";
+import LeftSectionCrm from "./LeftSectionCrm";
+import RightSectionCrm from "./RightSectionCrm";
+import AddGroupModal from "./AddGroupModal";
+
+const initialGroups = [
+  { id: "1", name: "TeckTalk" },
+  { id: "2", name: "Sobinder1" },
+  { id: "3", name: "nmn" },
+  { id: "4", name: "18-FEB" },
+  { id: "5", name: "test1" },
+  { id: "6", name: "shivam" },
+  { id: "7", name: "bmbmn" },
+  { id: "8", name: "nmnm" },
+  { id: "9", name: "popop" },
+];
 
 const Crm = () => {
-  return (
-    <Layout>Crm layout</Layout>
-  )
-}
+  const [groups, setGroups] = useState(initialGroups);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [search, setSearch] = useState("");
+  const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
 
-export default Crm
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(groups); // clone the array
+    const [reorderedItem] = items.splice(result.source.index, 1); // remove dragged item
+    items.splice(result.destination.index, 0, reorderedItem); // insert at new position
+
+    setGroups(items); // update state
+  };
+
+  const { fbCrmGroups, loading: fetchCrmGroupLoading, error: fetchCrmGroupError, fetchGroups } = useFbCrmGroupStore();
+
+  useEffect(() => {
+    fetchGroups();  // Call the fetchGroups when the component mounts
+  }, [fetchGroups]);
+
+  // Function to toggle the modal
+  const toggleAddGroupModal = () => {
+    setOpenAddGroupModal(!openAddGroupModal);
+  };
+
+  return (
+    <Layout>
+      <h2 className="text-xl font-medium mb-2">Facebook CRM</h2>
+      <div className="flex bg-gray-100 shadow-lg rounded-lg">
+        <div className="w-[300px] bg-[#E6F1FB] p-4 flex flex-col overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Groups</h2>
+            <Button
+              icon={<PlusOutlined />}
+              type="primary"
+              size="small"
+              onClick={toggleAddGroupModal} // Open the Add Group modal
+            >
+              Add Group
+            </Button>
+          </div>
+          <Input
+            placeholder="Search..."
+            className="mb-4"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="flex-1 overflow-y-auto max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]">
+            <LeftSectionCrm
+              isLoading={fetchCrmGroupLoading}
+              groups={fbCrmGroups}
+              search={search}
+              selectedGroup={selectedGroup}
+              setSelectedGroup={setSelectedGroup}
+              onDragEnd={onDragEnd}
+              error={fetchCrmGroupError}
+            />
+          </div>
+        </div>
+        <div className="flex-1">
+          <RightSectionCrm selectedGroup={selectedGroup} />
+        </div>
+      </div>
+
+      {/* Conditionally render AddGroupModal */}
+      {openAddGroupModal && (
+        <AddGroupModal
+          createGroup={{ isOpen: openAddGroupModal, onClose: toggleAddGroupModal }}
+          showColorPicker={{ isOpen: false, toggle: () => { } }} 
+          handleGroupSave={() => { }}
+          handleColorChange={() => { }}
+        />
+      )}
+    </Layout>
+  );
+};
+
+export default Crm;
