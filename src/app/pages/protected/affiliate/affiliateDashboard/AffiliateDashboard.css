@@ -12,6 +12,15 @@
     stroke: white;
 }
 
+.affiliate-btn-Active{
+    background: #0087FF !important;
+    border-color: #0087FF !important;
+    color: white !important;
+}
+.affiliate-btn-Active svg path {
+    stroke: white !important;
+}
+
 .ctm-tabs .ant-tabs>div {
     margin: 0;
 }
