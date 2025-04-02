@@ -5,6 +5,7 @@ import AffiliateLinks from "./affiliate/affiliateLinks/affiliateLinks";
 import AffiliateSettings from "./affiliate/settings/affiliateSettings";
 import LevelCommission from "./affiliate/level-commissions/levelCommission";
 import Crm from "./fb/crm/Crm";
+import IgCrm from "./ig/crm/Crm";
 import Birthday from "./fb/birthday/Birthday";
 import FriendsList from "./fb/friends-list/FriendsList";
 import Request from "./fb/request/Request";
@@ -30,5 +31,6 @@ const MessageIndexPage = withSidebarLayout(MessageIndex);
 const IgFollowersPage = withSidebarLayout(IgFollowers);
 const IgPostsPage = withSidebarLayout(IgPost);
 const IgHashtagPage = withSidebarLayout(IgHashtags);
+const IgCrmPage = withSidebarLayout(IgCrm);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage,  FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage }
