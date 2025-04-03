@@ -1,7 +1,7 @@
 import React from 'react'
 import './affiliateSettings.css'
 import AfiliateTopBar from '../../../../components/affilliate/shared/affiliateTopBar'
-import { Button, Input, Select, Upload, Radio, message } from "antd";
+import { Button, Input, Select, Upload, message } from "antd";
 import { UploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
 
 const AffiliateSettings = () => {
