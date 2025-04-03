@@ -1,7 +1,7 @@
 import FacebookCard from "./FacebookCard";
 import FollowUpPanel from "./FollowUpPanel";
 import InstagramCard from "./InstagramCard";
-import MonthlyUsage from "./MonthlyUSage";
+import MonthlyUsage from "./MonthlyUsage";
 import TargetedPromotion from "./TargetPromotion";
 
 const ThirdStep = () => {
