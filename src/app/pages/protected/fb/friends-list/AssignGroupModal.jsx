@@ -53,7 +53,10 @@ const AssignGroupModal = ({ open, close, usersToAdd }) => {
                     Cancel
                 </button>
                 <button className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6 cursor-pointer">
-                    Move
+                    Add
+                </button>
+                <button className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6 cursor-pointer">
+                    Remove
                 </button>
             </div>
         </Modal>

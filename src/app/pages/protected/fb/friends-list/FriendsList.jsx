@@ -11,10 +11,11 @@ import AssignGroupModal from "./AssignGroupModal";
 const FriendsList = () => {
 
     const [searchKeyword, setSearchKeyword] = useState("")
-    const [isPremium, setIsPremium] = useState(true);
+    const [isPremium, setIsPremium] = useState(false);
     const { friends, loading, error, totalRecords, fetchFbFriends, fbAddToWhitelist } = useFbFriendListStore();
     // const [selectedRows, setSelectedRows] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [selectedProfileIds, setSelectedProfileIds] = useState([]);
 
     const [openAssignGroupModal, setOpenAssignGroupModal] = useState(false);
     const [pagination, setPagination] = useState({
@@ -151,8 +152,25 @@ const FriendsList = () => {
       onChange: (selectedKeys) => {
         setSelectedRowKeys(selectedKeys);
         console.log("Selected Row Keys:", selectedKeys);
+        prepareProfileSyncingIds(selectedKeys)
       },
     };
+
+    const prepareProfileSyncingIds = (ids) => {
+      const usernames = ids
+      .map(id => {
+        const match = friends.find(item => item.id === id);
+        return match ? match.fbId : null;
+      })
+      .filter(username => username !== null); // Remove null values
+      setSelectedProfileIds(usernames);
+    }
+
+    const showUpgradeAlert = () => {
+      if(!isPremium){
+        alert("Upgrade is required")
+      }
+    }
     
 
     const fetchNewPageData = async (page, pageSize) => {
@@ -177,7 +195,7 @@ const FriendsList = () => {
       console.log(selectedRowKeys)
       if(selectedRowKeys.length == 0){
         return;
-      }
+      } 
 
       fbAddToWhitelist(selectedRowKeys).then(() => {
         setSelectedRowKeys([]); // Clear selection
@@ -242,6 +260,10 @@ const FriendsList = () => {
               type="primary" 
               ghost
               icon={<ReloadOutlined />}
+              id="async_unfriend"
+              attr-data={JSON.stringify({
+                userIds: selectedRowKeys,
+              })}
             >
               Unfriend
             </Button>
@@ -258,15 +280,11 @@ const FriendsList = () => {
               type="primary" 
               ghost
               icon={<ReloadOutlined />}
+              id={isPremium ? "sync_friends_profiles" : ""}
+              data-profiles={JSON.stringify(selectedProfileIds)}
+              onClick={showUpgradeAlert}
             >
               Sync Details
-            </Button>
-            <Button 
-              type="primary" 
-              ghost
-              icon={<ReloadOutlined />}
-            >
-              Export
             </Button>
           </div>}
         </div>
