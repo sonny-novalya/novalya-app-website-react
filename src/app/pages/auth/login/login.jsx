@@ -7,6 +7,7 @@ import { loginUser, manualSignIn } from "../../../../services/ApiCalls";
 import { loginSenerios, removeAllCookies } from "../../../../helpers/helper";
 import {useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import apiCall from "../../../../services/api";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -30,6 +31,11 @@ const LoginPage = () => {
 
     try {
       const response = await loginUser(creds);
+      // const response = await apiCall({
+      //   method: 'POST',
+      //   url: '/login',
+      //   payload:creds,
+      // })
       if (response?.data?.status === "success") {
         removeAllCookies()
         loginSenerios(response?.data)
