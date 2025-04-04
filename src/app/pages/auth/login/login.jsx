@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Input, Checkbox, message } from "antd";
+import { Input, Checkbox, message,Spin } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import GlobeImg from "../../../../../src/assets/img/globe.png";
 import NovalyaFullWhiteLogo from "../../../../../src/assets/img/NovalyaFullWhiteLogo.png";
-import { loginUser, manualSignIn } from "../../../../services/ApiCalls";
+import {  manualSignIn } from "../../../../services/ApiCalls";
 import { loginSenerios, removeAllCookies } from "../../../../helpers/helper";
 import {useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import apiCall from "../../../../services/api";
+import "../auth.css"
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -30,13 +31,16 @@ const LoginPage = () => {
     const creds = {username,password}
 
     try {
-      const response = await loginUser(creds);
-      // const response = await apiCall({
-      //   method: 'POST',
-      //   url: '/login',
-      //   payload:creds,
-      // })
-      if (response?.data?.status === "success") {
+      // const response = await loginUser(creds);
+      const response = await apiCall({
+        method: 'POST',
+        url: '/login',
+        data:creds,
+        auth:false,
+      })
+
+      console.log(response,"response")
+      if (response?.status === 200) {
         removeAllCookies()
         loginSenerios(response?.data)
       } else {
@@ -86,7 +90,7 @@ const LoginPage = () => {
   
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] px-4 login_parent">
       <div className="flex w-full max-w-4xl rounded-lg shadow-lg overflow-hidden bg-white">
         <div className="w-1/2 bg-gradient-to-r from-[#005199] to-[#0087FF] px-10 py-20 flex flex-col justify-center items-center text-white">
           <img src={NovalyaFullWhiteLogo} alt="Novalya Logo" />
@@ -137,7 +141,10 @@ const LoginPage = () => {
                 className="mt-4 py-2 px-6 rounded text-sm !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit"
                 disabled={isLoading}
               >
-                {t("login.SIGN IN")}
+              {
+                isLoading ? <Spin size="small" style={{color:"white"}}/>  :t("login.SIGN IN")
+              }
+              
               </button>
             </div>
           </form>

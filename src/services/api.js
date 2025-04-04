@@ -35,7 +35,7 @@ const logoutUser = () => {
 const apiCall = async ({
   method = 'GET',
   url = '',
-  payload = {},
+  data = {},
   params = {},
   headers = {},
   auth = true,
@@ -43,6 +43,7 @@ const apiCall = async ({
 }) => {
   try {
     const dynamicHeaders = auth ? getDynamicHeaders() : {};
+    console.log(data,"payload")
     
     const config = {
       method,
@@ -52,11 +53,14 @@ const apiCall = async ({
         ...headers, 
       },
       params,
-      payload,
+      data
+     
     };
 
+    console.log(config)
+
     const response = await axios(config);
-    return response.data;
+    return response;
   } catch (error) {
     const status = error?.response?.status;
     if (showError) {
