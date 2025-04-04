@@ -1,6 +1,6 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
-import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage } from "../pages/protected";
+import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage, AiCommentsPage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
 
@@ -23,6 +23,7 @@ const AuthentictedRoutes = () => {
         <Route path="/ig/prospecting/posts" element={<IgPostsPage />} />
         <Route path="/ig/prospecting/hashtags" element={<IgHashtagPage />} />
         <Route path="/ig/crm" element={<IgCrmPage />} />
+        <Route path="/ai-comments" element={<AiCommentsPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
         <Route path="/library/messages" element={<MessageIndexPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
