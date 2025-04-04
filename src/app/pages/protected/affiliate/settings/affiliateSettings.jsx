@@ -3,8 +3,8 @@ import './affiliateSettings.css'
 import AfiliateTopBar from '../../../../components/affilliate/shared/affiliateTopBar'
 import { Button, Input, Select, Upload, message } from "antd";
 import { UploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import adharBack from "../../../../../assets/img/adharBack.png"
-import adharFront from "../../../../../assets/img/adharFront.png"
+import adharFront from "../../../../../assets/img/adharBack.png"
+import  adharBack from "../../../../../assets/img/adharFront.png"
 
 const AffiliateSettings = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +22,7 @@ const AffiliateSettings = () => {
   });
   const [errors, setErrors] = useState({});
   const [isEU, setIsEU] = useState(false)
+  const [isPassport, setIsPassport] = useState(false)
 
   // Handle input changes
   const handleChange = (e) => {
@@ -131,12 +132,12 @@ const AffiliateSettings = () => {
                 <h4 className='font-medium text-[20px] leading-[150%]'>Start Verification Document</h4>
                 <div className='flex items-center gap-5'>
                   <div className='flex items-center gap-5'>
-                    <input className='transform scale-[1.35]' type='radio' id='ID-Card' name='kyc-varification'/>
+                    <input className='transform scale-[1.35]' value={false} onChange={()=>setIsPassport(false)} checked={!isPassport} type='radio' id='ID-Card' name='kyc-varification'/>
                     <label className='ctm-label font-medium text-[14px] leading-[150%] bg-white text-[#0087FF] px-7 py-2.5 rounded-[6px] border border-[#0087FF] cursor-pointer' for='ID-Card'>ID Card</label>
                   </div>
                   <h5 className='font-medium text-[20px] leading-[150%] text-black'>Or</h5>
                   <div className='flex items-center gap-5'>
-                    <input className='transform scale-[1.35]' type='radio' id='Passport' name='kyc-varification'/>
+                    <input className='transform scale-[1.35]' value={true} onChange={()=>setIsPassport(true)}  checked={isPassport}  type='radio' id='Passport' name='kyc-varification'/>
                     <label className='ctm-label font-medium text-[14px] leading-[150%] bg-white text-[#0087FF] px-7 py-2.5 rounded-[6px] border border-[#0087FF] cursor-pointer' for='Passport'>Passport</label>
                   </div>
                 </div>
