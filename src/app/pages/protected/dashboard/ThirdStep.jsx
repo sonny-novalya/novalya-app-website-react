@@ -15,7 +15,7 @@ const ThirdStep = () => {
                     <div>
                         <h3 className="text-lg font-semibold">Promote and get paid</h3>
                         <p className="mt-2 text-sm">
-                            By sharing your affiliate link to others you get paid up to 60%. Share it to the world now.
+                            sharing_link_feature
                         </p>
                     </div>
                     <button className="mt-4 bg-white text-green-700 font-bold py-2 px-4 rounded shadow">

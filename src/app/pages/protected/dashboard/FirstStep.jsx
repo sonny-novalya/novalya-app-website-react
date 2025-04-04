@@ -7,8 +7,7 @@ const FirstStep = () => {
         <div>
           <h2 className="text-3xl font-bold">Software Status</h2>
           <p className="mt-2">
-            Activate the extension to unlock access to your dashboard and start
-            using all available features seamlessly.
+            activate_extension
           </p>
           <Button  size="large" className="mt-4">
             Install Extension →
@@ -29,12 +28,11 @@ const FirstStep = () => {
             <div className='w-4/5'>
               <h3 className="text-lg font-bold">Upgrade your account</h3>
               <p className="text-gray-600 mt-2">
-                Given your current plan, you’re eligible to an unlimited plan
-                feature.
+                current_plan_feature
               </p>
             </div>
             <div className="rounded-full border bg-[#0087FF] text-white px-3 py-3 text-sm flex items-center justify-center flex-col ">
-              <span>Up to </span>
+              <span>Up to</span>
               <span>*35% off*</span>
             </div>
           </div>
@@ -49,7 +47,7 @@ const FirstStep = () => {
               Promote and get paid
             </h3>
             <p className="text-gray-600 mt-2">
-              By sharing your affiliate link to others, you get paid up to 60%. Share it with the world now.
+              sharing_link_feature
             </p>
           </div>
           <Button type="primary" size="large" className="mt-5">
