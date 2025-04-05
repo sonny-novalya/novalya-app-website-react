@@ -9,7 +9,7 @@ const AfiliateTopBar = () => {
   return (
     <div className="mb-5">
     <h1 className="text-2xl font-semibold mb-6" >Affiliates</h1>
-    <div className="flex justify-between gap-6">
+    <div className="flex justify-between gap-6 affiliate-btn-wrap">
       <Button className={`${location.pathname === "/affiliate"?"affiliate-btn-Active": "affiliate-btn" }  w-full min-h-12 sm:w-1/4 border-gray-300 font-[500] text-[16px] sm:text-[18px] leading-[25.2px] !text-[16px] sm:!text-[18px] !p-3`} onClick={()=>navigate('/affiliate')}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M22 4.1C22 2.6 21.36 2 19.77 2H15.73C14.14 2 13.5 2.6 13.5 4.1V10.9C13.5 12.4 14.14 13 15.73 13H19.77C21.36 13 22 12.4 22 10.9V4.1Z" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -18,13 +18,13 @@ const AfiliateTopBar = () => {
           <path d="M10.5 5.9C10.5 7.4 9.86 8 8.27 8H4.23C2.64 8 2 7.4 2 5.9V4.1C2 2.6 2.64 2 4.23 2H8.27C9.86 2 10.5 2.6 10.5 4.1V5.9Z" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>  Dashboard
       </Button>
-      <Button className="affiliate-btn w-full min-h-12 sm:w-1/4 border-gray-300 font-[500] text-[16px] sm:text-[18px] leading-[25.2px] !text-[16px] sm:!text-[18px] !p-3" onClick={()=>navigate('/affiliate/links')}>
+      {/* <Button className="affiliate-btn w-full min-h-12 sm:w-1/4 border-gray-300 font-[500] text-[16px] sm:text-[18px] leading-[25.2px] !text-[16px] sm:!text-[18px] !p-3" onClick={()=>navigate('/affiliate/links')}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M14.9922 17.5H16.5022C19.5222 17.5 22.0022 15.03 22.0022 12C22.0022 8.98 19.5322 6.5 16.5022 6.5H14.9922" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M9 6.5H7.5C4.47 6.5 2 8.97 2 12C2 15.02 4.47 17.5 7.5 17.5H9" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M8 12H16" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg> Affiliate Links
-      </Button>
+      </Button> */}
       <Button className={`${location.pathname === "/affiliate/level-commission"?"affiliate-btn-Active": "affiliate-btn" }  w-full min-h-12 sm:w-1/4 border-gray-300 font-[500] text-[16px] sm:text-[18px] leading-[25.2px] !text-[16px] sm:!text-[18px] !p-3`} onClick={()=>navigate('/affiliate/level-commission')}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9.5 13.75C9.5 14.72 10.25 15.5 11.17 15.5H13.05C13.85 15.5 14.5 14.82 14.5 13.97C14.5 13.06 14.1 12.73 13.51 12.52L10.5 11.47C9.91 11.26 9.51001 10.94 9.51001 10.02C9.51001 9.17999 10.16 8.48999 10.96 8.48999H12.84C13.76 8.48999 14.51 9.26999 14.51 10.24" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
