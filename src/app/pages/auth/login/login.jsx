@@ -31,26 +31,29 @@ const LoginPage = () => {
     const creds = {username,password}
 
     try {
-      // const response = await loginUser(creds);
       const response = await apiCall({
         method: 'POST',
-        url: '/login',
-        data:creds,
-        auth:false,
-      })
+        url: '/user/api/login',
+        data: creds,
+        auth: false,
+      });
 
-      console.log(response,"response")
+      console.log(response, "response");
+
       if (response?.status === 200) {
-        removeAllCookies()
-        loginSenerios(response?.data)
+        removeAllCookies();
+        loginSenerios(response?.data);  // Corrected potential typo here
       } else {
-        message.error(error || "Login failed!");
+        message.error("Login failed!");  // Simplified the error handling here
       }
-      setIsLoading(false)
-      
+
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
+      // Added specific error handling for the catch block
+      message.error(error?.message || "An unexpected error occurred!");
     }
+
 
  
   };

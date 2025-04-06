@@ -1,19 +1,39 @@
-import  { useState } from "react";
+import  { useEffect, useState } from "react";
 import { Steps, Button } from "antd";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
 import ThirdStep from "./ThirdStep";
 import Layout from "../Layout";
+import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 
 const { Step } = Steps;
 
 const Dashboard = () => {
   const [current, setCurrent] = useState(0);
+  const { fetchSocialAccounts, socialAccountsData, loading, error } = useSocialAccountsStore();
+
+  const { facebook_data, instagram_data, limit_data } = socialAccountsData
+
+  const isConnected = (data) =>
+    data && typeof(data) === "object" && Object.keys(data).length > 0;
+
+  useEffect(() => {
+    fetchSocialAccounts();
+  }, []);
+
+  if (loading) return "Loading";
+  if (error) return "Alert";
+
 
   const steps = [
     { title: "Install Extension", content: <FirstStep /> },
     { title: "Connect Social Networks", content: <SecondStep /> },
-    { title: "Dashboard Overview", content: <ThirdStep /> },
+    {
+      title: "Dashboard Overview", content: <ThirdStep
+        facebook_data={facebook_data}
+        instagram_data={instagram_data}
+        limit_data={limit_data}
+      /> },
   ];
 
   return (
@@ -35,12 +55,24 @@ const Dashboard = () => {
           ? <Button onClick={() => setCurrent(current - 1)}>Previous</Button>
           : <span></span>
         }
-        {current < steps.length - 1 
-          ? <Button type="primary" onClick={() => setCurrent(current + 1)}>
-              Next
-            </Button>
-          : <Button type="primary">Finish</Button>
-        }
+        {current < steps.length - 1 ? (
+          <Button
+            type="primary"
+            onClick={() => {
+              if (current === 1 && !isConnected(facebook_data) && !isConnected(instagram_data)) {
+                alert("Please connect either Facebook or Instagram account before proceeding.");
+                return;
+              }
+
+              setCurrent(current + 1);
+            }}
+          >
+            Next
+          </Button>
+        ) : (
+          <Button type="primary">Finish</Button>
+        )}
+
       </div>
     </Layout>
   );
