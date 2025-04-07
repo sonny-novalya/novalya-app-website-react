@@ -73,17 +73,37 @@ const FriendsList = () => {
           dataIndex: "user_name",
           render: (_, record) => (
               <div className="flex items-center space-x-2">
-                  <img src={record.image} alt="" className="w-10 h-10 object-cover" style={{borderRadius: "4px"}} />
-                  <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{record.user_name}</span>
+                  <a
+                    href={`https://facebook.com/${record.fbId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2"
+                    style={{gap:"10px"}}
+                  >
+                    <img src={record.image} alt="" className="w-10 h-10 object-cover" style={{borderRadius: "4px"}} />
+                    <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{record.user_name}</span>
+                  </a>
               </div>
           )
         },
         { 
           title: "Tag", 
           dataIndex: "taggedusers",
-          render: (_, record) => (
-            "Tags"
-          )
+          render: (_, record) => {
+            const tag = record.taggedusers ? record.taggedusers?.assignTag : null;
+            return tag ? (
+              <span
+                className="fb-group-icon"
+                style={{
+                  border: "1px solid",
+                  borderColor: tag.custom_color,
+                  color: tag.custom_color,
+                }}
+              >
+                {tag.name?.slice(0, 2).toUpperCase()}
+              </span>
+            ) : null;
+          }
         },
         { 
           title: "Mutual Friends", 

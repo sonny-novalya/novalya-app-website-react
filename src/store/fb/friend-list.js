@@ -12,7 +12,7 @@ export const useFbFriendListStore = create((set) => ({
         set({ loading: true, error: null, friends: []});
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`${BASE_URL}/novadata/api/get-fb-friends?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`, {
+            const response = await fetch(`${BASE_URL}/novadata/api/get-fb-friends-with-tags?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
