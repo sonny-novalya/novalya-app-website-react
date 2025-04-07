@@ -7,7 +7,7 @@ import useMessageSteps from "../../store/messageTemp/MessageTemp";
 
 
 const AuthentictedRoutes = () => {
-  const {isMessage,step,selectedPlatform} = useMessageSteps();
+  const {isMessage,step,selectedPlatform,setIsMessage} = useMessageSteps();
 
   return (
     <>
@@ -33,7 +33,7 @@ const AuthentictedRoutes = () => {
         <Route path="/affiliate/settings" element={<AffiliateSettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform}/>:""}
+    {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform} setIsMessage={setIsMessage}/>:""}
 
     </>
   );

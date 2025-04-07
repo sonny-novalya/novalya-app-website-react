@@ -24,7 +24,7 @@ import EmojiPicker from "emoji-picker-react";
 import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/MessageIcons";
 import { useTranslation } from "react-i18next";
 
-const CreateMessage = () => {
+const CreateMessage = ({containerRef}) => {
   const {
     setStep,
     setIsMessage,
@@ -129,7 +129,7 @@ const CreateMessage = () => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage">
-      <div className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+      <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
         <div className="flex items-center gap-[10px] text-[20px]">
             {t("message.Message name")} 
           <CreateMessageIcon index={0} />
