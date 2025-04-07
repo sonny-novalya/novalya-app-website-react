@@ -16,6 +16,7 @@ import IgPost from "./ig/prospecting/PostsTable";
 import GroupsTable from "./fb/prospecting/GroupsTable";
 import PostsTable from "./fb/prospecting/PostTable";
 import AiComments from "./ai-comments/AiComments";
+import Keywords from "./library/keyword/keyword";
 
 const DashboardPage = withSidebarLayout(Dashboard);
 const AffiliatePage = withSidebarLayout(AffiliateDashboard);
@@ -34,5 +35,6 @@ const IgPostsPage = withSidebarLayout(IgPost);
 const IgHashtagPage = withSidebarLayout(IgHashtags);
 const IgCrmPage = withSidebarLayout(IgCrm);
 const AiCommentsPage = withSidebarLayout(AiComments);
+const KeywordsPage = withSidebarLayout(Keywords);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage, AiCommentsPage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage, AiCommentsPage , KeywordsPage}

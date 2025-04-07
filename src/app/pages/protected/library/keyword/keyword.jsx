@@ -1,10 +1,10 @@
 import React from 'react'
-import { Input, Button, List, Card, Dropdown, Menu } from 'antd';
+import { Input, Button, List} from 'antd';
 import { SearchOutlined, FilterOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import './messageIndex.css'
+import '../message/messageIndex.css'
 import useMessageSteps from '../../../../../store/messageTemp/MessageTemp';
 
-const MessageIndex = () => {
+const Keywords = () => {
   const {setIsMessage} = useMessageSteps()
 
     const messages = Array(10).fill({
@@ -36,7 +36,7 @@ const MessageIndex = () => {
     <>
     <div className='message-main-wraper'>
       <div className="px-6 py-5 bg-gray-100 min-h-screen">
-        <h1 className='font-medium text-[24px] leading-[1.3] mb-5'>Messages Templates</h1>
+        <h1 className='font-medium text-[24px] leading-[1.3] mb-5'>Keywords</h1>
       
         <div className="bg-white p-5 rounded-2xl shadow-lg">
           <div className="flex justify-between items-center mb-4">
@@ -66,15 +66,18 @@ const MessageIndex = () => {
             dataSource={messages}
             renderItem={(item) => (
               <List.Item className="flex justify-between items-center">
-                <span>Message {item.id}</span>
+                <span>Keywords {item.id}</span>
                 <div className="flex gap-4 items-center">
-                  {renderPlatformButton(item.platform)}
+                  {/* {renderPlatformButton(item.platform)} */}
                   <Button icon={<EditOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
                   
                   Edit
                   </Button>
                   <Button icon={<EyeOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !!text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
-                    Preview
+                   Duplicate
+                  </Button>
+                  <Button icon={<EyeOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !!text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
+                   Delete
                   </Button>
                 </div>
               </List.Item>
@@ -121,4 +124,4 @@ const MessageIndex = () => {
   )
 }
 
-export default MessageIndex
+export default Keywords

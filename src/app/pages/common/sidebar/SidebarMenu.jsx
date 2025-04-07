@@ -53,7 +53,11 @@ const SidebarMenu = () => {
             ]
         },
         { text: "AI Comments", id: "ai-comments", path: "/ai-comments", icon: <AiCommentsIcon /> },
-        { text: "Library", id: "library", path: "/library/messages", icon: <LibraryIcon /> },
+        { text: "Library", id: "library", path: "/library/messages", icon: <LibraryIcon /> ,    subNav: [
+            { text: "Messages", id: "messages", path: "/library/messages" },
+            { text: "Keywords", id: "keywords", path: "/library/keywords" },
+        
+        ]},
         { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
         { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon /> },
         { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
