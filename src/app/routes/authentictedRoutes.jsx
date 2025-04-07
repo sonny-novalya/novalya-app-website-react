@@ -1,6 +1,7 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
-import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage, AiCommentsPage } from "../pages/protected";
+
+import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
 
@@ -31,6 +32,9 @@ const AuthentictedRoutes = () => {
         <Route path="/affiliate/level-commission" element={<LevelCommissionPage />} />
         <Route path="/affiliate/settings" element={<AffiliateSettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/fb/unfriended" element={<UnfriendedPage />} />
+        <Route path="/fb/deactivated" element={<DeactivatedPage />} />
+        <Route path="/fb/whitelist" element={<WhitelistPage />} />
       </Routes>
     {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform}/>:""}
 
