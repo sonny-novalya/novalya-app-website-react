@@ -6,6 +6,7 @@ import { useFbCrmGroupStore } from "../../../../../store/crm-groups/fb-groups";
 import LeftSectionCrm from "./LeftSectionCrm";
 import RightSectionCrm from "./RightSectionCrm";
 import AddGroupModal from "./AddGroupModal";
+import { t } from "i18next";
 
 const initialGroups = [
   { id: "1", name: "TeckTalk" },
@@ -28,42 +29,41 @@ const Crm = () => {
   const onDragEnd = (result) => {
     if (!result.destination) return;
 
-    const items = Array.from(groups); // clone the array
-    const [reorderedItem] = items.splice(result.source.index, 1); // remove dragged item
-    items.splice(result.destination.index, 0, reorderedItem); // insert at new position
+    const items = Array.from(groups);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
 
-    setGroups(items); // update state
+    setGroups(items);
   };
 
   const { fbCrmGroups, loading: fetchCrmGroupLoading, error: fetchCrmGroupError, fetchGroups } = useFbCrmGroupStore();
 
   useEffect(() => {
-    fetchGroups();  // Call the fetchGroups when the component mounts
+    fetchGroups();
   }, [fetchGroups]);
 
-  // Function to toggle the modal
   const toggleAddGroupModal = () => {
     setOpenAddGroupModal(!openAddGroupModal);
   };
 
   return (
     <Layout>
-      <h2 className="text-xl font-medium mb-2">Facebook CRM</h2>
+      <h2 className="text-xl font-medium mb-2">{t("crm.Facebook CRM")}</h2>
       <div className="flex bg-gray-100 shadow-lg rounded-lg">
         <div className="w-[300px] bg-[#E6F1FB] p-4 flex flex-col overflow-hidden">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Groups</h2>
+            <h2 className="text-lg font-semibold">{t("crm.Groups")}</h2>
             <Button
               icon={<PlusOutlined />}
               type="primary"
               size="small"
-              onClick={toggleAddGroupModal} // Open the Add Group modal
+              onClick={toggleAddGroupModal}
             >
-              Add Group
+              {t("crm.Add Group")}
             </Button>
           </div>
           <Input
-            placeholder="Search..."
+            placeholder={t("crm.Search...")}
             className="mb-4"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -85,7 +85,6 @@ const Crm = () => {
         </div>
       </div>
 
-      {/* Conditionally render AddGroupModal */}
       {openAddGroupModal && (
         <AddGroupModal
           createGroup={{ isOpen: openAddGroupModal, onClose: toggleAddGroupModal }}
