@@ -5,7 +5,7 @@ import aiIconImg from "../../../assets/img/Content-Creation-Writing.svg"
 import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { useTranslation } from 'react-i18next'
 
-const MessageSelector = () => {
+const MessageSelector = ({containerRef}) => {
   const {setStep} = useMessageSteps()
   const {t} = useTranslation()
  const handleSelector = (index)=>{
@@ -17,7 +17,7 @@ const MessageSelector = () => {
   }
   return (
     <div className="fixed inset-0 flex items-center justify-center  bg-black/30 h-screen" >
-        <div className="bg-white px-6 py-9 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+        <div ref={containerRef} className="bg-white px-6 py-9 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           <div className='grid grid-cols-3 gap-12'>
             {data.map((item, index) => (
               <div key={index} className="border border-[#D2D2D2] rounded-[6px] text-center px-5 py-[10px]" onClick={()=>handleSelector(index)}>

@@ -5,7 +5,7 @@ import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { PreviewMessageIcon } from '../../pages/common/icons/messageIcons/MessageIcons'
 import { useTranslation } from 'react-i18next'
 
-const IgVisibilitySelector = () => {
+const IgVisibilitySelector = ({containerRef}) => {
   const {setStep,step,setSelectedVisibilty} = useMessageSteps()
   const {t}= useTranslation()
       const handleVisibilty = (visibility) => { 
@@ -15,7 +15,7 @@ const IgVisibilitySelector = () => {
     
       return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen">
-          <div className="bg-white px-6 py-9 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+          <div ref={containerRef} className="bg-white px-6 py-9 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
             <div className="flex items-center gap-[10px] text-[20px]">
             {t("message.Select feature")}
                <PreviewMessageIcon index={0}/>

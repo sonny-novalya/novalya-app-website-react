@@ -1,14 +1,14 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
 
-import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage } from "../pages/protected";
+import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage,KeywordsPage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
 
 
 
 const AuthentictedRoutes = () => {
-  const {isMessage,step,selectedPlatform} = useMessageSteps();
+  const {isMessage,step,selectedPlatform,setIsMessage} = useMessageSteps();
 
   return (
     <>
@@ -27,6 +27,7 @@ const AuthentictedRoutes = () => {
         <Route path="/ai-comments" element={<AiCommentsPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
         <Route path="/library/messages" element={<MessageIndexPage />} />
+        <Route path="/library/keywords" element={<KeywordsPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />
         <Route path="/affiliate/links" element={<AffiliateLinksPage />} />
         <Route path="/affiliate/level-commission" element={<LevelCommissionPage />} />
@@ -36,7 +37,7 @@ const AuthentictedRoutes = () => {
         <Route path="/fb/deactivated" element={<DeactivatedPage />} />
         <Route path="/fb/whitelist" element={<WhitelistPage />} />
       </Routes>
-    {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform}/>:""}
+    {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform} setIsMessage={setIsMessage}/>:""}
 
     </>
   );

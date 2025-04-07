@@ -5,7 +5,7 @@ import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { PreviewMessageIcon } from '../../pages/common/icons/messageIcons/MessageIcons'
 import { useTranslation } from 'react-i18next'
 
-const MessagePlatformSelector = () => {
+const MessagePlatformSelector = ({containerRef}) => {
   const {setStep,setSelectedPlatform} = useMessageSteps()
   const {t} = useTranslation()
 
@@ -19,7 +19,7 @@ const MessagePlatformSelector = () => {
   }
   return (
 <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen">
-      <div className="bg-white px-6 py-9 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+      <div ref={containerRef} className="bg-white px-6 py-9 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
         <div className="flex items-center gap-[10px]">
         {t("message.Select feature")}
          
