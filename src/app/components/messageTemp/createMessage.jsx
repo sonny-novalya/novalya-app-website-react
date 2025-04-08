@@ -23,6 +23,7 @@ import useMessageSteps from "../../../store/messageTemp/MessageTemp";
 import EmojiPicker from "emoji-picker-react";
 import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/MessageIcons";
 import { useTranslation } from "react-i18next";
+import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
 
 const CreateMessage = ({containerRef}) => {
   const {
@@ -112,7 +113,7 @@ const CreateMessage = ({containerRef}) => {
     };
   }, [pickerRef]);
 
-  const hnadlePreview = () => {
+  const handlePreview = () => {
     const message = {
       variants: variants,
       name: name,
@@ -214,11 +215,22 @@ const CreateMessage = ({containerRef}) => {
                  {t("message.Write message")}
                 <CreateMessageIcon index={5} />
               </div>
-              <button
-                onClick={() => hnadlePreview()}
+              {/* <button
+                onClick={() => handlePreview()}
                 className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
               >
                   {t("message.Preview")}
+              </button> */}
+              <button
+                onClick={() => handlePreview()}
+                className="flex space-x-1 items-center bg-[#FF00001C] text-[#FF0000] px-3 py-1 rounded-full text-sm"
+              >
+                  <span className="">
+                    <DeleteFillRedIcon />
+                  </span>
+                  <span>
+                    Delete
+                  </span>
               </button>
             </div>
             <div className="border border-[#E6E6E6] h-[93.75%] p-3">
@@ -355,7 +367,7 @@ const CreateMessage = ({containerRef}) => {
         </div>
         <div className="flex gap-4 justify-between mt-6">
           <button
-            onClick={() => hnadlePreview()}
+            onClick={() => handlePreview()}
             className="flex justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-full max-w-[200px] rounded-md"
           >
              {t("message.Preview")}
