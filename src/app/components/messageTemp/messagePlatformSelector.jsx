@@ -6,7 +6,7 @@ import { PreviewMessageIcon } from '../../pages/common/icons/messageIcons/Messag
 import { useTranslation } from 'react-i18next'
 
 const MessagePlatformSelector = ({containerRef}) => {
-  const {setStep,setSelectedPlatform} = useMessageSteps()
+  const {setStep,step,setSelectedPlatform} = useMessageSteps()
   const {t} = useTranslation()
 
   const  handleSelection = (platform) => {
@@ -20,14 +20,14 @@ const MessagePlatformSelector = ({containerRef}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen">
         <div className='flex justify-end max-w-[800px] mx-auto w-full'>
-          <button>
+          <button >
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
         </div>
         <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-            <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button>
+            <button onClick={()=>setStep(step-1)} className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button>
             <div className="flex items-center gap-[10px]">
             {t("message.Select feature")}
             
