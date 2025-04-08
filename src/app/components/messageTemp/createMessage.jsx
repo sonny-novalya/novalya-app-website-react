@@ -24,6 +24,8 @@ import EmojiPicker from "emoji-picker-react";
 import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/MessageIcons";
 import { useTranslation } from "react-i18next";
 import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
+import apiCall from "../../../services/api";
+import { message } from "antd";
 
 const CreateMessage = ({containerRef}) => {
   const {
@@ -33,6 +35,8 @@ const CreateMessage = ({containerRef}) => {
     setPreviewMessage,
     setSelecetdMessage,
     selecetdMessage,
+    fetchMessages,
+    setBackStep
   } = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
@@ -40,8 +44,12 @@ const CreateMessage = ({containerRef}) => {
   const [selectedVariant, setSelectedVariant] = useState({});
   const [caretPosition, setCaretPosition] = useState(0);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
   const pickerRef = useRef(null);
+  const timeoutRef = useRef(null);
   const { t } = useTranslation();
+
 
   const handleVisibilityChange = (val) => {
     setVisibility(val);
@@ -64,31 +72,30 @@ const CreateMessage = ({containerRef}) => {
       message.error("You can add only 10 variants!");
       return;
     }
-    setVariants([...variants, { text: "", count: 0, id: variants.length }]);
+    setVariants([...variants, { name: "", count: 0, id: variants?.[variants.length-1].id +1 }]);
   };
 
   const handleVariantText = (variable, index, isVar) => {
     const updatedVariants = [...variants];
-
     if (isVar) {
-      const pointer = caretPosition || updatedVariants[index].text.length;
-      let text_1 = updatedVariants[index].text.slice(0, pointer);
-      let text_2 = updatedVariants[index].text.slice(pointer);
-      updatedVariants[index].text = `${text_1}${variable}${text_2}`;
-      updatedVariants[index].count = updatedVariants[index].text.length;
+      const pointer = caretPosition || updatedVariants[index].name.length;
+      let text_1 = updatedVariants[index].name.slice(0, pointer);
+      let text_2 = updatedVariants[index].name.slice(pointer);
+      updatedVariants[index].name = `${text_1}${variable}${text_2}`;
+      updatedVariants[index].count = updatedVariants[index].name.length;
       setSelectedVariant({
         ...selectedVariant,
-        text: updatedVariants[index].text,
-        count: updatedVariants[index].text.length,
+        name: updatedVariants[index].name,
+        count: updatedVariants[index].name.length,
       });
     } else {
       const updatedVariants = [...variants];
-      updatedVariants[index].text = variable;
-      updatedVariants[index].count = updatedVariants[index].text.length;
+      updatedVariants[index].name = variable;
+      updatedVariants[index].count = updatedVariants[index].name.length;
       setSelectedVariant({
         ...selectedVariant,
-        text: updatedVariants[index].text,
-        count: updatedVariants[index].text.length,
+        name: updatedVariants[index].name,
+        count: updatedVariants[index].name.length,
       });
     }
 
@@ -96,7 +103,7 @@ const CreateMessage = ({containerRef}) => {
   };
 
   useEffect(() => {
-    if (!selectedVariant?.text) {
+    if (!selectedVariant?.name) {
       setSelectedVariant(variants?.[0] || {});
     }
   }, [variants]);
@@ -122,11 +129,53 @@ const CreateMessage = ({containerRef}) => {
     setPreviewMessage(message);
     setSelecetdMessage(message);
     setStep(5);
+    setBackStep(4)
   };
   const handleSelectedVariant = (data) => {
     setSelectedVariant(data);
-    setCaretPosition(0);
+    setCaretPosition(0)
+    setIsDelete(false)
+    clearTimeout(timeoutRef.current)
   };
+
+  const handleDelete = () =>{
+   if (isDelete) {
+    const newVariant=variants.filter((vart)=>vart.id !== selectedVariant?.id)
+    setVariants(newVariant)
+    setIsDelete(false)
+   }else{
+    setIsDelete(true)
+    timeoutRef.current = setTimeout(() => {
+      setIsDelete(false)
+    }, 3000);
+   }
+  }
+
+  const handleSubmit = async()=>{
+    setIsLoading(true)
+    const data = {
+      name:name,
+      variants:variants.map(variant => variant.name),
+      visibility:[visibility.id]
+    }
+      try {
+        const res = await apiCall({
+              method: 'POST',
+              url: '/all/messages/api/create-messages',
+              data})
+      if (res?.status === 200) {
+        message.success("Message Successfully Created")
+        fetchMessages()
+        setIsMessage(false)
+      }else{
+        message.error("Message Successfully Created")
+      }
+    setIsLoading(false)
+      } catch (error) {
+        message.error("Message Successfully Created")
+        setIsLoading(false)
+      }
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage">
@@ -222,15 +271,17 @@ const CreateMessage = ({containerRef}) => {
                   {t("message.Preview")}
               </button> */}
               <button
-                onClick={() => handlePreview()}
+                onClick={() => handleDelete()}
                 className="flex space-x-1 items-center bg-[#FF00001C] text-[#FF0000] px-3 py-1 rounded-full text-sm"
               >
-                  <span className="">
+                  {isDelete?"Really ?":<>
+                    <span className="">
                     <DeleteFillRedIcon />
                   </span>
                   <span>
                     Delete
                   </span>
+                  </>}
               </button>
             </div>
             <div className="border border-[#E6E6E6] h-[93.75%] p-3">
@@ -240,7 +291,7 @@ const CreateMessage = ({containerRef}) => {
                 }
                 onClick={handleCaretPosition}
                 onKeyUp={handleCaretPosition}
-                value={selectedVariant?.text}
+                value={selectedVariant?.name}
                 className="w-full font-outfit font-normal text-[14px] leading-[17.64px]
                       tracking-[0px] text-left h-[90%] text-black focus:outline-none"
               />
@@ -380,9 +431,13 @@ const CreateMessage = ({containerRef}) => {
             >
                {t("message.Cancel")}
             </button>
-            <button className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
-               {t("message.Create")}
-              <CreateMessageIcon index={11} />
+            <button onClick={()=>handleSubmit()} className="flex white-spin  items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
+              
+
+              {
+                isLoading ? <Spin size="small" style={{color:"white"}}/>  :<>  {t("message.Create")}
+                <CreateMessageIcon index={11} /> </>
+              }
             </button>
           </div>
         </div>
@@ -440,9 +495,9 @@ const visibilityOptions = [
 ];
 
 const defaultVariants = [
-  { id: 0, text: "", count: 0 },
-  { id: 1, text: "", count: 0 },
-  { id: 2, text: "", count: 0 },
+  { id: 0, name: "", count: 0 },
+  { id: 1, name: "", count: 0 },
+  { id: 2, name: "", count: 0 },
 ];
 
 export default CreateMessage;

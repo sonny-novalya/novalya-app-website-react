@@ -45,9 +45,7 @@ const apiCall = async ({
 }) => {
   try {
     const dynamicHeaders =  getDynamicHeaders();
-    console.log("Dynamic Headers:", dynamicHeaders);
-    console.log("Passed Headers:", headers);
-    console.log("Payload Data:", data);
+
 
     const config = {
       method,
@@ -60,7 +58,6 @@ const apiCall = async ({
       data
     };
 
-    console.log("API Config:", config);
 
     const response = await axios(config);
     return response; // Just return the data for convenience

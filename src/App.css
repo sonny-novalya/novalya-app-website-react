@@ -59,3 +59,7 @@ span.fb-group-icon {
     font-size: 20px;
     border-radius: 4px;
 }
+
+ .white-spin  .ant-spin-dot-item{
+    color: white !important;
+}

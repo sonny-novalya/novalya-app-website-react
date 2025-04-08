@@ -1,16 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Input, Button, List, Card, Dropdown, Menu } from 'antd';
 import { SearchOutlined, FilterOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import './messageIndex.css'
 import useMessageSteps from '../../../../../store/messageTemp/MessageTemp';
 
 const MessageIndex = () => {
-  const {setIsMessage} = useMessageSteps()
-
-    const messages = Array(10).fill({
-        id: '#12536',
-        platform: 'Facebook',
-      });
+  const {setIsMessage,fetchMessages,messageList,setSelecetdMessage,setStep,loading,error,setPreviewMessage,setBackStep} = useMessageSteps()
     
       const renderPlatformButton = (platform) => {
         const platformClass =
@@ -32,6 +27,28 @@ const MessageIndex = () => {
           </Button>
         );
       };
+
+      useEffect(() => {
+        fetchMessages()
+        setBackStep(null)
+        setSelecetdMessage(null)
+        setPreviewMessage(null)
+      }, [])
+
+      const handleEdit = (data)=>{
+        setSelecetdMessage(data)
+        setIsMessage(true)
+        setStep(7)
+      }
+    
+   const handlePreview = (data)=>{
+    setPreviewMessage(data)
+    setIsMessage(true)
+    setBackStep(0)
+    setStep(5)
+   }
+     
+      
   return (
     <>
     <div className='message-main-wraper'>
@@ -62,18 +79,19 @@ const MessageIndex = () => {
           </div>
           <List
             bordered
+            loading={loading}
             className="rounded-2xl ctm-list-design"
-            dataSource={messages}
+            dataSource={messageList}
             renderItem={(item) => (
               <List.Item className="flex justify-between items-center">
-                <span>Message {item.id}</span>
+                <span>{item.title}</span>
                 <div className="flex gap-4 items-center">
                   {renderPlatformButton(item.platform)}
-                  <Button icon={<EditOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
+                  <Button icon={<EditOutlined />} onClick={()=>handleEdit(item)} className="!text-[#808183] !rounded-[25px] !font-medium !text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
                   
                   Edit
                   </Button>
-                  <Button icon={<EyeOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !!text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
+                  <Button onClick={()=>handlePreview(item)} icon={<EyeOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !!text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
                     Preview
                   </Button>
                 </div>
