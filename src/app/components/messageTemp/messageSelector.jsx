@@ -25,7 +25,7 @@ const MessageSelector = ({containerRef}) => {
           </button>
         </div>
         <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-          <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button>
+          {/* <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button> */}
           <div className='grid grid-cols-3 gap-12'>
             {data.map((item, index) => (
               <div key={index} className="border border-[#D2D2D2] rounded-[6px] text-center px-5 py-[16px]" onClick={()=>handleSelector(index)}>

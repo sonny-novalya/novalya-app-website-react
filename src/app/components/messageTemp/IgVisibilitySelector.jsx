@@ -16,14 +16,15 @@ const IgVisibilitySelector = ({containerRef}) => {
       return (
         <div className="fixed inset-0 flex items-center flex-col justify-center bg-black/30 h-screen">
             <div className='flex justify-end max-w-[880px] mx-auto w-full'>
-              <button>
+              <button >
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
             </div>
             <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-              <div className="flex items-center gap-[10px] text-[20px]">
+            <button onClick={()=>setStep(step-1)} className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button>
+              <div  className="flex items-center gap-[10px] text-[20px]">
               {t("message.Select feature")}
                 <PreviewMessageIcon index={0}/>
               </div>
@@ -39,12 +40,12 @@ const IgVisibilitySelector = ({containerRef}) => {
                   </div>
                 ))}
               </div>
-              <button 
+              {/* <button 
                 className="font-medium text-[24px] leading-[36px] bg-[#E8E8E8] px-4 py-1.5 w-full max-w-[200px] rounded-md mt-4 ml-auto block"
                 onClick={()=>setStep(step-1)}
               >
                 {t("message.Back")}
-              </button>
+              </button> */}
             </div>
         </div>
       );
