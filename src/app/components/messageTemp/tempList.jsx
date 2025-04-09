@@ -6,14 +6,14 @@ import noteIcon from "../../../assets/img/icons_note.svg"
 import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { TempMessageIcon } from '../../pages/common/icons/messageIcons/MessageIcons'
 import { useTranslation } from 'react-i18next'
-const TempList = () => {
+const TempList = ({containerRef}) => {
   const {setStep} = useMessageSteps()
   const { t } = useTranslation();
   
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen">
-        <div className="bg-white px-5 py-4 rounded-[10px] max-w-[1150px] mx-auto w-full relative max-h-[95vh] overflow-auto">
+        <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1150px] mx-auto w-full relative max-h-[95vh] overflow-auto">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-[10px] text-[20px]">{t("message.Select a template")}
                  <TempMessageIcon index={0}/>

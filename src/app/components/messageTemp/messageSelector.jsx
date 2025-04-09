@@ -5,7 +5,7 @@ import aiIconImg from "../../../assets/img/Content-Creation-Writing.svg"
 import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { useTranslation } from 'react-i18next'
 
-const MessageSelector = () => {
+const MessageSelector = ({containerRef}) => {
   const {setStep} = useMessageSteps()
   const {t} = useTranslation()
  const handleSelector = (index)=>{
@@ -16,12 +16,20 @@ const MessageSelector = () => {
   }
   }
   return (
-    <div className="fixed inset-0 flex items-center justify-center  bg-black/30 h-screen" >
-        <div className="bg-white px-6 py-9 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+    <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen" >
+        <div className='flex justify-end max-w-[1125px] mx-auto w-full'>
+          <button>
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+          {/* <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button> */}
           <div className='grid grid-cols-3 gap-12'>
             {data.map((item, index) => (
-              <div key={index} className="border border-[#D2D2D2] rounded-[6px] text-center px-5 py-[10px]" onClick={()=>handleSelector(index)}>
-                <img className='mx-auto flex' src={item.img} alt={item.title} />
+              <div key={index} className="border border-[#D2D2D2] rounded-[6px] text-center px-5 py-[16px]" onClick={()=>handleSelector(index)}>
+                <img className='mx-auto flex mt-[36px] mb-[36px]' src={item.img} alt={item.title} />
                 <span className={`font-semibold text-[24px] leading-[36px] max-w-[220px] text-center block mx-auto ${item.color}`}>{t(`message.${item.title}`)}</span>
                 <button className={`font-medium text-[14px] leading-[20px] px-5 py-[10px] text-white rounded-[24px] w-full max-w-[200px] mt-2 ${item.bgColor}`}>{item.buttonText}</button>
               </div>

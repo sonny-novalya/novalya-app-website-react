@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import propSearch from "../../../assets/img/pros-serach-icon.svg";
 import prospWhite from "../../../assets/img/prospection-white.svg";
 import messangerIcon from "../../../assets/img/messanger.svg";
@@ -20,14 +20,26 @@ import smilingFace from "../../../assets/img/smiling-face.svg";
 import smilingFaceGlasses from "../../../assets/img/smiling-face-glasses.svg";
 import "./message.css";
 import useMessageSteps from "../../../store/messageTemp/MessageTemp";
+import { useTranslation } from "react-i18next";
+import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/MessageIcons";
+import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
+import apiCall from "../../../services/api";
+import { message, Spin } from "antd";
 
-const UpdateMessage = () => {
-  const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage} = useMessageSteps();
+const UpdateMessage = ({containerRef}) => {
+  const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessages} = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState({});
   const [selectedVariant, setSelectedVariant] = useState({});
   const [caretPosition, setCaretPosition] = useState(0);
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const pickerRef = useRef(null);
+  const timeoutRef = useRef(null);
+  const { t } = useTranslation();
+  
 
 
   const handleVisibilityChange = (val) => {
@@ -41,47 +53,50 @@ const UpdateMessage = () => {
   useEffect(() => {
     setVisibility(visibilityOptions.find((v) => v.id === selecetdMessage?.visibility));
     setVariants([...selecetdMessage?.variants])
-    setName(selecetdMessage?.name || '')
-    
-  }, []);
+    setName(selecetdMessage?.title || '')
+  }, [selecetdMessage]);
 
   const addVariants = () => {
     if (variants.length >= 10) {
       message.error("You can add only 10 variants!");
       return;
     }
-    setVariants([...variants, { text: "", count: 0, id: variants.length }]);
+    setVariants([...variants, { name: "", count: 0, id: variants.length }]);
   };
 
   const handleVariantText = (variable,index,isVar) => {
     const updatedVariants = [...variants]
+     index = variants.findIndex(item => item.id === index);
 
     if(isVar){
-        let text_1 = updatedVariants[index].text.slice(0, caretPosition);
-        let text_2 = updatedVariants[index].text.slice(caretPosition);
-        updatedVariants[index].text = `${text_1}${variable}${text_2}`;
-        updatedVariants[index].count = updatedVariants[index].text.length;
+        let text_1 = updatedVariants[index].name.slice(0, caretPosition);
+        let text_2 = updatedVariants[index].name.slice(caretPosition);
+        updatedVariants[index].name = `${text_1}${variable}${text_2}`;
+        updatedVariants[index].count = updatedVariants[index].name.length;
         setSelectedVariant({
             ...selectedVariant,
-            text:updatedVariants[index].text,
-            count: updatedVariants[index].text.length
+            name:updatedVariants[index].name,
+            count: updatedVariants[index].name.length
           });
     }else{
         const updatedVariants = [...variants]
-        updatedVariants[index].text = variable;
-        updatedVariants[index].count = updatedVariants[index].text.length;
+        updatedVariants[index].name = variable;
+        updatedVariants[index].count = updatedVariants[index].name.length;
+
         setSelectedVariant({
             ...selectedVariant,
-            text:updatedVariants[index].text,
-            count: updatedVariants[index].text.length
+            name:updatedVariants[index].name,
+            count: updatedVariants[index].name.length
           });
+
+        
     }
   
     setVariants(updatedVariants);
   };
 
   useEffect(() => {
-    if (!selectedVariant?.text) {
+    if (!selectedVariant?.name) {
       setSelectedVariant(variants?.[0] || {});
     }
   }, [variants]);
@@ -89,17 +104,66 @@ const UpdateMessage = () => {
   const hnadlePreview = ()=>{
     const message = {
         variants: variants,
-        name: name,
+        title: name,
         visibility: visibility,
     }
     setPreviewMessage(message);
     setSelecetdMessage(message)
     setStep(5);
+    setBackStep(7)
   }
+
+  const handleSelectedVariant = (data) => {
+    setSelectedVariant(data);
+    setCaretPosition(0)
+    setIsDelete(false)
+    clearTimeout(timeoutRef.current)
+  };
+
+  const handleDelete = () =>{
+    if (isDelete) {
+     const newVariant=variants.filter((vart)=>vart.id !== selectedVariant?.id)
+     setVariants(newVariant)
+     setIsDelete(false)
+    }else{
+     setIsDelete(true)
+     timeoutRef.current = setTimeout(() => {
+       setIsDelete(false)
+     }, 3000);
+    }
+   }
+
+const handleSubmit =async ()=>{
+  setIsLoading(true)
+  const data = {
+    name:name,
+    variants:variants.map(variant => variant.name),
+    visibility_type:selecetdMessage.visibility_type,
+    message_id:selecetdMessage.id
+  }
+    try {
+      const res = await apiCall({
+            method: 'POST',
+            url: `/all/messages/api/update-messages/${selecetdMessage.id}`,
+            data})
+
+    if (res?.status === 200) {
+      message.success("Message Successfully Updated")
+      setIsMessage(false)
+      fetchMessages()
+    }else{
+      message.error("Oops Something Went Wrong")
+    }
+    setIsLoading(false)
+    } catch (error) {
+      message.error("Oops Something Went Wrong")
+      setIsLoading(false)
+    }
+}
 
   return (
      <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage">
-          <div className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+          <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
             <div className="flex items-center gap-[10px] text-[20px]">
                 {t("message.Message name")} 
               <CreateMessageIcon index={0} />
@@ -113,6 +177,7 @@ const UpdateMessage = () => {
                   onChange={(e) => setName(e.target.value)}
                   className="font-normal text-[16px] leading-[24px] outline-none flex-grow"
                   value={name}
+                  maxLength={50}
                 />
                 <span className="text-[#8C8C8C] bg-[#F5F5F5] px-[30px] py-[7px]">
                   {name?.length}/50
@@ -182,12 +247,25 @@ const UpdateMessage = () => {
                      {t("message.Write message")}
                     <CreateMessageIcon index={5} />
                   </div>
-                  <button
+                  {/* <button
                     onClick={() => hnadlePreview()}
                     className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
                   >
                       {t("message.Preview")}
-                  </button>
+                  </button> */}
+                      <button
+                                  onClick={() => handleDelete()}
+                                  className="flex space-x-1 items-center bg-[#FF00001C] text-[#FF0000] px-3 py-1 rounded-full text-sm"
+                                >
+                                    {isDelete?"Really ?":<>
+                                      <span className="">
+                                      <DeleteFillRedIcon />
+                                    </span>
+                                    <span>
+                                      Delete
+                                    </span>
+                                    </>}
+                                </button>
                 </div>
                 <div className="border border-[#E6E6E6] h-[93.75%] p-3">
                   <textarea
@@ -196,7 +274,7 @@ const UpdateMessage = () => {
                     }
                     onClick={handleCaretPosition}
                     onKeyUp={handleCaretPosition}
-                    value={selectedVariant?.text}
+                    value={selectedVariant?.name}
                     className="w-full font-outfit font-normal text-[14px] leading-[17.64px]
                           tracking-[0px] text-left h-[90%] text-black focus:outline-none"
                   />
@@ -336,9 +414,12 @@ const UpdateMessage = () => {
                 >
                    {t("message.Cancel")}
                 </button>
-                <button className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
-                   {t("message.Update")}
-                  <CreateMessageIcon index={11} />
+                <button onClick={()=>handleSubmit()} className="flex white-spin  items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
+                 
+                  {
+                isLoading ? <Spin size="small" style={{color:"white"}}/>  :<>  {t("message.Update")}
+                <CreateMessageIcon index={11} /></>
+              }
                 </button>
               </div>
             </div>

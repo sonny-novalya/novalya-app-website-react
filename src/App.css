@@ -67,3 +67,6 @@ span.fb-group-icon {
     color: gray;
     filter: blur(3px);
 }
+ .white-spin  .ant-spin-dot-item{
+    color: white !important;
+}
