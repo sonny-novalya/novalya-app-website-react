@@ -77,3 +77,38 @@ const checkDoamin = (web)=>{
   }
 
 }
+
+export const detectExtension = (callback) => {
+  let extMode = getCookie('ext-mode');
+  let liveExtensionId = "iemhbpcnoehagepnbflncegkcgpphmpc"
+  if (extMode !== "") {
+    if (extMode === "Beta") {
+      liveExtensionId = "fijhglbfmpngjolfagdnfhmheoojffeg"
+    }
+  }
+  var img;
+  img = new Image();
+  img.src = `chrome-extension://${liveExtensionId}/assets/image/filter.png`;
+  img.onload = function () {
+    callback(true);
+  };
+  img.onerror = function () {
+    callback(false);
+  };
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
