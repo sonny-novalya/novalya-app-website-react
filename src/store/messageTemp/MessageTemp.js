@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import apiCall from '../../services/api';
+import { message } from "antd";
 
 const useMessageSteps = create((set) => ({
    step: 1,
@@ -31,12 +32,17 @@ const useMessageSteps = create((set) => ({
    setSelecetdMessage: (val) => set(() => ({ selecetdMessage: val })), 
 
 
-   fetchMessages: async () => {
+   fetchMessages: async (payload) => {
       set({ loading: true, error: null });
       try {
+         const pagination = {
+            page: payload,
+            limit:payload.limit
+         }
           const res = await apiCall({
               method: 'POST',
-              url: '/all/messages/api/messages'
+              url: '/all/messages/api/messages',
+              data:{...pagination}
           });
 
           set({ messageList: res?.data?.message?.messages || [], loading: false });
@@ -48,6 +54,22 @@ const useMessageSteps = create((set) => ({
       }
   },
 
+  deleteMessages: async (id) => {
+ 
+   try {
+       const res = await apiCall({
+           method: 'DELETE',
+           url: `/all/messages/api/delete-messages/${id}?messageId=${id}`
+       });
+
+   return res
+   } catch (error) {
+       set({
+           loading: false,
+           error: error?.message || 'Something went wrong',
+       });
+   }
+},
 }));
 
 export default useMessageSteps;

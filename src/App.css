@@ -73,4 +73,11 @@ span.fb-group-icon {
 
 .backdrop-blur-md {
    backdrop-filter: blur(8px) !important; 
+
+}
+
+.active-mssg{ 
+    border: 1px solid #0087FF !important;
+    background-color: #0087FF33 !important;
+    outline: 1px solid #0087FF !important;
 }

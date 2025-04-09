@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { Input, Button, List, Card, Dropdown, Menu } from 'antd';
-import { SearchOutlined, FilterOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react'
+import { Input, Button, List, Dropdown, Menu, message } from 'antd';
+import { SearchOutlined, FilterOutlined, EditOutlined, EyeOutlined,EllipsisOutlined  } from '@ant-design/icons';
+
 import './messageIndex.css'
 import useMessageSteps from '../../../../../store/messageTemp/MessageTemp';
-
+import { VerticalDotsIcon } from '../../../common/icons/icons';
 const MessageIndex = () => {
-  const {setIsMessage,fetchMessages,messageList,setSelecetdMessage,setStep,loading,error,setPreviewMessage,setBackStep} = useMessageSteps()
-  const [selectedArr,setSelecetdArr]=useState([])
+  const {setIsMessage,fetchMessages,messageList,setSelecetdMessage,setStep,loading,deleteMessages,setPreviewMessage,setBackStep} = useMessageSteps()
+  const [isDelete,setIsDelete] =useState(false)
+  const [pagination,setPagination] =useState({
+    page:1,
+    limit:10,
+    totalPages:1,
+  })
+  const delTime = useRef()
     
       const renderPlatformButton = (platform) => {
         const platformClass =
@@ -36,23 +43,90 @@ const MessageIndex = () => {
         setPreviewMessage(null)
       }, [])
 
-      const handleEdit = (data)=>{
+      const handleEdit = (data,e)=>{
+        e.stopPropagation();
         setSelecetdMessage(data)
         setIsMessage(true)
         setStep(7)
       }
     
-   const handlePreview = (data)=>{
+   const handlePreview = (data,e)=>{
+    e.stopPropagation();
     setPreviewMessage(data)
     setIsMessage(true)
     setBackStep(0)
     setStep(5)
    }
 
-  const handleSelect = (data)=>{
+ 
+     
+  const handleDuplicate = ()=>{
 
   }
-     
+
+  const handleDelete = async(id)=>{
+    console.log("delete",id)
+    if (!isDelete) {
+      setIsDelete(true)
+      delTime.current = setTimeout(()=>{
+        setIsDelete(false)
+      },3000)
+    } else {
+      const res = await deleteMessages(id)
+      if (res?.status === 200) {
+       message.success("message Deleted")
+       fetchMessages();
+ 
+      }else{
+       message.success("Oops Something went wrong")
+ 
+      }
+      clearIsDelete()
+    }
+   
+  }
+
+  const clearIsDelete = ()=> {
+    setIsDelete(false)
+    clearTimeout(delTime.current)
+  }
+
+  const DropdownMenu = ({ item, onDuplicate, onDelete }) => (
+    <div
+      className="bg-white rounded-md shadow-md p-2"
+      onClick={(e) => e.stopPropagation()} // Prevent closing on click
+    >
+      <div
+        onClick={() => onDuplicate(item)}
+        className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
+      >
+        Duplicate
+      </div>
+      <div
+        onClick={() => onDelete(item.id)}
+        className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
+      >
+       {isDelete ? "Really?":" Delete"}
+      </div>
+    </div>
+  );
+
+  const reanderPaginationButton = (num)=>{
+    const btnArray = Array(num).fill(null);
+
+    return(
+      <>
+        {
+          btnArray.map((_,i)=>{
+          return  <li className='active flex items-center justify-center w-6 h-6 border border-[#8C8C8C] font-medium text-[14px] rounded-[4px] hover:bg-[#0087FF] hover:text-white hover:border-[#008801]'>
+          <button onClick={()=> setPagination({...pagination,page:i+1})} >{i+1}</button></li>
+          })
+        }
+      </>
+    )
+
+  }
+
       
   return (
     <>
@@ -85,59 +159,90 @@ const MessageIndex = () => {
             </svg>
           </div>
 
-          <div className='flex gap-[20px]'>
-            <button  className='bg-[white] w-[123px] h-[36px] rounded-[79px] cursor-pointer'>Duplicate</button>
+         {/* {selectedArr.length ? <div className='flex gap-[20px]'>
+           {selectedArr.length === 1? <button  className='bg-[white] w-[123px] h-[36px] rounded-[79px] cursor-pointer'>Duplicate</button>:""}
             <button className='bg-[white] w-[123px] h-[36px] rounded-[79px] cursor-pointer' >Delete</button>
-          </div>
+          </div>:""} */}
           </div>
           <List
-            bordered
-            loading={loading}
-            className="rounded-2xl ctm-list-design"
-            dataSource={messageList}
-            renderItem={(item) => (
-              <List.Item className={`flex justify-between items-center `} onClick={()=>handleSelect(item)}>
-                <span>{item.title}</span>
-                <div className="flex gap-4 items-center">
-                  {renderPlatformButton(item.platform)}
-                  <Button icon={<EditOutlined />} onClick={()=>handleEdit(item)} className="!text-[#808183] !rounded-[25px] !font-medium !text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
-                  
-                  Edit
-                  </Button>
-                  <Button onClick={()=>handlePreview(item)} icon={<EyeOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !!text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
-                    Preview
-                  </Button>
-                </div>
-              </List.Item>
-            )}
+  bordered
+  loading={loading}
+  className="rounded-2xl ctm-list-design"
+  dataSource={messageList}
+  renderItem={(item) => (
+    <List.Item
+      className={`flex justify-between items-center bg-[#0087FF33]`}
+    >
+      <span className="cursor-pointer">{item.title}</span>
+      <div className="flex gap-4 items-center">
+        {renderPlatformButton(item.platform)}
+
+        <Button
+          icon={<EditOutlined />}
+          onClick={(e) => handleEdit(item, e)}
+          className="!text-[#808183] !rounded-[25px] !font-medium !text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover"
+        >
+          Edit
+        </Button>
+
+        <Button
+          icon={<EyeOutlined />}
+          onClick={(e) => handlePreview(item, e)}
+          className="!text-[#808183] !rounded-[25px] !font-medium !text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover"
+        >
+          Preview
+        </Button>
+
+        {/* Three Dots Menu */}
+        <Dropdown
+          overlay={
+            <DropdownMenu
+            item={item}
+      onDuplicate={handleDuplicate}
+      onDelete={handleDelete}
+            />
+          }
+          trigger={['click']}
+          placement="bottomRight"
+        >
+          <Button
+            type="text"
+            icon={<VerticalDotsIcon />}
+            onClick={(e) => {
+              clearIsDelete()
+              e.stopPropagation()
+              }}
+            className="!text-[#808183] !h-9 btn-hover"
           />
+        </Dropdown>
+      </div>
+    </List.Item>
+  )}
+/>
+
           <div className='ctm-pagination flex items-center gap-[10px] justify-between border-t-[3px] border-[#E0E0E0] mt-5 pt-5'>
             <div className='flex items-center gap-[10px]'>
               <span className='text-[#000] text-[14px]'>Rows per pages</span>
-              <select className='border border-[#E0E0E0] px-2 py-1 text-[14px] rounded-[4px] text-black focus-visible:outline-none'>
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
+              <select value={pagination?.limit} onChange={(e)=> setPagination({...pagination,limit:Number(e.target.value)})} className='border border-[#E0E0E0] px-2 py-1 text-[14px] rounded-[4px] text-black focus-visible:outline-none'>
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50} >50</option>
+                <option value={100}>100</option>
               </select>
-              <span className='text-[#8C8C8C] text-[14px]' >25 Rows selected</span>
+              {/* <span className='text-[#8C8C8C] text-[14px]' >25 Rows selected</span> */}
             </div>
             <div className='pagination-wrap flex items-center gap-[10px] '>
-              <button className='flex items-center gap-[10px] font-medium text-[16px] leading-[1.5] text-[#404040] opacity-50 hover:opacity-100'>
+              <button onClick={()=>setPagination({...pagination,currentPage:pagination.currentPage -1})} className='flex items-center gap-[10px] font-medium text-[16px] leading-[1.5] text-[#404040] opacity-50 hover:opacity-100'>
                 <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M0.37822 5.65751L6.03522 0.000514861L7.44922 1.41451L2.49922 6.36452L7.44922 11.3145L6.03522 12.7285L0.37822 7.07151C0.190749 6.88399 0.0854331 6.62968 0.0854331 6.36452C0.0854331 6.09935 0.190749 5.84504 0.37822 5.65751Z" fill="#404040"/>
                 </svg>
                 Previous
               </button>
               <ul className='pagination-list flex items-center gap-[10px] mx-1.5'>
-                <li className='active flex items-center justify-center w-6 h-6 border border-[#8C8C8C] font-medium text-[14px] rounded-[4px] hover:bg-[#0087FF] hover:text-white hover:border-[#008801]'><button>1</button></li>
-                <li className='flex items-center justify-center w-6 h-6 border border-[#8C8C8C] font-medium text-[14px] rounded-[4px] hover:bg-[#0087FF] hover:text-white !hover:border-[#008801]'><button>2</button></li>
-                <li className='flex items-center justify-center w-6 h-6 border border-[#8C8C8C] font-medium text-[14px] rounded-[4px] hover:bg-[#0087FF] hover:text-white !hover:border-[#008801]'><button>3</button></li>
-                <li className='flex items-center justify-center w-6 h-6 border border-[#8C8C8C] font-medium text-[14px] rounded-[4px] hover:bg-[#0087FF] hover:text-white !hover:border-[#008801]'><button>4</button></li>
-                <li className='flex items-center justify-center w-6 h-6 border border-[#8C8C8C] font-medium text-[14px] rounded-[4px] hover:bg-[#0087FF] hover:text-white !hover:border-[#008801]'><button>...</button></li>
-                <li className='flex items-center justify-center w-6 h-6 border border-[#8C8C8C] font-medium text-[14px] rounded-[4px] hover:bg-[#0087FF] hover:text-white !hover:border-[#008801]'><button>16</button></li>
+              {reanderPaginationButton(pagination.totalPages)}
+               
               </ul>
-              <button className='flex items-center gap-[10px] font-medium text-[16px] leading-[1.5] text-[#404040] opacity-50 hover:opacity-100'>Next 
+              <button onClick={()=>setPagination({...pagination,currentPage:pagination.currentPage + 1})} className='flex items-center gap-[10px] font-medium text-[16px] leading-[1.5] text-[#404040] opacity-50 hover:opacity-100'>Next 
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M7.15694 7.71163L1.49994 13.3686L0.0859375 11.9546L5.03594 7.00462L0.0859375 2.05463L1.49994 0.640625L7.15694 6.29763C7.34441 6.48515 7.44972 6.73946 7.44972 7.00462C7.44972 7.26979 7.34441 7.5241 7.15694 7.71163Z" fill="#404040"/>
                 </svg>
