@@ -27,8 +27,16 @@ const Unfriended = () => {
           dataIndex: "user_name",
           render: (_, record) => (
               <div className="flex items-center space-x-2">
+                <a
+                  href={`https://facebook.com/${record.fbId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2"
+                  style={{gap:"10px"}}
+                >
                   <img src={record.image} alt="" className="w-10 h-10 object-cover" style={{borderRadius: "4px"}} />
                   <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{record.user_name}</span>
+                </a>
               </div>
           )
         },
@@ -36,7 +44,7 @@ const Unfriended = () => {
           title: "Mutual Friends", 
           dataIndex: "mutual_friend",
           render: (_, record) => (
-            "0"
+            record.mutual_friend ? record.mutual_friend : 0
           )
         },
         { 

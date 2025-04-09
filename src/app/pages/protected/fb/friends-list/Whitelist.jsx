@@ -6,6 +6,7 @@ import { t } from "i18next";
 import FbFriendListLayout from "../../helpersLayout/FbFriendListLayout";
 import { useFbWhiteListStore } from "../../../../../store/fb/whitelist";
 import { CloseOutlined } from "@ant-design/icons"; // Import the refresh icon
+import { message } from "antd";
 
 const Whitelist = () => {
 
@@ -26,19 +27,19 @@ const Whitelist = () => {
 
       console.log("abc")
       if(selectedRowKeys.length == 0){
-        alert("Select user(s) first.")
+        message.error("Select user(s) first.")
         return
       }
       
       removeFbWhitelist(selectedRowKeys).then(() => {
         setSelectedRowKeys([]);
-        alert("User removed from Whitelist");
+        message.success("User removed from Whitelist");
         fetchFbWhitelistedFriends(1, pagination.pageSize,searchKeyword);
         setPagination((prev) => ({ ...prev, current: 1 }));
       })
       .catch((error) => {
         console.log("Error removing from whitelist:", error); // Handle errors properly
-        alert("There was an error")
+        message.error("There was an error")
       });;
     }
 
@@ -48,8 +49,16 @@ const Whitelist = () => {
           dataIndex: "user_name",
           render: (_, record) => (
               <div className="flex items-center space-x-2">
+                <a
+                  href={`https://facebook.com/${record.fbId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2"
+                  style={{gap:"10px"}}
+                >
                   <img src={record.image} alt="" className="w-10 h-10 object-cover" style={{borderRadius: "4px"}} />
                   <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{record.user_name}</span>
+                </a>
               </div>
           )
         },
@@ -57,7 +66,7 @@ const Whitelist = () => {
           title: "Mutual Friends", 
           dataIndex: "mutual_friend",
           render: (_, record) => (
-            record.mutual_friend ? record.mutual_friend : 0
+            record.mutual_friends ? record.mutual_friends : 0
           )
         },
         { 

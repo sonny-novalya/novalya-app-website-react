@@ -7,11 +7,13 @@ import { t } from "i18next";
 import FbFriendListLayout from "../../helpersLayout/FbFriendListLayout";
 import { ReloadOutlined } from "@ant-design/icons"; // Import the refresh icon
 import AssignGroupModal from "./AssignGroupModal";
+import { message } from "antd";
+
 
 const FriendsList = () => {
 
     const [searchKeyword, setSearchKeyword] = useState("")
-    const [isPremium, setIsPremium] = useState(false);
+    const [isPremium, setIsPremium] = useState(true);
     const { friends, loading, error, totalRecords, fetchFbFriends, fbAddToWhitelist } = useFbFriendListStore();
     // const [selectedRows, setSelectedRows] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -113,56 +115,72 @@ const FriendsList = () => {
           title: "Gender", 
           dataIndex: "gender",
           render: (_, record) => (
-              isPremium ? record.gender ? record.gender === "male" ? "Male" : "Female" : "-" : getFakeData("gender")
+            <div className="blurry-effect">
+              {isPremium ? record.gender ? record.gender === "male" ? "Male" : "Female" : "-" : getFakeData("gender")}
+            </div>
           )
         },
         { 
           title: "Birthday", 
           dataIndex: "birthday",
           render: (_, record) => (
-            isPremium ? record?.birthday?.trim() || "-" : getFakeData("birthday")
+            <div className="blurry-effect">
+              {isPremium ? record?.birthday?.trim() || "-" : getFakeData("birthday")}
+            </div>
           )
         },
         { 
           title: "Age", 
           dataIndex: "age",
           render: (_, record) => (
-            isPremium ? record?.age?.trim() || "-" : getFakeData("age")
+            <div className="blurry-effect">
+              {isPremium ? record?.age?.trim() || "-" : getFakeData("age")}
+            </div>
           )
         },
         { 
           title: "Hometown", 
           dataIndex: "hometown",
           render: (_, record) => (
-            isPremium ? record.hometown?.trim() || "-" : getFakeData("hometown")
+            <div className="blurry-effect">
+              {isPremium ? record.hometown?.trim() || "-" : getFakeData("hometown")}
+            </div>
           )
         },
         { 
           title: "Lives In", 
           dataIndex: "lived",
           render: (_, record) => (
-            isPremium ? record.lived?.trim() || "-" : getFakeData("lived")
+            <div className="blurry-effect">
+              {isPremium ? record.lived?.trim() || "-" : getFakeData("lived")}
+            </div>
           )
         },
         { 
           title: "Locale", 
           dataIndex: "locale",
           render: (_, record) => (
-            isPremium ? record?.locale ? getLanguageName(record?.locale) : "-" : getFakeData("locale")
+            <div className="blurry-effect">
+              {isPremium ? record?.locale ? getLanguageName(record?.locale) : "-" : getFakeData("locale")}
+            </div>
           )
         },
         { 
           title: "Email", 
           dataIndex: "email",
           render: (_, record) => (
-            isPremium ? record.email?.trim() || "-" : getFakeData("email")
+            <div className="blurry-effect">
+              {isPremium ? record.email?.trim() || "-" : getFakeData("email")}
+            </div>
           )
         },
         { 
           title: "Phone", 
           dataIndex: "contact",
           render: (_, record) => (
-            isPremium ? record.contact?.trim() || "-" : getFakeData("contact")
+            <div className="blurry-effect">
+              {isPremium ? record.contact?.trim() || "-" : getFakeData("contact")}
+            </div>
           )
         }        
     ];
@@ -188,7 +206,7 @@ const FriendsList = () => {
 
     const showUpgradeAlert = () => {
       if(!isPremium){
-        alert("Upgrade is required")
+        message.error("Upgrade is required")
       }
     }
     
@@ -202,6 +220,10 @@ const FriendsList = () => {
       setSearchKeyword(value);
       await fetchFbFriends(1, pagination.pageSize, value);
       setPagination((prev) => ({ ...prev, current: 1 }));
+    }
+
+    const refreshTableData = () => {
+      fetchFbFriends(pagination.current, pagination.pageSize);
     }
 
 
@@ -219,11 +241,11 @@ const FriendsList = () => {
 
       fbAddToWhitelist(selectedRowKeys).then(() => {
         setSelectedRowKeys([]); // Clear selection
-        alert("User Added to Whitelist");
+        message.success("User Added to Whitelist");
       })
       .catch((error) => {
         console.log("Error adding to whitelist:", error); // Handle errors properly
-        alert("There was an error")
+        message.error("There was an error")
       });
 
 
@@ -231,7 +253,7 @@ const FriendsList = () => {
 
     return (
       <FbFriendListLayout>
-        <div className="bg-white p-2" style={{position:"relative"}}>
+        <div className={`bg-white p-2  ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
           <div className="flex items-center justify-between mb-4">
             <Input
                 placeholder="Search novalya"
@@ -314,8 +336,10 @@ const FriendsList = () => {
         {openAssignGroupModal && (
           <AssignGroupModal
             open={openAssignGroupModal}
-            close={setOpenAssignGroupModal}
-            usersToAdd={selectedRowKeys}
+            close={() => setOpenAssignGroupModal(false)}
+            selectedUsers={selectedRowKeys}
+            clearSelection={() => setSelectedRowKeys([])}
+            refreshTableData={refreshTableData}
           />
         )}
       </FbFriendListLayout>
