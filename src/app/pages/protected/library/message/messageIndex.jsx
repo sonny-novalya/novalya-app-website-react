@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, Button, List, Card, Dropdown, Menu } from 'antd';
 import { SearchOutlined, FilterOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import './messageIndex.css'
@@ -6,6 +6,7 @@ import useMessageSteps from '../../../../../store/messageTemp/MessageTemp';
 
 const MessageIndex = () => {
   const {setIsMessage,fetchMessages,messageList,setSelecetdMessage,setStep,loading,error,setPreviewMessage,setBackStep} = useMessageSteps()
+  const [selectedArr,setSelecetdArr]=useState([])
     
       const renderPlatformButton = (platform) => {
         const platformClass =
@@ -47,6 +48,10 @@ const MessageIndex = () => {
     setBackStep(0)
     setStep(5)
    }
+
+  const handleSelect = (data)=>{
+
+  }
      
       
   return (
@@ -71,11 +76,19 @@ const MessageIndex = () => {
               </Button>
             </div>
           </div>
-          <div className='bg-[#E6F1FB] text-[14px] leading-[21px] tracking-[2%] flex items-center gap-[10px] p-[16px_20px] mb-5'> Name 
+          <div className='bg-[#E6F1FB] text-[14px] leading-[21px] tracking-[2%] flex items-center justify-between gap-[10px] p-[16px_20px] mb-5'>
+          <div className='bg-[#E6F1FB] text-[14px] leading-[21px] tracking-[2%] flex items-center gap-[10px]'>
+          Name 
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M10 2.91675V16.9417" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
+          </div>
+
+          <div className='flex gap-[20px]'>
+            <button  className='bg-[white] w-[123px] h-[36px] rounded-[79px] cursor-pointer'>Duplicate</button>
+            <button className='bg-[white] w-[123px] h-[36px] rounded-[79px] cursor-pointer' >Delete</button>
+          </div>
           </div>
           <List
             bordered
@@ -83,7 +96,7 @@ const MessageIndex = () => {
             className="rounded-2xl ctm-list-design"
             dataSource={messageList}
             renderItem={(item) => (
-              <List.Item className="flex justify-between items-center">
+              <List.Item className={`flex justify-between items-center `} onClick={()=>handleSelect(item)}>
                 <span>{item.title}</span>
                 <div className="flex gap-4 items-center">
                   {renderPlatformButton(item.platform)}

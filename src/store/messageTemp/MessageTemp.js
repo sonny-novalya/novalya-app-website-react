@@ -39,7 +39,7 @@ const useMessageSteps = create((set) => ({
               url: '/all/messages/api/messages'
           });
 
-          set({ messageList: res?.data?.message || [], loading: false });
+          set({ messageList: res?.data?.message?.messages || [], loading: false });
       } catch (error) {
           set({
               loading: false,
