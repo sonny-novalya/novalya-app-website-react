@@ -63,3 +63,7 @@ span.fb-group-icon {
  .white-spin  .ant-spin-dot-item{
     color: white !important;
 }
+
+.backdrop-blur-md {
+   backdrop-filter: blur(8px) !important; 
+}
