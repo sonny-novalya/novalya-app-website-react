@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { API_BASE_URL, BASE_URL } from '../../services/ApiCalls';
+import apiCall from '../../services/api';
 
 export const useFbFriendListStore = create((set) => ({
     friends: [],
@@ -10,83 +11,85 @@ export const useFbFriendListStore = create((set) => ({
     groupsLoading: false,
     fetchFbFriends: async (page = 1, pageSize = 25, keyword = "") => {
         set({ loading: true, error: null, friends: []});
+
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${BASE_URL}/novadata/api/get-fb-friends-with-tags?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
+            const res = await apiCall({
+                method: 'GET',
+                url: `/novadata/api/get-fb-friends-with-tags?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            set({ friends: data.data, totalRecords: data.totalCount, loading: false });
-        } catch (err) {
+            set({ 
+                friends: res?.data?.data || [], 
+                totalRecords: res?.data?.totalCount || 0, 
+                loading: false 
+            });
+        } catch (error) {
             set({
-                error: err.message || 'Failed to fetch friends',
                 loading: false,
+                error: error?.message || 'Something went wrong',
             });
         }
     },
 
     fetchGroups: async () => {
         set({ groupsLoading: true, groups: []});
+
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${BASE_URL}/user/api/group`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
+            const res = await apiCall({
+                method: 'GET',
+                url: `/user/api/group`
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            set({ groups: data, groupsLoading: false });
-        } catch (err) {
+            set({ 
+                groups: res?.data || [], 
+                groupsLoading: false 
+            });
+        } catch (error) {
             set({
-                error: err.message || 'Failed to fetch groups',
                 groupsLoading: false,
+                error: error?.message || 'Something went wrong',
             });
         }
     },
 
     fbAddToWhitelist: async (selectedIds) => {
-        // set({ successMsg: null, whitelistLoading: true});
+
         try {
             let payload = {
                 ids: selectedIds
             }
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${BASE_URL}/novadata/api/save-whitelist`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload)
+
+            const res = await apiCall({
+                method: 'POST',
+                url: `/novadata/api/save-whitelist`,
+                data: JSON.stringify(payload)
             });
 
-            if (!response.ok) {
-                return Promise.reject(`HTTP error! status: ${response.status}`);
+            return Promise.resolve();
+        } catch (error) {
+            set({
+                error: error?.message || 'Something went wrong',
+            });
+        }
+    },
+
+    fbRemoveGroup: async (selectedIds) => {
+
+        try {
+            let payload = {
+                ids: selectedIds
             }
 
-            const data = await response.json(); 
+            const res = await apiCall({
+                method: 'POST',
+                url: `/novadata/api/remove-fb-tagging`,
+                data: JSON.stringify(payload)
+            });
+
             return Promise.resolve();
-            // set({ groups: data, groupsLoading: false });
-        } catch (err) {
+        } catch (error) {
             set({
-                error: err.message || 'Failed to move to whitelist',
-                groupsLoading: false,
+                error: error?.message || 'Something went wrong',
             });
         }
     },
