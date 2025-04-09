@@ -25,7 +25,7 @@ import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/Message
 import { useTranslation } from "react-i18next";
 import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
 import apiCall from "../../../services/api";
-import { message } from "antd";
+import { message, Spin } from "antd";
 
 const CreateMessage = ({containerRef}) => {
   const {
@@ -152,12 +152,26 @@ const CreateMessage = ({containerRef}) => {
   }
 
   const handleSubmit = async()=>{
-    setIsLoading(true)
+    if (!name.trim()) {
+      message.error("Message Title is Required")
+      return
+    }
+  
+    if (!visibility.id) {
+      message.error("Visibility is Required")
+      return
+    }
     const data = {
       name:name,
       variants:variants.map(variant => variant.name),
-      visibility:[visibility.id]
+      visibility_type:[visibility.id]
     }
+    if (!data.variants.length) {
+      message.error("Atleast 1 Variant is Required")
+      return
+    }
+    setIsLoading(true)
+
       try {
         const res = await apiCall({
               method: 'POST',

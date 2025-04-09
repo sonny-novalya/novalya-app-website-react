@@ -51,7 +51,15 @@ const UpdateMessage = ({containerRef}) => {
   };
 
   useEffect(() => {
-    setVisibility(visibilityOptions.find((v) => v.id === selecetdMessage?.visibility));
+    console.log(selecetdMessage)
+    let vis = selecetdMessage.visibility_type ? JSON.parse(selecetdMessage.visibility_type ):[]
+    if(vis.length === 1 ){
+      vis = vis[0]
+    }else{
+      vis=null
+    }
+   
+    setVisibility(visibilityOptions.find((v) => v.id === vis) || null);
     setVariants([...selecetdMessage?.variants])
     setName(selecetdMessage?.title || '')
   }, [selecetdMessage]);
@@ -134,11 +142,23 @@ const UpdateMessage = ({containerRef}) => {
    }
 
 const handleSubmit =async ()=>{
+      if (!name.trim()) {
+        message.error("Message Title is Required")
+        return
+      }
+      if (!variants.length) {
+        message.error("Atleast 1 Variant is Required")
+        return
+      }
+      if (!visibility.id) {
+        message.error("visibility is Required")
+        return
+      }
   setIsLoading(true)
   const data = {
     name:name,
     variants:variants.map(variant => variant.name),
-    visibility_type:selecetdMessage.visibility_type,
+    visibility_type:[visibility.id],
     message_id:selecetdMessage.id
   }
     try {

@@ -13,6 +13,7 @@ const useMessageSteps = create((set) => ({
    loading: false,
    error: null,
    messageList: [],
+  totalPages: 1,
 
 
    setStep: (val) => set(() => ({ step:val})), 
@@ -30,22 +31,25 @@ const useMessageSteps = create((set) => ({
    setSelectedVisibilty: (val) => set(() => ({ visibilityType: val })), 
    setPreviewMessage: (val) => set(() => ({ MessagePreview: val })), 
    setSelecetdMessage: (val) => set(() => ({ selecetdMessage: val })), 
+   setPagination: (val) => set(() => ({ pagination: val })), 
 
 
-   fetchMessages: async (payload) => {
+   fetchMessages: async (pagination) => {
       set({ loading: true, error: null });
       try {
-         const pagination = {
-            page: payload,
-            limit:payload.limit
+         const paylaod = {
+            page: pagination?.page || 1,
+            limit:pagination?.limit || 10
          }
           const res = await apiCall({
               method: 'POST',
               url: '/all/messages/api/messages',
-              data:{...pagination}
+              data:{...paylaod}
           });
+          const total = res?.data?.message?.total || 1
 
-          set({ messageList: res?.data?.message?.messages || [], loading: false });
+
+          set({ messageList: res?.data?.message?.messages || [], loading: false, totalPages:total });
       } catch (error) {
           set({
               loading: false,
