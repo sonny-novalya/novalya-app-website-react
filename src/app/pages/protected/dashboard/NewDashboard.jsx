@@ -27,7 +27,16 @@ const NewDashboard = () => {
                         facebook_data={facebook_data}
                         instagram_data={instagram_data}
                         limit_data={limit_data} />
-                    : <ConnectionDashboard />
+                    : 
+                    <>
+                        <ConnectionDashboard />
+                        <div className="flex justify-center items-center w-full mt-5">
+                            <button className="flex items-center justify-center w-96 py-1.5 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600 cursor-pointer"
+                            onClick={()=> setIsFbConnected(true)}>
+                                Confirm
+                            </button>
+                        </div>
+                    </>
             }
         </Layout>
     )
