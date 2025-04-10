@@ -70,3 +70,29 @@ span.fb-group-icon {
  .white-spin  .ant-spin-dot-item{
     color: white !important;
 }
+
+.friends-list-bluredBtn {
+    position: fixed;
+    right: 70px;
+    top: 320px;
+    z-index: 999;
+    text-align: center;
+}
+
+.custom-table li.ant-pagination-options {
+    position: absolute;
+    left: 0px;
+    margin-left: 0px;
+}
+.custom-table li.ant-pagination-options:before {
+    content: "Rows per page ";
+}
+
+.custom-table li.ant-pagination-options .ant-select{
+    margin-left:10px;
+}
+
+li.ant-pagination-total-text {
+    position: absolute;
+    left: 220px;
+}

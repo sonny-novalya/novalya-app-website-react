@@ -4,16 +4,16 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFbFriendListStore } from "../../../../../store/fb/friend-list";
 import { t } from "i18next";
-import FbFriendListLayout from "../../helpersLayout/FbFriendListLayout";
 import { ReloadOutlined } from "@ant-design/icons"; // Import the refresh icon
 import AssignGroupModal from "./AssignGroupModal";
 import { message } from "antd";
+import { upgradeToPremiumIcon } from "../../../common/icons/icons";
 
 
 const FriendsList = () => {
 
-    const [searchKeyword, setSearchKeyword] = useState("")
-    const [isPremium, setIsPremium] = useState(true);
+    const [searchKeyword, setSearchKeyword] = useState("");
+    const [isPremium, setIsPremium] = useState(false);
     const { friends, loading, error, totalRecords, fetchFbFriends, fbAddToWhitelist } = useFbFriendListStore();
     // const [selectedRows, setSelectedRows] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -73,6 +73,7 @@ const FriendsList = () => {
         {
           title: "Member",
           dataIndex: "user_name",
+          width: 300,
           render: (_, record) => (
               <div className="flex items-center space-x-2">
                   <a
@@ -91,6 +92,7 @@ const FriendsList = () => {
         { 
           title: "Tag", 
           dataIndex: "taggedusers",
+          width: 150,
           render: (_, record) => {
             const tag = record.taggedusers ? record.taggedusers?.assignTag : null;
             return tag ? (
@@ -109,11 +111,13 @@ const FriendsList = () => {
         },
         { 
           title: "Mutual Friends", 
-          dataIndex: "mutual_friend"
+          dataIndex: "mutual_friend",
+          width: 150,
         },
         { 
           title: "Gender", 
           dataIndex: "gender",
+          width: 150,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record.gender ? record.gender === "male" ? "Male" : "Female" : "-" : getFakeData("gender")}
@@ -123,6 +127,7 @@ const FriendsList = () => {
         { 
           title: "Birthday", 
           dataIndex: "birthday",
+          width: 150,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record?.birthday?.trim() || "-" : getFakeData("birthday")}
@@ -132,6 +137,7 @@ const FriendsList = () => {
         { 
           title: "Age", 
           dataIndex: "age",
+          width: 150,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record?.age?.trim() || "-" : getFakeData("age")}
@@ -141,6 +147,7 @@ const FriendsList = () => {
         { 
           title: "Hometown", 
           dataIndex: "hometown",
+          width: 200,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record.hometown?.trim() || "-" : getFakeData("hometown")}
@@ -150,6 +157,7 @@ const FriendsList = () => {
         { 
           title: "Lives In", 
           dataIndex: "lived",
+          width: 200,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record.lived?.trim() || "-" : getFakeData("lived")}
@@ -159,6 +167,7 @@ const FriendsList = () => {
         { 
           title: "Locale", 
           dataIndex: "locale",
+          width: 150,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record?.locale ? getLanguageName(record?.locale) : "-" : getFakeData("locale")}
@@ -168,6 +177,7 @@ const FriendsList = () => {
         { 
           title: "Email", 
           dataIndex: "email",
+          width: 200,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record.email?.trim() || "-" : getFakeData("email")}
@@ -177,6 +187,7 @@ const FriendsList = () => {
         { 
           title: "Phone", 
           dataIndex: "contact",
+          width: 200,
           render: (_, record) => (
             <div className="blurry-effect">
               {isPremium ? record.contact?.trim() || "-" : getFakeData("contact")}
@@ -252,83 +263,103 @@ const FriendsList = () => {
     }
 
     return (
-      <FbFriendListLayout>
-        <div className={`bg-white p-2  ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
-          <div className="flex items-center justify-between mb-4">
-            <Input
-                placeholder="Search novalya"
-                prefix={<SearchOutlined />}
-                value={searchKeyword}
-                onChange={(e) => applySearch(e.target.value)}
-                className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
-                style={{maxWidth: "290px"}}
-            />
-            <Button 
-              type="primary" 
-              ghost
-              icon={<ReloadOutlined />}
-              id="sync_fb_friends"
-            >
-              Start Process
-            </Button>
+      <>
+        <div className="p-4 bg-[#f2f2f2] h-screen overflow-auto">
+          <h2 className="text-xl font-semibold mb-4">List of Friends</h2>
+          <div className={`bg-white p-2  ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
+            <div className="flex items-center justify-between mb-4">
+              <Input
+                  placeholder="Search novalya"
+                  prefix={<SearchOutlined />}
+                  value={searchKeyword}
+                  onChange={(e) => applySearch(e.target.value)}
+                  className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
+                  style={{maxWidth: "290px"}}
+              />
+              <Button 
+                type="primary" 
+                ghost
+                icon={<ReloadOutlined />}
+                id="sync_fb_friends"
+              >
+                Start Process
+              </Button>
+            </div>
+            <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+              {!isPremium && !loading && (friends.length > 0) && <div class='friends-list-bluredBtn'>
+                  <button
+                    className="bg-[linear-gradient(to_bottom,_#005199,_#0087FF)] px-10 py-4 text-white rounded-lg flex items-center gap-[15px]"> {upgradeToPremiumIcon()} Upgrade to business</button> 
+              </div>}
+              <Table 
+                rowKey="id" 
+                rowSelection={rowSelection}
+                columns={columns} 
+                dataSource={friends} 
+                loading={loading}
+                pagination={{
+                  current: pagination.current,
+                  pageSize: pagination.pageSize,
+                  total: totalRecords, 
+                  showSizeChanger: true,
+                  pageSizeOptions: ['10', '20', '50'],
+                  showTotal: (total, range) => (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                      {/* <span>{range[0]}-{range[1]} of {total}</span> */}
+                      {selectedRowKeys.length > 0 && (
+                        <span style={{ fontWeight: 'bold' }}>
+                          {selectedRowKeys.length} rows selected
+                        </span>
+                      )}
+                    </div>
+                  ),
+                }}
+                onChange={(pagination) => fetchNewPageData(pagination.current, pagination.pageSize)}
+                className="custom-table" 
+                scroll={{ x: 'max-content' }}
+              />
+            </div>
+            {selectedRowKeys.length > 0 && <div className="overlayed-actions">
+              <Button 
+                type="primary" 
+                ghost
+                icon={<ReloadOutlined />}
+                onClick={openGroupModal}
+              >
+                Add to group
+              </Button>
+
+              <Button 
+                type="primary" 
+                ghost
+                icon={<ReloadOutlined />}
+                id="async_unfriend"
+                attr-data={JSON.stringify({
+                  userIds: selectedRowKeys,
+                })}
+              >
+                Unfriend
+              </Button>
+
+              <Button 
+                type="primary" 
+                ghost
+                icon={<ReloadOutlined />}
+                onClick={addToWhitelist}
+              >
+                Add to Whitelist
+              </Button>
+              <Button 
+                type="primary" 
+                ghost
+                icon={<ReloadOutlined />}
+                id={isPremium ? "sync_friends_profiles" : ""}
+                data-profiles={JSON.stringify(selectedProfileIds)}
+                onClick={showUpgradeAlert}
+              >
+                Sync Details
+              </Button>
+            </div>}
           </div>
-          <Table 
-            rowKey="id" 
-            rowSelection={rowSelection}
-            columns={columns} 
-            dataSource={friends} 
-            loading={loading}
-            pagination={{
-              current: pagination.current,
-              pageSize: pagination.pageSize,
-              total: totalRecords, 
-              showSizeChanger: true,
-            }}
-            onChange={(pagination) => fetchNewPageData(pagination.current, pagination.pageSize)}
-            className="custom-table" 
-          />
-
-          {selectedRowKeys.length > 0 && <div className="overlayed-actions">
-            <Button 
-              type="primary" 
-              ghost
-              icon={<ReloadOutlined />}
-              onClick={openGroupModal}
-            >
-              Add to group
-            </Button>
-
-            <Button 
-              type="primary" 
-              ghost
-              icon={<ReloadOutlined />}
-              id="async_unfriend"
-              attr-data={JSON.stringify({
-                userIds: selectedRowKeys,
-              })}
-            >
-              Unfriend
-            </Button>
-
-            <Button 
-              type="primary" 
-              ghost
-              icon={<ReloadOutlined />}
-              onClick={addToWhitelist}
-            >
-              Add to Whitelist
-            </Button>
-            <Button 
-              type="primary" 
-              ghost
-              icon={<ReloadOutlined />}
-              id={isPremium ? "sync_friends_profiles" : ""}
-              data-profiles={JSON.stringify(selectedProfileIds)}
-              onClick={showUpgradeAlert}
-            >
-              Sync Details
-            </Button>
-          </div>}
         </div>
 
 
@@ -342,7 +373,7 @@ const FriendsList = () => {
             refreshTableData={refreshTableData}
           />
         )}
-      </FbFriendListLayout>
+      </>
     );
 }
 

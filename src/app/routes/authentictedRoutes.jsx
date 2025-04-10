@@ -18,7 +18,6 @@ const AuthentictedRoutes = () => {
         <Route path="/fb/prospecting/posts" element={<FbPostTablePage />} />
         <Route path="/fb/birthday" element={<BirthdayPage />} />
         <Route path="/fb/crm" element={<CrmPage />} />
-        <Route path="/fb/friends" element={<FriendsPage />} />
         <Route path="/fb/request" element={<RequestPage />} />
         <Route path="/ig/prospecting/followers" element={<IgFollowersPage />} />
         <Route path="/ig/prospecting/posts" element={<IgPostsPage />} />
@@ -33,9 +32,10 @@ const AuthentictedRoutes = () => {
         <Route path="/affiliate/level-commission" element={<LevelCommissionPage />} />
         <Route path="/affiliate/settings" element={<AffiliateSettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path="/fb/unfriended" element={<UnfriendedPage />} />
-        <Route path="/fb/deactivated" element={<DeactivatedPage />} />
-        <Route path="/fb/whitelist" element={<WhitelistPage />} />
+        <Route path="/friendlist/friends" element={<FriendsPage />} />
+        <Route path="/friendlist/unfriend" element={<UnfriendedPage />} />
+        <Route path="/friendlist/deactivated" element={<DeactivatedPage />} />
+        <Route path="/friendlist/whitelist" element={<WhitelistPage />} /> 
       </Routes>
     {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform} setIsMessage={setIsMessage}/>:""}
 
