@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { API_BASE_URL, BASE_URL } from '../../services/ApiCalls';
+import apiCall from '../../services/api';
 
 export const useFbDeactivateListStore = create((set) => ({
     deactivatedFriends: [],
@@ -9,25 +10,20 @@ export const useFbDeactivateListStore = create((set) => ({
     fetchFbDeactivatedFriends: async (page = 1, pageSize = 25, keyword = "") => {
         set({ loading: true, error: null, deactivatedFriends: [] });
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${BASE_URL}/novadata/api/deactivated-all?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
+            const res = await apiCall({ 
+                method: 'GET',
+                url: `/novadata/api/deactivated-all?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            set({ deactivatedFriends: data.data, totalRecords: data.totalCount, loading: false });
-        } catch (err) {
+            set({ 
+                deactivatedFriends: res?.data?.data || [], 
+                totalRecords: res?.data?.totalCount, 
+                loading: false 
+            });
+        } catch (error) {
             set({
-                error: err.message || 'Failed to fetch deactivated users',
                 loading: false,
+                error: error?.message || 'Something went wrong',
             });
         }
     },

@@ -6,6 +6,7 @@ import MessagePlatformSelector from "./messagePlatformSelector";
 import MessageSelector from "./messageSelector";
 import PreviewMessage from "./previewMessage";
 import TempList from "./tempList";
+import UpdateMessage from "./updateMessage";
 
 
 
@@ -43,6 +44,8 @@ const MessageTempIndex = ({step,selectedPlatform,setIsMessage}) => {
                 return <PreviewMessage containerRef={containerRef}  />
                 case 6:
                   return <TempList containerRef={containerRef} />
+                  case 7:
+                  return <UpdateMessage containerRef={containerRef} />
         
       default:
         return <MessageSelector containerRef={containerRef}  />;

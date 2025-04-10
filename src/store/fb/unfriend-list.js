@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { API_BASE_URL, BASE_URL } from '../../services/ApiCalls';
+import apiCall from '../../services/api';
 
 export const useFbUnfriendListStore = create((set) => ({
     unfriends: [],
@@ -7,27 +8,23 @@ export const useFbUnfriendListStore = create((set) => ({
     error: null,
     totalRecords: 0,
     fetchFbUnfriends: async (page = 1, pageSize = 25, keyword = "") => {
+
         set({ loading: true, error: null, unfriends: [] });
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${BASE_URL}/novadata/api/unfriend-all?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
+            const res = await apiCall({
+                method: 'GET',
+                url: `/novadata/api/unfriend-all?page=${page}&limit=${pageSize}&search=${keyword}&sort=undefined&field=undefined`
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            set({ unfriends: data.data, totalRecords: data.totalCount, loading: false });
-        } catch (err) {
+            set({ 
+                unfriends: res?.data?.data || [], 
+                totalRecords: res?.data?.totalCount, 
+                loading: false 
+            });
+        } catch (error) {
             set({
-                error: err.message || 'Failed to fetch unfriends',
                 loading: false,
+                error: error?.message || 'Something went wrong',
             });
         }
     },

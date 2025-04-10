@@ -132,11 +132,12 @@ const FollowersTable = () => {
         },
         {
             title: t("prospecting.Send"),
-            render: () => (
+            render: (_, record) => (
                 <Button
                     icon={<SendOutlined />}
-                    id="start-novayla-connect"
-                    className="bg-gray-200 px-3 py-1 rounded-md"
+                    id={record.id}
+                    className="bg-gray-200 px-3 py-1 rounded-md start-novayla-connect"
+                    onClick={()=> console.log("record", record.id)}
                     />
             )
         },

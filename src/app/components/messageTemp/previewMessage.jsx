@@ -6,8 +6,17 @@ import { PreviewMessageIcon } from '../../pages/common/icons/messageIcons/Messag
 import { useTranslation } from 'react-i18next'
 
 const PreviewMessage = () => {
-  const {setStep,MessagePreview} = useMessageSteps()
+  const {setStep,MessagePreview,backStep,setIsMessage} = useMessageSteps()
     const { t } = useTranslation();
+
+    const handleCancel = ()=>{
+        if (backStep === 0) {
+            setIsMessage(false)
+        }else{
+            setStep(backStep) 
+        }
+    }
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen previeMessage">
@@ -18,8 +27,8 @@ const PreviewMessage = () => {
         <div className="flex items-center justify-between gap-4 mt-2">
             <div className="flex justify-between items-center flex-grow border border-[#00040733] 
                 rounded px-4 py-0.5 pl-4 pr-[2px]">
-                <input className="font-normal text-[16px] leading-[24px] outline-none" value={MessagePreview?.name}/>
-                <span className="text-white bg-[#0087FF] px-[30px] py-[7px]">{MessagePreview?.name?.length}/50</span>
+                <input className="font-normal text-[16px] leading-[24px] outline-none flex grow" value={MessagePreview?.title}/>
+                <span className="text-white bg-[#0087FF] px-[30px] py-[7px]">{MessagePreview?.title?.length}/50</span>
             </div>
         </div>
         <div className="flex gap-4 mt-4">
@@ -64,7 +73,7 @@ const PreviewMessage = () => {
                                 <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] grid grid-cols-[12%_85%] items-end gap-[3%]">
                                     <img src={messageImg} className="w-full" />
                                     <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%]">
-                                        <p className=" my-[10px]">{variant?.text}</p>
+                                        <p className=" my-[10px]">{variant?.name}</p>
                                         {/* <p className=" my-[10px]">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p> */}
                                     </div>
                                 </div>
@@ -86,8 +95,8 @@ const PreviewMessage = () => {
         </div>
         <div className="flex gap-4 justify-end mt-6">
             <button className="font-regular text-[21px] leading-[36px] bg-[#E8E8E8] 
-             px-4 py-1.5 w-[200px] rounded-md flex justify-center" onClick={()=>setStep(4)}>{t("message.Cancel")}</button>
-            <button onClick={()=>setStep(4)} className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md"> {t("message.Select")}</button>
+             px-4 py-1.5 w-[200px] rounded-md flex justify-center" onClick={()=>handleCancel()}>{t("message.Cancel")}</button>
+            { backStep === 6 && <button onClick={()=>setStep(4)} className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md"> {t("message.Select")}</button>}
         </div>
     </div>
 </div>

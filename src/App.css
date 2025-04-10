@@ -48,6 +48,9 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    position: relative;
+    cursor: pointer;
+    padding: 5px 10px;
 }
 
 span.fb-group-icon {
@@ -58,4 +61,23 @@ span.fb-group-icon {
     align-items: center;
     font-size: 20px;
     border-radius: 4px;
+}
+
+.friends-list-blurry .blurry-effect {
+    color: gray;
+    filter: blur(3px);
+}
+ .white-spin  .ant-spin-dot-item{
+    color: white !important;
+}
+
+.backdrop-blur-md {
+   backdrop-filter: blur(8px) !important; 
+
+}
+
+.active-mssg{ 
+    border: 1px solid #0087FF !important;
+    background-color: #0087FF33 !important;
+    outline: 1px solid #0087FF !important;
 }
