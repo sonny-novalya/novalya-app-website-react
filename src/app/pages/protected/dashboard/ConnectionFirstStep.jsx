@@ -9,7 +9,7 @@ const ConnectionFirstStep = () => {
     });
 
     return (
-        <div className="flex flex-col w-full gap-4 border border-[#DADADA] rounded-md p-5 ">
+        <div className={`flex flex-col w-full gap-4 border rounded-md p-5 ${isExtensionInstalled ? 'border-[#21BF7C] ' : 'border-[#DADADA]'}`}>
             <div className="flex items-center space-x-2 ">
                 {
                     isExtensionInstalled
@@ -21,7 +21,7 @@ const ConnectionFirstStep = () => {
             <p className='text-[#000407]'>
                 Connect your Instagram account to manage direct messages, comments, and follower insights.
             </p>
-            
+
             <div className='w-full flex justify-center'>
                 <button
                     className={`flex justify-center items-center w-84 mx-auto py-1.5 rounded-md focus:outline-none text-center nova-prospecting cursor-pointer install-extension-btn inactive-tag inactive-ext ${isExtensionInstalled ? 'bg-[#21BF7C] text-white' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
@@ -35,7 +35,7 @@ const ConnectionFirstStep = () => {
                     }}
                 >
                     <span className={isExtensionInstalled && 'mr-2'}>
-                    {isExtensionInstalled ? 'Extension Installed' : 'Install Extension'}</span>
+                        {isExtensionInstalled ? 'Extension Installed' : 'Install Extension'}</span>
                     {isExtensionInstalled && <TickIconFilledWhite />}
                 </button>
 
