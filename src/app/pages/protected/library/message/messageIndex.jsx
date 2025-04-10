@@ -183,12 +183,12 @@ const MessageIndex = () => {
                 onChange={(e)=>setQuery(e.target.value)}
               />
               <div className="flex gap-2.5 ml-[10px]">
-                <Button
+                {/* <Button
                   icon={<FilterOutlined />}
                   className="!text-[16px] !rounded-[4px] px-4 min-h-[44px] min-w-[155px] !text-[#808183]"
                 >
                   Filter
-                </Button>
+                </Button> */}
                 <Button
                   type="primary"
                   onClick={() => setIsMessage(true)}
