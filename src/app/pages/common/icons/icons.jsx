@@ -47,6 +47,14 @@ export const InstagramIcon = () => (
 
 );
 
+export const VerticalDotsIcon = () => (
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <circle cx="12" cy="5" r="2" />
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="12" cy="19" r="2" />
+    </svg>
+  );
+
 export const AiCommentsIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fillRule="evenodd" clipRule="evenodd" d="M14.5 5.97V3C14.5 2.45 14.05 2 13.5 2H7C4.24 2 2 4.23 2 6.98V13.95C2 16.71 4.24 18.95 7 18.95H8.5C8.78 18.95 9.14 19.13 9.3 19.35L10.8 21.34C11.46 22.22 12.54 22.22 13.2 21.34L14.7 19.35C14.89 19.1 15.19 18.95 15.5 18.95H17.01C19.77 18.95 22 16.72 22 13.96V10.5C22 9.95 21.55 9.5 21 9.5H18.03C16.08 9.5 14.5 7.92 14.5 5.97ZM7 11C7 10.45 7.44 10 8 10C8.55 10 9 10.45 9 11C9 11.55 8.56 12 8 12C7.44 12 7 11.55 7 11ZM11 11C11 10.45 11.44 10 12 10C12.55 10 13 10.45 13 11C13 11.55 12.56 12 12 12C11.44 12 11 11.55 11 11Z" fill="#448AFF" />
@@ -477,6 +485,12 @@ export const IGLogo = () => (
         </defs>
     </svg>
 )
+
+export const TickIconFilledWhite = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="white" />
+    </svg>
+) 
 
 export const FriendlistIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
