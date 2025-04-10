@@ -1,10 +1,21 @@
 import IgImg from "../../../../assets/img/ig-cover.png"
+import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
 import PropTypes from "prop-types";
 
-const InstagramCard = ({data}) => {
-
+const InstagramCard = ({ data }) => {
     const { insta_user_id, total_followers, insta_user_name, following, profile_image, posts } = data
+    const { unlinkInstagramAccount, fetchPlanLimitDetails } = useSocialAccountsStore();
+
+    const handleInstaUnlinkClick = () => {
+        unlinkInstagramAccount(
+            {}, 
+            (resp) => {
+                if (resp) fetchPlanLimitDetails("instagram")
+            },
+            () => {}
+        );
+    };
 
     return (
         <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md">
@@ -22,11 +33,11 @@ const InstagramCard = ({data}) => {
             <div className="mt-4 ml-28 flex justify-between items-center ">
                 <p className="font-medium">@{insta_user_name}</p>
                 <div className="flex gap-3 mr-3">
-                    <button className="text-blue-600 cursor-pointer">
+                    <button className="text-blue-600 cursor-pointer instagram-sync">
                         <SyncBlueIcon />
                     </button>
-                    <button className="text-red-500 cursor-pointer">
-                        <LinkRedIcon />
+                    <button className="text-red-500 cursor-pointer instaConfirmUnlink" onClick={handleInstaUnlinkClick}>
+                        <LinkRedIcon  />
                     </button>
                 </div>
             </div>
@@ -38,12 +49,12 @@ const InstagramCard = ({data}) => {
                         <p className="font-bold">{total_followers}</p>
                         <p>Followers</p>
                     </div>
-                    <div className="bg-[#DADADA] w-[1px]"/>
+                    <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{posts}</p>
                         <p>Posts</p>
                     </div>
-                    <div className="bg-[#DADADA] w-[1px]"/>
+                    <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{following}</p>
                         <p>Following</p>

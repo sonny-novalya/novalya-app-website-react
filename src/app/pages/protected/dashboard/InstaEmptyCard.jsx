@@ -49,7 +49,7 @@ const InstaEmptyCard = () => {
             </div>
 
             <div className="absolute bottom-0 top-0 right-0 left-0 transform backdrop-blur-md bg-[#00000020] w-full h-full flex items-center justify-center">
-                <button className="px-6 py-2 bg-gradient-to-r from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-full">
+                <button id="instagram-sync" className="px-6 py-2 bg-gradient-to-r from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-full cursor-pointer instagram-sync">
                     Connect Instagram Account
                 </button>
             </div>

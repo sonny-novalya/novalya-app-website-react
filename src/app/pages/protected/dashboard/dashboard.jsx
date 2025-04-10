@@ -1,87 +1,77 @@
-import  { useEffect, useState } from "react";
-import { Steps, Button } from "antd";
-import FirstStep from "./FirstStep";
-import SecondStep from "./SecondStep";
-import ThirdStep from "./ThirdStep";
+import { useState, useEffect } from "react";
 import Layout from "../Layout";
+import ConnectionDashboard from "./ConnectionDashboard";
+import SocialDashboard from "./SocialDashboard";
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
-
-const { Step } = Steps;
+import Loader from "../../../../helpers/Loader";
 
 const Dashboard = () => {
-  const [current, setCurrent] = useState(0);
-  const { fetchSocialAccounts, socialAccountsData, loading, error } = useSocialAccountsStore();
+  const [isSocialDashboard, setIsSocialDashboard] = useState(false);
+  const [facebookButtonDisabled, setFacebookButtonDisabled] = useState(false);
+  const [instaButtonDisabled, setInstaButtonDisabled] = useState(false);
 
-  const { facebook_data, instagram_data, limit_data } = socialAccountsData
+  const { fetchSocialAccounts, socialAccountsData, loading, error, planLimit } =
+    useSocialAccountsStore();
 
-  const isConnected = (data) =>
-    data && typeof(data) === "object" && Object.keys(data).length > 0;
+  const { facebook_data, instagram_data, limit_data } = socialAccountsData || {};
 
   useEffect(() => {
     fetchSocialAccounts();
   }, []);
 
-  if (loading) return "Loading";
+  useEffect(() => {
+    if (planLimit?.new_packages?.connection_type === 1) {
+      if (socialAccountsData.facebook_data) {
+        setFacebookButtonDisabled(false);
+        setInstaButtonDisabled(true);
+      } else if (socialAccountsData.instagram_data) {
+        setFacebookButtonDisabled(true);
+        setInstaButtonDisabled(false);
+      } else {
+        setFacebookButtonDisabled(false);
+        setInstaButtonDisabled(false);
+      }
+    } else {
+      setFacebookButtonDisabled(false);
+      setInstaButtonDisabled(false);
+    }
+  }, [
+    socialAccountsData.facebook_data,
+    socialAccountsData.instagram_data,
+    planLimit,
+  ]);
+
+  if (loading) return <Loader />;
   if (error) return "Alert";
 
-
-  const steps = [
-    { title: "Install Extension", content: <FirstStep /> },
-    { title: "Connect Social Networks", content: <SecondStep /> },
-    {
-      title: "Dashboard Overview", content: <ThirdStep
-        facebook_data={facebook_data}
-        instagram_data={instagram_data}
-        limit_data={limit_data}
-      /> },
-  ];
-
   return (
-    <Layout >
-        <h3 className="text-lg font-bold mb-5">Dashboard</h3>
-
+    <Layout>
+      {
+        isSocialDashboard ? (
+          <SocialDashboard
+            facebook_data={facebook_data}
+            instagram_data={instagram_data}
+            limit_data={limit_data}
+          />
+        ) : (
+          <>
+            <ConnectionDashboard />
+            <div className="flex justify-center items-center w-full mt-5">
+              <button
+                className={`flex items-center justify-center w-96 py-1.5 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600 cursor-pointer ${facebookButtonDisabled
+                  ? "opacity-60"
+                  : "opacity-100"
+                  }`}
+                onClick={() => setIsSocialDashboard(true)}
+                disabled={facebookButtonDisabled}
+              >
+                Confirm
+              </button>
+            </div>
+          </>
+        )}
     </Layout>
-  )
-  // return (
-  //   <Layout >
-  //     <h3 className="text-lg font-bold mb-5">Dashboard</h3>
-  //     <div className="bg-white p-3 rounded-lg">
-  //       <Steps current={current}>
-  //         {steps.map((step, index) => (
-  //           <Step key={index} title={step.title} />
-  //         ))}
-  //       </Steps>
-  //     </div>
-
-  //     <div className="mt-8">{steps[current].content}</div>
-
-  //     <div className="mt-4 flex justify-between">
-  //       {
-  //         current > 0
-  //         ? <Button onClick={() => setCurrent(current - 1)}>Previous</Button>
-  //         : <span></span>
-  //       }
-  //       {current < steps.length - 1 ? (
-  //         <Button
-  //           type="primary"
-  //           onClick={() => {
-  //             if (current === 1 && !isConnected(facebook_data) && !isConnected(instagram_data)) {
-  //               alert("Please connect either Facebook or Instagram account before proceeding.");
-  //               return;
-  //             }
-
-  //             setCurrent(current + 1);
-  //           }}
-  //         >
-  //           Next
-  //         </Button>
-  //       ) : (
-  //         <Button type="primary">Finish</Button>
-  //       )}
-
-  //     </div>
-  //   </Layout>
-  // );
+  );
 };
 
 export default Dashboard;
