@@ -13,7 +13,9 @@ const useMessageSteps = create((set) => ({
    loading: false,
    error: null,
    messageList: [],
+   tempList:[],
    totalPages: 1,
+   flow:0,
 
 
 
@@ -25,10 +27,11 @@ const useMessageSteps = create((set) => ({
       MessagePreview:val ? state.MessagePreview : null, 
       selecetdMessage:val ? state.selecetdMessage : null, 
       backStep:val ? state.backStep : null, 
+      flow:val ? state.flow : 0,
    })),
 
    setSelectedPlatform: (val) => set(() => ({ selectedPlatform: val })), 
-
+   setFlow: (val) => set(() => ({ flow: val })), 
    setSelectedVisibilty: (val) => set(() => ({ visibilityType: val })), 
    setPreviewMessage: (val) => set(() => ({ MessagePreview: val })), 
    setSelecetdMessage: (val) => set(() => ({ selecetdMessage: val })), 
@@ -59,8 +62,24 @@ const useMessageSteps = create((set) => ({
       }
   },
 
+  fetchTemps: async () => {
+   try {
+    
+       const res = await apiCall({
+           method: 'POST',
+           url: '/all/messages/api/get-templates-data',
+       });
+
+       set({ tempList: res?.data?.message || [], });
+   } catch (error) {
+       set({
+           loading: false,
+           error: error?.message || 'Something went wrong',
+       });
+   }
+},
+
   deleteMessages: async (id) => {
- 
    try {
        const res = await apiCall({
            method: 'DELETE',
@@ -76,5 +95,6 @@ const useMessageSteps = create((set) => ({
    }
 },
 }));
+
 
 export default useMessageSteps;

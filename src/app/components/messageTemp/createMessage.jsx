@@ -51,6 +51,7 @@ const CreateMessage = ({containerRef}) => {
   const { t } = useTranslation();
 
 
+
   const handleVisibilityChange = (val) => {
     setVisibility(val);
   };
@@ -60,11 +61,15 @@ const CreateMessage = ({containerRef}) => {
   };
 
   useEffect(() => {
-    setVisibility(visibilityOptions.find((v) => v.id === visibilityType));
+    if (visibilityType) {
+    setVisibility(visibilityOptions.find((v) => (v.id === visibilityType)));
+    }else{
+    setVisibility(selecetdMessage?.visibility);
+    }
     setVariants(
       selecetdMessage ? [...selecetdMessage?.variants] : [...defaultVariants]
     );
-    setName(selecetdMessage?.name || "");
+    setName(selecetdMessage?.title || "");
   }, []);
 
   const addVariants = () => {
@@ -123,7 +128,7 @@ const CreateMessage = ({containerRef}) => {
   const handlePreview = () => {
     const message = {
       variants: variants,
-      name: name,
+      title: name,
       visibility: visibility,
     };
     setPreviewMessage(message);
@@ -157,7 +162,7 @@ const CreateMessage = ({containerRef}) => {
       return
     }
   
-    if (!visibility.id) {
+    if (!visibility?.id) {
       message.error("Visibility is Required")
       return
     }

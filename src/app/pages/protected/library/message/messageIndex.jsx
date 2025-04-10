@@ -23,7 +23,8 @@ const MessageIndex = () => {
     setPreviewMessage,
     setBackStep,
     totalPages,
-    selecetdMessage
+    selecetdMessage,
+    fetchTemps
   } = useMessageSteps();
   const [isDelete, setIsDelete] = useState(false);
   const [pagination, setPagination] = useState({
@@ -34,7 +35,6 @@ const MessageIndex = () => {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 500);
 
-  console.log(selecetdMessage,"selecetdMessage")
 
   const renderPlatformButton = (platform) => {
     const platformClass =
@@ -82,6 +82,11 @@ const MessageIndex = () => {
     setSelecetdMessage(null);
     setPreviewMessage(null);
   }, [pagination,debouncedQuery]);
+
+  useEffect(() => {
+    fetchTemps()
+  }, [])
+  
 
 
   const handleEdit = (data, e) => {

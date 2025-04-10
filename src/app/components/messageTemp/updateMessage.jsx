@@ -51,8 +51,14 @@ const UpdateMessage = ({containerRef}) => {
   };
 
   useEffect(() => {
-    console.log(selecetdMessage)
-    let vis = selecetdMessage.visibility_type ? JSON.parse(selecetdMessage.visibility_type ):[]
+    let visType = typeof(selecetdMessage?.visibility_type)
+    let vis ;
+    if(visType === "string"){
+      vis = selecetdMessage?.visibility_type ? JSON.parse(selecetdMessage?.visibility_type ):[]
+    }else{
+      vis = selecetdMessage?.visibility_type
+    }
+   
     if(vis.length === 1 ){
       vis = vis[0]
     }else{
@@ -113,7 +119,7 @@ const UpdateMessage = ({containerRef}) => {
     const message = {
         variants: variants,
         title: name,
-        visibility: visibility,
+        visibility_type: [visibility.id],
     }
     setPreviewMessage(message);
     setSelecetdMessage(message)

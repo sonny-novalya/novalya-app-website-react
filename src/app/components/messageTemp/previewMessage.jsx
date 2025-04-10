@@ -10,6 +10,7 @@ const PreviewMessage = () => {
     const { t } = useTranslation();
 
     const handleCancel = ()=>{
+        
         if (backStep === 0) {
             setIsMessage(false)
         }else{
