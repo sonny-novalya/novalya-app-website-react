@@ -13,7 +13,8 @@ const useMessageSteps = create((set) => ({
    loading: false,
    error: null,
    messageList: [],
-  totalPages: 1,
+   totalPages: 1,
+
 
 
    setStep: (val) => set(() => ({ step:val})), 
@@ -34,7 +35,7 @@ const useMessageSteps = create((set) => ({
    setPagination: (val) => set(() => ({ pagination: val })), 
 
 
-   fetchMessages: async (pagination) => {
+   fetchMessages: async (pagination,search) => {
       set({ loading: true, error: null });
       try {
          const paylaod = {
@@ -44,7 +45,7 @@ const useMessageSteps = create((set) => ({
           const res = await apiCall({
               method: 'POST',
               url: '/all/messages/api/messages',
-              data:{...paylaod}
+              data:{...paylaod,search}
           });
           const total = res?.data?.message?.total || 1
 

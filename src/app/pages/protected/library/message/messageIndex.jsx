@@ -5,12 +5,12 @@ import {
   FilterOutlined,
   EditOutlined,
   EyeOutlined,
-  EllipsisOutlined,
 } from "@ant-design/icons";
 
 import "./messageIndex.css";
 import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
 import { VerticalDotsIcon } from "../../../common/icons/icons";
+import { useDebounce } from "../../../../../hooks/debounce";
 const MessageIndex = () => {
   const {
     setIsMessage,
@@ -22,7 +22,8 @@ const MessageIndex = () => {
     deleteMessages,
     setPreviewMessage,
     setBackStep,
-    totalPages
+    totalPages,
+    selecetdMessage
   } = useMessageSteps();
   const [isDelete, setIsDelete] = useState(false);
   const [pagination, setPagination] = useState({
@@ -30,6 +31,10 @@ const MessageIndex = () => {
     limit: 10,
   });
   const delTime = useRef();
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 500);
+
+  console.log(selecetdMessage,"selecetdMessage")
 
   const renderPlatformButton = (platform) => {
     const platformClass =
@@ -72,12 +77,12 @@ const MessageIndex = () => {
   };
 
   useEffect(() => {
-    console.log(pagination,"pagination")
-    fetchMessages(pagination);
+    fetchMessages(pagination,debouncedQuery);
     setBackStep(null);
     setSelecetdMessage(null);
     setPreviewMessage(null);
-  }, [pagination]);
+  }, [pagination,debouncedQuery]);
+
 
   const handleEdit = (data, e) => {
     e.stopPropagation();
@@ -97,7 +102,6 @@ const MessageIndex = () => {
   const handleDuplicate = () => {};
 
   const handleDelete = async (id) => {
-    console.log("delete", id);
     if (!isDelete) {
       setIsDelete(true);
       delTime.current = setTimeout(() => {
@@ -162,7 +166,6 @@ const MessageIndex = () => {
     );
   };
 
-  console.log(messageList,"messageList")
   return (
     <>
       <div className="message-main-wraper">
@@ -177,6 +180,7 @@ const MessageIndex = () => {
                 prefix={<SearchOutlined />}
                 placeholder="Search"
                 className="w-1/2 !rounded-[4px] min-h-[44px]"
+                onChange={(e)=>setQuery(e.target.value)}
               />
               <div className="flex gap-2.5 ml-[10px]">
                 <Button
