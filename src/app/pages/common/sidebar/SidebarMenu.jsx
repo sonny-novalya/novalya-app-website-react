@@ -13,7 +13,8 @@ import {
     UpgradeProIcon,
     UpperArrowIcon,
     DownArrowIcon,
-    LogoutIcon
+    LogoutIcon,
+    FriendlistIcon
 } from "../icons/icons"; // Import icons
 import LocalizationOptions from "../../../../helpers/shared/LocalizationOptions";
 import { useNavigate } from "react-router-dom";
@@ -38,7 +39,6 @@ const SidebarMenu = () => {
                 { text: "Prospecting", id: "prospecting", path: "/fb/prospecting/groups" },
                 { text: "Wish Birthday", id: "birthday", path: "/fb/birthday" },
                 { text: "CRM", id: "crm", path: "/fb/crm" },
-                { text: "FB Friends list", id: "fb-friends-list", path: "/fb/friends" },
                 { text: "Request", id: "fb-request", path: "/fb/request" },
             ]
         },
@@ -60,6 +60,18 @@ const SidebarMenu = () => {
         ]},
         { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
         { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon /> },
+        {
+            text: "FB Friendlist",
+            id: "fb_friendlist",
+            path: "/friendlist",
+            icon: <FriendlistIcon />,
+            subNav: [
+                { text: "Friends", id: "fb-friends", path: "/friendlist/friends" },
+                { text: "Unfriend", id: "fb-unfriend", path: "/friendlist/unfriend" },
+                { text: "Deactivated", id: "fb-deactivated", path: "/friendlist/deactivated" },
+                { text: "Whitelist", id: "fb-whitelist", path: "/friendlist/whitelist" }
+            ]
+        },
         { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
     ];
 
