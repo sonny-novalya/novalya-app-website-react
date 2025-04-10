@@ -26,15 +26,59 @@ const Keywords = () => {
               className="w-1/2 !rounded-[4px] min-h-[44px]"
             />
             <div className="flex gap-2.5 ml-[10px]">
-              <Button icon={<FilterOutlined />} className="!text-[16px] !rounded-[4px] px-4 min-h-[44px] min-w-[155px] !text-[#808183]">
-                Filter
-              </Button>
+              <div className="pros-dropdownWrap relative">
+                  <div className="pros-dropdown-text flex items-center justify-around gap-2 min-h-[44px] rounded-[6px] min-w-[193px] font-medium text-[14px] leading-[21px] text-black">
+                  <Button icon={<FilterOutlined />} className="w-full !text-[16px] !rounded-[4px] px-4 min-h-[44px] min-w-[155px] !text-[#808183]">
+                    Filter
+                    </Button>
+                  </div>
+                  <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
+                      <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
+                          <span className="flex-1 text-[14px]">Show all</span>
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                      </div>
+                      <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
+                          <img className="normalIcon" src="assets/images/messanger.svg"/>
+                          <img className="normalIconHover" src="assets/images/messenger-white.svg"/>
+                          <span className="flex-1 text-[14px]">Instagram</span>
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                      </div>
+                      <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
+                          <img className="normalIcon" src="assets/images/messanger.svg"/>
+                          <img className="normalIconHover" src="assets/images/messenger-white.svg"/>
+                          <span className="flex-1 text-[14px]">Facebook</span>
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                      </div>
+                      <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
+                          <img className="normalIcon" src="assets/images/messanger.svg"/>
+                          <img className="normalIconHover" src="assets/images/messenger-white.svg"/>
+                          <span className="flex-1 text-[14px]">Birthday</span>
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                      </div>
+                      <div className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
+                          <img className="normalIcon" src="assets/images/messanger.svg"/>
+                          <img className="normalIconHover" src="assets/images/messenger-white.svg"/>
+                          <span className="flex-1 text-[14px]">Request</span>
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3.09375 9.84375L7.03125 13.7812L14.9062 5.34375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                      </div>
+                  </div>
+                </div>
               <Button type="primary" onClick={()=>setIsMessage(true)} className="!text-[16px] flex align-center gap-2.5 !rounded-[6px] px-4 min-h-[44px] min-w-[155px] !text-white">
                 <span>+</span> Create New
               </Button>
             </div>
           </div>
-          <div className='bg-[#E6F1FB] text-[14px] leading-[21px] tracking-[2%] flex items-center gap-[10px] p-[16px_20px] mb-5'> Name 
+          <div className='bg-[#E6F1FB] text-[14px] leading-[21px] tracking-[2%] flex items-center gap-[10px] p-[16px_20px] mb-2.5'> Name 
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M10 2.91675V16.9417" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -49,14 +93,14 @@ const Keywords = () => {
                 <span>Keywords {item.id}</span>
                 <div className="flex gap-4 items-center">
                   {/* {renderPlatformButton(item.platform)} */}
-                  <Button icon={<EditOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
+                  <Button icon={<EditOutlined />} className="ctm-green-btn !rounded-[25px] !font-medium !text-[14px] leading-[21px] gap-[4px] p-[8px_12px] flex !h-9">
                   
                   Edit
                   </Button>
-                  <Button icon={<EyeOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !!text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
+                  <Button icon={<EyeOutlined />} className="ctm-blue-btn !rounded-[25px] !font-medium !!text-[14px] leading-[21px] gap-[4px] p-[8px_12px] flex !h-9">
                    Duplicate
                   </Button>
-                  <Button icon={<EyeOutlined />} className="!text-[#808183] !rounded-[25px] !font-medium !!text-[14px] leading-[21px] tracking-normal gap-[4px] p-[8px_12px] flex !h-9 btn-hover">
+                  <Button icon={<EyeOutlined />} className="ctm-red-btn !rounded-[25px] !font-medium !!text-[14px] leading-[21px] gap-[4px] p-[8px_12px] flex !h-9">
                    Delete
                   </Button>
                 </div>
@@ -96,6 +140,32 @@ const Keywords = () => {
               </button>
             </div>
           </div>
+
+          {/*  _____  Code for Popup  _____  */}
+
+          {/* <div className="fixed inset-0 flex items-center justify-center bg-[#00000047] h-screen">
+            <div className="bg-white px-6 py-5 rounded-[10px] max-w-[700px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+                <h3 className="text-[20px] font-medium mb-5">Create Keyword</h3>
+                <div className="border border-[#DCDCDC] rounded-[10px] p-5">
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium mb-2">Name of your Keywords</label>
+                        <input className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-4 py-2 leading-5 text-[rgba(0,0,0,0.75)] font-light placeholder-[text-[rgba(0,0,0,0.4)]" type="text" name="" placeholder="Name"/>
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium mb-2">Positive Keywords</label>
+                        <input className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-4 py-2 leading-5 text-[rgba(0,0,0,0.75)] font-light placeholder-[text-[rgba(0,0,0,0.4)]" type="text" name="" placeholder="Enter keyword, Separated by commas "/>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Negative Keywords</label>
+                        <input className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-4 py-2 leading-5 text-[rgba(0,0,0,0.75)] font-light placeholder-[text-[rgba(0,0,0,0.4)]" type="text" name="" placeholder="Enter keyword, Separated by commas "/>
+                    </div>
+                </div>
+                <div className="flex justify-end mt-4">
+                    <button className="bg-[#0087FF] text-white text-sm rounded-[6px] px-12 py-3">Submit</button>
+                </div>
+            </div>
+          </div> */}
+
         </div>
       </div>
     </div>
