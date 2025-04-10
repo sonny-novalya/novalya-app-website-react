@@ -1,11 +1,21 @@
 import FbImg from "../../../../assets/img/fb-cover.png"
+import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
 import PropTypes from "prop-types";
 
 const FacebookCard = ({ data }) => {
-
     const { fb_user_name, total_friends, followers, following, profile_image } = data
+    const { unlinkFacebookAccount , fetchPlanLimitDetails } = useSocialAccountsStore();
 
+    const handleFbConfirmUnlink = () => {
+        unlinkFacebookAccount(
+            {},
+            (resp) => {
+                if (resp) fetchPlanLimitDetails()
+            },
+            () => {}
+        );
+    };
     return (
         <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md">
             <div className="relative">
@@ -22,10 +32,10 @@ const FacebookCard = ({ data }) => {
             <div className="mt-4 ml-28 flex justify-between items-center ">
                 <p className="font-medium">{fb_user_name}</p>
                 <div className="flex gap-3 mr-3">
-                    <button className="text-blue-600 cursor-pointer">
+                    <button id="facebook-sync" className="text-blue-600 cursor-pointer facebook-sync">
                         <SyncBlueIcon />
                     </button>
-                    <button className="text-red-500 cursor-pointer">
+                    <button id="instagram-sync" className="text-red-500 cursor-pointer fbConfirmUnlink" onClick={handleFbConfirmUnlink}>
                         <LinkRedIcon />
                     </button>
                 </div>
@@ -38,12 +48,12 @@ const FacebookCard = ({ data }) => {
                         <p className="font-bold">{followers}</p>
                         <p>Followers</p>
                     </div>
-                    <div className="bg-[#DADADA] w-[1px]"/>
+                    <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{total_friends}</p>
                         <p>Friends</p>
                     </div>
-                    <div className="bg-[#DADADA] w-[1px]"/>
+                    <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{following}</p>
                         <p>Following</p>

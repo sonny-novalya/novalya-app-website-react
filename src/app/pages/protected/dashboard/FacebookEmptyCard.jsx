@@ -50,7 +50,7 @@ const FacebookEmptyCard = () => {
 
             {/* Button with blur effect */}
             <div className="absolute bottom-0 top-0 right-0 left-0 transform backdrop-blur-md bg-[#00000020] w-full h-full flex items-center justify-center">
-                <button className="px-6 py-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-full">
+                <button id="facebook-sync" className="px-6 py-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-full cursor-pointer">
                     Connect Facebook Account
                 </button>
 

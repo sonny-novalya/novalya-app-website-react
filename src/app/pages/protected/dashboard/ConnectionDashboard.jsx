@@ -3,6 +3,7 @@ import ConnectionSecondStep from "./ConnectionSecondStep"
 import VideoSection from "./VideoSection"
 
 const ConnectionDashboard = () => {
+
     return (
         <>
             <h3 className="text-lg font-bold mb-5">Hello Anima</h3>
