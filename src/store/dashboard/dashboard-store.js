@@ -7,6 +7,8 @@ export const useSocialAccountsStore = create((set) => ({
     socialAccountsData: [],
     planLimit: {},
     instaPlanLimit: {},
+    isFbConnected : false,
+    isIgConnected: false,
     setPlanLimit: (data) => set({ planLimit: data }),
     setInstaPlanLimit: (data) => set({ instaPlanLimit: data }),
 
@@ -18,9 +20,18 @@ export const useSocialAccountsStore = create((set) => ({
                 url: '/api/facebook/dashboard-social-accounts-data'
             });
 
-            set({ socialAccountsData: res?.data?.data || [], loading: false });
-            localStorage.setItem("instagramData", JSON.stringify(res?.data?.data.instagram_data))
-            localStorage.setItem("facebookData", JSON.stringify(res?.data?.data.facebook_data))
+            const fetchedData = res?.data?.data || {};
+            const { facebook_data, instagram_data } = fetchedData;
+
+            localStorage.setItem("instagramData", JSON.stringify(instagram_data));
+            localStorage.setItem("facebookData", JSON.stringify(facebook_data));
+
+            set({
+                socialAccountsData: fetchedData,
+                isFbConnected: facebook_data !== null,
+                isIgConnected: instagram_data !== null,
+                loading: false
+            });
 
         } catch (error) {
             set({
