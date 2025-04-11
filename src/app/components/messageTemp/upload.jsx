@@ -81,7 +81,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
   
           <div className="flex justify-end mt-5 gap-4">
             <button className="bg-[#E8E8E8] text-black text-[24px] rounded-[6px] px-9 py-1.5" onClick={()=>setIsUpload(false)}>Cancel</button>
-            <button className="bg-[#0087FF] text-white text-[24px] rounded-[6px] px-9 py-1.5">Confirm</button>
+            <button className="bg-[#0087FF] text-white text-[24px] rounded-[6px] px-9 py-1.5" onClick={()=>handleSubmit()}>Confirm</button>
           </div>
         </div>
       </div>

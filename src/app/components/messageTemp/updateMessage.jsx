@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/MessageIcons";
 import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
 import apiCall from "../../../services/api";
-import { message, Spin } from "antd";
+import { message, Spin, Upload } from "antd";
 
 const UpdateMessage = ({containerRef}) => {
   const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessages} = useMessageSteps();
@@ -358,7 +358,7 @@ const handleSubmit =async ()=>{
                                       </div>
                                     )}
                                    {visibility?.attachment&&
-                                    <button className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
+                                    <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
                                       <CreateMessageIcon index={6} />
                                       {t("message.Upload image")}
                                      
