@@ -24,7 +24,8 @@ import { useTranslation } from "react-i18next";
 import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/MessageIcons";
 import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
 import apiCall from "../../../services/api";
-import { message, Spin, Upload } from "antd";
+import { message, Spin } from "antd";
+import Upload from "./upload";
 
 const UpdateMessage = ({containerRef}) => {
   const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessages} = useMessageSteps();
@@ -451,7 +452,7 @@ const handleSubmit =async ()=>{
                 </button>
               </div>
             </div>
-     { isUpload&&<Upload setIsUpload={setIsUpload}  setAttachment={setAttachment} attachment={attachment}/>}
+     { isUpload && <Upload setIsUpload={setIsUpload}  setAttachment={setAttachment} attachment={attachment}/>}
 
           </div>
         </div>
