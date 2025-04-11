@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { detectExtension } from "../../../../helpers/helper";
-import { FBLogo, GreenCheckRoundedIcon, IGLogo } from "../../common/icons/icons"
+import { FBLogo, GreenCheckRoundedIcon } from "../../common/icons/icons"
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
+import IGIcon from "../../../../assets/img/ig_icon.png";
 
 const ConnectionSecondStep = () => {
     const { socialAccountsData } = useSocialAccountsStore();
@@ -45,7 +46,7 @@ const ConnectionSecondStep = () => {
 
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-5">
-                    <IGLogo />
+                    <img src={IGIcon} alt="" className="h-[76px] w-[76px]" />
                     <div className="flex flex-col gap-1">
                         <span className="text-xl font-medium">Connect Instagram account</span>
                         <p>
