@@ -6,7 +6,7 @@ import { PreviewMessageIcon } from '../../pages/common/icons/messageIcons/Messag
 import { useTranslation } from 'react-i18next'
 
 const PreviewMessage = () => {
-  const {setStep,MessagePreview,backStep,setIsMessage} = useMessageSteps()
+  const {setStep,MessagePreview,backStep,setIsMessage,setSelecetdMessage} = useMessageSteps()
     const { t } = useTranslation();
 
     const handleCancel = ()=>{
@@ -18,6 +18,10 @@ const PreviewMessage = () => {
         }
     }
 
+ const handleSelect = ()=>  {
+  setSelecetdMessage(MessagePreview)
+  setStep(4)
+}
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen previeMessage">
@@ -81,7 +85,7 @@ const PreviewMessage = () => {
         <div className="flex gap-4 justify-end mt-6">
             <button className="font-regular text-[21px] leading-[36px] bg-[#E8E8E8] 
              px-4 py-1.5 w-[200px] rounded-md flex justify-center" onClick={()=>handleCancel()}>{t("message.Cancel")}</button>
-            { backStep === 6 && <button onClick={()=>setStep(4)} className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md"> {t("message.Select")}</button>}
+            { backStep === 6 && <button onClick={()=>handleSelect()} className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md"> {t("message.Select")}</button>}
         </div>
     </div>
 </div>

@@ -305,68 +305,68 @@ const handleSubmit =async ()=>{
                           tracking-[0px] text-left h-[90%] text-black focus:outline-none"
                   />
     
-                  <div className="flex items-center gap-[10px] justify-between">
-                    <div className="flex items-center gap-[10px]">
-                    {
-                     visibility?.inputs && <>
-                     <button
-                        onClick={() =>
-                          handleVariantText(
-                            "[first name]",
-                            selectedVariant.id,
-                            true
-                          )
-                        }
-                        className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
-                      >
-                         {t("message.First name")}
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleVariantText("[last name]", selectedVariant.id, true)
-                        }
-                        className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
-                      >
-                      {t("message.Last name")}
-                        
-                      </button>
-                     </>
-                    }
-                      <button
-                        onClick={() => setIsEmojiPickerOpen(true)}
-                        className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-1 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
-                      >
-                        <CreateMessageIcon index={7} />
-                        
-                        {t("message.Emoji")}
-                      </button>
-                      {isEmojiPickerOpen && (
-                        <div
-                          ref={pickerRef}
-                          style={{ width: "100%" }}
-                          className="picker-Wrapper absolute left-[52%] top-[34%]"
-                        >
-                          <EmojiPicker
-                            onEmojiClick={({ emoji }) => {
-                              handleVariantText(emoji, selectedVariant.id, true);
-                            }}
-                            skinTonesDisabled={true}
-                            emojiVersion="4.0"
-                          />
-                        </div>
-                      )}
-                     {visibility?.attachment&&
-                      <button className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
-                        <CreateMessageIcon index={6} />
-                        {t("message.Upload image")}
-                       
-                      </button>
-                     }
-                    </div>
-                    <span className="font-medium text-[14px] leading-[21px] tracking-[0%] text-[#00000080] px-4">
-                      {selectedVariant?.count || 0}/2000
-                    </span>
-                  </div>
+                   <div className="flex items-center gap-[10px] justify-between">
+                                  <div className="flex items-center gap-[10px]">
+                                  {
+                                   visibility?.inputs && <>
+                                   <button
+                                      onClick={() =>
+                                        handleVariantText(
+                                          "[first name]",
+                                          selectedVariant.id,
+                                          true
+                                        )
+                                      }
+                                      className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
+                                    >
+                                       {t("message.First name")}
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleVariantText("[last name]", selectedVariant.id, true)
+                                      }
+                                      className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
+                                    >
+                                    {t("message.Last name")}
+                                      
+                                    </button>
+                                   </>
+                                  }
+                                    <button
+                                      onClick={() => setIsEmojiPickerOpen(true)}
+                                      className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-1 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
+                                    >
+                                      <CreateMessageIcon index={7} />
+                                      
+                                      {t("message.Emoji")}
+                                    </button>
+                                    {isEmojiPickerOpen && (
+                                      <div
+                                        ref={pickerRef}
+                                        style={{ width: "100%" }}
+                                        className="picker-Wrapper absolute left-[52%] top-[34%]"
+                                      >
+                                        <EmojiPicker
+                                          onEmojiClick={({ emoji }) => {
+                                            handleVariantText(emoji, selectedVariant.id, true);
+                                          }}
+                                          skinTonesDisabled={true}
+                                          emojiVersion="4.0"
+                                        />
+                                      </div>
+                                    )}
+                                   {visibility?.attachment&&
+                                    <button className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
+                                      <CreateMessageIcon index={6} />
+                                      {t("message.Upload image")}
+                                     
+                                    </button>
+                                   }
+                                  </div>
+                                  <span className="font-medium text-[14px] leading-[21px] tracking-[0%] text-[#00000080] px-4">
+                                    {selectedVariant?.count || 0}/2000
+                                  </span>
+                                </div>
                 </div>
               </div>
               <div className="w-[200px] bg-[#F5F5F5] rounded p-3 ">
@@ -459,27 +459,47 @@ const visibilityOptions = [
     label: "Prospecting",
     icon: propSearch,
     iconLight: prospWhite,
+    inputs: true,
+    attachment: false
   },
   {
     id: "fb_crm",
     label: "CRM",
     icon: messangerIcon,
     iconLight: messangerWhite,
+    inputs: true,
+    attachment: true
   },
-  { id: "birthday", label: "Birthday", icon: BdayIcon, iconLight: BdayWhite },
+  { id: "birthday", 
+    label: "Birthday", 
+    icon: BdayIcon, 
+    iconLight: BdayWhite,
+    inputs: true,
+    attachment: true
+  },
   {
     id: "request",
     label: "Request",
     icon: requestIcon,
     iconLight: requestWhite,
+    inputs: true,
+    attachment: true
   },
   {
     id: "ig_prospecting",
     label: "Prospecting",
     icon: IgProsp,
     iconLight: IgCrmWhite,
+    inputs: false,
+    attachment: false
   },
-  { id: "ig_crm", label: "CRM", icon: IgCrm, iconLight: IgCrmWhite },
+  { id: "ig_crm",
+    label: "CRM", 
+    icon: IgCrm, 
+    iconLight: IgCrmWhite ,  
+    inputs: false,
+    attachment: true 
+  },
 ];
 
 
