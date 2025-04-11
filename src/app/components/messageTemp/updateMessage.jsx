@@ -152,8 +152,8 @@ const handleSubmit =async ()=>{
         message.error("Message Title is Required")
         return
       }
-      if (!variants.length) {
-        message.error("Atleast 1 Variant is Required")
+      if (variants.length < 3) {
+        message.error("Atleast 3 Variants are Required")
         return
       }
       if (!visibility.id) {
@@ -279,7 +279,7 @@ const handleSubmit =async ()=>{
                   >
                       {t("message.Preview")}
                   </button> */}
-                      <button
+                     { variants.length > 3 ?<button
                                   onClick={() => handleDelete()}
                                   className="flex space-x-1 items-center bg-[#FF00001C] text-[#FF0000] px-3 py-1 rounded-full text-sm"
                                 >
@@ -291,7 +291,7 @@ const handleSubmit =async ()=>{
                                       Delete
                                     </span>
                                     </>}
-                                </button>
+                                </button>:""}
                 </div>
                 <div className="border border-[#E6E6E6] h-[93.75%] p-3">
                   <textarea

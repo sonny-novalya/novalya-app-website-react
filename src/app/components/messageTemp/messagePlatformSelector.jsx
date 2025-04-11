@@ -6,7 +6,7 @@ import { PreviewMessageIcon } from '../../pages/common/icons/messageIcons/Messag
 import { useTranslation } from 'react-i18next'
 
 const MessagePlatformSelector = ({containerRef}) => {
-  const {setStep,step,setSelectedPlatform} = useMessageSteps()
+  const {setStep,step,setSelectedPlatform,setIsMessage} = useMessageSteps()
   const {t} = useTranslation()
 
   const  handleSelection = (platform) => {
@@ -20,8 +20,8 @@ const MessagePlatformSelector = ({containerRef}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen">
         
-        <div ref={containerRef} className="relative bg-white px-6 pt-5 pb-6 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-          <button className='absolute right-1 top-1.5 cursor-pointer'>
+        <div ref={containerRef} className=" bg-white px-6 pt-5 pb-6 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+          <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>

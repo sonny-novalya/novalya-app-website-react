@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 
 
 const FbVisibilitySelector = ({containerRef}) => {
-  const {setStep,step,setSelectedVisibilty} = useMessageSteps()
+  const {setStep,step,setSelectedVisibilty,setIsMessage} = useMessageSteps()
   const {t}= useTranslation()
 
   const handleVisibilty = (visibility) => { 
@@ -21,9 +21,9 @@ const FbVisibilitySelector = ({containerRef}) => {
       return (
         <div className="fixed inset-0 flex items-center flex-col justify-center bg-black/30 h-screen">
             
-            <div ref={containerRef} className="relative bg-white px-6 py-6 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+            <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
               
-              <button className='absolute right-1 top-1.5 cursor-pointer'>
+              <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
