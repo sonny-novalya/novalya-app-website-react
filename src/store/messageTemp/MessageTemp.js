@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import apiCall from '../../services/api';
-import { message } from "antd";
 
 const useMessageSteps = create((set) => ({
    step: 1,

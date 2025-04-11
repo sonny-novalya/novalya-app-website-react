@@ -1,11 +1,27 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Input, Button, List} from 'antd';
 import { SearchOutlined, FilterOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import '../message/messageIndex.css'
-import useMessageSteps from '../../../../../store/messageTemp/MessageTemp';
+import KeywordPop from '../../../../components/keyWords/keywordPop';
+import useKeyWordStore from '../../../../../store/keyword/keywordStore';
 
 const Keywords = () => {
-  const {setIsMessage} = useMessageSteps()
+  const {flow,setFlow}= useKeyWordStore()
+    const containerRef = useRef(null)
+    const handleClickOutside = (event) => {
+      if (containerRef.current &&!containerRef.current.contains(event.target)) {
+        setFlow(0);
+      }
+    };
+    useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside)
+  
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }, [])
+ 
+
 
     const messages = Array(10).fill({
         id: '#12536',
@@ -73,7 +89,7 @@ const Keywords = () => {
                       </div>
                   </div>
                 </div>
-              <Button type="primary" onClick={()=>setIsMessage(true)} className="!text-[16px] flex align-center gap-2.5 !rounded-[6px] px-4 min-h-[44px] min-w-[155px] !text-white">
+              <Button type="primary" onClick={()=>setFlow(1)} className="!text-[16px] flex align-center gap-2.5 !rounded-[6px] px-4 min-h-[44px] min-w-[155px] !text-white">
                 <span>+</span> Create New
               </Button>
             </div>
@@ -141,34 +157,11 @@ const Keywords = () => {
             </div>
           </div>
 
-          {/*  _____  Code for Popup  _____  */}
-
-          {/* <div className="fixed inset-0 flex items-center justify-center bg-[#00000047] h-screen">
-            <div className="bg-white px-6 py-5 rounded-[10px] max-w-[700px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-                <h3 className="text-[20px] font-medium mb-5">Create Keyword</h3>
-                <div className="border border-[#DCDCDC] rounded-[10px] p-5">
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-2">Name of your Keywords</label>
-                        <input className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-4 py-2 leading-5 text-[rgba(0,0,0,0.75)] font-light placeholder-[text-[rgba(0,0,0,0.4)]" type="text" name="" placeholder="Name"/>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-2">Positive Keywords</label>
-                        <input className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-4 py-2 leading-5 text-[rgba(0,0,0,0.75)] font-light placeholder-[text-[rgba(0,0,0,0.4)]" type="text" name="" placeholder="Enter keyword, Separated by commas "/>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-2">Negative Keywords</label>
-                        <input className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-4 py-2 leading-5 text-[rgba(0,0,0,0.75)] font-light placeholder-[text-[rgba(0,0,0,0.4)]" type="text" name="" placeholder="Enter keyword, Separated by commas "/>
-                    </div>
-                </div>
-                <div className="flex justify-end mt-4">
-                    <button className="bg-[#0087FF] text-white text-sm rounded-[6px] px-12 py-3">Submit</button>
-                </div>
-            </div>
-          </div> */}
 
         </div>
       </div>
     </div>
+   { flow === 1 && <KeywordPop containerRef={containerRef} />}
   
     </>
   )
