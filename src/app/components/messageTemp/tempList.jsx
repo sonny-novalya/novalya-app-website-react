@@ -47,7 +47,12 @@ const TempList = ({containerRef}) => {
   const handleSelect = (categoryName, lang = currentLang) => {
     const readableLang = langData.find((data) => data.value === lang)?.lable;
     const cat = temps?.find((data) => data?.category === categoryName);
-    const filteredItems = cat?.items?.filter((item) => item.language === readableLang);
+    let filteredItems =[]
+    if(categoryName === "My Message"){
+        filteredItems = cat?.items
+    }else{
+        filteredItems = cat?.items?.filter((item) => item.language === readableLang);
+    }
     setSelecetdCat({ ...cat, items: filteredItems });
   };
   
@@ -106,7 +111,7 @@ const TempList = ({containerRef}) => {
                         temps?.map((data,i)=>{
                             if(data.category === "My Message") return
                             return (
-                                <li key={selecetdCat?.category+`${i}`} className={`hover:bg-[#0087FF] hover:text-white ${selecetdCat?.category ===  data.category ? "bg-[#0087FF] text-white":""}`} onClick={()=>handleSelect(data.category)}>
+                                <li key={selecetdCat?.category+`${i}`} className={`hover:bg-[#0087FF] hover:text-white ${selecetdCat?.category ===  data.category ? "bg-[#0087FF] text-white":""} cursor-pointer`} onClick={()=>handleSelect(data.category)}>
                             <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 {data.category}
                                 <img className='template-arrow' src={epRightImg}/>
@@ -118,14 +123,14 @@ const TempList = ({containerRef}) => {
                        
                        
                     </ul>
-                    <ul className="divide-y divide-[#0087FF1A] mt-auto border-t border-[#dbedff]">
+                    <ul className="divide-y cursor-pointer divide-[#0087FF1A] mt-auto border-t border-[#dbedff]">
                         <li className={`hover:bg-[#0087FF] hover:text-white ${selecetdCat?.category ===  "My Message" ? "bg-[#0087FF] text-white":""}`} onClick={()=>handleSelect("My Message")} >
                             <span className="template-list-a text-sm flex justify-between items-center p-3">
                                 My Message
                                 <img className='template-arrow' src={epRightImg}/>
                             </span>
                         </li>
-                        <li className="hover:bg-[#0087FF] hover:text-white">
+                        <li className="hover:bg-[#0087FF] cursor-pointer hover:text-white">
                             <span className="template-list-a text-sm flex justify-between items-center p-3">
                                  {t("message.My Favorites")}
                                 <img className='template-arrow' src={epRightImg}/>

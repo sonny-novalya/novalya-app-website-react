@@ -6,7 +6,7 @@ import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { useTranslation } from 'react-i18next'
 
 const MessageSelector = ({containerRef}) => {
-  const {setStep} = useMessageSteps()
+  const {setStep,setIsMessage} = useMessageSteps()
   const {t} = useTranslation()
  const handleSelector = (index)=>{
   if(index === 0){
@@ -17,15 +17,16 @@ const MessageSelector = ({containerRef}) => {
   }
   return (
     <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen" >
-        <div className='flex justify-end max-w-[1125px] mx-auto w-full'>
-          <button>
+        
+        <div ref={containerRef} className="bg-white px-8 pt-11 pb-6 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+          {/* <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button> */}
+          
+          <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
-        </div>
-        <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-          {/* <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button> */}
+          
           <div className='grid grid-cols-3 gap-12'>
             {data.map((item, index) => (
               <div key={index} className="border border-[#D2D2D2] rounded-[6px] text-center px-5 py-[16px]" onClick={()=>handleSelector(index)}>

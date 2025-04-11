@@ -23,10 +23,10 @@ const MessageIndex = () => {
     setPreviewMessage,
     setBackStep,
     totalPages,
-    selecetdMessage,
     fetchTemps
   } = useMessageSteps();
   const [isDelete, setIsDelete] = useState(false);
+  const [sort, setSort] = useState(false);
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -89,15 +89,13 @@ const MessageIndex = () => {
   
 
 
-  const handleEdit = (data, e) => {
-    e.stopPropagation();
+  const handleEdit = (data) => {
     setSelecetdMessage(data);
     setIsMessage(true);
     setStep(7);
   };
 
-  const handlePreview = (data, e) => {
-    e.stopPropagation();
+  const handlePreview = (data, ) => {
     setPreviewMessage(data);
     setIsMessage(true);
     setBackStep(0);
@@ -206,6 +204,8 @@ const MessageIndex = () => {
             <div className="bg-[#E6F1FB] text-[14px] leading-[21px] tracking-[2%] flex items-center justify-between gap-[10px] p-[16px_20px] mb-5">
               <div className="bg-[#E6F1FB] text-[14px] leading-[21px] tracking-[2%] flex items-center gap-[10px]">
                 Name
+               <span onClick={()=>setSort(!sort)} className={`${ sort ?"rotate-180":""} cursor-pointer`}>
+
                 <svg
                   width="20"
                   height="20"
@@ -228,12 +228,8 @@ const MessageIndex = () => {
                     stroke-linejoin="round"
                   />
                 </svg>
+               </span> 
               </div>
-
-              {/* {selectedArr.length ? <div className='flex gap-[20px]'>
-           {selectedArr.length === 1? <button  className='bg-[white] w-[123px] h-[36px] rounded-[79px] cursor-pointer'>Duplicate</button>:""}
-            <button className='bg-[white] w-[123px] h-[36px] rounded-[79px] cursor-pointer' >Delete</button>
-          </div>:""} */}
             </div>
             <List
               bordered
@@ -330,7 +326,7 @@ const MessageIndex = () => {
                   >
                     <path
                       fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                       d="M0.37822 5.65751L6.03522 0.000514861L7.44922 1.41451L2.49922 6.36452L7.44922 11.3145L6.03522 12.7285L0.37822 7.07151C0.190749 6.88399 0.0854331 6.62968 0.0854331 6.36452C0.0854331 6.09935 0.190749 5.84504 0.37822 5.65751Z"
                       fill="#404040"
                     />
@@ -359,7 +355,7 @@ const MessageIndex = () => {
                   >
                     <path
                       fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                       d="M7.15694 7.71163L1.49994 13.3686L0.0859375 11.9546L5.03594 7.00462L0.0859375 2.05463L1.49994 0.640625L7.15694 6.29763C7.34441 6.48515 7.44972 6.73946 7.44972 7.00462C7.44972 7.26979 7.34441 7.5241 7.15694 7.71163Z"
                       fill="#404040"
                     />
