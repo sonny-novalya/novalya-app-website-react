@@ -48,6 +48,7 @@ const CreateMessage = ({containerRef}) => {
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpload,setIsUpload]=useState(false)
+  const [attachment,setAttachment]=useState(false)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
@@ -462,7 +463,7 @@ const CreateMessage = ({containerRef}) => {
             </button>
           </div>
         </div>
-     { isUpload&&<Upload setIsUpload={setIsUpload} />}
+     { isUpload&&<Upload setIsUpload={setIsUpload}  setAttachment={setAttachment}/>}
 
       </div>
     </div>

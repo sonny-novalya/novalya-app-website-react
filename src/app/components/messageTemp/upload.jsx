@@ -3,8 +3,9 @@ import uploadImg from "../../../assets/img/upload-icons.svg"
 import uploadImgFile from "../../../assets/img/upload-files.svg"
 import uploadTick from "../../../assets/img/tick-circle.svg"
 import uploadDel from "../../../assets/img/delete-icon.svg"
+import { message } from 'antd'
 
-const Upload = ({setIsUpload}) => {
+const Upload = ({setIsUpload,setAttachment,attachment}) => {
     const fileInputRef = useRef(null);
     const [fileData,setFileData] = useState(null);
 
@@ -19,6 +20,14 @@ const Upload = ({setIsUpload}) => {
         console.log('Selected file:', file);
       }
     };
+
+    const handleSubmit = () =>{
+        if (!fileData) {
+            message.error("No file has been selecetd")
+        }
+        setAttachment(fileData)
+        setIsUpload(false)
+    }
   
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen">

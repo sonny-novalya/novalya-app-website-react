@@ -36,6 +36,8 @@ const UpdateMessage = ({containerRef}) => {
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+   const [isUpload,setIsUpload]=useState(false)
+    const [attachment,setAttachment]=useState(false)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
@@ -449,6 +451,8 @@ const handleSubmit =async ()=>{
                 </button>
               </div>
             </div>
+     { isUpload&&<Upload setIsUpload={setIsUpload}  setAttachment={setAttachment} attachment={attachment}/>}
+
           </div>
         </div>
   );
