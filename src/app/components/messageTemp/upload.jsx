@@ -24,6 +24,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
     const handleSubmit = () =>{
         if (!fileData) {
             message.error("No file has been selecetd")
+            return
         }
         setAttachment(fileData)
         setIsUpload(false)
@@ -40,7 +41,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
             </div>
             <h3 className="text-[24px] text-[#292D32] mb-2">Choose a file or drag & drop it here</h3>
             <span className="block mb-8 text-[20px] leading-none text-[#A9ACB4]">
-              JPEG, PNG, PDG, and MP4 formats, up to 50MB
+              JPEG, PNG, PDG, and MP4 formats, up to 5MB
             </span>
   
             {/* Hidden File Input */}
