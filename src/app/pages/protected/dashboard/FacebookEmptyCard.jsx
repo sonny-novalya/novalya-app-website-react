@@ -2,8 +2,9 @@ import FbImg from "../../../../assets/img/fb-cover.png"
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
 import UserImg from "../../../../assets/img/user-img.png"
 import { t } from "i18next";
+import PropTypes from "prop-types";
 
-const FacebookEmptyCard = () => {
+const FacebookEmptyCard = ({ handleShowConnection }) => {
     return (
         <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md relative">
             <div className="relative">
@@ -49,9 +50,8 @@ const FacebookEmptyCard = () => {
                 </div>
             </div>
 
-            {/* Button with blur effect */}
             <div className="absolute bottom-0 top-0 right-0 left-0 transform backdrop-blur-md bg-[#00000020] w-full h-full flex items-center justify-center">
-                <button id="facebook-sync" className="px-6 py-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-full cursor-pointer">
+                <button className="px-6 py-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-full cursor-pointer" onClick={handleShowConnection} >
                     {t("dashboard.Connect Facebook Account")}
                 </button>
 
@@ -59,5 +59,9 @@ const FacebookEmptyCard = () => {
         </div>
     );
 }
+
+FacebookEmptyCard.propTypes = {
+    handleShowConnection: PropTypes.func,
+};
 
 export default FacebookEmptyCard;

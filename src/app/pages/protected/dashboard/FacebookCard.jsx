@@ -36,7 +36,7 @@ const FacebookCard = ({ data }) => {
                     <button id="facebook-sync" className="text-blue-600 cursor-pointer facebook-sync">
                         <SyncBlueIcon />
                     </button>
-                    <button id="instagram-sync" className="text-red-500 cursor-pointer fbConfirmUnlink" onClick={handleFbConfirmUnlink}>
+                    <button className="text-red-500 cursor-pointer" onClick={handleFbConfirmUnlink}>
                         <LinkRedIcon />
                     </button>
                 </div>
