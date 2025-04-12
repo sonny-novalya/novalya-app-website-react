@@ -1,6 +1,7 @@
 import FbImg from "../../../../assets/img/fb-cover.png"
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
 import UserImg from "../../../../assets/img/user-img.png"
+import { t } from "i18next";
 
 const FacebookEmptyCard = () => {
     return (
@@ -33,17 +34,17 @@ const FacebookEmptyCard = () => {
                 <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
                     <div className="flex-1 text-center">
                         <p className="font-bold">0</p>
-                        <p>Followers</p>
+                        <p>{t("dashboard.Followers")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">0</p>
-                        <p>Friends</p>
+                        <p>{t("dashboard.Friends")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">0</p>
-                        <p>Following</p>
+                        <p>{t("dashboard.Following")}</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +52,7 @@ const FacebookEmptyCard = () => {
             {/* Button with blur effect */}
             <div className="absolute bottom-0 top-0 right-0 left-0 transform backdrop-blur-md bg-[#00000020] w-full h-full flex items-center justify-center">
                 <button id="facebook-sync" className="px-6 py-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-full cursor-pointer">
-                    Connect Facebook Account
+                    {t("dashboard.Connect Facebook Account")}
                 </button>
 
             </div>

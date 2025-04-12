@@ -172,7 +172,40 @@
     "Select the next action": "Selecione a próxima ação",
     "Send": "Enviar",
     "Instagram CRM" : "Instagram CRM"
-}
+},
+  "dashboard" :{
+    "My Social Networks": "Minhas redes sociais",
+    "Promote and get paid": "Promova e seja pago",
+    "By Sharing Your Affiliate Link To Others. Paid Up To 60%. Share It To The World.": "Compartilhando seu link de afiliado com outras pessoas. Pague até 60%. Compartilhe com o mundo.",
+    "My Affiliate Links": "Meus links de afiliado",
+    "Setup Your Account": "Configure sua conta",
+    "Confirm": "Confirmar",
+    "Step-1-Install Chrome Extension": "Etapa 1: Instale a extensão do Chrome",
+    "Connect your Instagram account to manage direct messages, comments, and follower insights.": "Conecte sua conta do Instagram para gerenciar mensagens diretas, comentários e informações de seguidores.",
+    "Extension Installed": "Extensão instalada",
+    "Install Extension": "Instalar extensão",
+    "Step-2-Connect Your Social Media Accounts": "Etapa 2: Conecte suas contas de redes sociais",
+    "Connect Personal Facebook Account": "Conectar conta pessoal do Facebook",
+    "Connect your Facebook account to manage direct messages, comments, and follower insights.": "Conecte sua conta do Facebook para gerenciar mensagens diretas, comentários e informações de seguidores.",
+    "Connect Now": "Conectar agora",
+    "Connected": "Conectado",
+    "Connect Instagram account": "Conectar conta do Instagram",
+    "Followers": "Seguidores",
+    "Friends": "Amigos",
+    "Following": "Seguindo",
+    "Connect Facebook Account": "Conectar conta do Facebook",
+    "Posts": "Publicações",
+    "Messages": "Mensagens",
+    "AI Credits": "Créditos de IA",
+    "Tag + Pipeline": "Tag + Pipeline",
+    "Contacts": "Contatos",
+    "Monthly Usage": "Uso mensal",
+    "Statistics": "Estatísticas",
+    "Import Facebook groups": "Importar grupos do Facebook",
+    "Add one person to CRM": "Adicionar uma pessoa ao CRM",
+    "Next Actions": "Próximas ações",
+    "Watch Video": "Assistir vídeo",
+    "Hello": "Olá"
+  }
 
-  
 }

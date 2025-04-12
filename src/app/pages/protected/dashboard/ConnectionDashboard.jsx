@@ -7,6 +7,7 @@ import ConnectionSecondStep from "./ConnectionSecondStep"
 import VideoSection from "./VideoSection"
 import { useNavigate } from "react-router-dom"
 import { Spin } from "antd"
+import { t } from "i18next"
 
 const ConnectionDashboard = () => {
     const { fetchSocialAccounts, isFbConnected, isIgConnected, loading, error } = useSocialAccountsStore();
@@ -33,9 +34,10 @@ const ConnectionDashboard = () => {
 
     return (
         <Layout>
-            <h3 className="text-lg font-bold mb-5">Hello Anima</h3>
+            <h3 className="text-lg font-bold mb-5">{`${t("dashboard.Hello")} Anima`}</h3>
+
             <div className="bg-white p-3 rounded-lg flex flex-col gap-3">
-                <h2 className="font-medium text-lg">Setup Your Account</h2>
+                <h2 className="font-medium text-lg">{t("dashboard.Setup Your Account")}</h2>
                 <div className="flex gap-4 h-80">
                     <ConnectionFirstStep />
                     <VideoSection />
@@ -57,7 +59,7 @@ const ConnectionDashboard = () => {
                     }}
                     disabled={!shouldShowDashboard}
                 >
-                    Confirm
+                    {t("dashboard.Confirm")}
                 </button>
             </div>
         </Layout>

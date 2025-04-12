@@ -1,6 +1,7 @@
 import IgImg from "../../../../assets/img/ig-cover.png"
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
 import UserImg from "../../../../assets/img/user-img.png"
+import { t } from "i18next";
 
 const InstaEmptyCard = () => {
     return (
@@ -50,7 +51,7 @@ const InstaEmptyCard = () => {
 
             <div className="absolute bottom-0 top-0 right-0 left-0 transform backdrop-blur-md bg-[#00000020] w-full h-full flex items-center justify-center">
                 <button id="instagram-sync" className="px-6 py-2 bg-gradient-to-r from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-full cursor-pointer instagram-sync">
-                    Connect Instagram Account
+                    {t("dashboard.Connect Instagram account")}
                 </button>
             </div>
         </div>

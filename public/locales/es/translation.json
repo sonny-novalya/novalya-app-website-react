@@ -171,6 +171,41 @@
     "Select the next action": "Selecciona la siguiente acción",
     "Send": "Enviar",
     "Instagram CRM" : "Instagram CRM"
-}
+},
+  "dashboard" :{
+    "My Social Networks": "Mis redes sociales",
+    "Promote and get paid": "Promociona y gana dinero",
+    "By Sharing Your Affiliate Link To Others. Paid Up To 60%. Share It To The World.": "Compartiendo tu enlace de afiliado con otros. Pagado hasta un 60%. Compártelo con el mundo.",
+    "My Affiliate Links": "Mis enlaces de afiliado",
+    "Setup Your Account": "Configura tu cuenta",
+    "Confirm": "Confirmar",
+    "Step-1-Install Chrome Extension": "Paso 1: Instalar la extensión de Chrome",
+    "Connect your Instagram account to manage direct messages, comments, and follower insights.": "Conecta tu cuenta de Instagram para gestionar mensajes directos, comentarios y análisis de seguidores.",
+    "Extension Installed": "Extensión instalada",
+    "Install Extension": "Instalar extensión",
+    "Step-2-Connect Your Social Media Accounts": "Paso 2: Conecta tus cuentas de redes sociales",
+    "Connect Personal Facebook Account": "Conectar cuenta personal de Facebook",
+    "Connect your Facebook account to manage direct messages, comments, and follower insights.": "Conecta tu cuenta de Facebook para gestionar mensajes directos, comentarios y análisis de seguidores.",
+    "Connect Now": "Conectar ahora",
+    "Connected": "Conectado",
+    "Connect Instagram account": "Conectar cuenta de Instagram",
+    "Followers": "Seguidores",
+    "Friends": "Amigos",
+    "Following": "Siguiendo",
+    "Connect Facebook Account": "Conectar cuenta de Facebook",
+    "Posts": "Publicaciones",
+    "Messages": "Mensajes",
+    "AI Credits": "Créditos de IA",
+    "Tag + Pipeline": "Etiqueta + Pipeline",
+    "Contacts": "Contactos",
+    "Monthly Usage": "Uso mensual",
+    "Statistics": "Estadísticas",
+    "Import Facebook groups": "Importar grupos de Facebook",
+    "Add one person to CRM": "Agregar una persona al CRM",
+    "Next Actions": "Próximas acciones",
+    "Watch Video": "Ver video",
+    "Hello": "Hola"
+  }
+
 
 }

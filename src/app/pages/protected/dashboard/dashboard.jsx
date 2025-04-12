@@ -13,6 +13,7 @@ import FacebookEmptyCard from "./FacebookEmptyCard";
 import FacebookCard from "./FacebookCard";
 import AffiliateCardImg from "../../../../assets/img/affiliate-card.png";
 import NovaWhiteLogo from "../../../../assets/img/nova-white.png";
+import { t } from "i18next";
 
 const Dashboard = () => {
   const { isExtConnected, fetchExtInstalledStatus } = useExtensionStore()
@@ -43,7 +44,7 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="flex flex-col">
-        <h3 className="text-lg font-bold mb-5">My Social Networks</h3>
+        <h3 className="text-lg font-bold mb-5">{t("dashboard.My Social Networks")}</h3>
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <div className="flex flex-col lg:flex-row gap-4 h-60">
             {
@@ -63,16 +64,18 @@ const Dashboard = () => {
               <div className="absolute inset-0 p-6 flex flex-col justify-between">
               <img src={NovaWhiteLogo} alt="" className="h-10 w-12" />
                 <div>
-                  <h3 className="text-lg font-semibold">Promote and get paid</h3>
+                  <h3 className="text-lg font-semibold">
+                    {t("dashboard.Promote and get paid")}
+                  </h3>
                   <p className="mt-2 text-sm">
-                    By Sharing Your Affiliate Link To Others. Paid Up To 60%. Share It To The World.
+                    {t("dashboard.By Sharing Your Affiliate Link To Others. Paid Up To 60%. Share It To The World.")}
                   </p>
                 </div>
-               <button
+                <button
                   className="mt-4 bg-white text-[#09B96E] py-2 px-4 rounded shadow self-start tracking-wider cursor-pointer"
                   onClick={() => navigate("/affiliate")}
                 >
-                  My Affiliate Links
+                  {t("dashboard.My Affiliate Links")}
                 </button>
               </div>
             </div>
