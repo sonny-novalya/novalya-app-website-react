@@ -205,7 +205,15 @@
     "Next Actions": "Actions suivantes",
     "Watch Video": "Regarder la vidéo",
     "Hello": "Bonjour"
+  },
+  "language": {
+    "English": "Anglais",
+    "French": "Français",
+    "German": "Allemand",
+    "Spanish": "Espagnol",
+    "Portuguese": "Portugais"
   }
+
 
 
 }
