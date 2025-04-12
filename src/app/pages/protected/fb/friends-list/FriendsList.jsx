@@ -363,7 +363,6 @@ const FriendsList = () => {
         </div>
 
 
-        {console.log('openAssignGroupModal', openAssignGroupModal)}
         {openAssignGroupModal && (
           <AssignGroupModal
             open={openAssignGroupModal}

@@ -23,7 +23,7 @@ const MessageIndex = () => {
     setPreviewMessage,
     setBackStep,
     totalPages,
-    fetchTemps
+    duplicateMessage
   } = useMessageSteps();
   const [isDelete, setIsDelete] = useState(false);
   const [sort, setSort] = useState(false);
@@ -83,9 +83,9 @@ const MessageIndex = () => {
     setPreviewMessage(null);
   }, [pagination,debouncedQuery]);
 
-  useEffect(() => {
-    fetchTemps()
-  }, [])
+ 
+ 
+  
   
 
 
@@ -95,14 +95,31 @@ const MessageIndex = () => {
     setStep(7);
   };
 
-  const handlePreview = (data, ) => {
+  const handlePreview = (data ) => {
     setPreviewMessage(data);
     setIsMessage(true);
     setBackStep(0);
     setStep(5);
   };
 
-  const handleDuplicate = () => {};
+  const handleDuplicate = async(data) => {
+    const payload = {
+      message_id: data.id
+  }
+  try{
+    const res = await duplicateMessage(payload)
+    if (res.status === 200) {
+      message.success(res?.data?.message)
+      fetchMessages(pagination,debouncedQuery);
+    }else{
+      message.error("Oops Something went wrong!")
+    }
+  }catch (error){
+    message.error("Oops Something went wrong!")
+
+  }
+
+  };
 
   const handleDelete = async (id) => {
     if (!isDelete) {
@@ -114,7 +131,7 @@ const MessageIndex = () => {
       const res = await deleteMessages(id);
       if (res?.status === 200) {
         message.success("message Deleted");
-        fetchMessages();
+        fetchMessages(pagination);
       } else {
         message.success("Oops Something went wrong");
       }
