@@ -1,5 +1,5 @@
 import SidebarItem from "./SidebarItem";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     DashboardIcon,
     FacebookIcon,
@@ -9,25 +9,37 @@ import {
     TrainingVideosIcon,
     AffiliateIcon,
     EventsIcon,
-    NovalyaFullBlackLogo,
     UpgradeProIcon,
     UpperArrowIcon,
     DownArrowIcon,
     LogoutIcon,
-    FriendlistIcon
-} from "../icons/icons"; // Import icons
+    FriendlistIcon,
+    CollapsedLeftIcon
+} from "../icons/icons";
+import NovaBlueLogo from "../../../../assets/img/nova-blue.png"
+import NovalyaBlueLogo from "../../../../assets/img/novalya-blue.png"
 import LocalizationOptions from "../../../../helpers/shared/LocalizationOptions";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import LocalizationOptionsIcons from "../../../../helpers/shared/LocalizationOptionsIcons";
+import { Dropdown, Menu } from "antd";
+import { Link } from "react-router-dom";
 
 const SidebarMenu = () => {
     const [openSubNav, setOpenSubNav] = useState(null);
-    const navigate = useNavigate()
+    const [collapsed, setCollapsed] = useState(false);
+    const location = useLocation();
+    const currentPath = location.pathname;
+
+    const navigate = useNavigate();
+
+    const toggleSidebar = () => setCollapsed(!collapsed);
 
     const onLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('selectedLocale');
         navigate("/login");
     };
+
     const sidebarData = [
         { text: "dashboard", id: "dashboard", path: "/", icon: <DashboardIcon /> },
         {
@@ -53,11 +65,13 @@ const SidebarMenu = () => {
             ]
         },
         { text: "AI Comments", id: "ai-comments", path: "/ai-comments", icon: <AiCommentsIcon /> },
-        { text: "Library", id: "library", path: "/library/messages", icon: <LibraryIcon /> ,    subNav: [
-            { text: "Messages", id: "messages", path: "/library/messages" },
-            { text: "Keywords", id: "keywords", path: "/library/keywords" },
-        
-        ]},
+        {
+            text: "Library", id: "library", path: "/library/messages", icon: <LibraryIcon />,
+            subNav: [
+                { text: "Messages", id: "messages", path: "/library/messages" },
+                { text: "Keywords", id: "keywords", path: "/library/keywords" },
+            ]
+        },
         { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
         { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon /> },
         {
@@ -74,76 +88,195 @@ const SidebarMenu = () => {
         },
         { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
     ];
+    const hasInitialized = useRef(false);
 
-    const toggleSubNav = (event, id) => {
-        event.preventDefault(); // Stop navigation if clicking on submenu toggle
+    useEffect(() => {
+        if (!hasInitialized.current) {
+            for (const item of sidebarData) {
+                if (item.subNav?.some(subItem => subItem.path === currentPath)) {
+                    setOpenSubNav(item.id);
+                    break;
+                }
+            }
+            hasInitialized.current = true;
+        }
+    }, [currentPath]);
+
+    const toggleSubNav = (e, id) => {
+        e.preventDefault();
         setOpenSubNav(openSubNav === id ? null : id);
     };
 
     return (
-        <div className="bg-white text-black w-64 h-screen flex flex-col">
-            <div className="flex items-center justify-center h-24 shrink-0">
-                <NovalyaFullBlackLogo />
-            </div>
-
-            <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
-                {sidebarData.map((item) => (
-                    <div key={item.id} className="w-full">
-                        {item.subNav ? (
-                            <button
-                                className="w-full rounded px-3 py-2 flex justify-between items-center hover:bg-[#E6F1FB] cursor-pointer"
-                                onClick={(e) => toggleSubNav(e, item.id)}
-                            >
-                                <div className="flex items-center space-x-5">
-                                    <span className="h-6 w-6">{item.icon}</span>
-                                    <span className="capitalize text-black/55">{item.text}</span>
-                                </div>
-                                <span>
-                                    {
-                                        openSubNav === item.id 
-                                        ? <UpperArrowIcon/> 
-                                        : <DownArrowIcon />
-                                    }
-                                </span>
-                            </button>
-                        ) : (
-                            <SidebarItem text={item.text} path={item.path} icon={item.icon} />
-                        )}
-                        {item.subNav && openSubNav === item.id && (
-                            <div className="pl-[45px] pr-2.5 mt-1 flex flex-col space-y-1">
-                                {item.subNav.map((subItem) => (
-                                    <SidebarItem key={subItem.id} text={subItem.text} path={subItem.path} />
-                                ))}
+        <div className={`relative `}>
+            <div className={`bg-white text-black ${collapsed ? 'w-20' : 'w-64'} h-screen flex flex-col transition-all duration-300 relative overflow-visible`}>
+                {
+                    collapsed
+                        ? <>
+                            <div className={`flex items-center justify-between h-20 `}>
+                                <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-8`} />
+                                <button onClick={toggleSidebar} className="absolute top-10 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                    <div className={`transition-transform duration-300rotate-180`}>
+                                        <CollapsedLeftIcon />
+                                    </div>
+                                </button>
                             </div>
-                        )}
-                    </div>
-                ))}
-            </div>
 
-            <div className="mt-auto flex flex-col items-center justify-center h-48 shrink-0 px-5">
-                <div className="w-full">
-                    <LocalizationOptions />
-                </div>
+                            <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
+                                {sidebarData.map((item) => {
+                                    const isSubItemActive = item.subNav?.some(subItem => currentPath === subItem.path);
+                                    const isActive = currentPath === item.path || isSubItemActive;
 
-                <div className="flex space-x-2 mt-1 w-full px-2">
-                    <UpgradeProIcon />
-                    <span>Upgrade To Pro</span>
-                </div>
+                                    return (
+                                        <div key={item.id} className="w-full relative group">
+                                            {item.subNav && collapsed ? (
+                                                <Dropdown
+                                                    placement="rightTop"
+                                                    trigger={["click"]}
+                                                    overlay={
+                                                        <Menu>
+                                                            {item.subNav.map((subItem) => (
+                                                                <Menu.Item key={subItem.id}>
+                                                                    <Link to={subItem.path} className={currentPath === subItem.path ? 'text-[#167AD3]' : ''}>
+                                                                        {subItem.text}
+                                                                    </Link>
+                                                                </Menu.Item>
+                                                            ))}
+                                                        </Menu>
+                                                    }
+                                                >
+                                                    <button
+                                                        className={`w-full rounded px-3 py-2 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
+                                                            } cursor-pointer`}
+                                                        onClick={(e) => e.preventDefault()}
+                                                    >
+                                                        <span className="h-6 w-6">{item.icon}</span>
+                                                    </button>
+                                                </Dropdown>
+                                            ) : (
+                                                <SidebarItem
+                                                    text={collapsed ? '' : item.text}
+                                                    path={item.path}
+                                                    icon={item.icon}
+                                                    isActive={currentPath === item.path}
+                                                />
+                                            )}
 
-                <div className="flex space-x-3 items-center mt-2 w-full">
-                    <span className="h-10 w-10 rounded-lg bg-purple-200 flex items-center justify-center">
-                        J
-                    </span>
-                    <div className="flex flex-col text-sm">
-                        <span className="text-base">Anima Ag.</span>
-                        <span className="text-[#167AD3]">Basic Plan</span>
-                    </div>
-                </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
 
-                <button type="button" className="flex items-center space-x-2 bg-[#FF000012] p-2 mt-2 rounded-sm w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]" onClick={onLogout}>
-                    <LogoutIcon />
-                    <span className="">Logout</span>
-                </button>
+                            <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-1">
+                                <LocalizationOptionsIcons />
+                                <div className="flex items-center justify-center mt-1 w-full ">
+                                    <UpgradeProIcon />
+                                </div>
+                                <div className="flex items-center justify-center mt-2 w-full">
+                                    <span className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
+                                        J
+                                    </span>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="flex items-center justify-center bg-[#FF000012] w-12 p-2 mt-2 rounded-lg cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
+                                    onClick={onLogout}
+                                >
+                                    <LogoutIcon />
+                                </button>
+                            </div>
+                        </>
+                        : <>
+                            <div className={`flex items-center justify-between h-20 `}>
+                                <img src={NovalyaBlueLogo} alt="logo" className={`w-full object-contain h-13 mr-5`} />
+                                <button onClick={toggleSidebar} className="absolute top-10 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                    <div className={`transition-transform duration-300 `}>
+                                        <CollapsedLeftIcon />
+                                    </div>
+                                </button>
+                            </div>
+                            <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
+                                {sidebarData.map((item) => {
+                                    const isSubItemActive = item.subNav?.some(subItem => currentPath === subItem.path);
+                                    const isActive = currentPath === item.path || isSubItemActive;
+                                    const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
+
+                                    return (
+                                        <div key={item.id} className="w-full">
+                                            {item.subNav ? (
+                                                <>
+                                                    <button
+                                                        className={`w-full rounded px-3 py-2 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
+                                                            } cursor-pointer`}
+                                                        onClick={(e) => toggleSubNav(e, item.id)}
+                                                    >
+                                                        <div className="flex items-center space-x-4">
+                                                            <span className="h-6 w-6">{item.icon}</span>
+                                                            {!collapsed && (
+                                                                <span className="capitalize text-black/55">{item.text}</span>
+                                                            )}
+                                                        </div>
+                                                        {!collapsed && (
+                                                            <span>{shouldSubNavOpen ? <UpperArrowIcon /> : <DownArrowIcon />}</span>
+                                                        )}
+                                                    </button>
+
+                                                    {/* SubNav items */}
+                                                    {shouldSubNavOpen && (
+                                                        <div className={`pl-${collapsed ? '4' : '10'} pr-2.5 mt-1 flex flex-col space-y-1`}>
+                                                            {item.subNav.map((subItem) => (
+                                                                <SidebarItem
+                                                                    key={subItem.id}
+                                                                    text={collapsed ? '' : subItem.text}
+                                                                    path={subItem.path}
+                                                                    isActive={currentPath === subItem.path}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <SidebarItem
+                                                    text={collapsed ? '' : item.text}
+                                                    path={item.path}
+                                                    icon={item.icon}
+                                                    isActive={currentPath === item.path}
+                                                />
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-0.5">
+                                <div className="w-full">
+                                    <LocalizationOptions />
+                                </div>
+                                <div className="flex space-x-2 items-center mt-1 w-full px-2">
+                                    <UpgradeProIcon />
+                                    <span>Upgrade To Pro</span>
+                                </div>
+                                <div className="flex space-x-3 items-center mt-2 w-full">
+                                    <span className="h-10 w-10 rounded-lg bg-purple-200 flex items-center justify-center">
+                                        J
+                                    </span>
+                                    <div className="flex flex-col text-sm">
+                                        <span className="text-base">Anima Ag.</span>
+                                        <span className="text-[#167AD3]">Basic Plan</span>
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="flex items-center space-x-2 bg-[#FF000012] p-2 mt-2 rounded-sm w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
+                                    onClick={onLogout}
+                                >
+                                    <LogoutIcon />
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </>
+                }
             </div>
         </div>
     );

@@ -14,7 +14,7 @@ const SocialDashboard = ({ facebook_data, instagram_data, limit_data, isLoading,
         <div className="flex flex-col relative">
             <h3 className="text-lg font-bold mb-5">{t("dashboard.My Social Networks")}</h3>
             <div className="p-6 bg-white shadow-lg rounded-lg relative">
-                <div className="flex flex-col lg:flex-row gap-4 h-60">
+                <div className="grid lg:grid-cols-3 grid-cols-1  gap-4 h-60">
                     {isLoading && (
                         <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-80">
                             <Spin size="large" />

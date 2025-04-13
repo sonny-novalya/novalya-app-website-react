@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const AffiliateCard = () => {
     const navigate = useNavigate()
     return (
-        <div className="relative flex-1 rounded-xl overflow-hidden text-white">
-            <img src={AffiliateCardImg} alt="" className="w-full object-cover" />
+        <div className="relative flex-1 rounded-xl overflow-hidden text-white ">
+            <img src={AffiliateCardImg} alt="" className="w-full object-cover h-full" />
             <div className="absolute inset-0 p-6 flex flex-col justify-between">
                 <img src={NovaWhiteLogo} alt="" className="h-10 w-12" />
                 <div>
