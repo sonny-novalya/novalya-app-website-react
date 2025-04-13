@@ -497,3 +497,25 @@ export const upgradeToPremiumIcon = () => (
         <path d="M18.5 22H6.5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
     </svg>
 );
+
+export const CollapsedLeftIcon = () => (
+    <svg width="44" height="45" viewBox="0 0 44 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_d_2389_1556)">
+            <circle cx="14" cy="14" r="14" transform="matrix(1 0 0 -1 8 36.3711)" fill="#0176DF" />
+        </g>
+        <path d="M24.4984 15.1461C24.3401 15.1461 24.1818 15.2044 24.0568 15.3294L18.6234 20.7627C17.7401 21.6461 17.7401 23.0961 18.6234 23.9794L24.0568 29.4127C24.2984 29.6544 24.6984 29.6544 24.9401 29.4127C25.1818 29.1711 25.1818 28.7711 24.9401 28.5294L19.5068 23.0961C19.1068 22.6961 19.1068 22.0461 19.5068 21.6461L24.9401 16.2127C25.1818 15.9711 25.1818 15.5711 24.9401 15.3294C24.8151 15.2127 24.6568 15.1461 24.4984 15.1461Z" fill="white" />
+        <defs>
+            <filter id="filter0_d_2389_1556" x="0" y="0.371094" width="44" height="44" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feMorphology radius="2" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_2389_1556" />
+                <feOffset />
+                <feGaussianBlur stdDeviation="3" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix type="matrix" values="0 0 0 0 0.109804 0 0 0 0 0.458824 0 0 0 0 0.992157 0 0 0 0.3 0" />
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2389_1556" />
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2389_1556" result="shape" />
+            </filter>
+        </defs>
+    </svg>
+)
