@@ -64,7 +64,6 @@ const FriendsList = () => {
       try {
         return new Intl.DisplayNames(['en'], { type: 'language' }).of(locale.split('_')[0]);
       } catch (error) {
-        console.error('Invalid locale:', locale);
         return null;
       }
     }
@@ -240,12 +239,10 @@ const FriendsList = () => {
 
 
     const openGroupModal = () => {
-      console.log("clicked")
       setOpenAssignGroupModal(true);
     }
 
     const addToWhitelist = () => {
-      console.log(selectedRowKeys)
       if(selectedRowKeys.length == 0){
         return;
       } 
@@ -255,12 +252,12 @@ const FriendsList = () => {
         message.success("User Added to Whitelist");
       })
       .catch((error) => {
-        console.log("Error adding to whitelist:", error); // Handle errors properly
         message.error("There was an error")
       });
 
 
     }
+
 
     return (
       <>
@@ -292,7 +289,7 @@ const FriendsList = () => {
               </div>}
               <Table 
                 rowKey="id" 
-                rowSelection={rowSelection}
+                rowSelection={rowSelection || []}
                 columns={columns} 
                 dataSource={friends} 
                 loading={loading}

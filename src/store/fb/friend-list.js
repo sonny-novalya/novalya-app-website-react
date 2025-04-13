@@ -19,7 +19,7 @@ export const useFbFriendListStore = create((set) => ({
             });
 
             set({ 
-                friends: res?.data?.data || [], 
+                friends: res?.data?.data?.data || [], 
                 totalRecords: res?.data?.totalCount || 0, 
                 loading: false 
             });
