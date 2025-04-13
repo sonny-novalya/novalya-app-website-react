@@ -77,11 +77,11 @@ const MessageIndex = () => {
   };
 
   useEffect(() => {
-    fetchMessages(pagination,debouncedQuery);
+    fetchMessages(pagination,debouncedQuery,sort);
     setBackStep(null);
     setSelecetdMessage(null);
     setPreviewMessage(null);
-  }, [pagination,debouncedQuery]);
+  }, [pagination,debouncedQuery,sort]);
 
  
  
@@ -110,7 +110,7 @@ const MessageIndex = () => {
     const res = await duplicateMessage(payload)
     if (res.status === 200) {
       message.success(res?.data?.message)
-      fetchMessages(pagination,debouncedQuery);
+      fetchMessages(pagination,debouncedQuery,sort);
     }else{
       message.error("Oops Something went wrong!")
     }
@@ -131,7 +131,7 @@ const MessageIndex = () => {
       const res = await deleteMessages(id);
       if (res?.status === 200) {
         message.success("message Deleted");
-        fetchMessages(pagination);
+        fetchMessages(pagination,debouncedQuery,sort);
       } else {
         message.success("Oops Something went wrong");
       }

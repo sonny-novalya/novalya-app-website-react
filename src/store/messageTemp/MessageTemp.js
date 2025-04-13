@@ -40,7 +40,7 @@ const useMessageSteps = create((set) => ({
    setPagination: (val) => set(() => ({ pagination: val })), 
 
 
-   fetchMessages: async (pagination,search) => {
+   fetchMessages: async (pagination,search,sort) => {
     if (pagination.limit === 200) {
         set({ tempMessageLoader: true, error: null });
     }else{
@@ -49,7 +49,10 @@ const useMessageSteps = create((set) => ({
       try {
          const paylaod = {
             page: pagination?.page || 1,
-            limit:pagination?.limit || 10
+            limit:pagination?.limit || 10,
+            sort_order:sort?"DESC":"ASC",
+            sort_by:"title"
+
          }
           const res = await apiCall({
               method: 'POST',
