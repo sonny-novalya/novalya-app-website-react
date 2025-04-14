@@ -93,7 +93,7 @@ const SidebarMenu = () => {
     useEffect(() => {
         if (!hasInitialized.current) {
             for (const item of sidebarData) {
-                if (item.subNav?.some(subItem => subItem.path === currentPath)) {
+                if (item.subNav?.some(subItem => (subItem.path === currentPath || `${subItem.path}/` === currentPath))) {
                     setOpenSubNav(item.id);
                     break;
                 }
@@ -124,8 +124,8 @@ const SidebarMenu = () => {
 
                             <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
                                 {sidebarData.map((item) => {
-                                    const isSubItemActive = item.subNav?.some(subItem => currentPath === subItem.path);
-                                    const isActive = currentPath === item.path || isSubItemActive;
+                                    const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
+                                    const isActive = (currentPath === item.path || currentPath === `${item.path}/`) || isSubItemActive;
 
                                     return (
                                         <div key={item.id} className="w-full relative group">
@@ -137,7 +137,7 @@ const SidebarMenu = () => {
                                                         <Menu>
                                                             {item.subNav.map((subItem) => (
                                                                 <Menu.Item key={subItem.id}>
-                                                                    <Link to={subItem.path} className={currentPath === subItem.path ? 'text-[#167AD3]' : ''}>
+                                                                    <Link to={subItem.path} className={(currentPath === subItem.path || currentPath === `${subItem.path}/`) ? 'text-[#167AD3]' : ''}>
                                                                         {subItem.text}
                                                                     </Link>
                                                                 </Menu.Item>
@@ -158,7 +158,7 @@ const SidebarMenu = () => {
                                                     text={collapsed ? '' : item.text}
                                                     path={item.path}
                                                     icon={item.icon}
-                                                    isActive={currentPath === item.path}
+                                                    isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
                                                 />
                                             )}
 
@@ -198,8 +198,8 @@ const SidebarMenu = () => {
                             </div>
                             <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
                                 {sidebarData.map((item) => {
-                                    const isSubItemActive = item.subNav?.some(subItem => currentPath === subItem.path);
-                                    const isActive = currentPath === item.path || isSubItemActive;
+                                    const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
+                                    const isActive = ( currentPath === item.path ||  currentPath === `${item.path}/`) || isSubItemActive;
                                     const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
 
                                     return (
@@ -230,7 +230,7 @@ const SidebarMenu = () => {
                                                                     key={subItem.id}
                                                                     text={collapsed ? '' : subItem.text}
                                                                     path={subItem.path}
-                                                                    isActive={currentPath === subItem.path}
+                                                                    isActive={(currentPath === subItem.path || currentPath === `${subItem.path}/`)}
                                                                 />
                                                             ))}
                                                         </div>
@@ -241,7 +241,7 @@ const SidebarMenu = () => {
                                                     text={collapsed ? '' : item.text}
                                                     path={item.path}
                                                     icon={item.icon}
-                                                    isActive={currentPath === item.path}
+                                                    isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
                                                 />
                                             )}
                                         </div>

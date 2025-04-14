@@ -37,8 +37,8 @@ const UpdateMessage = ({containerRef}) => {
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-   const [isUpload,setIsUpload]=useState(false)
-    const [attachment,setAttachment]=useState(false)
+  const [isUpload,setIsUpload]=useState(false)
+  const [attachment,setAttachment]=useState(false)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
@@ -46,6 +46,9 @@ const UpdateMessage = ({containerRef}) => {
 
 
   const handleVisibilityChange = (val) => {
+     if(!val.attachment && attachment){
+          message.error(`${val.label} does not support Attachment it will be removed if you have selected any.`)
+        }
     setVisibility(val);
   };
 

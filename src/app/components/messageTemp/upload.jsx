@@ -8,6 +8,7 @@ import { message } from 'antd'
 const Upload = ({setIsUpload,setAttachment,attachment}) => {
     const fileInputRef = useRef(null);
     const [fileData,setFileData] = useState(null);
+    const [previewUrl,setPreviewUrl] = useState(attachment || null);
 
     const handleBrowseClick = () => {
       fileInputRef.current.click();
@@ -16,8 +17,20 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
     const handleFileChange = (event) => {
       const file = event.target.files[0];
       if (file) {
+        const maxSizeInMB = 5;
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    
+        if (file.size > maxSizeInBytes) {
+          message.error(`File is too large. Max allowed size is ${maxSizeInMB}MB.`);
+          event.target.value = null; // Reset file input
+          return;
+        }
         setFileData(file)
-        console.log('Selected file:', file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewUrl(reader.result); // base64 string
+        };
+        reader.readAsDataURL(file); 
       }
     };
 
@@ -26,8 +39,13 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
             message.error("No file has been selecetd")
             return
         }
-        setAttachment(fileData)
+        setAttachment(previewUrl)
         setIsUpload(false)
+    }
+
+    const handleDelete = ()=>{
+      setFileData(null)
+      setPreviewUrl(null)
     }
   
     return (
@@ -35,13 +53,15 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
         <div className="bg-white px-6 py-5 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           <h3 className="text-[24px] font-medium mb-4">Upload files</h3>
   
-          <div className="border-2 border-dashed border-[#CBD0DC] text-center px-6 pt-5 pb-8 rounded-[10px]">
+          { previewUrl? <div className='flex items-center content-center'>
+            <img src={previewUrl}   className=' w-full h-[400px]'  alt={"previewUrl"}/>
+          </div>: <div className="border-2 border-dashed border-[#CBD0DC] text-center px-6 pt-5 pb-8 rounded-[10px]">
             <div className="flex justify-center mb-2">
               <img src={uploadImg} alt="uploadImg" />
             </div>
             <h3 className="text-[24px] text-[#292D32] mb-2">Choose a file or drag & drop it here</h3>
             <span className="block mb-8 text-[20px] leading-none text-[#A9ACB4]">
-              JPEG, PNG, PDG, and MP4 formats, up to 5MB
+              JPEG, PNG , GIF etc. up to 5MB
             </span>
   
             {/* Hidden File Input */}
@@ -50,7 +70,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
               ref={fileInputRef}
               onChange={handleFileChange}
               style={{ display: 'none' }}
-              accept=".jpeg,.jpg,.png,.pdf,.mp4"
+               accept="image/*"
             />
   
             <button
@@ -59,7 +79,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
             >
               Browse File
             </button>
-          </div>
+          </div>}
   
          { fileData?<div className="border border-[#0087ff33] rounded-[10px] mt-5 px-4 py-2">
             <div className="flex items-center gap-6">
@@ -74,8 +94,8 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
                   </div>
                 </div>
               </div>
-              <button>
-                <img src={uploadDel} alt="uploadDel" onClick={()=>setFileData(null)} />
+              <button className='cursor-pointer'>
+                <img src={uploadDel} alt="uploadDel" onClick={()=>handleDelete()} />
               </button>
             </div>
           </div>:""}
