@@ -49,8 +49,6 @@ const SelectMessage = () => {
 
     return (
         <div className="w-full h-full bg-white rounded-lg flex flex-col">
-            {/* Top Section */}
-            <div className="">
                 <h2 className="font-medium text-lg">{t("prospecting.Select Message")}</h2>
                 <div className="flex gap-4 mt-2">
                     <Input placeholder="Search messages" prefix={<SearchOutlined />} className="w-full" />
@@ -61,10 +59,8 @@ const SelectMessage = () => {
                     <Button type="primary" icon={<PlusOutlined />}>
                         Create New Message
                     </Button>
-                </div>
             </div>
 
-            {/* Table Section - Takes up max available space */}
             <div className="flex-1 overflow-auto my-3">
                 <Table
                     columns={columns}
@@ -74,11 +70,6 @@ const SelectMessage = () => {
                 />
             </div>
 
-            {/* Bottom Section */}
-            <div className="flex justify-between">
-                <Button>{t("prospecting.Cancel")}</Button>
-                <Button type="primary">{t("prospecting.Next")}</Button>
-            </div>
         </div>
     );
 };

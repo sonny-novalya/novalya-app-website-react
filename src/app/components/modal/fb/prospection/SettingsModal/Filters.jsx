@@ -45,7 +45,7 @@ const Filters = () => {
     }, [dropdownOpen]);
 
     return (
-        <div className="p-4">
+        <div className="">
             <h2 className="text-xl font-bold mb-4">{t("prospecting.Filters")}</h2>
 
             <div className="grid grid-cols-2 gap-4">

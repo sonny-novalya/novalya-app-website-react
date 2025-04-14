@@ -34,7 +34,7 @@ const AddTags = () => {
     ]
 
     return (
-        <div className="p-4">
+        <div className="">
             <h2 className="text-xl font-semibold mb-4">{t("prospecting.Add Tags")}</h2>
 
             {/* Toggle Add Tag Option */}
