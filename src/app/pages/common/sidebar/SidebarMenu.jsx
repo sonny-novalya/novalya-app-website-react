@@ -137,7 +137,7 @@ const SidebarMenu = () => {
                                                         <Menu>
                                                             {item.subNav.map((subItem) => (
                                                                 <Menu.Item key={subItem.id}>
-                                                                    <Link to={subItem.path} className={(currentPath === subItem.path || currentPath === `${subItem.path}/`) ? 'text-[#167AD3]' : ''}>
+                                                                    <Link to={subItem.path} className={(currentPath === subItem.path || currentPath === `${subItem.path}/`) ? 'text-[#167AD3] ' : ''}>
                                                                         {subItem.text}
                                                                     </Link>
                                                                 </Menu.Item>
@@ -224,7 +224,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                     {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '10'} pr-2.5 mt-1 flex flex-col space-y-1`}>
+                                                        <div className={`pl-${collapsed ? '4' : '10'} mt-1 ml-10 flex flex-col space-y-1`}>
                                                             {item.subNav.map((subItem) => (
                                                                 <SidebarItem
                                                                     key={subItem.id}
