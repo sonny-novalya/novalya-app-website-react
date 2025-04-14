@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import apiCall from '../../services/api';
-import { message } from "antd";
 
 const useMessageSteps = create((set) => ({
    step: 1,
@@ -12,7 +11,10 @@ const useMessageSteps = create((set) => ({
    backStep:null,
    loading: false,
    error: null,
+   tempLoader:false,
+   tempMessageLoader:false,
    messageList: [],
+   tempMessageList:[],
    tempList:[],
    totalPages: 1,
    flow:0,
@@ -38,12 +40,19 @@ const useMessageSteps = create((set) => ({
    setPagination: (val) => set(() => ({ pagination: val })), 
 
 
-   fetchMessages: async (pagination,search) => {
-      set({ loading: true, error: null });
+   fetchMessages: async (pagination,search,sort) => {
+    if (pagination.limit === 200) {
+        set({ tempMessageLoader: true, error: null });
+    }else{
+        set({ loading: true, error: null });
+    }
       try {
          const paylaod = {
             page: pagination?.page || 1,
-            limit:pagination?.limit || 10
+            limit:pagination?.limit || 10,
+            sort_order:sort?"DESC":"ASC",
+            sort_by:"title"
+
          }
           const res = await apiCall({
               method: 'POST',
@@ -52,17 +61,23 @@ const useMessageSteps = create((set) => ({
           });
           const total = res?.data?.message?.total || 1
 
-
-          set({ messageList: res?.data?.message?.messages || [], loading: false, totalPages:total });
+         if (pagination.limit === 200) {
+          set({ tempMessageList: res?.data?.message?.messages || [], tempMessageLoader: false});
+         }else{
+            set({ messageList: res?.data?.message?.messages || [], loading: false, totalPages:total });
+         }
       } catch (error) {
           set({
               loading: false,
+              tempMessageLoader: false,
               error: error?.message || 'Something went wrong',
           });
       }
   },
 
   fetchTemps: async () => {
+    set({ tempLoader: true, error: null });
+
    try {
     
        const res = await apiCall({
@@ -70,10 +85,11 @@ const useMessageSteps = create((set) => ({
            url: '/all/messages/api/get-templates-data',
        });
 
-       set({ tempList: res?.data?.message || [], });
+       set({ tempList: res?.data?.message || [],tempLoader:false });
    } catch (error) {
        set({
            loading: false,
+           tempLoader:false ,
            error: error?.message || 'Something went wrong',
        });
    }
@@ -94,6 +110,48 @@ const useMessageSteps = create((set) => ({
        });
    }
 },
+
+  duplicateMessage:async (data) => {
+    try {
+        const res = await apiCall({
+            method: 'POST',
+            url: `/all/messages/api/create-duplicate-message`,
+            data:data
+        });
+ 
+    return res
+    } catch (error) {
+        set({
+            loading: false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+ },
+
+ setFavourite: async (data) => {
+    if (data.type === "template") {
+    set({ tempLoader: true});
+        
+    }else{
+    set({  tempMessageLoader: true});
+
+    }
+
+    try {
+        const res = await apiCall({
+            method: 'POST',
+            url: `/all/messages/api/update-favorite`,
+            data
+        });
+ 
+    return res
+    } catch (error) {
+        set({
+            tempLoader: false,  tempMessageLoader: false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+ },
 }));
 
 

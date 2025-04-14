@@ -25,6 +25,7 @@ import { CreateMessageIcon } from "../../pages/common/icons/messageIcons/Message
 import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
 import apiCall from "../../../services/api";
 import { message, Spin } from "antd";
+import Upload from "./upload";
 
 const UpdateMessage = ({containerRef}) => {
   const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessages} = useMessageSteps();
@@ -36,6 +37,8 @@ const UpdateMessage = ({containerRef}) => {
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+   const [isUpload,setIsUpload]=useState(false)
+    const [attachment,setAttachment]=useState(false)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
@@ -356,7 +359,7 @@ const handleSubmit =async ()=>{
                                       </div>
                                     )}
                                    {visibility?.attachment&&
-                                    <button className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
+                                    <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
                                       <CreateMessageIcon index={6} />
                                       {t("message.Upload image")}
                                      
@@ -449,6 +452,8 @@ const handleSubmit =async ()=>{
                 </button>
               </div>
             </div>
+     { isUpload && <Upload setIsUpload={setIsUpload}  setAttachment={setAttachment} attachment={attachment}/>}
+
           </div>
         </div>
   );

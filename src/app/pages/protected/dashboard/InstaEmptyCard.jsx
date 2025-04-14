@@ -1,8 +1,10 @@
 import IgImg from "../../../../assets/img/ig-cover.png"
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
 import UserImg from "../../../../assets/img/user-img.png"
+import { t } from "i18next";
+import PropTypes from "prop-types";
 
-const InstaEmptyCard = () => {
+const InstaEmptyCard = ({ handleShowConnection }) => {
     return (
         <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md relative">
             <div className="relative">
@@ -49,12 +51,18 @@ const InstaEmptyCard = () => {
             </div>
 
             <div className="absolute bottom-0 top-0 right-0 left-0 transform backdrop-blur-md bg-[#00000020] w-full h-full flex items-center justify-center">
-                <button id="instagram-sync" className="px-6 py-2 bg-gradient-to-r from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-full cursor-pointer instagram-sync">
-                    Connect Instagram Account
+                <button
+                    className="xl:px-6 xl:py-2 lg:px-3 lg:py-1 px-4 py-1.5 bg-gradient-to-r from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-full cursor-pointer"
+                    onClick={handleShowConnection}
+                    >
+                    {t("dashboard.Connect Instagram account")}
                 </button>
             </div>
         </div>
     );
 }
+InstaEmptyCard.propTypes = {
+    handleShowConnection: PropTypes.func,
+};
 
 export default InstaEmptyCard;

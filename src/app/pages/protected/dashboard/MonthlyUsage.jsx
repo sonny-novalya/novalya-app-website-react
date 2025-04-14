@@ -1,29 +1,30 @@
 import { BarChartOutlined, SendOutlined, RobotOutlined, TagsOutlined, UserOutlined } from '@ant-design/icons';
+import { t } from 'i18next';
 import PropTypes from "prop-types";
 
 const MonthlyUsage = ({ data }) => {
     const usageData = [
         {
             icon: <SendOutlined />,
-            label: 'Messages',
+            label: t("dashboard.Messages"),
             current: (data?.fbMessageLimit || 0) + (data?.igMessageLimit || 0),
             total: 2000,
         },
         {
             icon: <RobotOutlined />,
-            label: 'AI Credits',
+            label: t("dashboard.AI Credits"),
             current: data?.aiLimits || 0,
             total: 2000,
         },
         {
             icon: <TagsOutlined />,
-            label: 'Tag + Pipeline',
+            label: t("dashboard.Tag + Pipeline"),
             current: data?.tagsLimit || 0,
             total: 2000,
         },
         {
             icon: <UserOutlined />,
-            label: 'Contacts',
+            label: t("dashboard.Contacts"),
             current: data?.totalContactLimit || 0,
             total: '∞',
         },
@@ -32,9 +33,9 @@ const MonthlyUsage = ({ data }) => {
     return (
         <div className="bg-white shadow-xl rounded-lg p-4">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold">Monthly Usage</h3>
+                <h3 className="font-semibold">{t("dashboard.Monthly Usage")}</h3>
                 <button className="bg-blue-500 text-white text-sm py-1 px-3 rounded flex items-center">
-                    <BarChartOutlined className="mr-1" /> Statistics
+                    <BarChartOutlined className="mr-1" /> {t("dashboard.Statistics")}
                 </button>
             </div>
 

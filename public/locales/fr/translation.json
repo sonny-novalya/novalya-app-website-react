@@ -171,6 +171,49 @@
     "Select the next action": "Sélectionnez la prochaine action",
     "Send": "Envoyer",
     "Instagram CRM" : "Instagram CRM"
-}
+},
+  "dashboard" :{
+    "My Social Networks": "Mes réseaux sociaux",
+    "Promote and get paid": "Faites la promotion et soyez payé",
+    "By Sharing Your Affiliate Link To Others. Paid Up To 60%. Share It To The World.": "En partageant votre lien d'affiliation avec d'autres. Payé jusqu'à 60%. Partagez-le avec le monde.",
+    "My Affiliate Links": "Mes liens d'affiliation",
+    "Setup Your Account": "Configurer votre compte",
+    "Confirm": "Confirmer",
+    "Step-1-Install Chrome Extension": "Étape 1 : Installer l'extension Chrome",
+    "Connect your Instagram account to manage direct messages, comments, and follower insights.": "Connectez votre compte Instagram pour gérer les messages directs, les commentaires et les informations sur les abonnés.",
+    "Extension Installed": "Extension installée",
+    "Install Extension": "Installer l'extension",
+    "Step-2-Connect Your Social Media Accounts": "Étape 2 : Connectez vos comptes de réseaux sociaux",
+    "Connect Personal Facebook Account": "Connecter le compte Facebook personnel",
+    "Connect your Facebook account to manage direct messages, comments, and follower insights.": "Connectez votre compte Facebook pour gérer les messages directs, les commentaires et les informations sur les abonnés.",
+    "Connect Now": "Connecter maintenant",
+    "Connected": "Connecté",
+    "Connect Instagram account": "Connecter le compte Instagram",
+    "Followers": "Abonnés",
+    "Friends": "Amis",
+    "Following": "Abonnements",
+    "Connect Facebook Account": "Connecter le compte Facebook",
+    "Posts": "Publications",
+    "Messages": "Messages",
+    "AI Credits": "Crédits IA",
+    "Tag + Pipeline": "Étiquette + Pipeline",
+    "Contacts": "Contacts",
+    "Monthly Usage": "Utilisation mensuelle",
+    "Statistics": "Statistiques",
+    "Import Facebook groups": "Importer des groupes Facebook",
+    "Add one person to CRM": "Ajouter une personne au CRM",
+    "Next Actions": "Actions suivantes",
+    "Watch Video": "Regarder la vidéo",
+    "Hello": "Bonjour"
+  },
+  "language": {
+    "English": "Anglais",
+    "French": "Français",
+    "German": "Allemand",
+    "Spanish": "Espagnol",
+    "Portuguese": "Portugais"
+  }
+
+
 
 }

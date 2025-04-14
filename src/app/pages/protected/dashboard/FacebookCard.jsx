@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import FbImg from "../../../../assets/img/fb-cover.png"
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
@@ -35,7 +36,7 @@ const FacebookCard = ({ data }) => {
                     <button id="facebook-sync" className="text-blue-600 cursor-pointer facebook-sync">
                         <SyncBlueIcon />
                     </button>
-                    <button id="instagram-sync" className="text-red-500 cursor-pointer fbConfirmUnlink" onClick={handleFbConfirmUnlink}>
+                    <button className="text-red-500 cursor-pointer" onClick={handleFbConfirmUnlink}>
                         <LinkRedIcon />
                     </button>
                 </div>
@@ -46,17 +47,17 @@ const FacebookCard = ({ data }) => {
                 <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
                     <div className="flex-1 text-center">
                         <p className="font-bold">{followers}</p>
-                        <p>Followers</p>
+                        <p>{t("dashboard.Followers")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{total_friends}</p>
-                        <p>Friends</p>
+                        <p>{t("dashboard.Friends")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{following}</p>
-                        <p>Following</p>
+                        <p>{t("dashboard.Following")}</p>
                     </div>
                 </div>
             </div>

@@ -1,87 +1,74 @@
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Layout from "../Layout";
+import ConnectionDashboard from "./ConnectionDashboard";
+import SocialDashboard from "./SocialDashboard";
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { useExtensionStore } from "../../../../store/extension/extension-store";
-import { useNavigate } from "react-router-dom";
-import { Spin } from "antd";
-import MonthlyUsage from "./MonthlyUsage";
-import TargetedPromotion from "./TargetPromotion";
-import FollowUpPanel from "./FollowUpPanel";
-import InstaEmptyCard from "./InstaEmptyCard";
-import InstagramCard from "./InstagramCard";
-import FacebookEmptyCard from "./FacebookEmptyCard";
-import FacebookCard from "./FacebookCard";
 
 const Dashboard = () => {
-  const { isExtConnected, fetchExtInstalledStatus } = useExtensionStore()
-  const { fetchSocialAccounts, socialAccountsData, loading, error, isFbConnected, isIgConnected } = useSocialAccountsStore();
+  const [connectionStep, setConnectionStep] = useState(false);
+  const [facebookButtonDisabled, setFacebookButtonDisabled] = useState(false);
+  const [instaButtonDisabled, setInstaButtonDisabled] = useState(false);
+  const { isExtConnected, fetchExtInstalledStatus } = useExtensionStore();
 
-  const navigate = useNavigate() ;
+  const { fetchSocialAccounts, socialAccountsData, isFbConnected, isIgConnected, loading, error, planLimit } = useSocialAccountsStore();
+
   const { facebook_data, instagram_data, limit_data } = socialAccountsData || {};
-  
-  const shouldShowDashboard = isExtConnected && (isFbConnected || isIgConnected)
+
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    fetchSocialAccounts();
-    fetchExtInstalledStatus()
-  }, []);
+    if (!hasFetched.current) {
+      fetchSocialAccounts();
+      fetchExtInstalledStatus();
+      hasFetched.current = true; 
+    }
+  }, [fetchSocialAccounts, fetchExtInstalledStatus]); 
 
   useEffect(() => {
-    if(!shouldShowDashboard){
-      navigate("/connection")
-    } 
-  }, [shouldShowDashboard]);
+    if (planLimit?.new_packages?.connection_type === 1) {
+      if (isFbConnected) {
+        setFacebookButtonDisabled(false);
+        setInstaButtonDisabled(true);
+      } else if (isIgConnected) {
+        setFacebookButtonDisabled(true);
+        setInstaButtonDisabled(false);
+      } else {
+        setFacebookButtonDisabled(false);
+        setInstaButtonDisabled(false);
+      }
+    } else {
+      setFacebookButtonDisabled(false);
+      setInstaButtonDisabled(false);
+    }
+  }, [isIgConnected, isFbConnected, planLimit]);
 
-  if (loading)
-    return <div className="w-full h-full flex items-center justify-center">
-      <Spin />
-    </div>;
+  const handleShowConnection = () => setConnectionStep(true);
+  const handleHideConnection = () => setConnectionStep(false);
+
   if (error) return "Alert";
 
   return (
     <Layout>
-      <div className="flex flex-col">
-        <h3 className="text-lg font-bold mb-5">My Social Networks</h3>
-        <div className="p-6 bg-white shadow-lg rounded-lg">
-          <div className="flex flex-col lg:flex-row gap-4">
-            {
-              facebook_data
-                ? <FacebookCard data={facebook_data} />
-                : <FacebookEmptyCard />
-            }
-
-            {
-              instagram_data
-                ? <InstagramCard data={instagram_data} />
-                : <InstaEmptyCard />
-            }
-
-            <div className="flex-1 bg-green-400 text-white rounded-xl p-6 flex flex-col justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">Promote and get paid</h3>
-                <p className="mt-2 text-sm">
-                  sharing_link_feature
-                </p>
-              </div>
-              <button className="mt-4 bg-white text-green-700 font-bold py-2 px-4 rounded shadow">
-                My Affiliate Links
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-10">
-            <div className="grid grid-cols-7 gap-5">
-              <div className="col-span-5 px-4">
-                <MonthlyUsage data={limit_data} />
-                <TargetedPromotion />
-              </div>
-              <div className="col-span-2 h-full">
-                <FollowUpPanel />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {connectionStep ? (
+        <ConnectionDashboard
+          isLoading={loading}
+          isFbConnected={isFbConnected}
+          isIgConnected={isIgConnected}
+          isExtConnected={isExtConnected}
+          facebookButtonDisabled={facebookButtonDisabled}
+          instaButtonDisabled={instaButtonDisabled}
+          handleHideConnection={handleHideConnection}
+        />
+      ) : (
+        <SocialDashboard
+          facebook_data={facebook_data}
+          instagram_data={instagram_data}
+          limit_data={limit_data}
+          isLoading={loading}
+          handleShowConnection={handleShowConnection}
+        />
+      )}
     </Layout>
   );
 };

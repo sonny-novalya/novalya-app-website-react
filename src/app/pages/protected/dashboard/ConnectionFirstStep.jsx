@@ -1,6 +1,7 @@
 import { GreenCheckRoundedIcon, TickIconFilledWhite } from '../../common/icons/icons'
 import { useExtensionStore } from '../../../../store/extension/extension-store';
 import { useEffect } from 'react';
+import { t } from 'i18next';
 
 const ConnectionFirstStep = () => {
     const { isExtConnected, fetchExtInstalledStatus } = useExtensionStore()
@@ -17,10 +18,10 @@ const ConnectionFirstStep = () => {
                         ? <GreenCheckRoundedIcon />
                         : <div className="w-4 h-4 rounded-full border-2 border-red-500 bg-white" />
                 }
-                <h2 className="font-medium text-lg">Step 1: Install Chrome Extension</h2>
+                <h2 className="font-medium text-lg">{t("dashboard.Step-1-Install Chrome Extension")}</h2>
             </div>
             <p className='text-[#000407]'>
-                Connect your Instagram account to manage direct messages, comments, and follower insights.
+                {t("dashboard.Connect your Instagram account to manage direct messages, comments, and follower insights.")}
             </p>
 
             <div className='w-full flex justify-center'>
@@ -36,7 +37,7 @@ const ConnectionFirstStep = () => {
                     }}
                 >
                     <span className={isExtConnected && 'mr-2'}>
-                        {isExtConnected ? 'Extension Installed' : 'Install Extension'}</span>
+                        {isExtConnected ? t("dashboard.Extension Installed") : t("dashboard.Install Extension")}</span>
                     {isExtConnected && <TickIconFilledWhite />}
                 </button>
 

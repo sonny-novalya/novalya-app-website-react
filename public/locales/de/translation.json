@@ -172,6 +172,49 @@
     "Select the next action": "Nächste Aktion auswählen",
     "Send": "Senden",
     "Instagram CRM" : "Instagram CRM"
-}
+}, 
+  "dashboard": {
+    "My Social Networks": "Meine sozialen Netzwerke",
+    "Promote and get paid": "Werben und bezahlt werden",
+    "By Sharing Your Affiliate Link To Others. Paid Up To 60%. Share It To The World.": "Indem Sie Ihren Affiliate-Link mit anderen teilen. Bis zu 60% bezahlt. Teilen Sie es mit der Welt.",
+    "My Affiliate Links": "Meine Affiliate-Links",
+    "Setup Your Account": "Richten Sie Ihr Konto ein",
+    "Confirm": "Bestätigen",
+    "Step-1-Install Chrome Extension": "Schritt 1: Chrome-Erweiterung installieren",
+    "Connect your Instagram account to manage direct messages, comments, and follower insights.": "Verbinden Sie Ihr Instagram-Konto, um Direktnachrichten, Kommentare und Follower-Einblicke zu verwalten.",
+    "Extension Installed": "Erweiterung installiert",
+    "Install Extension": "Erweiterung installieren",
+    "Step-2-Connect Your Social Media Accounts": "Schritt 2: Verbinden Sie Ihre Social-Media-Konten",
+    "Connect Personal Facebook Account": "Persönliches Facebook-Konto verbinden",
+    "Connect your Facebook account to manage direct messages, comments, and follower insights.": "Verbinden Sie Ihr Facebook-Konto, um Direktnachrichten, Kommentare und Follower-Einblicke zu verwalten.",
+    "Connect Now": "Jetzt verbinden",
+    "Connected": "Verbunden",
+    "Connect Instagram account": "Instagram-Konto verbinden",
+    "Followers": "Follower",
+    "Friends": "Freunde",
+    "Following": "Folge ich",
+    "Connect Facebook Account": "Facebook-Konto verbinden",
+    "Posts": "Beiträge",
+    "Messages": "Nachrichten",
+    "AI Credits": "KI-Guthaben",
+    "Tag + Pipeline": "Tag + Pipeline",
+    "Contacts": "Kontakte",
+    "Monthly Usage": "Monatliche Nutzung",
+    "Statistics": "Statistiken",
+    "Import Facebook groups": "Facebook-Gruppen importieren",
+    "Add one person to CRM": "Eine Person zum CRM hinzufügen",
+    "Next Actions": "Nächste Schritte",
+    "Watch Video": "Video ansehen",
+    "Hello": "Hallo"
+  },
+  "language" : {
+    "English": "Englisch",
+    "French": "Französisch",
+    "German": "Deutsch",
+    "Spanish": "Spanisch",
+    "Portuguese": "Portugiesisch"
+  }
+
+
 
 }

@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import IgImg from "../../../../assets/img/ig-cover.png"
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
@@ -47,17 +48,17 @@ const InstagramCard = ({ data }) => {
                 <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
                     <div className="flex-1 text-center">
                         <p className="font-bold">{total_followers}</p>
-                        <p>Followers</p>
+                        <p>{t("dashboard.Followers")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{posts}</p>
-                        <p>Posts</p>
+                        <p>{t("dashboard.Posts")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
                         <p className="font-bold">{following}</p>
-                        <p>Following</p>
+                        <p>{t("dashboard.Following")}</p>
                     </div>
                 </div>
             </div>
