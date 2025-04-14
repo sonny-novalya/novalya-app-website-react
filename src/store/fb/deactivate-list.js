@@ -16,8 +16,8 @@ export const useFbDeactivateListStore = create((set) => ({
             });
 
             set({ 
-                deactivatedFriends: res?.data?.data || [], 
-                totalRecords: res?.data?.totalCount, 
+                deactivatedFriends: res?.data?.data?.data || [], 
+                totalRecords:  res?.data?.data?.totalCount, 
                 loading: false 
             });
         } catch (error) {

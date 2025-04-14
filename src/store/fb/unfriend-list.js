@@ -17,8 +17,8 @@ export const useFbUnfriendListStore = create((set) => ({
             });
 
             set({ 
-                unfriends: res?.data?.data || [], 
-                totalRecords: res?.data?.totalCount, 
+                unfriends: res?.data?.data?.data || [], 
+                totalRecords:  res?.data?.data?.totalCount, 
                 loading: false 
             });
         } catch (error) {
