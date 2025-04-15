@@ -103,8 +103,11 @@ const TempList = ({containerRef}) => {
   };
 
   const mergeAndSetTemps = (templates, messages) => {
+    // 1. Filter only template items for grouping
+    const onlyTemplates = templates.filter(item => item.language); // language indicates a template
+  
     const groupedByCategoryName = Object.values(
-      templates?.reduce((acc, item) => {
+      onlyTemplates.reduce((acc, item) => {
         const categoryName = item.category?.name || 'Unknown';
         if (!acc[categoryName]) {
           acc[categoryName] = { category: categoryName, items: [] };
@@ -114,8 +117,10 @@ const TempList = ({containerRef}) => {
       }, {})
     );
   
-    const favList = [...templates, ...messages]?.filter((data) => data?.favorite);
+    // 2. Favorite items from both messages and templates
+    const favList = [...onlyTemplates, ...messages]?.filter((data) => data?.favorite);
   
+    // 3. Create merged list with proper segregation
     const merged = [
       ...groupedByCategoryName,
       { category: "My Message", items: messages },
@@ -209,9 +214,9 @@ const TempList = ({containerRef}) => {
                         handleLoader(selecetdCat?.category) ?<div className='flex justify-center items-center w-full h-[600px]'>
                         <Spin size='large'/>
                         </div>:
-                        selecetdCat?.items?.map((data)=>{
+                        selecetdCat?.items?.map((data,i)=>{
                            return (
-                            <div key={data.title} className="template-items border border-[#0087FF1A] p-3 w-[calc(25%-15px)] rounded-lg">
+                            <div key={`${data.title}${i}`} className="template-items border border-[#0087FF1A] p-3 w-[calc(25%-15px)] rounded-lg">
                             <div className="flex justify-between items-start">
                                 <img src={noteIcon}/>
                                 <div  onClick={()=>handleFav(data)} className="bg-[#EFEFEF] w-6 h-6 flex items-center justify-center rounded-full mt-2 cursor-pointer">
