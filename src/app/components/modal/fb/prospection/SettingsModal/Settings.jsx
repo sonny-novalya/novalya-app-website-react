@@ -1,24 +1,31 @@
-import { useState } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
+import SettingStore from "../../../../../../store/prospection/settings-store";
 
 const Settings = () => {
-    const [strategy, setStrategy] = useState(0);
-    const [requests, setRequests] = useState(10);
-    const [interval, setInterval] = useState(t("prospecting.Fast"));
+    const { prospection , updateProspection } = SettingStore();
 
+    const { stratagy, norequest, interval } = prospection 
+    
     const strategies = [
-        { value: 0, label: "Follow + Message" },
-        { value: 1, label:  t("prospecting.Message Only") }
+        { value: 0, label: t("prospecting.Follow + Message") },
+        { value: 1, label: t("prospecting.Message Only") },
     ];
 
-    const requestOptions = [5, 10, 20, 30, 50, "Custom"];
+    const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
     const intervalOptions = [
-        { label: t("prospecting.Fast"), value: t("prospecting.Fast"), time: t("prospecting.2 to 4 minutes") },
-        { label: t("prospecting.Medium"), value: t("prospecting.Medium"), time: t("prospecting.4 to 6 minutes") },
-        { label: t("prospecting.Slow"), value: t("prospecting.Slow"), time: t("prospecting.6 to 10 minutes") },
-        { label: t("prospecting.Very Slow"), value: "very_slow", time: t("prospecting.10 to 15 minutes") }
+        { label: t("prospecting.Fast"), value: "2-4", time: t("prospecting.2 to 4 minutes") },
+        { label: t("prospecting.Medium"), value: "4-6", time: t("prospecting.4 to 6 minutes") },
+        { label: t("prospecting.Slow"), value: "6-10", time: t("prospecting.6 to 10 minutes") },
+        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
     ];
+
+    const handleUpdate = (field, value) => {
+        updateProspection({
+            ...prospection,
+            [field]: value
+        });
+    };
 
     return (
         <div className="">
@@ -32,14 +39,13 @@ const Settings = () => {
                         {strategies.map((option) => (
                             <button
                                 key={option.value}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${strategy === option.value
-                                        ? "bg-[#CCE7FF] border-[#CCE7FF]"
-                                        : "bg-white border-[#0087FF]"
-                                    }`}
-                                onClick={() => setStrategy(option.value)}
+                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${stratagy === option.value
+                                    ? "bg-[#CCE7FF] border-[#CCE7FF]"
+                                    : "bg-white border-[#0087FF]"}`}
+                                onClick={() => handleUpdate( "stratagy",option.value)}
                             >
                                 {option.label}
-                                {strategy === option.value && (
+                                {stratagy === option.value && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>
@@ -56,14 +62,13 @@ const Settings = () => {
                         {requestOptions.map((option) => (
                             <button
                                 key={option}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${requests === option
-                                        ? "bg-[#CCE7FF] border-[#CCE7FF]"
-                                        : "bg-white border-[#0087FF]"
-                                    }`}
-                                onClick={() => setRequests(option)}
+                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${norequest === option
+                                    ? "bg-[#CCE7FF] border-[#CCE7FF]"
+                                    : "bg-white border-[#0087FF]"}`}
+                                onClick={() => handleUpdate("norequest", option)}
                             >
                                 {option}
-                                {requests === option && (
+                                {norequest === option && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>
@@ -81,8 +86,8 @@ const Settings = () => {
                     {intervalOptions.map((option) => (
                         <button
                             key={option.value}
-                            className={`relative`}
-                            onClick={() => setInterval(option.value)}
+                            className={`relative cursor-pointer`}
+                            onClick={() => handleUpdate("norequest", option.value)}
                         >
                             <span className="text-xs text-gray-500 text-left mr-12">{option.time}</span>
                             <div className={` flex flex-col items-start p-4 rounded-lg border transition ${interval === option.value
@@ -99,7 +104,6 @@ const Settings = () => {
                         </button>
                     ))}
                 </div>
-
             </div>
         </div>
     );
