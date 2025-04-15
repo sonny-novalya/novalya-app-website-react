@@ -49,7 +49,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
     }
   
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen">
+      <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen z-[9999]">
         <div className="bg-white px-6 py-5 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           <h3 className="text-[24px] font-medium mb-4">Upload files</h3>
   

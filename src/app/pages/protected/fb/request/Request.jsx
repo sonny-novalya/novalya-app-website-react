@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import "./Request.css";
 import MessagePopUp from "../../../../components/message/common/messagePop/messagePopUp";
-import {
-  createRequest,
-  fetchCrmGroups,
-  fetchRequestSettings,
-  getAllMessagesList,
-} from "../../../../../services/ApiCalls";
 import { useTranslation } from "react-i18next";
 import Layout from "../../Layout";
+import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
+import usefbCRM from "../../../../../store/fb/fbCRM";
+import { message, Spin } from "antd";
+import useRequestStore from "../../../../../store/fb/request";
 
 const Request = () => {
-  const [messageList, setMessageList] = useState([]);
+  const {
+    fetchMessages,
+    tempMessageList,
+    tempMessageLoader,
+  } = useMessageSteps();
+  const {fetchCRMGroups,CRMList,fbCRMLoading}=usefbCRM()
+  const {fetchRequestData,requestLoader,saveRequestData}=useRequestStore()
+
   const [acceptedData, setAcceptedData] = useState({
     selectedMessage: 0,
     isTag: "yes",
@@ -31,39 +36,10 @@ const Request = () => {
   const [preSelecetdMessage, setPreSelecetdMessage] = useState(null);
   const {t} = useTranslation()
 
-  const fetchGroups = async () => {
-    try {
-      const response = await fetchCrmGroups();
-      if (response?.data !== undefined) {
-        const groupsWithColor = response.data.map((group) => ({
-          ...group,
-          custom_color: group.custom_color || {
-            r: 255,
-            g: 255,
-            b: 255,
-            a: 1,
-          },
-        }));
-        setGroupData(groupsWithColor);
-      }
-    } catch (error) {}
-  };
-
-  const fetchMessages = async () => {
-    try {
-      const response = await getAllMessagesList();
-      if (response?.data !== undefined) {
-        setMessageList(response.data.messages);
-      }
-    } catch (error) {
-      console.error(
-        "Failed to fetch messages:",
-        error.response?.data || error.message
-      );
-    }
-  };
 
  
+
+   
 
   const handleMessagePOP = (type) => {
     if (type) {
@@ -89,13 +65,17 @@ const Request = () => {
         rejectedData?.isTag === "yes" ? Number(rejectedData?.selecetdStage) : 0,
     };
     try {
-      await createRequest(params);
+      const res = await saveRequestData(params);
+      if (res.status === 200) {
+        message.success("Data has been saved")
+      }
     } catch (error) {}
 
     // Add your logic to submit the selected values to your backend or perform any other actions
   };
 
   const handleTags = (value, type) => {
+
     const checkGroup = value === "yes" ? true : false;
     if (type) {
       setAcceptedData((data) => ({
@@ -116,7 +96,8 @@ const Request = () => {
 
   const preSelectedSettings = async () => {
     try {
-      const response = await fetchRequestSettings();
+      const response = await fetchRequestData();
+      console.log(response)
       if (response?.data?.data !== undefined) {
         setAcceptedData({
           selectedMessage: response?.data?.data?.accept_new_message,
@@ -140,8 +121,8 @@ const Request = () => {
   };
 
   useEffect(() => {
-    fetchGroups();
-    fetchMessages();
+    fetchCRMGroups();
+    fetchMessages({limit:200,page:1});
     preSelectedSettings();
   }, []);
 
@@ -152,8 +133,16 @@ const Request = () => {
       setRejecetdData((prev) => ({ ...prev, selectedMessage: messageData }));
     }
   }, [messageData]);
+
+  useEffect(() => {
+    setGroupData(CRMList)
+  }, [CRMList])
+  
   return (
     <Layout>
+    { requestLoader && <div className="absolute z-10 w-[84%] h-full bg-white/50 flex items-center justify-center">
+      <Spin size="large"/>
+    </div>}
       <div className="nw-manage-requests">
         <div>
           <h1 className="text-2xl font-semibold mb-4">
@@ -294,8 +283,9 @@ const Request = () => {
                 </div>
                 {acceptedData?.isTag === "yes" ? (
                   <div class="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px] ">
-                    <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
-                    {t("FB_request.Select Group")}  
+                  <div className="flex items-baseline gap-[10px]">
+                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
+                    {t("FB_request.Select Group")} 
                       <svg
                         width="16"
                         height="16"
@@ -322,6 +312,10 @@ const Request = () => {
                         />
                       </svg>
                     </h1>
+
+                    {fbCRMLoading && <Spin size="small"/>}
+                   </div>
+                   <div className={`${fbCRMLoading && "opacity-50"}`}>
                     <select
                       value={acceptedData?.selectedGroup || 0}
                       onChange={(e) =>
@@ -334,7 +328,7 @@ const Request = () => {
                     >
                       <option value={0}>{t("FB_request.Select Group")} </option>
                       {groupData?.map((grp) => {
-                        return <option value={grp?.id}>{grp?.name}</option>;
+                        return <option key={grp?.id} value={grp?.id}>{grp?.name}</option>;
                       })}
                     </select>
                     <select
@@ -354,6 +348,7 @@ const Request = () => {
                           return <option value={stg?.id}>{stg?.name}</option>;
                         })}
                     </select>
+                    </div>
                   </div>
                 ) : (
                   ""
@@ -502,7 +497,8 @@ const Request = () => {
                 </div>
                 {rejectedData?.isTag === "yes" ? (
                   <div class="border border-[#DADADA] bg-white p-4 rounded-[6px]">
-                    <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
+                   <div className="flex items-baseline gap-[10px]">
+                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
                     {t("FB_request.Select Group")} 
                       <svg
                         width="16"
@@ -530,19 +526,23 @@ const Request = () => {
                         />
                       </svg>
                     </h1>
+
+                    {fbCRMLoading && <Spin size="small"/>}
+                   </div>
+                   <div className={`${fbCRMLoading && "opacity-50"}`}>
                     <select
                       value={rejectedData?.selectedGroup || 0}
                       onChange={(e) =>
                         setRejecetdData((data) => ({
                           ...data,
-                          selectedGroup: e.target.value,
+                          selectedGroup: Number(e.target.value),
                         }))
                       }
                       class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                     >
                       <option value={0}>{t("FB_request.Select Group")}</option>
                       {groupData?.map((grp) => {
-                        return <option value={grp?.id}>{grp?.name}</option>;
+                        return <option key={grp?.id} value={grp?.id}>{grp?.name}</option>;
                       })}
                     </select>
                     <select
@@ -550,7 +550,7 @@ const Request = () => {
                       onChange={(e) =>
                         setRejecetdData((data) => ({
                           ...data,
-                          selecetdStage: e.target.value,
+                          selecetdStage:Number(e.target.value),
                         }))
                       }
                       class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]"
@@ -563,6 +563,7 @@ const Request = () => {
                           return <option value={stg?.id}>{stg?.name}</option>;
                         })}
                     </select>
+                    </div>
                   </div>
                 ) : (
                   ""
@@ -604,9 +605,10 @@ const Request = () => {
       {isMessagePop && (
         <MessagePopUp
           setIsPop={setIsMessagePop}
-          messageList={messageList}
+          messageList={tempMessageList}
           setMessageData={setMessageData}
           preSelecetdMessage={preSelecetdMessage}
+          loading={tempMessageLoader}
         />
       )}
     </Layout>

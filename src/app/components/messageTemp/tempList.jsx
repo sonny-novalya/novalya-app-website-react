@@ -136,7 +136,7 @@ const TempList = ({containerRef}) => {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen z-[9999]">
         <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1150px] mx-auto w-full relative max-h-[95vh] overflow-auto">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-[10px] text-[20px]">{t("message.Select a template")}
