@@ -2,25 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { BothGenderIcon, FemaleGenderIcon, MaleGenderIcon, TickFillIcon, UpperArrowIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
+import PropTypes from "prop-types";
 
-const Filters = () => {
+const Filters = ({ keyWordList }) => {
     const { prospection, updateProspection } = SettingStore();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-
     const { gender: propGender, keyword } = prospection;
 
     const genders = [
         { label: "Male", value: "male", icon: <MaleGenderIcon /> },
         { label: "Female", value: "female", icon: <FemaleGenderIcon /> },
         { label: "Both", value: "both", icon: <BothGenderIcon /> }
-    ];
-
-    const keywordOptions = [
-        { label: "Chef d’entreprise", value: "chef", id: 1 },
-        { label: "Community", value: "community", id: 2 },
-        { label: "Buyers", value: "buyers", id: 3 },
-        { label: "Core Users", value: "core_users", id: 4 }
     ];
 
     const toggleDropdown = () => {
@@ -34,7 +27,6 @@ const Filters = () => {
         });
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -64,7 +56,7 @@ const Filters = () => {
                             <button
                                 key={gender.value}
                                 className={`relative flex items-center gap-2 px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer w-full ${propGender === gender.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("gender",gender.value)}
+                                onClick={() => handleUpdate("gender", gender.value)}
                             >
                                 {gender.icon} {gender.label}
                                 {propGender === gender.value && (
@@ -85,19 +77,19 @@ const Filters = () => {
                             className="flex justify-between items-center px-4 py-3 rounded-md border text-[#0087FF] w-full cursor-pointer"
                             onClick={toggleDropdown}
                         >
-                            {keyword ? keywordOptions.find(k => k.id === keyword)?.label : "Select Keyword"}
+                            {keyword ? keyWordList?.find(k => k.id === keyword)?.name : "Select Keyword"}
                             <UpperArrowIcon className={`transform transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                         </button>
 
                         {dropdownOpen && (
                             <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA]  mt-2 rounded-md shadow-md z-10">
-                                {keywordOptions.map((option) => (
+                                {keyWordList?.map((option) => (
                                     <button
                                         key={option.value}
                                         className={`relative flex items-center justify-between px-4 py-3 rounded-md  cursor-pointer w-full ${keyword === option.id ? "bg-[#CCE7FF] border-[#DADADA]" : "bg-white border-[#0087FF]"}`}
                                         onClick={() => handleUpdate("keyword", option.id)}
                                     >
-                                        {option.label}
+                                        {option.name}
                                         {keyword === option.id && (
                                             <span className="absolute right-2">
                                                 <TickFillIcon />
@@ -112,6 +104,10 @@ const Filters = () => {
             </div>
         </div>
     );
+};
+
+Filters.propTypes = {
+    keyWordList: PropTypes.object,
 };
 
 export default Filters;

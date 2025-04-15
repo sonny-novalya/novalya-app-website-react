@@ -2,43 +2,36 @@ import { useState } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
+import PropTypes from "prop-types";
 
-const AddTags = () => {
+const AddTags = ({ CRMList }) => {
     const { prospection, updateProspection } = SettingStore();
-    const { action } = prospection;
+    let { action } = prospection;
+    action = action !== 'no' ? JSON.parse(action) : 'no'
+    const [actionType, setActionType] = useState(action !== "no" ? "yes" : "no");
 
-    const [actionType, setActionType] = useState(action);
-    const [selectedGroup, setSelectedGroup] = useState(null);
-    const [selectedStage, setSelectedStage] = useState(null);
+    const [selectedGroupId, setSelectedGroupId] = useState(action?.moveGroupId || null);
+    const [selectedStageId, setSelectedStageId] = useState(action?.moveStageId || null);
+    const [selectedStageNum, setSelectedStageNum] = useState(action?.stage_num || null);
 
     const handleSave = () => {
         updateProspection({
             ...prospection,
             action: JSON.stringify({
-                moveStageId: action === "no" ? null : 23,
-                moveGroupId: action === "no" ? null : selectedGroup,
-                stage_num: action === "no" ? null : selectedStage,
+                moveStageId: action === "no" ? null : selectedStageId,
+                moveGroupId: action === "no" ? null : selectedGroupId,
+                stage_num: action === "no" ? null : selectedStageNum,
             })
         });
     };
-
-    const groups = [
-        { id: 1, label: "Friends", value: "friends", color: "bg-red-500", initials: "FR" },
-        { id: 2, label: "Community", value: "community", color: "bg-black", initials: "CO" },
-        { id: 3, label: "Buyers", value: "buyers", color: "bg-green-500", initials: "BU" },
-        { id: 4, label: "Core Users", value: "core_users", color: "bg-purple-500", initials: "CU" },
-    ];
-
-    const stages = [
-        { label: "Stage 1", value: "1" },
-        { label: "Stage 2", value: "2" },
-        { label: "Stage 3", value: "3" },
-    ];
 
     const addTagsOptions = [
         { label: "No", value: "no" },
         { label: "Yes", value: "yes" }
     ];
+
+    const selectedGroupData = CRMList.find((item) => item.id == selectedGroupId);
+    const sortedStages = selectedGroupData?.stage?.sort((a, b) => a.stage_num - b.stage_num) || [];
 
     return (
         <div className="">
@@ -56,7 +49,7 @@ const AddTags = () => {
                                 : "bg-white border-[#0087FF]"}`}
                             onClick={() => {
                                 setActionType(option.value);
-                                handleSave(); 
+                                handleSave();
                             }}
                         >
                             {option.label}
@@ -71,23 +64,23 @@ const AddTags = () => {
             </div>
 
             {/* Group and Stage Selection */}
-            {actionType === 'yes' && (
+            {actionType !== "no" && (
                 <div className="grid grid-cols-2 gap-4">
                     {/* Group Selection */}
                     <div className="border border-gray-300 p-4 rounded-lg relative">
                         <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Group")}</p>
                         <select
                             className="w-full p-3 border rounded-lg"
-                            value={selectedGroup || ""}
+                            value={selectedGroupId || ""}
                             onChange={(e) => {
-                                setSelectedGroup(e.target.value);
-                                handleSave(); 
+                                setSelectedGroupId(e.target.value);
+                                handleSave();
                             }}
                         >
                             <option value="">{t("prospecting.Select Group")}</option>
-                            {groups.map((group) => (
-                                <option key={group.value} value={group.value}>
-                                    {group.label}
+                            {CRMList?.map((group) => (
+                                <option key={group.value} value={group.id}>
+                                    {group.name}
                                 </option>
                             ))}
                         </select>
@@ -98,16 +91,20 @@ const AddTags = () => {
                         <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Stage")}</p>
                         <select
                             className="w-full p-3 border rounded-lg"
-                            value={selectedStage || ""}
+                            value={selectedStageId || ""}
                             onChange={(e) => {
-                                setSelectedStage(e.target.value);
-                                handleSave();
+                                const selectedStage = sortedStages.find((stage) => stage.stage_num === parseInt(e.target.value));
+                                if (selectedStage) {
+                                    setSelectedStageId(selectedStage.id);
+                                    setSelectedStageNum(selectedStage.stage_num);
+                                    handleSave();
+                                }
                             }}
                         >
                             <option value="">{t("prospecting.Select Stage")}</option>
-                            {stages.map((stage) => (
-                                <option key={stage.value} value={stage.value}>
-                                    {stage.label}
+                            {sortedStages.map((stage) => (
+                                <option key={stage.value} value={stage.stage_num}>
+                                    {stage.name}
                                 </option>
                             ))}
                         </select>
@@ -116,6 +113,10 @@ const AddTags = () => {
             )}
         </div>
     );
+};
+
+AddTags.propTypes = {
+    CRMList: PropTypes.object,
 };
 
 export default AddTags;

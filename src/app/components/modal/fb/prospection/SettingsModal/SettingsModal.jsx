@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import SelectMessage from "./SelectMessage";
 import Settings from "./Settings";
@@ -7,16 +7,37 @@ import AdvOptions from "./AdvOptions";
 import AddTags from "./AddTags";
 import PropTypes from "prop-types";
 import { t } from "i18next";
+import SettingStore from "../../../../../../store/prospection/settings-store";
+import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
+import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
+import usefbCRM from "../../../../../../store/fb/fbCRM";
 
-const SettingsModal = ({ visible, onClose, group }) => {
+const SettingsModal = ({ visible, onClose }) => {
     const [activeKey, setActiveKey] = useState(1);
+    const { fetchProspectionData } = SettingStore();
+    const { fetchKeywords, keyWordList } = useKeyWordStore();
+    const { tempMessageList, fetchMessages } = useMessageSteps();
+    const { fetchCRMGroups, CRMList } = usefbCRM()
+
     const tabItems = [
-        { label: t("prospecting.Select Message"), key: 1, children: <SelectMessage /> },
+        { label: t("prospecting.Select Message"), key: 1, children: <SelectMessage tempMessageList={tempMessageList} /> },
         { label: t("prospecting.Settings"), key: 2, children: <Settings /> },
-        { label: t("prospecting.Filters"), key: 3, children: <Filters /> },
+        { label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} /> },
         { label: t("prospecting.Advanced Options"), key: 4, children: <AdvOptions /> },
-        { label: t("prospecting.Add Tags"), key: 5, children: <AddTags /> },
+        { label: t("prospecting.Add Tags"), key: 5, children: <AddTags CRMList={CRMList} /> },
     ];
+
+    useEffect(() => {
+        fetchKeywords({
+            page: 1,
+            limit: 100
+        })
+        fetchProspectionData()
+        fetchMessages({
+            limit: 200, page: 1
+        })
+        fetchCRMGroups()
+    }, []);
 
     const handleNext = () => {
         const nextKey = activeKey + 1;
