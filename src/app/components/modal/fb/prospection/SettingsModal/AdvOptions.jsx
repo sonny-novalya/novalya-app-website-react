@@ -32,7 +32,7 @@ const AdvOptions = () => {
     ]
 
     return (
-        <div className="p-4">
+        <div className="">
             <h2 className="text-xl font-semibold mb-4">Advance Options</h2>
 
             {/* Retarget Same User Option */}
