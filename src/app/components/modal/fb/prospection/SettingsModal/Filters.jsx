@@ -1,33 +1,32 @@
-import { useState, useRef, useEffect } from "react";
-import { BothGenderIcon, FemaleGenderIcon, MaleGenderIcon, TickFillIcon, TickIcon, UpperArrowIcon } from "../../../../../pages/common/icons/icons";
+import { useState, useEffect, useRef } from "react";
+import { BothGenderIcon, FemaleGenderIcon, MaleGenderIcon, TickFillIcon, UpperArrowIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
+import SettingStore from "../../../../../../store/prospection/settings-store";
+import PropTypes from "prop-types";
 
-const Filters = () => {
-    const [selectedGender, setSelectedGender] = useState("Male");
-    const [keywords, setKeywords] = useState(["Chef d’entreprise"]);
+const Filters = ({ keyWordList }) => {
+    const { prospection, updateProspection } = SettingStore();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const { gender: propGender, keyword } = prospection;
 
     const genders = [
-        { label: "Male", icon: <MaleGenderIcon /> },
-        { label: "Female", icon: <FemaleGenderIcon /> },
-        { label: "Both", icon: <BothGenderIcon /> }
+        { label: "Male", value: "male", icon: <MaleGenderIcon /> },
+        { label: "Female", value: "female", icon: <FemaleGenderIcon /> },
+        { label: "Both", value: "both", icon: <BothGenderIcon /> }
     ];
 
-    const keywordOptions = ["Chef d’entreprise", "Community", "Buyers", "Core Users"];
-
-    const handleKeywordSelect = (keyword) => {
-        if (!keywords.includes(keyword)) {
-            setKeywords([...keywords, keyword]);
-        }
-        setDropdownOpen(false);
+    const toggleDropdown = () => {
+        setDropdownOpen(!dropdownOpen);
     };
 
-    const removeKeyword = (keyword) => {
-        setKeywords(keywords.filter(k => k !== keyword));
+    const handleUpdate = (field, value) => {
+        updateProspection({
+            ...prospection,
+            [field]: value
+        });
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -55,61 +54,60 @@ const Filters = () => {
                     <div className="grid grid-cols-1 gap-2">
                         {genders.map((gender) => (
                             <button
-                                key={gender.label}
-                                className={`flex items-center gap-2 px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer w-full ${selectedGender === gender.label ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
-                                onClick={() => setSelectedGender(gender.label)}
+                                key={gender.value}
+                                className={`relative flex items-center gap-2 px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer w-full ${propGender === gender.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                                onClick={() => handleUpdate("gender", gender.value)}
                             >
                                 {gender.icon} {gender.label}
-                                {selectedGender === gender.label && <TickFillIcon className="ml-auto" />}
+                                {propGender === gender.value && (
+                                    <span className="absolute -right-2 -top-2">
+                                        <TickFillIcon />
+                                    </span>
+                                )}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* Keywords Filter */}
-                <div className="border border-gray-300 p-4 rounded-lg relative h-28" ref={dropdownRef}>
-                    <p className="font-medium mb-2 text-gray-800">{t("prospecting.Keywords")}</p>
-
-                    {/* Container for selected keywords */}
-                    <div className="flex space-x-4">
-                        <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap max-h-[40px] min-h-[40px] px-2 scrollbar-hide">
-                            {keywords.map((keyword) => (
-                                <div key={keyword} className="flex items-center bg-[#CCE7FF] text-[#0087FF] px-3 py-1 rounded-full">
-                                    {keyword}
-                                    <button className="ml-2 text-gray-600" onClick={() => removeKeyword(keyword)}>×</button>
-                                </div>
-                            ))}
-                        </div>
-                        <button onClick={() => setDropdownOpen(!dropdownOpen)}>
-                            {
-                                dropdownOpen
-                                    ? <div className="border border-gray-300 rounded-lg p-1">
-                                        <UpperArrowIcon />
-                                    </div>
-                                    : <div className="px-3 py-2 bg-[#0087FF] text-white rounded">
-                                        +
-                                    </div>
-                            }
+                {/* Keywords Dropdown Filter */}
+                <div className="border border-gray-300 p-4 rounded-lg">
+                    <p className="font-medium text-gray-800 mb-2 flex items-center">Keyword</p>
+                    <div className="relative">
+                        <button
+                            className="flex justify-between items-center px-4 py-3 rounded-md border text-[#0087FF] w-full cursor-pointer"
+                            onClick={toggleDropdown}
+                        >
+                            {keyword ? keyWordList?.find(k => k.id === keyword)?.name : "Select Keyword"}
+                            <UpperArrowIcon className={`transform transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                         </button>
-                    </div>
 
-                    {dropdownOpen && (
-                        <div className="absolute left-0 mt-2 bg-white shadow-lg rounded-xl w-full z-10 overflow-hidden border border-gray-300">
-                            {keywordOptions.map((keyword) => (
-                                <div key={keyword}
-                                    className={`flex justify-between px-4 py-2 cursor-pointer hover:bg-[#CCE7FF] ${keywords.includes(keyword) ? "bg-[#CCE7FF]" : ""}`}
-                                    onClick={() => handleKeywordSelect(keyword)}
-                                >
-                                    <span>{keyword}</span>
-                                    <span>{keywords.includes(keyword) && <TickIcon size={4} />}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                        {dropdownOpen && (
+                            <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA]  mt-2 rounded-md shadow-md z-10">
+                                {keyWordList?.map((option) => (
+                                    <button
+                                        key={option.value}
+                                        className={`relative flex items-center justify-between px-4 py-3 rounded-md  cursor-pointer w-full ${keyword === option.id ? "bg-[#CCE7FF] border-[#DADADA]" : "bg-white border-[#0087FF]"}`}
+                                        onClick={() => handleUpdate("keyword", option.id)}
+                                    >
+                                        {option.name}
+                                        {keyword === option.id && (
+                                            <span className="absolute right-2">
+                                                <TickFillIcon />
+                                            </span>
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
     );
+};
+
+Filters.propTypes = {
+    keyWordList: PropTypes.object,
 };
 
 export default Filters;
