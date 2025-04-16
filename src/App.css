@@ -107,3 +107,12 @@ li.ant-pagination-total-text {
     position: absolute;
     left: 220px;
 }
+
+.nova-fb-connected, .nova-ig-connected{
+    display: none !important;
+}
+
+.disable-confirm-dashboard-btn{
+    opacity: 60%;
+    pointer-events: none;
+}

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import FacebookCard from "./FacebookCard";
 import InstagramCard from "./InstagramCard";
@@ -20,17 +21,20 @@ const SocialDashboard = ({ facebook_data, instagram_data, limit_data, isLoading,
                             <Spin size="large" />
                         </div>
                     )}
-                    {
+
+                    <FacebookCard data={facebook_data} />
+                    { /*
                         facebook_data
                             ? <FacebookCard data={facebook_data} />
                             : <FacebookEmptyCard handleShowConnection={handleShowConnection} />
-                    }
-
-                    {
+                    */ }
+                    
+                    <InstagramCard data={instagram_data} />
+                    { /*
                         instagram_data
                             ? <InstagramCard data={instagram_data} />
                             : <InstaEmptyCard handleShowConnection={handleShowConnection} />
-                    }
+                    */ }
 
                     <AffiliateCard />
                 </div>

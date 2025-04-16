@@ -10,7 +10,7 @@ const ConnectionDashboard = ({
     isIgConnected,
     isLoading,
     isExtConnected,
-    handleHideConnection,
+    handleHideConnection
 }) => {
     // Button is enabled when either Facebook or Instagram is connected
     const shouldEnableButton = isExtConnected && (isFbConnected || isIgConnected);
@@ -42,11 +42,10 @@ const ConnectionDashboard = ({
             </div>
 
             <div className="flex justify-center items-center w-full mt-5">
-                <button
-                    className={`flex items-center justify-center w-96 py-1.5 bg-blue-500 text-white rounded-md focus:outline-none cursor-pointer ${shouldEnableButton ? "opacity-100 hover:bg-blue-600" : "opacity-60"
+                <button id="confirm-dashboard-btn"
+                    className={`flex items-center justify-center w-96 py-1.5 bg-blue-500 text-white rounded-md focus:outline-none cursor-pointer ${shouldEnableButton ? "" : "disable-confirm-dashboard-btn"
                         }`}
                     onClick={handleHideConnection}
-                    disabled={!shouldEnableButton} 
                 >
                     {t("dashboard.Confirm")}
                 </button>
