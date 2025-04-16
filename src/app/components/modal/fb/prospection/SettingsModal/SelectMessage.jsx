@@ -18,8 +18,11 @@ const SelectMessage = ({ tempMessageList }) => {
 
     const { prospection, updateProspection } = SettingStore();
     const { message } = prospection;
-    const [selectedRow, setSelectedRow] = useState(message ?? tempMessageList[0].id );
+    const [selectedRow, setSelectedRow] = useState(
+        message ?? (tempMessageList.length > 0 ? tempMessageList[0].id : null)
+    );
     const [searchText, setSearchText] = useState('');
+
     const handleUpdate = (field, value) => {
         updateProspection({
             ...prospection,
@@ -41,7 +44,7 @@ const SelectMessage = ({ tempMessageList }) => {
     };
 
     const handleRowClick = (id) => {
-        setSelectedRow(id)
+        setSelectedRow(id);
         handleUpdate("message", id);
     };
 
@@ -56,10 +59,6 @@ const SelectMessage = ({ tempMessageList }) => {
             <h2 className="font-medium text-lg">{t("prospecting.Select Message")}</h2>
             <div className="flex gap-4 mt-2">
                 <Input placeholder="Search messages" prefix={<SearchOutlined />} className="w-full" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
-                {/* <Select placeholder="Sort By" className="w-40">
-                    <Select.Option value="recent">Recent</Select.Option>
-                    <Select.Option value="oldest">Oldest</Select.Option>
-                </Select> */}
                 <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsMessage(true)}>
                     Create New Message
                 </Button>
@@ -68,15 +67,14 @@ const SelectMessage = ({ tempMessageList }) => {
             <div className="flex-1 overflow-auto my-5">
                 {filteredMessages?.map((record) => (
                     <div
-                        key={record.id}
-                        className={`cursor-pointer flex w-full items-center justify-between p-2 border ${selectedRow === record.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white"}`}
-                        onClick={() => handleRowClick(record.id)}
+                        key={record?.id}
+                        className={`cursor-pointer flex w-full items-center justify-between p-2 border ${selectedRow === record?.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white"}`}
+                        onClick={() => handleRowClick(record?.id)}
                     >
                         <h2>
-                            {record.title}
+                            {record?.title}
                         </h2>
-                        <div
-                        >
+                        <div>
                             <div className="flex justify-end items-center gap-2">
                                 <button className="flex items-center bg-white px-3 py-2 rounded-full cursor-pointer" onClick={() => handleEdit(record)}>
                                     <span><EditIcon /></span>
@@ -94,6 +92,8 @@ const SelectMessage = ({ tempMessageList }) => {
         </div>
     );
 };
+
+
 
 SelectMessage.propTypes = {
     tempMessageList: PropTypes.object,
