@@ -1,14 +1,30 @@
 import { t } from "i18next";
+import { Modal } from "antd";
+import { useState } from "react";
 import IgImg from "../../../../assets/img/ig-cover.png"
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
 import PropTypes from "prop-types";
+import UserImg from "../../../../assets/img/user-img.png";
 
 const InstagramCard = ({ data }) => {
-    const { insta_user_id, total_followers, insta_user_name, following, profile_image, posts } = data
+    // const { insta_user_id, total_followers, insta_user_name, following, profile_image, posts } = data
+
+    const {
+        insta_user_id = "Instagram",
+        total_followers = 0,
+        insta_user_name = "Instagram",
+        following = 0,
+        profile_image = UserImg,
+        posts = 0,
+      } = data || {};
+
     const { unlinkInstagramAccount, fetchPlanLimitDetails } = useSocialAccountsStore();
 
+    const [unlinkModal, setUnlinkModal] = useState(false);
+
     const handleInstaUnlinkClick = () => {
+        setUnlinkModal(false);
         unlinkInstagramAccount(
             {}, 
             (resp) => {
@@ -18,63 +34,99 @@ const InstagramCard = ({ data }) => {
         );
     };
 
+
     return (
-        <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md">
+        <>
+        <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md relative dashboard-ig-card">
             <div className="relative">
                 <img src={IgImg} alt="Cover" className="w-full h-16" />
                 <div className="absolute -bottom-14 left-4">
                     <img
                         src={profile_image}
                         alt="Profile"
-                        className="w-20 h-24 object-cover border-4 border-white rounded-sm"
+                        className="w-20 h-24 object-cover border-4 border-white rounded-sm d-ig-card-photo"
                     />
                 </div>
             </div>
 
             <div className="mt-4 ml-28 flex justify-between items-center ">
-                <p className="font-medium">@{insta_user_name}</p>
+                <p className="font-medium d-ig-card-uname">@{insta_user_name}</p>
                 <div className="flex gap-3 mr-3">
                     <button className="text-blue-600 cursor-pointer instagram-sync">
                         <SyncBlueIcon />
                     </button>
-                    <button className="text-red-500 cursor-pointer instaConfirmUnlink" onClick={handleInstaUnlinkClick}>
+                    <button className="text-red-500 cursor-pointer" onClick={() => setUnlinkModal(true)}>
                         <LinkRedIcon  />
                     </button>
                 </div>
             </div>
 
             <div className="mt-6 px-3">
-                <p className="font0medium text-lg">{insta_user_id}</p>
+                <p className="font0medium text-lg d-ig-card-name">{insta_user_id}</p>
                 <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
                     <div className="flex-1 text-center">
-                        <p className="font-bold">{total_followers}</p>
+                        <p className="font-bold d-ig-card-followers">{total_followers}</p>
                         <p>{t("dashboard.Followers")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
-                        <p className="font-bold">{posts}</p>
+                        <p className="font-bold d-ig-card-posts">{posts}</p>
                         <p>{t("dashboard.Posts")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
-                        <p className="font-bold">{following}</p>
+                        <p className="font-bold d-ig-card-followings">{following}</p>
                         <p>{t("dashboard.Following")}</p>
                     </div>
                 </div>
             </div>
+
+            <div id="nova-ig-status" className={`absolute bottom-0 top-0 right-0 left-0 transform backdrop-blur-md bg-[#00000020] w-full h-full flex items-center justify-center ${data ? "nova-ig-connected" : ""}`}>
+                <button id="instagram-sync" action="card"
+                    className="xl:px-6 xl:py-2 lg:px-3 lg:py-1 px-4 py-1.5 bg-gradient-to-r from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-full cursor-pointer">
+                    {t("dashboard.Connect Instagram account")}
+                </button>
+            </div>
         </div>
+
+        <Modal
+            open={unlinkModal}
+            closable={false}
+            onCancel={() => setUnlinkModal(false)}
+            footer={null}
+            width={600}
+            className="custom-modal p-0"
+        >
+            <div className="bg-gray-50 rounded-t-lg">
+                <h2 className="text-xl font-medium text-gray-700">Unlink Instagram Account</h2>
+            </div>
+
+            <div className="mt-8 mb-8 text-base">
+                If you unlink the Instagram account, then your data will be permanently deleted.
+            </div>
+            
+            <div className="bg-gray-50 mt-2 rounded-b-lg flex justify-end space-x-4">
+                <button className="bg-white w-32 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6" onClick={() => setUnlinkModal(false)}>
+                    Cancel
+                </button>
+                <button className="bg-[#fa2c2c] w-32 text-white rounded-lg py-2 px-6 instaConfirmUnlink" onClick={handleInstaUnlinkClick}>
+                    Unlink
+                </button>
+            </div>
+        </Modal>
+        </>
     )
 }
 
-InstagramCard.propTypes = {
-    data: PropTypes.shape({
-        insta_user_name: PropTypes.string,
-        insta_user_id: PropTypes.string,
-        posts: PropTypes.string,
-        following: PropTypes.string,
-        total_followers: PropTypes.string,
-        profile_image: PropTypes.string,
-    }),
-};
+// InstagramCard.propTypes = {
+//     data: PropTypes.shape({
+//         insta_user_name: PropTypes.string,
+//         insta_user_id: PropTypes.string,
+//         posts: PropTypes.string,
+//         following: PropTypes.string,
+//         total_followers: PropTypes.string,
+//         profile_image: PropTypes.string,
+//     }),
+// };
 
 export default InstagramCard

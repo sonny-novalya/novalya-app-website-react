@@ -9,6 +9,7 @@ export const useSocialAccountsStore = create((set) => ({
     instaPlanLimit: {},
     isFbConnected : false,
     isIgConnected: false,
+    isDataFetched: false,
     setPlanLimit: (data) => set({ planLimit: data }),
     setInstaPlanLimit: (data) => set({ instaPlanLimit: data }),
 
@@ -30,7 +31,8 @@ export const useSocialAccountsStore = create((set) => ({
                 socialAccountsData: fetchedData,
                 isFbConnected: facebook_data !== null,
                 isIgConnected: instagram_data !== null,
-                loading: false
+                loading: false,
+                isDataFetched: true
             });
 
         } catch (error) {

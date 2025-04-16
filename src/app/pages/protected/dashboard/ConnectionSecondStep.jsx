@@ -36,7 +36,7 @@ const ConnectionSecondStep = () => {
                         </p>
                     </div>
                 </div>
-                <button id="facebook-sync" className="px-6 py-2 bg-gradient-to-r w-96 from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-lg cursor-pointer facebook-sync">
+                <button id={facebook_data === null ? "facebook-sync" : undefined} action="button" className="px-6 py-2 bg-gradient-to-r w-96 from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-lg cursor-pointer dashboard-fb-btn">
                     {
                         facebook_data === null
                             ? t("dashboard.Connect Now")
@@ -57,7 +57,7 @@ const ConnectionSecondStep = () => {
                         </p>
                     </div>
                 </div>
-                <button id="instagram-sync" className="px-6 py-2 bg-gradient-to-r w-96 from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-lg cursor-pointer instagram-sync">
+                <button id={instagram_data === null ? "instagram-sync" : undefined} action="button" className="px-6 py-2 bg-gradient-to-r w-96 from-[#f56040] via-[#fd1d1d] to-[#833ab4] text-white font-medium rounded-lg cursor-pointer dashboard-ig-btn">
                     {
                         instagram_data === null
                             ? t("dashboard.Connect Now")

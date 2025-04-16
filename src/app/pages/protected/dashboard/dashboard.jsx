@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [instaButtonDisabled, setInstaButtonDisabled] = useState(false);
   const { isExtConnected, fetchExtInstalledStatus } = useExtensionStore();
 
-  const { fetchSocialAccounts, socialAccountsData, isFbConnected, isIgConnected, loading, error, planLimit } = useSocialAccountsStore();
+  const { fetchSocialAccounts, socialAccountsData, isFbConnected, isIgConnected, loading, error, planLimit, isDataFetched } = useSocialAccountsStore();
 
   const { facebook_data, instagram_data, limit_data } = socialAccountsData || {};
 
@@ -41,11 +41,36 @@ const Dashboard = () => {
       setFacebookButtonDisabled(false);
       setInstaButtonDisabled(false);
     }
-  }, [isIgConnected, isFbConnected, planLimit]);
+    console.log("step", isDataFetched, isExtConnected, isFbConnected, isIgConnected, facebook_data)
+
+
+    if(isDataFetched){
+      if(isExtConnected && (isFbConnected || isIgConnected)){
+        console.log("stats")
+        setConnectionStep(false)
+      }else{
+        console.log("Initial")
+        setConnectionStep(true)
+      }
+    }
+
+     
+  }, [isIgConnected, isFbConnected, planLimit, isExtConnected, isDataFetched]);
 
   const handleShowConnection = () => setConnectionStep(true);
   const handleHideConnection = () => setConnectionStep(false);
+  const confirmNextScreen = () => {
+    moveToTop();
+    fetchSocialAccounts();
+    setConnectionStep(false);
+  }
 
+  const moveToTop = () => {
+    console.log("move")
+    // window.scrollTo({ top: 0, behavior: "smooth" });
+    // document.documentElement.scrollTop = 0;
+    // document.body.scrollTop = 0;
+  }
   if (error) return "Alert";
 
   return (
@@ -58,7 +83,7 @@ const Dashboard = () => {
           isExtConnected={isExtConnected}
           facebookButtonDisabled={facebookButtonDisabled}
           instaButtonDisabled={instaButtonDisabled}
-          handleHideConnection={handleHideConnection}
+          handleHideConnection={confirmNextScreen}
         />
       ) : (
         <SocialDashboard
