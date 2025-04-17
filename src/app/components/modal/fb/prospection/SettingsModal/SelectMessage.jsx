@@ -93,8 +93,6 @@ const SelectMessage = ({ tempMessageList }) => {
     );
 };
 
-
-
 SelectMessage.propTypes = {
     tempMessageList: PropTypes.object,
 };

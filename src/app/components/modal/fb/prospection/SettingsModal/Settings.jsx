@@ -1,8 +1,10 @@
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
 
-const Settings = () => {
+const Settings = ({ isInstagram}) => {
     const { prospection , updateProspection } = SettingStore();
 
     const { stratagy, norequest, interval } = prospection 
@@ -13,12 +15,34 @@ const Settings = () => {
     ];
 
     const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
-    const intervalOptions = [
+    
+    const fbIntervalOptions = [
+        { label: t("prospecting.Medium"), value: "1-3", time: "1 to 3 minutes" },
+        { label: t("prospecting.Slow"), value: "3-5", time: "3 to 5 minutes" },
+        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes")},
+    ];
+
+    const igIntervalOptions = [
         { label: t("prospecting.Fast"), value: "2-4", time: t("prospecting.2 to 4 minutes") },
         { label: t("prospecting.Medium"), value: "4-6", time: t("prospecting.4 to 6 minutes") },
         { label: t("prospecting.Slow"), value: "6-10", time: t("prospecting.6 to 10 minutes") },
         { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
     ];
+
+    const intervalList = isInstagram ? igIntervalOptions : fbIntervalOptions;
+
+    const findInterval = () => {
+        return !intervalList.some(option => option.value === interval);
+    };
+
+    useEffect(() => {
+        if (findInterval()) {
+            updateProspection({
+                ...prospection,
+                interval: intervalList[0].value,
+            });
+        }
+    }, []);
 
     const handleUpdate = (field, value) => {
         updateProspection({
@@ -42,7 +66,7 @@ const Settings = () => {
                                 className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${stratagy === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate( "stratagy",option.value)}
+                                onClick={() => handleUpdate("stratagy",option.value)}
                             >
                                 {option.label}
                                 {stratagy === option.value && (
@@ -83,11 +107,11 @@ const Settings = () => {
             <div className="border border-gray-300 p-4 rounded-lg mt-4">
                 <p className="font-medium mb-2 text-gray-800">{t("prospecting.Interval")}</p>
                 <div className="grid grid-cols-4 gap-3">
-                    {intervalOptions.map((option) => (
+                    {intervalList.map((option) => (
                         <button
                             key={option.value}
                             className={`relative cursor-pointer`}
-                            onClick={() => handleUpdate("norequest", option.value)}
+                            onClick={() => handleUpdate("interval", option.value)}
                         >
                             <span className="text-xs text-gray-500 text-left mr-12">{option.time}</span>
                             <div className={` flex flex-col items-start p-4 rounded-lg border transition ${interval === option.value
@@ -109,4 +133,8 @@ const Settings = () => {
     );
 };
 
+Settings.propTypes = {
+    isInstagram: PropTypes.bool,
+
+};
 export default Settings;

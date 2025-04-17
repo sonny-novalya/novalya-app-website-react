@@ -24,6 +24,17 @@ const SettingStore = create((set) => ({
         post_target: "Like",
         newMessage: null, // New message data
         keywords: null, // Keywords data
+
+        prospect_type: "facebook", // Default platform type (can be "facebook" or "instagram") || comes from api
+        user_id: null, // User ID associated with the message || comes from api
+
+        // Bottom values
+        negative_keyword: null, // Negative keyword data
+        resume: null, // Resume data
+        search_index: 1, // Search index value
+        status: null, // Status of the operation
+        stratragy: false, // Strategy flag
+        created_at: null, // Timestamp of creation
     },
     updateProspection: (newValues) => set(() => ({
         prospection: { ...newValues }
@@ -88,6 +99,26 @@ const SettingStore = create((set) => ({
                 });
         } catch (error) {
             console.error("Error fetching data:", error);
+        }
+    },
+    createSocialTarget: async (prospectionData) => {
+        try {
+
+            const response = await apiCall({
+                method: 'POST',
+                url: "/target/setting/api/create",
+                data: prospectionData
+            });
+
+            if (response.status === 200) {
+                set({
+                    prospection: {
+                        ...response.data, // Assuming response data structure fits in the prospection state.
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error creating social target:", error);
         }
     }
 }));

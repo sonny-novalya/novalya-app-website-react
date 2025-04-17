@@ -11,40 +11,57 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 import usefbCRM from "../../../../../../store/fb/fbCRM";
+import { useLocation } from "react-router-dom";
 
 const SettingsModal = ({ visible, onClose }) => {
     const [activeKey, setActiveKey] = useState(1);
-    const { fetchProspectionData } = SettingStore();
+    const { prospection ,fetchProspectionData, createSocialTarget } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
     const { fetchCRMGroups, CRMList } = usefbCRM()
-
+    const location = useLocation();
+    const isInstagram = location.pathname.split("/")[1] === 'ig'
+    
     const tabItems = [
         { label: t("prospecting.Select Message"), key: 1, children: <SelectMessage tempMessageList={tempMessageList} /> },
-        { label: t("prospecting.Settings"), key: 2, children: <Settings /> },
-        { label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} /> },
-        { label: t("prospecting.Advanced Options"), key: 4, children: <AdvOptions /> },
-        { label: t("prospecting.Add Tags"), key: 5, children: <AddTags CRMList={CRMList} /> },
+        { label: t("prospecting.Settings"), key: 2, children: <Settings isInstagram={isInstagram} /> },
+        ...(isInstagram ? [] : [{ label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} /> }]),
+        { label: t("prospecting.Advanced Options"), key: isInstagram ? 3 : 4, children: <AdvOptions /> },
+        { label: t("prospecting.Add Tags"), key: isInstagram ? 4 : 5, children: <AddTags CRMList={CRMList} /> },
     ];
 
     useEffect(() => {
-        fetchKeywords({
-            page: 1,
-            limit: 100
-        })
+        fetchKeywords({page: 1,limit: 100})
         fetchProspectionData()
-        fetchMessages({
-            limit: 200, page: 1
-        })
+        fetchMessages({limit: 200, page: 1})
         fetchCRMGroups()
     }, []);
 
-    const handleNext = () => {
-        const nextKey = activeKey + 1;
+    const handleNext = async () => {
+        let nextKey = activeKey + 1;
+        if (isInstagram && activeKey === 3) {
+            nextKey = 4; 
+        }
+
         if (nextKey <= tabItems.length) {
             setActiveKey(nextKey);
         }
     };
+
+    const handleSave = async () => {
+        if (isInstagram || activeKey === 4 || activeKey === 5) {
+        const prospectionData = {
+            ...prospection,
+            prospection_type: isInstagram ? "instagram" : "facebook",
+        };
+
+        try {
+            await createSocialTarget(prospectionData);
+        } catch (error) {
+            console.error("Error creating social target:", error);
+        }
+    }
+    }
 
     const handleBack = () => {
         const prevKey = activeKey - 1;
@@ -83,8 +100,9 @@ const SettingsModal = ({ visible, onClose }) => {
                         })}
                     </ul>
                     <button
-                        className={`w-full py-2 rounded-lg bg-[#0087FF] text-white ${activeKey !== 5 ? "opacity-50" : ""}`}
-                        disabled={activeKey !== 5}
+                        className={`w-full py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey !== tabItems.length ? "opacity-50" : ""}`}
+                        disabled={activeKey !== tabItems.length}
+                        onClick={handleSave}
                     >
                         Save
                     </button>
@@ -102,8 +120,9 @@ const SettingsModal = ({ visible, onClose }) => {
                             Back
                         </button>
                         <button
-                            className="px-12 py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer"
+                            className={`px-12 py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey === tabItems.length ? "opacity-50" : ""}`}
                             onClick={handleNext}
+                            disabled={activeKey === tabItems.length}
                         >
                             {t("prospecting.Next")}
                         </button>
