@@ -4,7 +4,7 @@ import apiCall from '../../services/api';
 const SettingStore = create((set) => ({
     // States
     prospection: {
-        step: 0,
+        step: 2,
         group: [],
         messageData: [],
         keywordData: [],
@@ -55,7 +55,6 @@ const SettingStore = create((set) => ({
                 console.log("responseData", responseData)
                 set({
                     prospection: {
-                        step: 0,
                         group: responseData.group ? [responseData.group] : [],
                         messageData: responseData.messages ? [responseData.messages] : [],
                         keywordData: responseData.keywords ? [responseData.keywords] : [],

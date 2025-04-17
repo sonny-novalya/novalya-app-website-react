@@ -1,9 +1,27 @@
 import { t } from "i18next";
+import { EditIconSquaredIcon } from "../../../../../pages/common/icons/icons";
+// import SettingStore from "../../../../../../store/prospection/settings-store";
 
 const Settings = () => {
+
+    // const { prospection, updateProspection } = SettingStore();
+    // const handleClick = (field, value) => {
+    //     updateProspection({
+    //         ...prospection,
+    //         [field]: value
+    //     });
+    // };
     return (
         <main className="">
-            <h2 className="font-medium text-lg">Settings</h2>
+            <div className="flex gap-3 items-center">
+                <h2 className="font-medium text-lg">Settings</h2>
+                <span 
+                    className="cursor-pointer" 
+                    // onClick={handleClick("step", 2)}
+                    >
+                    <EditIconSquaredIcon />
+                </span>
+            </div>
             <div className="flex justify-between border border-[#00000014] rounded-md p-4">
                 <div className="flex flex-col flex-1 pr-4 space-y-2">
                     <h3 className="font-medium" >{t("prospecting.Strategy")}</h3>

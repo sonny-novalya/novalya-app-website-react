@@ -7,7 +7,6 @@ import AddTags from "./AddTags";
 import { t } from "i18next";
 
 const SettingsModal = ({ visible, onClose }) => {
-
     return (
         <Modal
             open={visible}
@@ -25,6 +24,19 @@ const SettingsModal = ({ visible, onClose }) => {
                 <Filters />
                 <AdvOptions />
                 <AddTags />
+            </div>
+            <div className="flex justify-end space-x-4 pr-4 mt-4">
+                <button
+                    className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
+                >
+                    Cancel
+                </button>
+                <button
+                    className={`px-12 py-2 rounded-lg bg-[#21BF7C] text-white cursor-pointer `}
+                    id="start-novayla-connect"
+                >
+                    {t("prospecting.Next")}
+                </button>
             </div>
         </Modal>
     );

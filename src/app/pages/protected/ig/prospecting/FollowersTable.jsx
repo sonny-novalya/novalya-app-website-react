@@ -136,8 +136,8 @@ const FollowersTable = () => {
                 <Button
                     icon={<SendOutlined />}
                     id={record.id}
-                    className="bg-gray-200 px-3 py-1 rounded-md start-novayla-connect"
-                    onClick={()=> console.log("record", record.id)}
+                    className="bg-gray-200 px-3 py-1 rounded-md"
+                    onClick={() => handleOpenConfirmModal(record)}
                     />
             )
         },
