@@ -41,11 +41,6 @@ const TempList = ({containerRef}) => {
       handleSelect(initialCat, currentLang);
     }
   }, [temps, currentLang,tempMessageList]);
-
-  useEffect(()=>{
-
-    console.log(selecetdCat)
-  },[selecetdCat?.category])
   
   // 3️⃣ Handle category + language selection
   const handleSelect = (categoryName, lang = currentLang) => {

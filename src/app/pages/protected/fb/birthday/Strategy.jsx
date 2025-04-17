@@ -1,13 +1,12 @@
-import { useState } from "react";
 import { TickFillIcon } from "../../../common/icons/icons";
 
-const Strategy = () => {
-    const [selectedStrategy, setSelectedStrategy] = useState("Today");
+const Strategy = ({selectedStrategy, setSelectedStrategy}) => {
+
 
     const strategyOptions = {
-        Past: ["Yesterday", "2 days ago"],
-        Present: ["Today"],
-        Future: ["In 1 day", "In 2 days", "In 3 days", "In 4 days", "In 5 days", "In 6 days"],
+        Past: [{label:"Yesterday",value:"yesterday"},{label:"2 days ago",value:"2dayago"} ],
+        Present: [ {label:"Today",value:"today"}],
+        Future: [{label:"In 1 day",value:"in1days"},{label:"In 2 days",value:"in2days"} ,{label: "In 3 days",value:"in3days"}, {label:"In 4 days",value:"in4days"},{label:"In 5 days",value:"in5days"} , {label:"In 6 days",value:"in6days"}],
     };
 
     return (
@@ -20,15 +19,15 @@ const Strategy = () => {
                     <div className="w-full grid grid-cols-3 gap-2">
                         {strategyOptions.Past.map((option) => (
                             <button
-                                key={option}
+                                key={option.value}
                                 type="default"
-                                className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === option ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
-                                onClick={() => setSelectedStrategy(option)}
+                                className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === option.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                                onClick={() => setSelectedStrategy(option.value)}
                             >
                                 <span className="flex items-center space-x-2 mx-auto">
-                                    {option}
+                                    {option.label}
                                 </span>
-                                {selectedStrategy === option && (
+                                {selectedStrategy === option.value && (
                                     <span className=" absolute -top-1.5 -right-1.5">
                                         <TickFillIcon />
                                     </span>
@@ -42,13 +41,13 @@ const Strategy = () => {
                     <p className="font-medium w-40 mt-3">Present :</p>
                     <div className="w-full grid grid-cols-3 gap-2">
                         <button
-                            className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === "Today" ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
-                            onClick={() => setSelectedStrategy("Today")}
+                            className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === "today" ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                            onClick={() => setSelectedStrategy("today")}
                         >
                             <span className="flex items-center space-x-2 mx-auto">
                                 Today
                             </span>
-                            {selectedStrategy === 'Today' && (
+                            {selectedStrategy === 'today' && (
                                 <span className=" absolute -top-1.5 -right-1.5">
                                     <TickFillIcon />
                                 </span>
@@ -62,15 +61,15 @@ const Strategy = () => {
                     <div className="w-full grid grid-cols-3 gap-2">
                         {strategyOptions.Future.map((option) => (
                             <button
-                                key={option}
+                                key={option.value}
                                 type="default"
-                                className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === option ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
-                                onClick={() => setSelectedStrategy(option)}
+                                className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === option.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                                onClick={() => setSelectedStrategy(option.value)}
                             >
                                 <span className="flex items-center space-x-2 mx-auto">
-                                    {option}
+                                    {option.label}
                                 </span>
-                                {selectedStrategy === option && (
+                                {selectedStrategy === option.value && (
                                     <span className=" absolute -top-1.5 -right-1.5">
                                         <TickFillIcon />
                                     </span>
