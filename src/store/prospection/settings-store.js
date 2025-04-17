@@ -4,7 +4,7 @@ import apiCall from '../../services/api';
 const SettingStore = create((set) => ({
     // States
     prospection: {
-        step: 2,
+        step: 1,
         group: [],
         messageData: [],
         keywordData: [],
@@ -35,7 +35,10 @@ const SettingStore = create((set) => ({
         status: null, // Status of the operation
         stratragy: false, // Strategy flag
         created_at: null, // Timestamp of creation
-    },
+    }, 
+    setStep: (value) => set(() => ({
+        step: value
+    })),
     updateProspection: (newValues) => set(() => ({
         prospection: { ...newValues }
     })),

@@ -10,45 +10,31 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import usefbCRM from "../../../../../../store/fb/fbCRM";
+import { useLocation } from "react-router-dom";
 
-const SettingsModal = ({ visible, onClose }) => {
+const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab }) => {
     const { prospection, fetchProspectionData } = SettingStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
-    const { message, stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection
+    const { message, stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
     const { fetchKeywords, keyWordList } = useKeyWordStore();
-    const { fetchCRMGroups, CRMList } = usefbCRM()
+    const { fetchCRMGroups, CRMList } = usefbCRM();
+    const location = useLocation();
+    const isInstagram = location.pathname.split("/")[1] === "ig";
 
-    // const [loading, setLoading] = useState(false)
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true);
-    //         try {
-    //             await fetchKeywords({ page: 1, limit: 100 });
-    //             await fetchProspectionData();
-    //             await fetchMessages({ page: 1, limit: 200 });
-    //             await fetchCRMGroups();
-    //         } catch (error) {
-    //             console.error("Error fetching data:", error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
+    const handleOpen = (value) => {
+        handleOpenSettingsTab(value);
+        onClose();
+    };
 
     useEffect(() => {
         fetchKeywords({ page: 1, limit: 100 });
         fetchProspectionData();
         fetchMessages({ page: 1, limit: 200 });
         fetchCRMGroups();
-
     }, []);
 
-    const messageTitle = tempMessageList.find((item) => item.id === message) || "Message123"
-    const keywordTitle = keyWordList.find((item) => item.id === keyword) || "Message123"
+    const messageTitle = tempMessageList.find((item) => item.id === message) || "Message123";
+    const keywordTitle = keyWordList.find((item) => item.id === keyword) || "Message123";
 
     return (
         <Modal
@@ -62,20 +48,26 @@ const SettingsModal = ({ visible, onClose }) => {
         >
             <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto ">
                 <h2 className="font-medium text-lg">{t("prospecting.Message Selected")}</h2>
-                <h3 className="border border-[#00000014] rounded-md p-4 text-[#0087FF]">
+                <h3 className="border border-[#00000014] rounded-md p-4 text-[#0087FF] cursor-pointer" onClick={() => handleOpen(1)}>
                     {messageTitle}
                 </h3>
-                <Settings stratagy={stratagy} norequest={norequest} interval={interval} />
-                <Filters gender={gender} keyword={keywordTitle} />
-                <AdvOptions prospect={prospect} pro_convo={pro_convo} />
-                <AddTags action={action} CRMList={CRMList} />
+                <Settings
+                    stratagy={stratagy}
+                    norequest={norequest}
+                    interval={interval}
+                    handleOpen={handleOpen}
+                />
+                {!isInstagram && (
+                    <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} />
+                )}
+                <AdvOptions
+                    prospect={prospect}
+                    pro_convo={pro_convo}
+                    handleOpen={handleOpen}
+                />
+                <AddTags action={action} CRMList={CRMList} handleOpen={handleOpen} />
             </div>
             <div className="flex justify-end space-x-4 pr-4 mt-4">
-                {/* {loading && (
-                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg">
-                        <Spin size="large" />
-                    </div>
-                )} */}
                 <button
                     className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
                     onClick={() => onClose()}
@@ -93,14 +85,15 @@ const SettingsModal = ({ visible, onClose }) => {
     );
 };
 
-SettingsModal.propTypes = {
+ConfirmationModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     group: PropTypes.object,
+    handleOpenSettingsTab: PropTypes.func,
 };
 
-SettingsModal.defaultProps = {
+ConfirmationModal.defaultProps = {
     group: null,
 };
 
-export default SettingsModal;
+export default ConfirmationModal;

@@ -38,19 +38,25 @@ const HashtagsTable = () => {
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups } = useGroupStore();
     const socialType = "ig_hashtags";
+    const [activeKey, setActiveKey] = useState(1);
 
     const navigate = useNavigate();
+
+    const handleOpenSettingsTab = (value) => {
+        setActiveKey(value);
+        setModalOpen(true);
+    };
 
     const handleOpenSettings = (group) => {
         setSelectedGroup(group);
         setModalOpen(true);
     };
-    
+
     const handleCloseModal = () => {
         setModalOpen(false);
         setSelectedGroup(null);
     };
-    
+
     const handleOpenConfirmModal = (group) => {
         setConfirmModalOpen(true);
         console.log("group", group)
@@ -148,7 +154,7 @@ const HashtagsTable = () => {
             ),
         },
     ];
-    
+
     const buttonsData = [
         { id: 0, folder_name: "All", selectedGroups: [] },
         // { id: 1, folder_name: "Archived", selectedGroups: [] },
@@ -176,7 +182,7 @@ const HashtagsTable = () => {
                                         setOpenUpdateFolderModal(true)
                                     }}>
                                         {
-                                            selectedFolder == folder.id && folder.id !== 0 && 
+                                            selectedFolder == folder.id && folder.id !== 0 &&
                                             <EditIcon2 />
                                         }
                                     </span>
@@ -186,7 +192,7 @@ const HashtagsTable = () => {
 
                         <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
-                    
+
                 </div>
                 <div className="flex items-center justify-between mb-4">
                     <Input
@@ -205,6 +211,9 @@ const HashtagsTable = () => {
                         visible={modalOpen}
                         onClose={handleCloseModal}
                         group={selectedGroup}
+                        socialType={socialType}
+                        activeKey={activeKey}
+                        setActiveKey={setActiveKey}
                     />
                 )}
 
@@ -213,6 +222,8 @@ const HashtagsTable = () => {
                         visible={confirmModalOpen}
                         onClose={handleCloseConfirmModal}
                         groups={groups}
+                        socialType={socialType}
+                        handleOpenSettingsTab={handleOpenSettingsTab}
                     />
                 )}
 

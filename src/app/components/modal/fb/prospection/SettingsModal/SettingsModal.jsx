@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Modal } from "antd";
 import SelectMessage from "./SelectMessage";
 import Settings from "./Settings";
@@ -13,8 +13,7 @@ import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 import usefbCRM from "../../../../../../store/fb/fbCRM";
 import { useLocation } from "react-router-dom";
 
-const SettingsModal = ({ visible, onClose }) => {
-    const [activeKey, setActiveKey] = useState(1);
+const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey }) => {
     const { prospection ,fetchProspectionData, createSocialTarget } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
@@ -137,6 +136,8 @@ SettingsModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     group: PropTypes.object,
+    activeKey: PropTypes.number,
+    setActiveKey: PropTypes.func,
 };
 
 SettingsModal.defaultProps = {

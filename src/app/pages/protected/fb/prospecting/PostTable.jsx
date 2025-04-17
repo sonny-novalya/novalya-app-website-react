@@ -38,8 +38,14 @@ const PostsTable = () => {
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups } = useGroupStore();
     const socialType = "fb_posts";
+    const [activeKey, setActiveKey] = useState(1); 
 
     const navigate = useNavigate();
+
+    const handleOpenSettingsTab = (value) => {
+        setActiveKey(value);
+        setModalOpen(true);
+    };
 
     const handleOpenSettings = (group) => {
         setSelectedGroup(group);
@@ -199,22 +205,26 @@ const PostsTable = () => {
                 </div>
                 <Table columns={postColumns} dataSource={groups} pagination={false} className="custom-table" />
 
-                {modalOpen && (
-                    <SettingsModal
-                        visible={modalOpen}
-                        onClose={handleCloseModal}
-                        group={selectedGroup}
-                        socialType={socialType}
-                    />
-                )}
-
-                {confirmModalOpen && (
-                    <ConfirmationModal
-                        visible={confirmModalOpen}
-                        onClose={handleCloseConfirmModal}
-                        groups={groups}
-                    />
-                )}
+                 {modalOpen && (
+                                    <SettingsModal
+                                        visible={modalOpen}
+                                        onClose={handleCloseModal}
+                                        group={selectedGroup}
+                                        socialType={socialType}
+                                        activeKey={activeKey}
+                                        setActiveKey={setActiveKey}
+                                    />
+                                )}
+                
+                                {confirmModalOpen && (
+                                    <ConfirmationModal
+                                        visible={confirmModalOpen}
+                                        onClose={handleCloseConfirmModal}
+                                        groups={groups}
+                                        socialType={socialType}
+                                        handleOpenSettingsTab={handleOpenSettingsTab}
+                                    />
+                                )}
 
                 {openCreateFolderModal && (
                     <CreateFolderModal

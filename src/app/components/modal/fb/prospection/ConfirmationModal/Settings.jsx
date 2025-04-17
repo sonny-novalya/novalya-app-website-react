@@ -3,7 +3,7 @@ import { EditIconSquaredIcon } from "../../../../../pages/common/icons/icons";
 import PropTypes from "prop-types";
 // import SettingStore from "../../../../../../store/prospection/settings-store";
 
-const Settings = ({ stratagy, norequest, interval }) => {
+const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
 
     // const { prospection, updateProspection } = SettingStore();
     // const handleClick = (field, value) => {
@@ -36,7 +36,7 @@ const Settings = ({ stratagy, norequest, interval }) => {
                 <h2 className="font-medium text-lg">Settings</h2>
                 <span 
                     className="cursor-pointer" 
-                    >
+                    onClick={() => handleOpen(2)}>
                     <EditIconSquaredIcon />
                 </span>
             </div>
@@ -69,6 +69,7 @@ Settings.propTypes = {
     stratagy: PropTypes.number,
     norequest: PropTypes.string,
     interval: PropTypes.string,
+    handleOpen: PropTypes.func,
 };
 
 export default Settings;
