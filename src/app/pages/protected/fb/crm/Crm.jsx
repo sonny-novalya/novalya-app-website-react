@@ -49,6 +49,7 @@ const Crm = () => {
   return (
     <Layout>
       <h2 className="text-xl font-medium mb-2">{t("crm.Facebook CRM")}</h2>
+      <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
       <div className="flex bg-gray-100 shadow-lg rounded-lg">
         <div className="w-[300px] bg-[#E6F1FB] p-4 flex flex-col overflow-hidden">
           <div className="flex items-center justify-between mb-4">

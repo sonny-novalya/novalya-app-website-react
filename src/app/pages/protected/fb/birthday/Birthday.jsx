@@ -106,6 +106,7 @@ const Birthday = () => {
     {birthdayLoader && <div className="absolute z-10 w-[85%] h-full bg-white/50 flex items-center justify-center"> <Spin size="large" /> </div>}
 
     <h2 className="text-[24px] font-[500] mb-4">Wish your friends birthday automatically</h2>
+      <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
       <div className="bg-white p-6 border border-[#DADADA] rounded-lg shadow-md mx-auto ">
         
         {/* Wish Type Selector */}

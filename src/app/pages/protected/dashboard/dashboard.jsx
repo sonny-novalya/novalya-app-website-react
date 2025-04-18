@@ -41,15 +41,12 @@ const Dashboard = () => {
       setFacebookButtonDisabled(false);
       setInstaButtonDisabled(false);
     }
-    console.log("step", isDataFetched, isExtConnected, isFbConnected, isIgConnected, facebook_data)
 
 
     if(isDataFetched){
       if(isExtConnected && (isFbConnected || isIgConnected)){
-        console.log("stats")
         setConnectionStep(false)
       }else{
-        console.log("Initial")
         setConnectionStep(true)
       }
     }

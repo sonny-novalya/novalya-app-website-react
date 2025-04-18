@@ -264,6 +264,7 @@ const FriendsList = () => {
       <>
         <div className="p-6 bg-[#f2f2f2] h-screen overflow-auto ">
           <h2 className="text-[24px] font-[500] mb-4">List of Friends</h2>
+          <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
           <div className={`bg-white p-5 rounded-[16px]  ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
             <div className="flex items-center justify-between mb-4 ctm-serach">
               <Input

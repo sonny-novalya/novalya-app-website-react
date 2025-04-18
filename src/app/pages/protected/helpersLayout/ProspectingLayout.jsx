@@ -43,6 +43,7 @@ const ProspectingLayout = ({ children }) => {
     return (
         <Layout>
             <h2 className="text-xl font-semibold mb-4">{t("prospecting.Easily connect with new prospects")}</h2>
+            <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
             <div className="flex w-full space-x-4">
                 {buttonsData.map((item) => {
                     const isActive = location.pathname === item.path;
