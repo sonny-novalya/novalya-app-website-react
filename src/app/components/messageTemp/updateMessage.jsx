@@ -168,12 +168,14 @@ const handleSubmit =async ()=>{
         message.error("visibility is Required")
         return
       }
+      let file = attachment?.includes("data:image")?attachment:null
   setIsLoading(true)
   const data = {
     name:name,
     variants:variants.map(variant => variant.name),
     visibility_type:[visibility.id],
-    message_id:selecetdMessage.id
+    message_id:selecetdMessage.id,
+    attachment:file
   }
     try {
       const res = await apiCall({
