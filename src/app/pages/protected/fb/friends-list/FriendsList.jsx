@@ -8,6 +8,7 @@ import { ReloadOutlined } from "@ant-design/icons"; // Import the refresh icon
 import AssignGroupModal from "./AssignGroupModal";
 import { message } from "antd";
 import { upgradeToPremiumIcon } from "../../../common/icons/icons";
+import './friendsList.css';
 
 
 const FriendsList = () => {
@@ -261,20 +262,21 @@ const FriendsList = () => {
 
     return (
       <>
-        <div className="p-4 bg-[#f2f2f2] h-screen overflow-auto">
-          <h2 className="text-xl font-semibold mb-4">List of Friends</h2>
+        <div className="p-6 bg-[#f2f2f2] h-screen overflow-auto ">
+          <h2 className="text-[24px] font-[500] mb-4">List of Friends</h2>
           <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
-          <div className={`bg-white p-2 ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
-            <div className="flex items-center justify-between mb-4">
+          <div className={`bg-white p-5 rounded-[16px]  ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
+            <div className="flex items-center justify-between mb-4 ctm-serach">
               <Input
                   placeholder="Search novalya"
                   prefix={<SearchOutlined />}
                   value={searchKeyword}
                   onChange={(e) => applySearch(e.target.value)}
-                  className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
+                  className="w-1/3 px-3 py-2 rounded-md border border-gray-300 !rounded-[4px] min-h-[44px]"
                   style={{maxWidth: "290px"}}
               />
               <Button 
+                className="px-5 py-[10px] min-h-[44px] gap-[10px] min-w-[110px]"
                 type="primary" 
                 ghost
                 icon={<ReloadOutlined />}
@@ -283,7 +285,7 @@ const FriendsList = () => {
                 Start Process
               </Button>
             </div>
-            <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+            <div style={{ overflowX: 'auto', maxWidth: '100%' }} className="ctm-friend-table">
               {!isPremium && !loading && (friends.length > 0) && <div class='friends-list-bluredBtn'>
                   <button
                     className="bg-[linear-gradient(to_bottom,_#005199,_#0087FF)] px-10 py-4 text-white rounded-lg flex items-center gap-[15px]"> {upgradeToPremiumIcon()} Upgrade to business</button> 

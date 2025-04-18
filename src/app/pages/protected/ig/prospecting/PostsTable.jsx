@@ -38,8 +38,14 @@ const PostsTable = () => {
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups } = useGroupStore();
     const socialType = "ig_posts";
+    const [activeKey, setActiveKey] = useState(1);
 
     const navigate = useNavigate();
+
+    const handleOpenSettingsTab = (value) => {
+        setActiveKey(value);
+        setModalOpen(true);
+    };
 
     const handleOpenSettings = (group) => {
         setSelectedGroup(group);
@@ -205,6 +211,9 @@ const PostsTable = () => {
                         visible={modalOpen}
                         onClose={handleCloseModal}
                         group={selectedGroup}
+                        socialType={socialType}
+                        activeKey={activeKey}
+                        setActiveKey={setActiveKey}
                     />
                 )}
 
@@ -213,6 +222,8 @@ const PostsTable = () => {
                         visible={confirmModalOpen}
                         onClose={handleCloseConfirmModal}
                         groups={groups}
+                        socialType={socialType}
+                        handleOpenSettingsTab={handleOpenSettingsTab}
                     />
                 )}
 

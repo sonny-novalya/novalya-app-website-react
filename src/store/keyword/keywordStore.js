@@ -20,8 +20,8 @@ const useKeyWordStore = create((set) => ({
            const paylaod = {
               page: pagination?.page || 1,
               limit:pagination?.limit || 10,
-              sort_order:sort?"DESC":"ASC",
-              sort_by:"name",
+              order:sort?"DESC":"ASC",
+              orderBy:"name",
               search
            }
             const res = await apiCall({

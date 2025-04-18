@@ -37,8 +37,8 @@ const UpdateMessage = ({containerRef}) => {
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-   const [isUpload,setIsUpload]=useState(false)
-    const [attachment,setAttachment]=useState(false)
+  const [isUpload,setIsUpload]=useState(false)
+  const [attachment,setAttachment]=useState(false)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
@@ -46,6 +46,9 @@ const UpdateMessage = ({containerRef}) => {
 
 
   const handleVisibilityChange = (val) => {
+     if(!val.attachment && attachment){
+          message.error(`${val.label} does not support Attachment it will be removed if you have selected any.`)
+        }
     setVisibility(val);
   };
 
@@ -71,6 +74,8 @@ const UpdateMessage = ({containerRef}) => {
     setVisibility(visibilityOptions.find((v) => v.id === vis) || null);
     setVariants([...selecetdMessage?.variants])
     setName(selecetdMessage?.title || '')
+    setAttachment(selecetdMessage?.attachment)
+
   }, [selecetdMessage]);
 
   const addVariants = () => {
@@ -191,7 +196,7 @@ const handleSubmit =async ()=>{
 }
 
   return (
-     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage">
+     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
           <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
             <div className="flex items-center gap-[10px] text-[20px]">
                 {t("message.Message name")} 

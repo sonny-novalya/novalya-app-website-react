@@ -39,12 +39,17 @@ const GroupsTable = () => {
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups } = useGroupStore();
     const socialType = "fb_groups"; 
+    const [activeKey, setActiveKey] = useState(1); 
 
-    const navigate = useNavigate();  
+    const navigate = useNavigate(); 
+    
+    const handleOpenSettingsTab = (value) => {
+        setActiveKey(value);
+        setModalOpen(true);
+    };
 
     const handleOpenSettings = (group) => {
         setSelectedGroup(group);
-        setModalOpen(true);
     };
 
     const handleCloseModal = () => {
@@ -55,7 +60,6 @@ const GroupsTable = () => {
     const handleOpenConfirmModal = (group) => {
         setConfirmModalOpen(true);
         console.log("group", group)
-        // handle states of pre saved data here
     };
 
     const handleCloseConfirmModal = () => {
@@ -205,6 +209,8 @@ const GroupsTable = () => {
                         onClose={handleCloseModal}
                         group={selectedGroup}
                         socialType={socialType}
+                        activeKey={activeKey}
+                        setActiveKey={setActiveKey}
                     />
                 )}
 
@@ -214,6 +220,7 @@ const GroupsTable = () => {
                         onClose={handleCloseConfirmModal}
                         groups={groups}
                         socialType={socialType}
+                        handleOpenSettingsTab={handleOpenSettingsTab}
                     />
                 )}
 

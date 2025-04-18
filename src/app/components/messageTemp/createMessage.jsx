@@ -27,6 +27,7 @@ import { DeleteFillRedIcon } from "../../pages/common/icons/icons";
 import apiCall from "../../../services/api";
 import { message, Spin } from "antd";
 import Upload from "./upload";
+import { useLocation } from "react-router-dom";
 
 const CreateMessage = ({containerRef}) => {
   const {
@@ -48,14 +49,18 @@ const CreateMessage = ({containerRef}) => {
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpload,setIsUpload]=useState(false)
-  const [attachment,setAttachment]=useState(false)
+  const [attachment,setAttachment]=useState(null)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
+  const location =useLocation()
 
 
 
   const handleVisibilityChange = (val) => {
+    if(!val.attachment && attachment){
+      message.error(`${val.label} does not support Attachment it will be removed if you have selected any.`)
+    }
     setVisibility(val);
   };
 
@@ -169,10 +174,15 @@ const CreateMessage = ({containerRef}) => {
       message.error("Visibility is Required")
       return
     }
+    let uploadData =  attachment
+    if (!visibility?.attachment) {
+      uploadData = null
+    }
     const data = {
       name:name,
       variants:variants.map(variant => variant.name),
-      visibility_type:[visibility.id]
+      visibility_type:[visibility.id],
+      attachment:uploadData
     }
     if (data.variants.length < 3) {
            message.error("Atleast 3 Variants are Required")
@@ -187,7 +197,11 @@ const CreateMessage = ({containerRef}) => {
               data})
       if (res?.status === 200) {
         message.success("Message Successfully Created")
-        fetchMessages()
+        if (location.pathname === "/library/messages") {
+          fetchMessages()
+        }else{
+          fetchMessages({limit:200,page:1})
+        }
         setIsMessage(false)
       }else{
         message.error("Message Successfully Created")
@@ -200,7 +214,7 @@ const CreateMessage = ({containerRef}) => {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
       <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
         <div className="flex items-center gap-[10px] text-[20px]">
             {t("message.Message name")} 

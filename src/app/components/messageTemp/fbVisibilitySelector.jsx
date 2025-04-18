@@ -19,7 +19,7 @@ const FbVisibilitySelector = ({containerRef}) => {
 
     
       return (
-        <div className="fixed inset-0 flex items-center flex-col justify-center bg-black/30 h-screen">
+        <div className="fixed inset-0 flex items-center flex-col justify-center bg-black/30 h-screen z-[9999]">
             
             <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
               

@@ -14,10 +14,10 @@ import { useDebounce } from "../../../../../hooks/debounce";
 const MessageIndex = () => {
   const {
     setIsMessage,
+    setStep,
     fetchMessages,
     messageList,
     setSelecetdMessage,
-    setStep,
     loading,
     deleteMessages,
     setPreviewMessage,

@@ -174,7 +174,7 @@ const handleUpdate =(item)=>{
             dataSource={keyWordList}
             renderItem={(item) => (
               <List.Item key={item.id} className="flex justify-between items-center">
-                <span>Keywords {item?.name}</span>
+                <span>{item?.name}</span>
                 <div className="flex gap-4 items-center">
                   {/* {renderPlatformButton(item.platform)} */}
                   <Button onClick={()=>handleUpdate(item)} icon={<EditOutlined />} className="ctm-green-btn !rounded-[25px] !font-medium !text-[14px] leading-[21px] gap-[4px] p-[8px_12px] flex !h-9">

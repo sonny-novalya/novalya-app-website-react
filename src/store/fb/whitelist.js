@@ -17,8 +17,8 @@ export const useFbWhiteListStore = create((set) => ({
             });
 
             set({ 
-                whitelistedFriends: res?.data?.data || [], 
-                totalRecords: res?.data?.totalCount, 
+                whitelistedFriends: res?.data?.data?.data || [], 
+                totalRecords: res?.data?.data?.totalCount, 
                 loading: false 
             });
         } catch (error) {

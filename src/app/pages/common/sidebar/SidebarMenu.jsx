@@ -93,7 +93,7 @@ const SidebarMenu = () => {
     useEffect(() => {
         if (!hasInitialized.current) {
             for (const item of sidebarData) {
-                if (item.subNav?.some(subItem => subItem.path === currentPath)) {
+                if (item.subNav?.some(subItem => (subItem.path === currentPath || `${subItem.path}/` === currentPath))) {
                     setOpenSubNav(item.id);
                     break;
                 }
@@ -116,7 +116,7 @@ const SidebarMenu = () => {
                             <div className={`flex items-center justify-between h-20 `}>
                                 <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-8`} />
                                 <button onClick={toggleSidebar} className="absolute top-10 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
-                                    <div className={`transition-transform duration-300rotate-180`}>
+                                    <div className={`transition-transform duration-300 rotate-180`}>
                                         <CollapsedLeftIcon />
                                     </div>
                                 </button>
@@ -124,8 +124,8 @@ const SidebarMenu = () => {
 
                             <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
                                 {sidebarData.map((item) => {
-                                    const isSubItemActive = item.subNav?.some(subItem => currentPath === subItem.path);
-                                    const isActive = currentPath === item.path || isSubItemActive;
+                                    const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
+                                    const isActive = (currentPath === item.path || currentPath === `${item.path}/`) || isSubItemActive;
 
                                     return (
                                         <div key={item.id} className="w-full relative group">
@@ -137,7 +137,7 @@ const SidebarMenu = () => {
                                                         <Menu>
                                                             {item.subNav.map((subItem) => (
                                                                 <Menu.Item key={subItem.id}>
-                                                                    <Link to={subItem.path} className={currentPath === subItem.path ? 'text-[#167AD3]' : ''}>
+                                                                    <Link to={subItem.path} className={(currentPath === subItem.path || currentPath === `${subItem.path}/`) ? 'text-[#167AD3] ' : ''}>
                                                                         {subItem.text}
                                                                     </Link>
                                                                 </Menu.Item>
@@ -158,7 +158,7 @@ const SidebarMenu = () => {
                                                     text={collapsed ? '' : item.text}
                                                     path={item.path}
                                                     icon={item.icon}
-                                                    isActive={currentPath === item.path}
+                                                    isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
                                                 />
                                             )}
 
@@ -198,8 +198,8 @@ const SidebarMenu = () => {
                             </div>
                             <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
                                 {sidebarData.map((item) => {
-                                    const isSubItemActive = item.subNav?.some(subItem => currentPath === subItem.path);
-                                    const isActive = currentPath === item.path || isSubItemActive;
+                                    const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
+                                    const isActive = ( currentPath === item.path ||  currentPath === `${item.path}/`) || isSubItemActive;
                                     const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
 
                                     return (
@@ -224,13 +224,13 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                     {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '10'} pr-2.5 mt-1 flex flex-col space-y-1`}>
+                                                        <div className={`pl-${collapsed ? '4' : '10'} mt-1 ml-10 flex flex-col space-y-1`}>
                                                             {item.subNav.map((subItem) => (
                                                                 <SidebarItem
                                                                     key={subItem.id}
                                                                     text={collapsed ? '' : subItem.text}
                                                                     path={subItem.path}
-                                                                    isActive={currentPath === subItem.path}
+                                                                    isActive={(currentPath === subItem.path || currentPath === `${subItem.path}/`)}
                                                                 />
                                                             ))}
                                                         </div>
@@ -241,7 +241,7 @@ const SidebarMenu = () => {
                                                     text={collapsed ? '' : item.text}
                                                     path={item.path}
                                                     icon={item.icon}
-                                                    isActive={currentPath === item.path}
+                                                    isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
                                                 />
                                             )}
                                         </div>

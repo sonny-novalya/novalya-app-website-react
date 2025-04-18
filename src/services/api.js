@@ -8,10 +8,7 @@ export const BASE_URL = "https://api-v2.novalya.com";
 const getDynamicHeaders = () => {
   const token = localStorage.getItem("token");
   const locale = localStorage.getItem("selectedLocale");
-  const hostname = window.location.hostname;
-  const domainParts = hostname.split(".");
-  let domain = domainParts.length > 1 ? domainParts[0] : "";
-  domain = domain === "wcy-nuskin" ? "nuskin" : domain;
+
 
   const headers = {
     "Content-Type": "application/json",
@@ -20,11 +17,9 @@ const getDynamicHeaders = () => {
   if (token) {
     headers["Authorization"] = "Bearer " + token;
   }
-  headers["locale"] = locale;
+  // headers["locale"] = locale;
 
-  if (!(hostname.includes("app.novalya.com") || hostname === "localhost")) {
-    headers["Website"] = domain;
-  }
+
 
   return headers;
 };

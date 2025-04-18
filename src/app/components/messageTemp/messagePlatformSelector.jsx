@@ -18,7 +18,7 @@ const MessagePlatformSelector = ({containerRef}) => {
     setStep(3)
   }
   return (
-    <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen">
+    <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen z-[9999]">
         
         <div ref={containerRef} className=" bg-white px-6 pt-5 pb-6 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>

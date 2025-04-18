@@ -16,7 +16,7 @@ const MessageSelector = ({containerRef}) => {
   }
   }
   return (
-    <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen" >
+    <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen z-[9999]" >
         
         <div ref={containerRef} className="bg-white px-8 pt-11 pb-6 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           {/* <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button> */}
