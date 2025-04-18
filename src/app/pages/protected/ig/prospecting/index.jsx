@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined } from "@ant-design/icons";
+import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
@@ -9,21 +9,27 @@ import useFbProspectingStore from "../../../../../store/fb/prospecting";
 import { useSearchParams } from "react-router-dom";
 import useGroupStore from "../../../../../store/group/groupStore";
 import { formatNumber } from "../../../../../helpers/formatGroupMembers";
-import { EditIcon2 } from "../../../common/icons/icons";
+import { DeleteFillRedIcon, EditIcon2, InstagramIcon, SyncBlueIcon } from "../../../common/icons/icons";
 import UpdateFolderModal from "../../../../components/modal/fb/prospection/UpdateFolderModal";
-import ProspectingLayout from "../../helpersLayout/ProspectingLayout";
 import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
+import Layout from "../../Layout";
 
 const menu = (
-    <Menu>
-        <Menu.Item key="1">Facebook</Menu.Item>
-        <Menu.Item key="2">Cloud</Menu.Item>
-        <Menu.Item key="3">Delete</Menu.Item>
+    <Menu className="flex items-center justify-center">
+        <Menu.Item key="1" className="scale-80 transform">
+            <InstagramIcon />
+        </Menu.Item>
+        <Menu.Item key="2">
+            <SyncBlueIcon />
+        </Menu.Item>
+        <Menu.Item key="3">
+            <DeleteFillRedIcon />
+        </Menu.Item>
     </Menu>
 );
 
-const GroupsTable = () => {
+const IgProspecting = () => {
     const [searchParams] = useSearchParams();
     const f = searchParams.get("f");
     const [searchText, setSearchText] = useState("");
@@ -37,9 +43,9 @@ const GroupsTable = () => {
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading } = useGroupStore();
     const socialType = "fb_groups";
-    const prospect_folder = "fb";
+    const prospect_folder = "ig";
 
     const [activeKey, setActiveKey] = useState(1);
 
@@ -128,9 +134,118 @@ const GroupsTable = () => {
         );
     };
 
+
+    const groupTypeColumn = (
+        <div className="flex items-center space-x-3">
+            <span>Type</span>
+            <Dropdown
+                overlay={
+                    <Menu>
+                        {[
+                            { key: 'insta_profile', label: 'Profile' },
+                            { key: 'insta_likepost', label: 'Post' },
+                            { key: 'insta_hashtag', label: 'Hashtag' },
+                        ].map((type, index) => (
+                            <Menu.Item key={index} onClick={() => {
+                                updateFilters({
+                                    ...storeFilters,
+                                    group_type: type.key,
+                                    type: "instagram"
+                                });
+                            }}>
+                                {type.label}
+                            </Menu.Item>
+                        ))}
+                    </Menu>
+                }
+                trigger={['click']}
+            >
+                <FilterOutlined className="cursor-pointer" />
+            </Dropdown>
+        </div>
+    );
+
+    const GroupNameColumn = (
+        <div className="flex items-center space-x-2">
+            <span>Group Name </span>
+            {storeFilters.sort_by === 0 ? (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 1,
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-180"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            ) : (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 0,
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-0"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            )}
+
+        </div>
+    );
+
     const groupColumns = [
         {
-            title: t("prospecting.Group's Name"),
+            title: (GroupNameColumn),
             dataIndex: "name",
             render: (text) => (
                 <div className="flex items-center space-x-2">
@@ -140,7 +255,7 @@ const GroupsTable = () => {
             ),
         },
         {
-            title: t("prospecting.Members"),
+            title: (groupTypeColumn),
             dataIndex: "group_type",
             render: (text) => (
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -163,7 +278,7 @@ const GroupsTable = () => {
         },
         {
             title: t("prospecting.Folder"),
-            dataIndex: "grp_folder_ids",  // Use grp_folder_ids for this column
+            dataIndex: "grp_folder_ids",
             render: (folderIds) => <span className="">{getFolderNames(folderIds)}</span>,
         },
         {
@@ -190,7 +305,7 @@ const GroupsTable = () => {
         {
             title: t("prospecting.Action"),
             render: () => (
-                <Dropdown overlay={menu} trigger={["click"]}>
+                <Dropdown overlay={menu} trigger={["click"]} >
                     <Button icon={<MoreOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" />
                 </Dropdown>
             ),
@@ -199,37 +314,67 @@ const GroupsTable = () => {
 
     const buttonsData = [
         { id: 0, folder_name: "All", selectedGroups: [] },
-        { id: 11111111111, folder_name: "Groups", selectedGroups: [] },
-        { id: 22222222222, folder_name: "Posts", selectedGroups: [] },
+        { id: 33333333333, folder_name: "Followers", selectedGroups: [] },
+        { id: 44444444444, folder_name: "Posts", selectedGroups: [] },
+        { id: 55555555555, folder_name: "Hashtags", selectedGroups: [] },
         // { id: 1, folder_name: "Archived", selectedGroups: [] },
     ];
 
     const handleFolderClick = (folderId) => {
         setSelectedFolder(folderId);
+        setSearchText("");
 
-        if (folderId === 11111111111 || folderId === 22222222222) {
+        if (folderId === 33333333333) {
             updateFilters({
                 ...storeFilters,
-                social_type: folderId === 11111111111 ? "fb_groups" : "fb_posts",
-                id: 0
+                group_type: "insta_profile",
+                id: 0,
+                search_grp: "",
+                type: "instagram"
+
+            });
+        } else if (folderId === 44444444444) {
+            updateFilters({
+                ...storeFilters,
+                group_type: "insta_likepost",
+                id: 0,
+                search_grp: "",
+                type: "instagram"
+
+            });
+        } else if (folderId === 55555555555) {
+            updateFilters({
+                ...storeFilters,
+                group_type: "insta_hashtag",
+                id: 0,
+                search_grp: "",
+                type: "instagram"
+
             });
         } else if (folderId === 0) {
             updateFilters({
                 ...storeFilters,
                 social_type: "",
-                id: 0
+                group_type: "",
+                id: 0,
+                search_grp: "",
+                type: "instagram"
             });
         } else {
+            // Default case for other folder IDs
             updateFilters({
                 ...storeFilters,
                 social_type: "",
                 id: folderId,
+                search_grp: "",
+                type: "instagram"
             });
         }
     };
 
+
     useEffect(() => {
-        fetchGroups(storeFilters);
+        fetchGroups({ ...storeFilters, type: "instagram" } );
     }, [storeFilters]);
 
     useEffect(() => {
@@ -237,7 +382,10 @@ const GroupsTable = () => {
     }, [setFolders, prospect_folder]);
 
     return (
-        <ProspectingLayout>
+        <Layout>
+            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Easily connect with new prospects")}</h2>
+            {/* <div class="nv-content-wrapper"></div> to display account syncing message */}
+            <div className="nv-content-wrapper"></div> {/* to display account syncing message */}
             <div className="bg-white p-2">
                 <div className="flex items-center justify-between ">
                     <div className="space-x-2 overflow-x-auto max-w-full mb-2 flex">
@@ -281,19 +429,24 @@ const GroupsTable = () => {
 
                         <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
-                    <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">{t("prospecting.Add new group")}</Button>
+                    
                 </div>
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between my-3">
                     <Input
                         placeholder="Search groups"
                         prefix={<SearchOutlined />}
                         value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
+                        onChange={(e) => {
+                            setSearchText(e.target.value)
+                            updateFilters({
+                                ...storeFilters,
+                                search_grp: e.target.value
+                            });
+                        }}
                         className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
                     />
-                    <Button className="bg-gray-200 px-4 py-2 rounded-md">{t("prospecting.Sort By")}</Button>
                 </div>
-                <Table columns={groupColumns} dataSource={groups} pagination={false} className="custom-table" />
+                <Table columns={groupColumns} dataSource={groups} pagination={false} className="custom-table" loading={loading} />
 
                 {/* Settings Modal - Open only when modalOpen is true */}
                 {modalOpen && (
@@ -336,8 +489,8 @@ const GroupsTable = () => {
                     />
                 )}
             </div>
-        </ProspectingLayout>
+        </Layout>
     );
 };
 
-export default GroupsTable;
+export default IgProspecting;

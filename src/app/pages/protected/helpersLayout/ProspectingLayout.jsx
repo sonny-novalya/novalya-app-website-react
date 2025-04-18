@@ -13,8 +13,8 @@ const ProspectingLayout = ({ children }) => {
         ? [
             {
                 label: t("prospecting.Facebook Groups"),
-                path: "/fb/prospecting/groups",
-                action: () => navigate("/fb/prospecting/groups"),
+                path: "/fb/prospecting",
+                action: () => navigate("/fb/prospecting"),
             },
             {
                 label: t("prospecting.Facebook Posts"),
@@ -25,8 +25,8 @@ const ProspectingLayout = ({ children }) => {
         : [
             {
                 label: t("prospecting.Instagram Followers"),
-                path: "/ig/prospecting/followers",
-                action: () => navigate("/ig/prospecting/followers"),
+                path: "/ig/prospecting",
+                action: () => navigate("/ig/prospecting"),
             },
             {
                 label: t("prospecting.Instagram Posts"),

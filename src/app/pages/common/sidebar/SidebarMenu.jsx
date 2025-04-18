@@ -48,7 +48,7 @@ const SidebarMenu = () => {
             path: "/facebook",
             icon: <FacebookIcon />,
             subNav: [
-                { text: "Prospecting", id: "prospecting", path: "/fb/prospecting/groups" },
+                { text: "Prospecting", id: "prospecting", path: "/fb/prospecting" },
                 { text: "Wish Birthday", id: "birthday", path: "/fb/birthday" },
                 { text: "CRM", id: "crm", path: "/fb/crm" },
                 { text: "Request", id: "fb-request", path: "/fb/request" },
@@ -60,7 +60,7 @@ const SidebarMenu = () => {
             path: "/instagram",
             icon: <InstagramIcon />,
             subNav: [
-                { text: "Prospecting", id: "prospecting", path: "/ig/prospecting/followers" },
+                { text: "Prospecting", id: "prospecting", path: "/ig/prospecting" },
                 { text: "CRM", id: "crm", path: "/ig/crm" },
             ]
         },

@@ -7,13 +7,12 @@ import useGroupStore from "../../../../../../store/group/groupStore";
 import GroupImg from "../../../../../../assets/img/groupImg.png";
 import { t } from "i18next";
 
-const CreateFolderModal = ({ socialType, visible, onClose }) => {
+const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder }) => {
     const [folderName, setFolderName] = useState("");
     const [selectedGroups, setSelectedGroups] = useState([]);
     const { initialGroups, fetchInitialGroups } = useGroupStore();
     const { createFolder } = useFbProspectingStore();
 
-    console.log("socialType", socialType)
 
     const handleSelect = (id, checked, groupName, url) => {
         setSelectedGroups((prev) =>
@@ -25,7 +24,7 @@ const CreateFolderModal = ({ socialType, visible, onClose }) => {
 
     const handleCreateFolder = () => {
         if (folderName && selectedGroups.length > 0) {
-            createFolder(folderName, socialType, selectedGroups);
+            createFolder(folderName, socialType, selectedGroups, prospect_folder);
             setFolderName("");
             setSelectedGroups([]);
             onClose();
@@ -104,7 +103,8 @@ CreateFolderModal.propTypes = {
     socialType: PropTypes.string.isRequired,
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    groups: PropTypes.array
+    groups: PropTypes.array,
+    prospect_folder: PropTypes.string
 };
 
 export default CreateFolderModal;
