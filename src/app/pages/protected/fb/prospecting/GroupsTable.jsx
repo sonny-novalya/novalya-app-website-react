@@ -50,6 +50,7 @@ const GroupsTable = () => {
 
     const handleOpenSettings = (group) => {
         setSelectedGroup(group);
+        setModalOpen(true);
     };
 
     const handleCloseModal = () => {
