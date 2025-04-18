@@ -159,6 +159,7 @@ const Request = () => {
           <h1 className="text-2xl font-semibold mb-4">
              {t("FB_request.Auto-Reply to Requests")} 
           </h1>
+          <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
           <div className="border border-[#DADADA] p-4 pt-8 bg-white rounded-[8px] mb-7">
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px] mb-6">
               <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px] mb-6">

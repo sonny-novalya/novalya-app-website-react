@@ -20,7 +20,8 @@ const Birthday = () => {
   return (
     <Layout>
       <h2 className="text-xl font-semibold mb-4">Wish your friends birthday automatically</h2>
-      <div className="bg-white p-6 rounded-lg shadow-md mx-auto ">
+      <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
+      <div className="bg-white p-6 rounded-lg shadow-md mx-auto">
         
         {/* Wish Type Selector */}
         <WishTypeSelector 

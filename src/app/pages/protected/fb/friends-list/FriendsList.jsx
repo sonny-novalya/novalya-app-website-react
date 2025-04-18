@@ -263,7 +263,8 @@ const FriendsList = () => {
       <>
         <div className="p-4 bg-[#f2f2f2] h-screen overflow-auto">
           <h2 className="text-xl font-semibold mb-4">List of Friends</h2>
-          <div className={`bg-white p-2  ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
+          <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
+          <div className={`bg-white p-2 ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
             <div className="flex items-center justify-between mb-4">
               <Input
                   placeholder="Search novalya"
