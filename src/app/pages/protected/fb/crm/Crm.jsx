@@ -22,12 +22,13 @@ const initialGroups = [
 
 const Crm = () => {
   const [groups, setGroups] = useState(initialGroups);
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState({});
   const [search, setSearch] = useState("");
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
+    console.log(result)
 
     const items = Array.from(groups);
     const [reorderedItem] = items.splice(result.source.index, 1);
