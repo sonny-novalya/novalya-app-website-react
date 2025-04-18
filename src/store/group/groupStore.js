@@ -4,21 +4,55 @@ import { BASE_URL } from "../../services/ApiCalls";
 const useGroupStore = create((set) => ({
     groups: [],
     initialGroups: [],
-    fetchGroups: async (socialType, folderId = null) => {
-        try {
-            const token = localStorage.getItem("token");
-            // const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;
+    loading:false,
+    initialStoreFilters: {
+        sort_by: 0,
+        type: 'facebook',
+        id: 0, // folder id
+        search_grp: "",
+        social_type: "",
+        group_type: "",
+        page: 1,
+        limit: 25,
+    },
+    storeFilters: {
+        sort_by: 0,
+        type: 'facebook',
+        id: 0, // folder id
+        search_grp: "",
+        social_type: "",
+        group_type: "",
+        page: 1,
+        limit: 25,
+    },
+    updateFilters: (newValues) => set(() => ({
+        storeFilters: { ...newValues }
+    })),
 
-            const endpoint = folderId
-                ? `${BASE_URL}groups/api/get-group-by-folder?social_type=${socialType}&id=${folderId}`
-                : `${BASE_URL}groups/api/get-group-by-folder?social_type=${socialType}`;
+    fetchGroups: async ({ sort_by, type, id, search_grp, social_type, group_type }) => {
+        try {
+            set({ loading : true })
+            const token = localStorage.getItem("token");
+            const payload = {
+                sort_by,
+                type: type,         
+                id,
+                search_grp,
+                social_type,
+                group_type,
+                page: 1,
+                limit: 25,
+            };
+
+            const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;
 
             const response = await fetch(endpoint, {
-                method: "GET",
+                method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
-                }
+                },
+                body: JSON.stringify(payload)
             });
 
             if (!response.ok) {
@@ -27,21 +61,34 @@ const useGroupStore = create((set) => ({
 
             const data = await response.json();
             set({ groups: data.data });
+            set({ loading: false })
         } catch (error) {
             console.error("Error fetching groups:", error);
         }
     },
-    fetchInitialGroups: async (socialType) => {
+
+    fetchInitialGroups: async ({type = "facebook"}) => {
         try {
             const token = localStorage.getItem("token");
-            const endpoint = `${BASE_URL}groups/api/get-group-by-folder?social_type=${socialType}`;
+            const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;
 
+            const payload = {
+                sort_by: 0,
+                type: type,
+                id: 0,
+                search_grp :"",
+                social_type: "",
+                group_type:"",
+                page: 1,
+                limit: 25,
+            }
             const response = await fetch(endpoint, {
-                method: "GET",
+                method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
-                }
+                },
+                body: JSON.stringify(payload)
             });
 
             if (!response.ok) {

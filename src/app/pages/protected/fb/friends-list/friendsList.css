@@ -12,7 +12,7 @@
 .ctm-serach input.ant-input::placeholder {
     font-size: 16px;
 }
-button svg {
+.friend-list-parent button svg {
     width: 18px;
     height: 18px;
 }
