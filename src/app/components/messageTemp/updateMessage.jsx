@@ -65,7 +65,7 @@ const UpdateMessage = ({containerRef}) => {
       vis = selecetdMessage?.visibility_type
     }
    
-    if(vis.length === 1 ){
+    if(vis?.length === 1 ){
       vis = vis[0]
     }else{
       vis=null
@@ -168,14 +168,21 @@ const handleSubmit =async ()=>{
         message.error("visibility is Required")
         return
       }
-      let file = attachment?.includes("data:image")?attachment:null
+      let file=null
+      let is_image_delete = true
+      if (attachment) {
+        file = attachment?.includes("data:image")?attachment:null
+        is_image_delete = false
+      }
+     
   setIsLoading(true)
   const data = {
     name:name,
     variants:variants.map(variant => variant.name),
     visibility_type:[visibility.id],
     message_id:selecetdMessage.id,
-    attachment:file
+    attachment:file,
+    is_image_delete
   }
     try {
       const res = await apiCall({
@@ -186,7 +193,7 @@ const handleSubmit =async ()=>{
     if (res?.status === 200) {
       message.success("Message Successfully Updated")
       setIsMessage(false)
-      fetchMessages()
+      fetchMessages({})
     }else{
       message.error("Oops Something Went Wrong")
     }

@@ -1,16 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Input, Button, List, Dropdown, Menu, message } from "antd";
+import propSearch from "../../../../../assets/img/pros-serach-icon.svg";
+import prospWhite from "../../../../../assets/img/prospection-white.svg";
+import messangerIcon from "../../../../../assets/img/messanger.svg";
+import messangerWhite from "../../../../../assets/img/messenger-white.svg";
+import BdayIcon from "../../../../../assets/img/birth_cake.svg";
+import BdayWhite from "../../../../../assets/img/birth_cake-white.svg";
+import requestIcon from "../../../../../assets/img/user-add-fill.svg";
+import requestWhite from "../../../../../assets/img/user-fill-white.svg";
+import IgCrm from "../../../../../assets/img/ig-messnger.svg";
+import IgCrmWhite from "../../../../../assets/img/messenger-white.svg";
+import IgProsp from "../../../../../assets/img/ig-prospection.svg";
 import {
   SearchOutlined,
   FilterOutlined,
   EditOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-
+import { t } from "i18next";
 import "./messageIndex.css";
 import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
 import { VerticalDotsIcon } from "../../../common/icons/icons";
 import { useDebounce } from "../../../../../hooks/debounce";
+import { CreateMessageIcon } from "../../../common/icons/messageIcons/MessageIcons";
 const MessageIndex = () => {
   const {
     setIsMessage,
@@ -33,6 +45,7 @@ const MessageIndex = () => {
   });
   const delTime = useRef();
   const [query, setQuery] = useState('');
+  const [visFilter, setVisFilter] = useState(null);
   const debouncedQuery = useDebounce(query, 500);
 
 
@@ -77,11 +90,11 @@ const MessageIndex = () => {
   };
 
   useEffect(() => {
-    fetchMessages(pagination,debouncedQuery,sort);
+    fetchMessages(pagination,debouncedQuery,sort,(visFilter?.id || ""));
     setBackStep(null);
     setSelecetdMessage(null);
     setPreviewMessage(null);
-  }, [pagination,debouncedQuery,sort]);
+  }, [pagination,debouncedQuery,sort,visFilter]);
 
  
  
@@ -110,7 +123,7 @@ const MessageIndex = () => {
     const res = await duplicateMessage(payload)
     if (res.status === 200) {
       message.success(res?.data?.message)
-      fetchMessages(pagination,debouncedQuery,sort);
+      fetchMessages(pagination,debouncedQuery,sort,(visFilter?.id || ""));
     }else{
       message.error("Oops Something went wrong!")
     }
@@ -131,7 +144,7 @@ const MessageIndex = () => {
       const res = await deleteMessages(id);
       if (res?.status === 200) {
         message.success("message Deleted");
-        fetchMessages(pagination,debouncedQuery,sort);
+        fetchMessages(pagination,debouncedQuery,sort,(visFilter?.id || ""));
       } else {
         message.success("Oops Something went wrong");
       }
@@ -186,6 +199,11 @@ const MessageIndex = () => {
     );
   };
 
+  const handleVisibilityChange = (data)=>{
+    setVisFilter(data)
+    console.log(data)
+  }
+
   return (
     <>
       <div className="message-main-wraper">
@@ -203,12 +221,40 @@ const MessageIndex = () => {
                 onChange={(e)=>setQuery(e.target.value)}
               />
               <div className="flex gap-2.5 ml-[10px]">
-                <Button
+             <div className="pros-dropdownWrap relative">
+             <div className="pros-dropdown-text"> 
+               <Button
                   icon={<FilterOutlined />}
                   className="!text-[16px] !rounded-[4px] px-4 min-h-[44px] min-w-[155px] !text-[#808183]"
                 >
                   Filter
-                </Button>
+                </Button></div>
+             
+                 <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
+                              {visibilityOptions?.map((visibility) => {
+                                return (
+                                  <div
+                                  key={visibility.id}
+                                    onClick={() => handleVisibilityChange(visibility)}
+                                    className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white"
+                                  >
+                                    <img className="normalIcon" src={visibility.icon} />
+                                    <img
+                                      className="normalIconHover"
+                                      src={visibility.iconLight}
+                                    />
+                                    <span className="flex-1 text-[14px]">
+                                      {t(`message.${visibility.label}`)}  
+                                    </span>
+                                    <CreateMessageIcon index={2} />
+                                  </div>
+                                );
+                              })}
+                            </div>
+             </div>
+            
+       
+               
                 <Button
                   type="primary"
                   onClick={() => setIsMessage(true)}
@@ -386,5 +432,54 @@ const MessageIndex = () => {
     </>
   );
 };
+
+const visibilityOptions = [
+  {
+    id: "fb_prospecting",
+    label: "Prospecting",
+    icon: propSearch,
+    iconLight: prospWhite,
+    inputs: true,
+    attachment: false
+  },
+  {
+    id: "fb_crm",
+    label: "CRM",
+    icon: messangerIcon,
+    iconLight: messangerWhite,
+    inputs: true,
+    attachment: true
+  },
+  { id: "birthday", 
+    label: "Birthday", 
+    icon: BdayIcon, 
+    iconLight: BdayWhite,
+    inputs: true,
+    attachment: true
+  },
+  {
+    id: "request",
+    label: "Request",
+    icon: requestIcon,
+    iconLight: requestWhite,
+    inputs: true,
+    attachment: true
+  },
+  {
+    id: "ig_prospecting",
+    label: "Prospecting",
+    icon: IgProsp,
+    iconLight: IgCrmWhite,
+    inputs: false,
+    attachment: false
+  },
+  { id: "ig_crm",
+    label: "CRM", 
+    icon: IgCrm, 
+    iconLight: IgCrmWhite ,  
+    inputs: false,
+    attachment: true 
+  },
+];
 
 export default MessageIndex;
