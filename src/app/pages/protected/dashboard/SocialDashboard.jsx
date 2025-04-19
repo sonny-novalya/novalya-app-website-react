@@ -13,30 +13,33 @@ const SocialDashboard = ({ facebook_data, instagram_data, limit_data, isLoading,
 
     return (
         <div className="flex flex-col relative">
-            <h3 className="text-lg font-bold mb-5">{t("dashboard.My Social Networks")}</h3>
-            <div className="p-6 bg-white shadow-lg rounded-lg relative">
-                <div className="grid lg:grid-cols-3 grid-cols-1  gap-4 h-60">
-                    {isLoading && (
-                        <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-80">
-                            <Spin size="large" />
-                        </div>
-                    )}
+            <h3 className="text-[24px] font-[500] mb-5">{t("dashboard.My Social Networks")}</h3>
+            <div className="relative">
+                <div className="grid grid-cols-7 gap-5 gap-5 h-60">
+                    <div className="col-span-5 grid grid-cols-2 gap-5">
+                        {isLoading && (
+                            <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-80">
+                                <Spin size="large" />
+                            </div>
+                        )}
 
-                    <FacebookCard data={facebook_data} />
-                    { /*
-                        facebook_data
-                            ? <FacebookCard data={facebook_data} />
-                            : <FacebookEmptyCard handleShowConnection={handleShowConnection} />
-                    */ }
-                    
-                    <InstagramCard data={instagram_data} />
-                    { /*
-                        instagram_data
-                            ? <InstagramCard data={instagram_data} />
-                            : <InstaEmptyCard handleShowConnection={handleShowConnection} />
-                    */ }
-
-                    <AffiliateCard />
+                        <FacebookCard data={facebook_data} />
+                        { /*
+                            facebook_data
+                                ? <FacebookCard data={facebook_data} />
+                                : <FacebookEmptyCard handleShowConnection={handleShowConnection} />
+                        */ }
+                        
+                        <InstagramCard data={instagram_data} />
+                        { /*
+                            instagram_data
+                                ? <InstagramCard data={instagram_data} />
+                                : <InstaEmptyCard handleShowConnection={handleShowConnection} />
+                        */ }
+                    </div>
+                    <div className="col-span-2 ">
+                        <AffiliateCard />
+                    </div>
                 </div>
 
                 {/* Pass isLoading to SocialStatsPage for its own loader */}

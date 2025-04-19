@@ -11,22 +11,22 @@ const ConnectionFirstStep = () => {
     }, [])
 
     return (
-        <div className={`flex flex-col w-full gap-4 border rounded-md p-5 ${isExtConnected ? 'border-[#21BF7C] ' : 'border-[#DADADA]'}`}>
+        <div className={`flex flex-col w-full gap-6 border rounded-[10px] px-5 py-6 ${isExtConnected ? 'border-[#21BF7C] ' : 'border-[#DADADA]'}`}>
             <div className="flex items-center space-x-2 ">
                 {
                     isExtConnected
                         ? <GreenCheckRoundedIcon />
-                        : <div className="w-4 h-4 rounded-full border-2 border-red-500 bg-white" />
+                        : <div className="w-5 h-5 rounded-full border-2 border-red-500 bg-white" />
                 }
-                <h2 className="font-medium text-lg">{t("dashboard.Step-1-Install Chrome Extension")}</h2>
+                <h2 className="font-[500] text-[24px]">{t("dashboard.Step-1-Install Chrome Extension")}</h2>
             </div>
-            <p className='text-[#000407]'>
+            <p className='text-[#000407]  text-[14px]'>
                 {t("dashboard.Connect your Instagram account to manage direct messages, comments, and follower insights.")}
             </p>
 
             <div className='w-full flex justify-center'>
                 <button
-                    className={`flex justify-center items-center w-84 mx-auto py-1.5 rounded-md focus:outline-none text-center nova-prospecting cursor-pointer install-extension-btn inactive-tag inactive-ext ${isExtConnected ? 'bg-[#21BF7C] text-white' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+                    className={`flex justify-center items-center w-full mx-auto py-3 rounded-md focus:outline-none text-center nova-prospecting cursor-pointer install-extension-btn inactive-tag inactive-ext ${isExtConnected ? 'bg-[#21BF7C] text-white' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
                     onClick={() => {
                         if (!isExtConnected) {
                             window.open(

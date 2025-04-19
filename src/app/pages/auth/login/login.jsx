@@ -93,71 +93,73 @@ const LoginPage = () => {
   
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] px-4 login_parent">
-      <div className="flex w-full max-w-4xl rounded-lg shadow-lg overflow-hidden bg-white">
-        <div className="w-1/2 bg-gradient-to-r from-[#005199] to-[#0087FF] px-10 py-20 flex flex-col justify-center items-center text-white">
+    <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] p-6  login_parent ">
+      <div className="flex w-full max-w-[875px] rounded-[10px] shadow-lg overflow-hidden bg-white">
+        <div className="w-1/2 bg-gradient-to-r from-[#005199] to-[#0087FF] px-10 py-14 flex flex-col justify-center items-center text-white">
           <img src={NovalyaFullWhiteLogo} alt="Novalya Logo" />
-          <p className="mt-4 text-2xl text-center font-semibold">#1 {t("login.Marketing Platform")}</p>
-          <p className="text-2xl text-center font-semibold">{t("login.for Organic Lead Generation")}</p>
-          <div className="mt-8">
-            <img src={GlobeImg} alt="Globe" className="w-64 h-64" />
+          <p className="mt-4 text-[26px] text-center font-[500]">#1 {t("login.Marketing Platform")}</p>
+          <p className="text-[26px] text-center font-[500]">{t("login.for Organic Lead Generation")}</p>
+          <div className="mt-6">
+            <img src={GlobeImg} alt="Globe" className="w-full" />
           </div>
         </div>
 
         <div className="w-1/2 p-10 flex flex-col justify-center">
-          <h2 className="text-lg font-medium text-gray-600">{t("login.Welcome back!")} 👋</h2>
-          <h1 className="text-2xl font-bold mt-2">{t("login.Login to your account")}</h1>
+          <div className="w-full max-w-[300px] mx-auto">
+            <h2 className="text-[14px] text-[#757575] mb-1">{t("login.Welcome back!")} 👋</h2>
+            <h1 className="text-[#333333] font-semibold text-[22px] mt-1">{t("login.Login to your account")}</h1>
 
-          <form className="mt-6" onSubmit={handleLogin}>
-            <div>
-              <label className="text-gray-600 text-sm font-semibold">{t("login.Email")} </label>
-              <Input
-                type="text"
-                className="mt-2 py-2"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-
-            <div className="mt-2">
-              <label className="text-gray-600 text-sm font-semibold">{t("login.Password")}</label>
-              <Input.Password
-                className="py-2"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-              />
-              <div className="text-right mt-2">
-                <a href="/forgot-password" className="text-blue-600 text-sm hover:underline">
-                   {t("login.Forgot Password?")}
-                </a>
+            <form className="mt-8" onSubmit={handleLogin}>
+              <div>
+                <label className="text-[16px] font-normal mb-[6px]">{t("login.Email")} </label>
+                <Input
+                  type="text"
+                  className="bg-[#F2F2F2] border border-[#00000033] rounded-[10px] text-[16px] p-[10px] min-h-[48px]"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
-            </div>
 
-            <div className="flex items-center mt-4">
-              <Checkbox className="text-gray-600">{t("login.Remember me!")}</Checkbox>
-            </div>
+              <div className="mt-4">
+                <label className="text-[16px] font-normal mb-[6px]">{t("login.Password")}</label>
+                <Input.Password
+                  className="bg-[#F2F2F2] border border-[#00000033] rounded-[10px] text-[16px] p-[10px] min-h-[48px]"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                />
+                <div className="text-right mt-.5">
+                  <a href="/forgot-password" className="text-[12px] italic text-[#0087FF] hover:underline">
+                    {t("login.Forgot Password?")}
+                  </a>
+                </div>
+              </div>
 
-            <div className="flex items-center justify-center">
-              <button
-                type="submit"
-                className="mt-4 py-2 px-6 rounded text-sm !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit"
-                disabled={isLoading}
-              >
-              {
-                isLoading ? <Spin size="small" style={{color:"white"}}/>  :t("login.SIGN IN")
-              }
-              
-              </button>
-            </div>
-          </form>
+              <div className="flex items-center mt-4">
+                <Checkbox className="text-gray-600 text-[16px]">{t("login.Remember me!")}</Checkbox>
+              </div>
 
-          <p className="text-center text-gray-600 text-sm mt-4">
-             {t("login.Not registered?")}{" "}
-            <a href="#" className="text-blue-600 hover:underline">
-               {t("login.Create an account")}
-            </a>
-          </p>
+              <div className="flex items-center justify-center mt-7">
+                <button
+                  type="submit"
+                  className="text-[16px] py-3 px-10 rounded-[6px] cursor-pointer rounded !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit"
+                  disabled={isLoading}
+                >
+                {
+                  isLoading ? <Spin size="small" style={{color:"white"}}/>  :t("login.SIGN IN")
+                }
+                
+                </button>
+              </div>
+            </form>
+
+            <p className="text-center text-[#333333] text-[12px] mt-4">
+              {t("login.Not registered?")}{" "}
+              <a href="#" className="text-blue-600 font-semibold underline">
+                {t("login.Create an account")}
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>

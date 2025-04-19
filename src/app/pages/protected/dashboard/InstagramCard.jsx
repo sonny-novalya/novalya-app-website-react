@@ -37,19 +37,19 @@ const InstagramCard = ({ data }) => {
 
     return (
         <>
-        <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md relative dashboard-ig-card">
+        <div className="flex-1 bg-white rounded-[16px] overflow-hidden relative dashboard-ig-card">
             <div className="relative">
                 <img src={IgImg} alt="Cover" className="w-full h-16" />
-                <div className="absolute -bottom-14 left-4">
+                <div className="absolute -bottom-12 left-4">
                     <img
                         src={profile_image}
                         alt="Profile"
-                        className="w-20 h-24 object-cover border-4 border-white rounded-sm d-ig-card-photo"
+                        className="w-22.5 h-22.5 object-cover border-4 border-white rounded-sm d-ig-card-photo"
                     />
                 </div>
             </div>
 
-            <div className="mt-4 ml-28 flex justify-between items-center ">
+            <div className="mt-4 ml-30 flex justify-between items-center  ">
                 <p className="font-medium d-ig-card-uname">@{insta_user_name}</p>
                 <div className="flex gap-3 mr-3">
                     <button className="text-blue-600 cursor-pointer instagram-sync">
@@ -62,21 +62,21 @@ const InstagramCard = ({ data }) => {
             </div>
 
             <div className="mt-6 px-3">
-                <p className="font0medium text-lg d-ig-card-name">{insta_user_id}</p>
+                <p className="font-[500] d-ig-card-name">{insta_user_id}</p>
                 <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
                     <div className="flex-1 text-center">
-                        <p className="font-bold d-ig-card-followers">{total_followers}</p>
-                        <p>{t("dashboard.Followers")}</p>
+                        <p className="font-[500] text-[18px] d-ig-card-followers">{total_followers}</p>
+                        <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Followers")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
-                        <p className="font-bold d-ig-card-posts">{posts}</p>
-                        <p>{t("dashboard.Posts")}</p>
+                        <p className="font-[500] text-[18px] d-ig-card-posts">{posts}</p>
+                        <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Posts")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
-                        <p className="font-bold d-ig-card-followings">{following}</p>
-                        <p>{t("dashboard.Following")}</p>
+                        <p className="font-[500] text-[18px] d-ig-card-followings">{following}</p>
+                        <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Following")}</p>
                     </div>
                 </div>
             </div>
