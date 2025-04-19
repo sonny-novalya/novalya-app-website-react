@@ -97,64 +97,56 @@ console.log(newStages)
     const leads = stage.leads || [];
     return sum + leads.length;
   }, 0);
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
-  
     if (!active || !over) return;
   
     const activeId = active.id;
     const overId = over.id;
   
-    // Find source and target stages
+    if (activeId === overId) return;
+  
+    const updatedStages = [...sortedStages];
+  
     let sourceStageIndex = -1;
     let targetStageIndex = -1;
     let draggedLead = null;
   
-    const updatedStages = [...sortedStages];
-  
-    // Locate the dragged lead
+    // Find the dragged lead and its source stage
     for (let i = 0; i < updatedStages.length; i++) {
       const leadIndex = updatedStages[i].leads.findIndex((l) => l.id === activeId);
-      if (leadIndex !== -1) {
+      if (leadIndex > -1) {
         sourceStageIndex = i;
         draggedLead = updatedStages[i].leads[leadIndex];
-        updatedStages[i].leads.splice(leadIndex, 1); // Remove it
+        updatedStages[i].leads.splice(leadIndex, 1);
         break;
       }
     }
   
-    // Locate the target stage
+    if (!draggedLead) return;
+  
+    // Find the target stage (that contains the lead we're hovering over)
     for (let i = 0; i < updatedStages.length; i++) {
-      if (
-        updatedStages[i].leads.some((l) => l.id === overId) ||
-        updatedStages[i].id === overId
-      ) {
+      const leadIndex = updatedStages[i].leads.findIndex((l) => l.id === overId);
+      if (leadIndex > -1) {
         targetStageIndex = i;
-        break;
+        // Insert before hovered item
+        updatedStages[i].leads.splice(leadIndex, 0, draggedLead);
+        setSortedStages(updatedStages);
+        return;
       }
     }
   
-    // If same stage, reorder. Else, move
-    if (sourceStageIndex !== -1 && targetStageIndex !== -1 && draggedLead) {
-      if (sourceStageIndex === targetStageIndex) {
-        // Reorder inside same stage
-        const stageLeads = updatedStages[sourceStageIndex].leads;
-        const oldIndex = stageLeads.findIndex((l) => l.id === activeId);
-        const newIndex = stageLeads.findIndex((l) => l.id === overId);
-  
-        if (oldIndex !== -1 && newIndex !== -1) {
-          updatedStages[sourceStageIndex].leads = arrayMove(stageLeads, oldIndex, newIndex);
-        }
-      } else {
-        // Move to different stage
-        updatedStages[targetStageIndex].leads.unshift(draggedLead);
-      }
-  
+    // If dropped into an empty stage (no leads matched `over.id`)
+    const emptyStageIndex = updatedStages.findIndex((s) => s.id === overId);
+    if (emptyStageIndex > -1) {
+      updatedStages[emptyStageIndex].leads.unshift(draggedLead);
       setSortedStages(updatedStages);
     }
   };
   
-  
+
 
   const buttonActions = [
     {
@@ -202,7 +194,7 @@ console.log(newStages)
     toggleUserSelection,
   }) => {
     const { attributes, listeners, setNodeRef, transform, transition } =
-      useSortable({ id: `${stage.id}-${lead.id}` });
+    useSortable({ id: lead.id });
 
     const style = {
       transform: CSS.Transform.toString(transform),
@@ -273,10 +265,6 @@ console.log(newStages)
           sensors={sensors}
           onDragEnd={handleDragEnd}
         >
-        <SortableContext
-  items={sortedStages.map((stage) => stage.id)}
-  strategy={verticalListSortingStrategy}
->
           {sortedStages.map((stage) => {
             const selectedUsers = selectedUsersMap[stage.id] || [];
 
@@ -307,6 +295,10 @@ console.log(newStages)
                   key={stage.id}
                   className="min-w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md"
                 >
+                 <SortableContext
+                  items={stage.leads.map((lead) => lead.id)}
+                  strategy={verticalListSortingStrategy}
+                >
                   <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -346,13 +338,12 @@ console.log(newStages)
                       </div>
                     </div>
                   </div>
+                 
+
 
                   {/* Leads */}
                   <div className="flex flex-col gap-2 px-2">
-                    <SortableContext
-                      items={stage?.leads?.map((lead) => (`${stage.id}-${lead.id}` ))} // eventually use stage.leads
-                      strategy={verticalListSortingStrategy}
-                    >
+                   
                       {stage?.leads?.map((lead) => (
                         <SortableItem
                           key={lead.id}
@@ -362,14 +353,12 @@ console.log(newStages)
                           toggleUserSelection={toggleUserSelection}
                         />
                       ))}
-                    </SortableContext>
                   </div>
+                  </SortableContext>
                 </div>
               </DroppableStage>
             );
           })}
-
-          </SortableContext>
         </DndContext>
       </div>
       <div className="flex gap-4 p-4 items-center justify-center border border-[#DADADA] w-fit mx-auto rounded-lg mt-auto">
