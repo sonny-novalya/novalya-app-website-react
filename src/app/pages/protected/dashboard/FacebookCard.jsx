@@ -34,19 +34,19 @@ const FacebookCard = ({ data }) => {
     };
     return (
         <>
-        <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-md relative dashboard-fb-card">
+        <div className="flex-1 bg-white rounded-[16px] overflow-hidden relative dashboard-fb-card">
             <div className="relative">
-                <img src={FbImg} alt="Cover" className="w-full h-16" />
-                <div className="absolute -bottom-14 left-4">
+                <img src={FbImg} alt="Cover" className="w-full h-15 object-cover object-right" />
+                <div className="absolute -bottom-12 left-4">
                     <img
                         src={profile_image}
                         alt="Profile"
-                        className="w-20 h-24 object-cover border-4 border-white rounded-sm d-fb-card-photo"
+                        className="w-22.5 h-22.5 object-cover border-4 border-white rounded-[7px] d-fb-card-photo"
                     />
                 </div>
             </div>
 
-            <div className="mt-4 ml-28 flex justify-between items-center ">
+            <div className="mt-4 ml-30 flex justify-between items-center ">
                 <p className="font-medium d-fb-card-uname">{fb_user_name}</p>
                 <div className="flex gap-3 mr-3">
                     <button className="text-blue-600 cursor-pointer facebook-sync">
@@ -59,21 +59,21 @@ const FacebookCard = ({ data }) => {
             </div>
 
             <div className="mt-6 px-3">
-                <p className="font0medium text-lg d-fb-card-name">{fb_user_name?.split(" ")[0]}</p>
+                <p className="font-[500] d-fb-card-name">{fb_user_name?.split(" ")[0]}</p>
                 <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
                     <div className="flex-1 text-center">
-                        <p className="font-bold d-fb-card-followers">{followers}</p>
-                        <p>{t("dashboard.Followers")}</p>
+                        <p className="font-[500] text-[18px] d-fb-card-followers">{followers}</p>
+                        <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Followers")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
-                        <p className="font-bold d-fb-card-friends">{total_friends}</p>
-                        <p>{t("dashboard.Friends")}</p>
+                        <p className="font-[500] text-[18px] d-fb-card-friends">{total_friends}</p>
+                        <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Friends")}</p>
                     </div>
                     <div className="bg-[#DADADA] w-[1px]" />
                     <div className="flex-1 text-center">
-                        <p className="font-bold d-fb-card-followings">{following}</p>
-                        <p>{t("dashboard.Following")}</p>
+                        <p className="font-[500] text-[18px] d-fb-card-followings">{following}</p>
+                        <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Following")}</p>
                     </div>
                 </div>
             </div>

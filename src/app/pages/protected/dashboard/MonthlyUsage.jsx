@@ -31,26 +31,28 @@ const MonthlyUsage = ({ data }) => {
     ];
 
     return (
-        <div className="bg-white shadow-xl rounded-lg p-4">
+        <div className="bg-white rounded-[10px] px-5 py-6">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold">{t("dashboard.Monthly Usage")}</h3>
-                <button className="bg-blue-500 text-white text-sm py-1 px-3 rounded flex items-center">
+                <h3 className="font-[500] text-[24px]">{t("dashboard.Monthly Usage")}</h3>
+                <button className="bg-blue-500 text-white text-[20px] py-2 px-8 rounded-[10px] flex items-center">
                     <BarChartOutlined className="mr-1" /> {t("dashboard.Statistics")}
                 </button>
             </div>
 
             {usageData.map((item, i) => (
-                <div key={i} className="flex items-center space-x-4 mb-4 p-2 bg-gray-50 rounded">
-                    <div className="text-xl text-blue-500">{item.icon}</div>
-                    <div className="w-full">
-                        <div className="text-sm font-medium">{item.label}</div>
-                        <div className="w-full h-2 bg-gray-200 rounded-full">
-                            <div
-                                className="h-2 bg-blue-500 rounded-full"
-                                style={{ width: `${(item.current / (item.total === '∞' ? 2000 : item.total)) * 100}%` }}
-                            ></div>
+                <div key={i} className="flex items-center space-x-4 mb-5 border border-[#0087FF33] p-4 rounded-[10px] bg-white gap-6">
+                    <div className="text-xl text-blue-500 m-0 bg-[#0087FF33] w-[60px] h-[60px] flex items-center justify-center rounded-[6px]">{item.icon}</div>
+                    <div className="w-full flex items-end gap-[20px]">
+                        <div className='flex-1 mb-[10px]'>
+                            <div className="text-[20px] text-[#000407] font-medium mb-[6px]">{item.label}</div>
+                            <div className="w-full h-2 bg-gray-200 rounded-full">
+                                <div
+                                    className="h-2 bg-blue-500 rounded-full"
+                                    style={{ width: `${(item.current / (item.total === '∞' ? 2000 : item.total)) * 100}%` }}
+                                ></div>
+                            </div>
                         </div>
-                        <div className="text-xs text-right text-gray-600">
+                        <div className="text-right text-[20px] text-[#0087FF] font-semibold w-[120px]">
                             {item.current}/{item.total}
                         </div>
                     </div>

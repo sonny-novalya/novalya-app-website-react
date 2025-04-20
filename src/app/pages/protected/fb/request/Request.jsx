@@ -145,13 +145,13 @@ const Request = () => {
     </div>}
       <div className="nw-manage-requests">
         <div>
-          <h1 className="text-2xl font-semibold mb-4">
+          <h1 className="text-2xl font-[500] mb-4">
              {t("FB_request.Auto-Reply to Requests")} 
           </h1>
           <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
           <div className="border border-[#DADADA] p-4 pt-8 bg-white rounded-[8px] mb-7">
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px] mb-6">
-              <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px] mb-6">
+              <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px] mb-6">
               {t("FB_request.When a request is accepted")} :
                 <svg
                   width="26"
@@ -176,7 +176,7 @@ const Request = () => {
 
               <div
                 onClick={() => handleMessagePOP(1)}
-                class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] p-[13px]"
+                class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] p-[13px]"
               >
                 {acceptedData?.selectedMessage
                   ? acceptedData.selectedMessage?.title
