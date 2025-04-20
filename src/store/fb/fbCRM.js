@@ -15,13 +15,13 @@ const usefbCRM = create((set) => ({
     set({ fbCRMLoading: true});
       try {
           const res = await apiCall({
-              method: 'GET',
-              url: '/user/api/group',
+              method: 'POST',
+              url: '/user/api/facebook/get-all-groups',
               data:data
           });
 
-          
-          set({ CRMList: res?.data || [], fbCRMLoading: false});
+          console.log(res)
+          set({ CRMList: res?.data?.message || [], fbCRMLoading: false});
       } catch (error) {
           set({
               fbCRMLoading: false,

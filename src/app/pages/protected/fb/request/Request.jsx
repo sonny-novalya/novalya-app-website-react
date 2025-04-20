@@ -148,7 +148,7 @@ const Request = () => {
           <h1 className="text-2xl font-[500] mb-4">
              {t("FB_request.Auto-Reply to Requests")} 
           </h1>
-          <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
+          <div className="nv-content-wrapper"></div> {/* to display account syncing message */}
           <div className="border border-[#DADADA] p-4 pt-8 bg-white rounded-[8px] mb-7">
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px] mb-6">
               <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px] mb-6">
@@ -176,14 +176,14 @@ const Request = () => {
 
               <div
                 onClick={() => handleMessagePOP(1)}
-                class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] p-[13px]"
+                className="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] p-[13px]"
               >
                 {acceptedData?.selectedMessage
                   ? acceptedData.selectedMessage?.title
                   : "No message selected"}
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7 mb-3">
-                <div class="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7 mb-3">
+                <div className="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px]">
                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
                   {t("FB_request.Do you want to add a tag?")} 
                     <svg
@@ -283,7 +283,7 @@ const Request = () => {
                   </div>
                 </div>
                 {acceptedData?.isTag === "yes" ? (
-                  <div class="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px] ">
+                  <div className="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px] ">
                   <div className="flex items-baseline gap-[10px]">
                    <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
                     {t("FB_request.Select Group")} 
@@ -325,7 +325,7 @@ const Request = () => {
                           selectedGroup: e.target.value,
                         }))
                       }
-                      class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
+                      className="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                     >
                       <option value={0}>{t("FB_request.Select Group")} </option>
                       {groupData?.map((grp) => {
@@ -340,13 +340,13 @@ const Request = () => {
                           selecetdStage: e.target.value,
                         }))
                       }
-                      class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]"
+                      className="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]"
                     >
                       <option value={0}> {t("FB_request.Select Stage")}</option>
                       {groupData
                         ?.find((grps) => grps.id == acceptedData?.selectedGroup)
                         ?.stage?.map((stg) => {
-                          return <option value={stg?.id}>{stg?.name}</option>;
+                          return <option  key={stg?.id} value={stg?.id}>{stg?.name}</option>;
                         })}
                     </select>
                     </div>
@@ -385,14 +385,14 @@ const Request = () => {
               </h1>
               <div
                 onClick={() => handleMessagePOP(0)}
-                class="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] p-[13px]"
+                className="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] p-[13px]"
               >
                 {rejectedData?.selectedMessage
                   ? rejectedData.selectedMessage?.title
                   : "No message selected"}
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7">
-                <div class="border border-[#DADADA] bg-white p-4 rounded-[6px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7">
+                <div className="border border-[#DADADA] bg-white p-4 rounded-[6px]">
                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
                   {t("FB_request.Do you want to add a tag?")} 
                     <svg
@@ -497,7 +497,7 @@ const Request = () => {
                   </div>
                 </div>
                 {rejectedData?.isTag === "yes" ? (
-                  <div class="border border-[#DADADA] bg-white p-4 rounded-[6px]">
+                  <div className="border border-[#DADADA] bg-white p-4 rounded-[6px]">
                    <div className="flex items-baseline gap-[10px]">
                    <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
                     {t("FB_request.Select Group")} 
@@ -539,7 +539,7 @@ const Request = () => {
                           selectedGroup: Number(e.target.value),
                         }))
                       }
-                      class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
+                      className="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                     >
                       <option value={0}>{t("FB_request.Select Group")}</option>
                       {groupData?.map((grp) => {
@@ -554,14 +554,14 @@ const Request = () => {
                           selecetdStage:Number(e.target.value),
                         }))
                       }
-                      class="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]"
+                      className="w-full border border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px]"
                     >
                       <option value={0}>{t("FB_request.Select Stage")}</option>
 
                       {groupData
                         ?.find((grps) => grps.id == rejectedData?.selectedGroup)
                         ?.stage?.map((stg) => {
-                          return <option value={stg?.id}>{stg?.name}</option>;
+                          return <option key={stg?.id} value={stg?.id}>{stg?.name}</option>;
                         })}
                     </select>
                     </div>
