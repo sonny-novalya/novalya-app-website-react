@@ -21,7 +21,7 @@ const usefbCRM = create((set) => ({
           });
 
           console.log(res)
-          set({ CRMList: res?.data?.message || [], fbCRMLoading: false});
+          set({ CRMList: res?.data?.data || [], fbCRMLoading: false});
       } catch (error) {
           set({
               fbCRMLoading: false,
