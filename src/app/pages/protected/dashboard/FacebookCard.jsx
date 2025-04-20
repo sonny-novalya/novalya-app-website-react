@@ -60,7 +60,7 @@ const FacebookCard = ({ data }) => {
 
             <div className="mt-6 px-3">
                 <p className="font-[500] d-fb-card-name">{fb_user_name?.split(" ")[0]}</p>
-                <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
+                <div className="flex justify-between mt-4 text-sm text-gray-700">
                     <div className="flex-1 text-center">
                         <p className="font-[500] text-[18px] d-fb-card-followers">{followers}</p>
                         <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Followers")}</p>

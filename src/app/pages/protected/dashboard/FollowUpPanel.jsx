@@ -1,7 +1,7 @@
 const FollowUpPanel = () => {
     return (
         <div className="bg-white rounded-[10px] p-4 h-full">
-            <h4 className="font-[500] text-[24px] mb-2.5">Software status</h4>
+            <h4 className="font-[500] text-[24px] text-[#0087FF] mb-2.5">Software status</h4>
             <div className="rounded-[10px] bg-[#0087FF33] px-4 py-5">
                 <div className="flex items-center justify-between mb-5">
                     <span className="text-[20px] font-[500]">Installed</span>
