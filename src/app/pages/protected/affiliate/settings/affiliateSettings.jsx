@@ -107,7 +107,7 @@ const AffiliateSettings = () => {
 
   return (
     <>
-    <div className="p-6 bg-gray-100 min-h-screen mb-4">
+    <div className="p-6 bg-gray-100 h-screen overflow-auto">
       <AfiliateTopBar/>
       <div className="flex gap-4">
         <div className='flex-1'>
