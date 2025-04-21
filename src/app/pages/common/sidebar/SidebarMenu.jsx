@@ -224,7 +224,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                     {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '10'} mt-1 ml-10 flex flex-col space-y-1`}>
+                                                        <div className={`pl-${collapsed ? '4' : '6'} mt-1 ml-10 flex flex-col space-y-1`}>
                                                             {item.subNav.map((subItem) => (
                                                                 <SidebarItem
                                                                     key={subItem.id}
@@ -248,7 +248,7 @@ const SidebarMenu = () => {
                                     );
                                 })}
                             </div>
-                            <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-0.5 gap-[8px]">
+                            <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-0.5 gap-[8px] mb-3">
                                 <div className="w-full">
                                     <LocalizationOptions />
                                 </div>
