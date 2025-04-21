@@ -13,9 +13,9 @@ const SocialDashboard = ({ facebook_data, instagram_data, limit_data, isLoading,
 
     return (
         <div className="flex flex-col relative">
-            <h3 className="text-[24px] font-[500] mb-5">{t("dashboard.My Social Networks")}</h3>
+            <h3 className="text-[24px] tracking-[0.02em] font-[500] mb-6">{t("dashboard.My Social Networks")}</h3>
             <div className="relative">
-                <div className="grid grid-cols-7 gap-5 gap-5 h-60">
+                <div className="grid grid-cols-7 gap-5 gap-5">
                     <div className="col-span-5 grid grid-cols-2 gap-5">
                         {isLoading && (
                             <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-80">

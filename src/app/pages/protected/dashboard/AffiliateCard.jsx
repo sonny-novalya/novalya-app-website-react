@@ -6,15 +6,15 @@ import { useNavigate } from 'react-router-dom';
 const AffiliateCard = () => {
     const navigate = useNavigate()
     return (
-        <div className="relative flex-1 rounded-[16px] overflow-hidden text-white h-full">
-            <img src={AffiliateCardImg} alt="" className="w-full object-cover h-full" />
+        <div className="relative flex-1 rounded-[16px] overflow-hidden text-white">
+            <img src={AffiliateCardImg} alt="" className="w-full object-cover max-h-[215px] flex" />
             <div className="absolute inset-0 p-5 flex flex-col justify-start gap-3">
-                <img src={NovaWhiteLogo} alt="" className="h-10 w-12" />
+                <img src={NovaWhiteLogo} alt="" className="w-6 " />
                 <div>
                     <h3 className="text-[14px] font-semibold">
                         {t("dashboard.Promote and get paid")}
                     </h3>
-                    <p className="mt-1 text-[12px] pr-8">
+                    <p className="my-1 text-[12px] pr-8 ">
                         {t("dashboard.By Sharing Your Affiliate Link To Others. Paid Up To 60%. Share It To The World.")}
                     </p>
                 </div>

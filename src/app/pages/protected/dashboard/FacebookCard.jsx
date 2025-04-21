@@ -36,19 +36,21 @@ const FacebookCard = ({ data }) => {
         <>
         <div className="flex-1 bg-white rounded-[16px] overflow-hidden relative dashboard-fb-card">
             <div className="relative">
-                <img src={FbImg} alt="Cover" className="w-full h-15 object-cover object-right" />
+                <div className="flex items-center h-15 justify-end items-center h-15 p-2 bg-[linear-gradient(90deg,_#089BED_0%,_#2861B9_100%)]">
+                    <img src={FbImg} alt="Cover" className="w-full max-w-[120px]" />
+                </div>
                 <div className="absolute -bottom-12 left-4">
                     <img
                         src={profile_image}
                         alt="Profile"
-                        className="w-22.5 h-22.5 object-cover border-4 border-white rounded-[7px] d-fb-card-photo"
+                        className="w-23 h-23 object-cover border-4 border-white rounded-[7px] d-fb-card-photo"
                     />
                 </div>
             </div>
 
             <div className="mt-4 ml-30 flex justify-between items-center ">
                 <p className="font-medium d-fb-card-uname">{fb_user_name}</p>
-                <div className="flex gap-3 mr-3">
+                <div className="flex gap-3 mr-5">
                     <button className="text-blue-600 cursor-pointer facebook-sync">
                         <SyncBlueIcon />
                     </button>
@@ -58,7 +60,7 @@ const FacebookCard = ({ data }) => {
                 </div>
             </div>
 
-            <div className="mt-6 px-3">
+            <div className="mt-3 px-5 mb-4">
                 <p className="font-[500] d-fb-card-name">{fb_user_name?.split(" ")[0]}</p>
                 <div className="flex justify-between mt-4 text-sm text-gray-700">
                     <div className="flex-1 text-center">
