@@ -12,7 +12,7 @@ import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import usefbCRM from "../../../../../../store/fb/fbCRM";
 import { useLocation } from "react-router-dom";
 
-const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab }) => {
+const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGroupId }) => {
     const { prospection, fetchProspectionData } = SettingStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
     const { message, stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
@@ -77,6 +77,8 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab }) => {
                 <button
                     className={`px-12 py-2 rounded-lg bg-[#21BF7C] text-white cursor-pointer `}
                     id="start-novayla-connect"
+                    // eslint-disable-next-line react/no-unknown-property
+                    groupId={primaryGroupId}
                 >
                     {t("prospecting.Next")}
                 </button>
@@ -90,6 +92,7 @@ ConfirmationModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     group: PropTypes.object,
     handleOpenSettingsTab: PropTypes.func,
+    primaryGroupId: PropTypes.number,
 };
 
 ConfirmationModal.defaultProps = {

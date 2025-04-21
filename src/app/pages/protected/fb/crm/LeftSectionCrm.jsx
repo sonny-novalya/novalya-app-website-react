@@ -13,8 +13,9 @@ import { CSS } from "@dnd-kit/utilities";
 import { formatDate } from "../../../../../helpers/formatDate";
 import { t } from "i18next";
 import { useEffect, useRef, useState } from "react";
+import usefbCRM from "../../../../../store/fb/fbCRM";
 
-const SortableItem = ({ group, selectedGroup ,setSelectedGroup}) => {
+const SortableItem = ({ group, selectedGroup ,setSelectedGroup,getGroupById}) => {
   const {
     attributes,
     listeners,
@@ -47,10 +48,12 @@ const SortableItem = ({ group, selectedGroup ,setSelectedGroup}) => {
     }
   };
 
-  const onClick = (data) =>{
-    setSelectedGroup(data)
-   
-}
+  const onClick = async(data) =>{
+    setSelectedGroup(data) 
+    
+    await getGroupById(data.id)
+
+   }
 
   return (
     <div >
@@ -100,14 +103,16 @@ const LeftSectionCrm = ({
   onDragEnd,
   error,
   isLoading,
+  reorderCRMGroupsFB
 }) => {
   const [localGroups, setLocalGroups] = useState(groups);
   const startIndexRef = useRef(null);
+  const {getGroupById}=usefbCRM()
+
 
   const sensors = useSensors(useSensor(PointerSensor));
 
   useEffect(() => { 
-    const grp =   groups?.sort((a,b)=>a.order_num - b.order_num)
     setLocalGroups(groups)
   }, [groups])
 
@@ -119,7 +124,7 @@ const LeftSectionCrm = ({
     startIndexRef.current = index;
   };
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = async(event) => {
     const { active, over } = event;
 
     if (!over) return;
@@ -128,8 +133,7 @@ const LeftSectionCrm = ({
 
     const oldIndex = startIndexRef.current;
     const newIndex = localGroups.findIndex((g) => g.id === over.id);
-    console.log(over,startIndexRef.current,newIndex)
-    console.log(localGroups)
+
 
     // ✅ Only reorder if moved
     if (oldIndex !== newIndex) {
@@ -137,6 +141,8 @@ const LeftSectionCrm = ({
       setLocalGroups(newOrder);
       onDragEnd?.(newOrder);
     }
+
+    await reorderCRMGroupsFB({destination: newIndex,source: oldIndex})
 
     startIndexRef.current = null; // cleanup
   };
@@ -175,6 +181,7 @@ const LeftSectionCrm = ({
                 group={group}
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
+                getGroupById={getGroupById}
               />
             ))}
         </div>

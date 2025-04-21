@@ -15,12 +15,16 @@ import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
 
-const menu = (
+const menu = (record) => (
     <Menu className="flex items-center justify-center">
-        <Menu.Item key="1" className="scale-80 transform">
+        <Menu.Item key="1" className="scale-80 transform" onClick={() => window.open(record.url, "_blank")}>
             <InstagramIcon />
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="2" className="sync-members" data-group={JSON.stringify({
+            id: record.id,
+            url: record.url,
+            type: record.group_type
+        })}>
             <SyncBlueIcon />
         </Menu.Item>
         <Menu.Item key="3">
@@ -43,11 +47,12 @@ const IgProspecting = () => {
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp } = useGroupStore();
     const socialType = "fb_groups";
     const prospect_folder = "ig";
 
     const [activeKey, setActiveKey] = useState(1);
+    const [primaryGroupId, setPrimaryGroupId] = useState(null); 
 
     const handleOpenSettingsTab = (value) => {
         setActiveKey(value);
@@ -65,8 +70,8 @@ const IgProspecting = () => {
     };
 
     const handleOpenConfirmModal = (group) => {
+        setPrimaryGroupId(group?.id || null)
         setConfirmModalOpen(true);
-        console.log("group", group)
     };
 
     const handleCloseConfirmModal = () => {
@@ -82,27 +87,23 @@ const IgProspecting = () => {
     };
 
     const getFolderNames = (folderIds) => {
-        if (![0, 11111111111, 22222222222].includes(Number(selectedFolder))) {
+        if (![0, 33333333333, 44444444444, 55555555555].includes(Number(selectedFolder))) {
             const folder = folders?.find((item) => item.id == selectedFolder);
             return (
                 <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folder ? folder.folder_name : "-"}
+                        {folder ? folder.folder_name : "None"}
                     </span>
                 </div>
             );
         }
 
 
-        if (folderIds === null) {
-            return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
-                    <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        -
-                    </span>
-                </div>
-            );
-        };
+        if (folderIds === null) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
+            <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
+                None
+            </span>
+        </div>;
 
         const folderIdArray = JSON.parse(folderIds);
         const folderNames = folderIdArray
@@ -112,11 +113,17 @@ const IgProspecting = () => {
             })
             .filter(name => name !== null);
 
-        if (folderNames.length === 0 || folderNames.length === 1) {
+        if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
+            <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
+                None
+            </span>
+        </div>;
+
+        if (folderNames.length === 1) {
             return (
                 <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folderNames.length === 1 ? folderNames[0] : folderNames === 0 ? "-" : "-"}
+                        {folderNames[0]}
                     </span>
                 </div>
             );
@@ -150,7 +157,9 @@ const IgProspecting = () => {
                                 updateFilters({
                                     ...storeFilters,
                                     group_type: type.key,
-                                    type: "instagram"
+                                    type: "instagram",
+                                    page: 1,
+                                    limit: 25,
                                 });
                             }}>
                                 {type.label}
@@ -243,6 +252,14 @@ const IgProspecting = () => {
         </div>
     );
 
+    const handlePageChange = (obj) => {
+        updateFilters({
+            ...storeFilters,
+            page: obj.current,
+            limit: obj.pageSize,
+        });
+    };
+
     const groupColumns = [
         {
             title: (GroupNameColumn),
@@ -304,8 +321,8 @@ const IgProspecting = () => {
         },
         {
             title: t("prospecting.Action"),
-            render: () => (
-                <Dropdown overlay={menu} trigger={["click"]} >
+            render: (_, record) => (
+                <Dropdown overlay={menu(record)} trigger={["click"]} >
                     <Button icon={<MoreOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" />
                 </Dropdown>
             ),
@@ -330,7 +347,9 @@ const IgProspecting = () => {
                 group_type: "insta_profile",
                 id: 0,
                 search_grp: "",
-                type: "instagram"
+                type: "instagram",
+                page: 1,
+                limit: 25,
 
             });
         } else if (folderId === 44444444444) {
@@ -339,7 +358,9 @@ const IgProspecting = () => {
                 group_type: "insta_likepost",
                 id: 0,
                 search_grp: "",
-                type: "instagram"
+                type: "instagram",
+                page: 1,
+                limit: 25,
 
             });
         } else if (folderId === 55555555555) {
@@ -348,7 +369,9 @@ const IgProspecting = () => {
                 group_type: "insta_hashtag",
                 id: 0,
                 search_grp: "",
-                type: "instagram"
+                type: "instagram",
+                page: 1,
+                limit: 25,
 
             });
         } else if (folderId === 0) {
@@ -358,16 +381,19 @@ const IgProspecting = () => {
                 group_type: "",
                 id: 0,
                 search_grp: "",
-                type: "instagram"
+                type: "instagram",
+                page: 1,
+                limit: 25,
             });
         } else {
-            // Default case for other folder IDs
             updateFilters({
                 ...storeFilters,
                 social_type: "",
                 id: folderId,
                 search_grp: "",
-                type: "instagram"
+                type: "instagram",
+                page: 1,
+                limit: 25,
             });
         }
     };
@@ -446,7 +472,25 @@ const IgProspecting = () => {
                         className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
                     />
                 </div>
-                <Table columns={groupColumns} dataSource={groups} pagination={false} className="custom-table" loading={loading} />
+
+                <Table
+                    columns={groupColumns}
+                    dataSource={groups}
+                    pagination={{
+                        current: storeFilters.page,
+                        pageSize: storeFilters.limit,
+                        total: totalPages * storeFilters.limit,
+                        onChange: handlePageChange,
+                        showSizeChanger: false,
+                    }}
+                    className="custom-table"
+                    loading={loading}
+                    current={storeFilters.page}
+                    total={totalGrp}
+                    pageSize={storeFilters.limit}
+                    onChange={handlePageChange}
+                    showQuickJumper={false}
+                />
 
                 {/* Settings Modal - Open only when modalOpen is true */}
                 {modalOpen && (
@@ -467,6 +511,7 @@ const IgProspecting = () => {
                         groups={groups}
                         socialType={socialType}
                         handleOpenSettingsTab={handleOpenSettingsTab}
+                        primaryGroupId={primaryGroupId}
                     />
                 )}
 

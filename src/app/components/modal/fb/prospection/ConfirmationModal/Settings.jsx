@@ -28,7 +28,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
         { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
     ];
 
-    const selectedInterval =  intervalOptions.find((item) => item.value === interval)
+    const selectedInterval =  intervalOptions?.find((item) => item.value === interval)
 
     return (
         <main className="">
@@ -45,7 +45,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
                     <h3 className="font-medium" >{t("prospecting.Strategy")}</h3>
                     <p className="w-full text-center border border-[#00000014] rounded-md p-2">
                         {
-                            strategies.find((item) => item.value === stratagy).label
+                            strategies?.find((item) => item.value === stratagy)?.label
                         }
                     </p>
                 </div>
@@ -56,8 +56,8 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
                 <div className="flex-1 pl-4 space-y-2">
                     <h3 className="font-medium" >{t("prospecting.Interval")}</h3>
                     <div className="flex space-x-5 items-center">
-                        <p className="whitespace-nowrap">{selectedInterval.time}</p>
-                        <p className="w-full text-center border border-[#00000014] rounded-md p-2 ">{selectedInterval.label}</p>
+                        <p className="whitespace-nowrap">{selectedInterval?.time}</p>
+                        <p className="w-full text-center border border-[#00000014] rounded-md p-2 ">{selectedInterval?.label}</p>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ import {
     LibraryIcon,
     TrainingVideosIcon,
     AffiliateIcon,
-    EventsIcon,
+    // EventsIcon,
     UpgradeProIcon,
     UpperArrowIcon,
     DownArrowIcon,
@@ -86,7 +86,7 @@ const SidebarMenu = () => {
                 { text: "Whitelist", id: "fb-whitelist", path: "/friendlist/whitelist" }
             ]
         },
-        { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
+        // { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
     ];
     const hasInitialized = useRef(false);
 
