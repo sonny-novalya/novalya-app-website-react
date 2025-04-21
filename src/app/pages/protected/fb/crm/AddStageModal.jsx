@@ -1,14 +1,35 @@
 import PropTypes from "prop-types";
-import { Modal } from "antd";
+import { message, Modal, Spin } from "antd";
 import { useState } from "react";
 import { t } from "i18next";
 
-const AddStageModal = ({ visible, onCancel }) => {
+const AddStageModal = ({ visible, onCancel ,createStage,setSortedStages,selectedGroup,addGrpLoader}) => {
     const [stageName, setStageName] = useState("");
 
     const handleInputChange = (e) => {
         setStageName(e.target.value);
     };
+
+    const onsubmit =async ()=>{
+    if(!stageName?.trim()){
+        message.error("Stage Name is Required")
+        return
+    }
+    const data  = {
+        name:stageName,
+        tag_id:selectedGroup.id
+    }
+
+    const  res = await createStage(data)
+    if (res.status === 200) {
+        const stage = res?.data?.data
+        setSortedStages((prev)=>{
+            return [...prev,stage]
+        })
+        message.success("Stage Has been created")
+        onCancel()
+    }
+    }
 
     return (
         <Modal
@@ -25,7 +46,7 @@ const AddStageModal = ({ visible, onCancel }) => {
             <h2 className="text-lg font-medium my-2">{t("crm.Stage Name")}</h2>
             <input
                 className="w-full rounded-lg bg-white border border-gray-300 px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Select stage"
+                placeholder="Add stage"
                 value={stageName}
                 onChange={handleInputChange}
                 style={{ height: "50px" }}
@@ -46,12 +67,11 @@ const AddStageModal = ({ visible, onCancel }) => {
                 </button>
                 <button
                     onClick={() => {
-                        console.log("Move", stageName);
-                        // handle save logic here
+                        onsubmit()
                     }}
                     className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
                 >
-                    {t("crm.Move")}
+                    { !addGrpLoader?t("crm.Add"):<Spin size="small"/>}
                 </button>
             </div>
         </Modal>

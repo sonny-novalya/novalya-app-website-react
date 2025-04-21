@@ -8,6 +8,7 @@ const usefbCRM = create((set) => ({
     error:null,
     selectedGrpData:{},
     selectedGrpLoader:false,
+    addGrpLoader:false,
 
   
 //    setFlow: (val) => set(() => ({ flow: val })), 
@@ -73,6 +74,63 @@ const usefbCRM = create((set) => ({
         });
     }
 },
+moveTaggedUsers: async (data) => {
+  
+    try {
+      const res =  await apiCall({
+            method: 'PATCH',
+            url: `/user/api/taggeduser/${data.id}`,
+            data:{stage_id:data.stage_id}
+        });
+       return res
+     
+    } catch (error) {
+        set({
+          
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+
+createCRMGroup: async (data) => {
+    set({addGrpLoader:true})
+    try {
+      const res =  await apiCall({
+            method: 'POST',
+            url: `/user/api/group`,
+            data:data
+        });
+        set({addGrpLoader:false})
+       return res
+     
+    } catch (error) {
+        set({
+         addGrpLoader:false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+//  
+
+createStage: async (data) => {
+    set({addGrpLoader:true})
+    try {
+      const res =  await apiCall({
+            method: 'POST',
+            url: `/stages/api/create`,
+            data:data
+        });
+        set({addGrpLoader:false})
+       return res
+     
+    } catch (error) {
+        set({
+         addGrpLoader:false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+
 
 }));
 
