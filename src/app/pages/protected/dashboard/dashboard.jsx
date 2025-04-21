@@ -4,6 +4,7 @@ import ConnectionDashboard from "./ConnectionDashboard";
 import SocialDashboard from "./SocialDashboard";
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { useExtensionStore } from "../../../../store/extension/extension-store";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [connectionStep, setConnectionStep] = useState(false);
@@ -16,12 +17,24 @@ const Dashboard = () => {
   const { facebook_data, instagram_data, limit_data } = socialAccountsData || {};
 
   const hasFetched = useRef(false);
+  const  islogged =localStorage.getItem("loggedin")
+ 
+  
+
+  const navigate = useNavigate()
+
+  
+ 
 
   useEffect(() => {
     if (!hasFetched.current) {
       fetchSocialAccounts();
       fetchExtInstalledStatus();
       hasFetched.current = true; 
+    }
+    if(islogged){
+      navigate('/?loggedin=true')
+      localStorage.removeItem("loggedin")
     }
   }, [fetchSocialAccounts, fetchExtInstalledStatus]); 
 
