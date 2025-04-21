@@ -15,10 +15,10 @@ import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
 
-const menu = (
+const menu = (record) => (
     <Menu className="flex items-center justify-center">
-        <Menu.Item key="1">
-            <FacebookIcon/>
+        <Menu.Item key="1" onClick={() => window.open(record.url, "_blank")}>
+            <FacebookIcon />
         </Menu.Item>
         <Menu.Item key="2">
             <SyncBlueIcon />
@@ -43,7 +43,7 @@ const FbProspecting = () => {
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp } = useGroupStore();
     const socialType = "fb_groups";
     const prospect_folder = "fb";
 
@@ -87,22 +87,17 @@ const FbProspecting = () => {
             return (
                 <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folder ? folder.folder_name : "-"}
+                        {folder ? folder.folder_name : "None"}
                     </span>
                 </div>
             );
         }
 
-
-        if (folderIds === null) {
-            return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
-                    <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        -
-                    </span>
-                </div>
-            );
-        };
+        if (folderIds === null) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
+            <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
+                None
+            </span>
+        </div>;
 
         const folderIdArray = JSON.parse(folderIds);
         const folderNames = folderIdArray
@@ -111,12 +106,17 @@ const FbProspecting = () => {
                 return folder ? folder.folder_name : null;
             })
             .filter(name => name !== null);
-
-        if (folderNames.length === 0 || folderNames.length === 1) {
+        
+        if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
+            <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
+                None
+            </span>
+        </div>;
+        if (folderNames.length === 1) {
             return (
                 <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folderNames.length === 1 ? folderNames[0] : folderNames === 0 ? "-" : "-"}
+                        {folderNames[0]}
                     </span>
                 </div>
             );
@@ -149,7 +149,9 @@ const FbProspecting = () => {
                             <Menu.Item key={index} onClick={() => {
                                 updateFilters({
                                     ...storeFilters,
-                                    group_type: type.key
+                                    group_type: type.key,
+                                    page: 1,
+                                    limit: 25,
                                 });
                             }}>
                                 {type.label}
@@ -240,6 +242,14 @@ const FbProspecting = () => {
         </div>
     );
 
+    const handlePageChange = (obj) => {
+        updateFilters({
+            ...storeFilters,
+            page: obj.current,
+            limit:obj.pageSize,
+        });
+    };
+
     const groupColumns = [
         {
             title: (GroupNameColumn),
@@ -301,8 +311,8 @@ const FbProspecting = () => {
         },
         {
             title: t("prospecting.Action"),
-            render: () => (
-                <Dropdown overlay={menu} trigger={["click"]} >
+            render: (_, record) => (
+                <Dropdown overlay={menu(record)} trigger={["click"]} >
                     <Button icon={<MoreOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" />
                 </Dropdown>
             ),
@@ -325,25 +335,30 @@ const FbProspecting = () => {
                 ...storeFilters,
                 social_type: folderId === 11111111111 ? "fb_groups" : "fb_posts",
                 id: 0,
-                search_grp: ""
+                search_grp: "",
+                page: 1,
+                limit: 25,
             });
         } else if (folderId === 0) {
             updateFilters({
                 ...storeFilters,
                 social_type: "",
                 id: 0,
-                search_grp: ""
+                search_grp: "",
+                page: 1,
+                limit: 25,
             });
         } else {
             updateFilters({
                 ...storeFilters,
                 social_type: "",
                 id: folderId,
-                search_grp: ""
+                search_grp: "",
+                page: 1,
+                limit: 25,
             });
         }
     };
-
     useEffect(() => {
         fetchGroups(storeFilters);
     }, [storeFilters]);
@@ -417,7 +432,25 @@ const FbProspecting = () => {
                         className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
                     />
                 </div>
-                <Table columns={groupColumns} dataSource={groups} pagination={false} className="custom-table" loading={loading} />
+                <Table
+                    columns={groupColumns}
+                    dataSource={groups}
+                    pagination={{
+                        current: storeFilters.page,
+                        pageSize: storeFilters.limit,
+                        total: totalPages * storeFilters.limit,
+                        onChange: handlePageChange,
+                        showSizeChanger: false,
+                    }}
+                    className="custom-table"
+                    loading={loading}
+                    current={storeFilters.page}
+                    total={totalGrp}
+                    pageSize={storeFilters.limit}
+                    onChange={handlePageChange}
+                    showQuickJumper={false} 
+                />
+
 
                 {/* Settings Modal - Open only when modalOpen is true */}
                 {modalOpen && (
