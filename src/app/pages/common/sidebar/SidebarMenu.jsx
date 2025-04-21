@@ -8,7 +8,7 @@ import {
     LibraryIcon,
     TrainingVideosIcon,
     AffiliateIcon,
-    EventsIcon,
+    // EventsIcon,
     UpgradeProIcon,
     UpperArrowIcon,
     DownArrowIcon,
@@ -48,7 +48,7 @@ const SidebarMenu = () => {
             path: "/facebook",
             icon: <FacebookIcon />,
             subNav: [
-                { text: "Prospecting", id: "prospecting", path: "/fb/prospecting/groups" },
+                { text: "Prospecting", id: "prospecting", path: "/fb/prospecting" },
                 { text: "Wish Birthday", id: "birthday", path: "/fb/birthday" },
                 { text: "CRM", id: "crm", path: "/fb/crm" },
                 { text: "Request", id: "fb-request", path: "/fb/request" },
@@ -60,7 +60,7 @@ const SidebarMenu = () => {
             path: "/instagram",
             icon: <InstagramIcon />,
             subNav: [
-                { text: "Prospecting", id: "prospecting", path: "/ig/prospecting/followers" },
+                { text: "Prospecting", id: "prospecting", path: "/ig/prospecting" },
                 { text: "CRM", id: "crm", path: "/ig/crm" },
             ]
         },
@@ -86,7 +86,7 @@ const SidebarMenu = () => {
                 { text: "Whitelist", id: "fb-whitelist", path: "/friendlist/whitelist" }
             ]
         },
-        { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
+        // { text: "Up-Coming Events", id: "up-coming-events", path: "/up-coming-events", icon: <EventsIcon /> },
     ];
     const hasInitialized = useRef(false);
 
@@ -113,7 +113,7 @@ const SidebarMenu = () => {
                 {
                     collapsed
                         ? <>
-                            <div className={`flex items-center justify-between h-20 `}>
+                            <div className={`flex items-center justify-between h-20 border-b border-[#0000001A] mb-4`}>
                                 <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-8`} />
                                 <button onClick={toggleSidebar} className="absolute top-10 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 rotate-180`}>
@@ -188,8 +188,8 @@ const SidebarMenu = () => {
                             </div>
                         </>
                         : <>
-                            <div className={`flex items-center justify-between h-20 `}>
-                                <img src={NovalyaBlueLogo} alt="logo" className={`w-full object-contain h-13 mr-5`} />
+                            <div className={`flex items-center justify-between h-20 border-b border-[#0000001A] mb-4`}>
+                                <img src={NovalyaBlueLogo} alt="logo" className={`w-full object-contain h-12 mr-5`} />
                                 <button onClick={toggleSidebar} className="absolute top-10 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 `}>
                                         <CollapsedLeftIcon />

@@ -17,38 +17,37 @@ const ConnectionDashboard = ({
     
     return (
         <div>
-            <h3 className="text-lg font-bold mb-5">{`${t("dashboard.Hello")} Anima`}</h3>
-
-            <div className="bg-white p-3 rounded-lg flex flex-col gap-3">
-                <h2 className="font-medium text-lg">{t("dashboard.Setup Your Account")}</h2>
-                <div className="flex gap-4 h-80 relative">
+            <h3 className="text-[24px] font-bold mb-4 pl-5">{`${t("dashboard.Hello")} Anima`}</h3>
+            <div className="bg-white p-5 rounded-[10px]">
+                <div className="flex flex-col gap-6">
+                    <h2 className="font-medium text-[24px]">{t("dashboard.Setup Your Account")}</h2>
+                    <div className="grid grid-cols-2 gap-[20px]">
+                        {isLoading && (
+                            <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg">
+                                <Spin size="large" />
+                            </div>
+                        )}
+                        <ConnectionFirstStep />
+                        <VideoSection />
+                    </div>
+                </div>
+                <div className="pt-6 py-6 rounded-lg flex flex-col gap-3 relative">
                     {isLoading && (
                         <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg">
                             <Spin size="large" />
                         </div>
                     )}
-                    <ConnectionFirstStep />
-                    <VideoSection />
+                    <ConnectionSecondStep />
                 </div>
-            </div>
-
-            <div className="bg-white p-3 rounded-lg flex flex-col gap-3 relative">
-                {isLoading && (
-                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg">
-                        <Spin size="large" />
-                    </div>
-                )}
-                <ConnectionSecondStep />
-            </div>
-
-            <div className="flex justify-center items-center w-full mt-5">
-                <button id="confirm-dashboard-btn"
-                    className={`flex items-center justify-center w-96 py-1.5 bg-blue-500 text-white rounded-md focus:outline-none cursor-pointer ${shouldEnableButton ? "" : "disable-confirm-dashboard-btn"
-                        }`}
-                    onClick={handleHideConnection}
-                >
-                    {t("dashboard.Confirm")}
-                </button>
+                <div className="flex justify-center items-center w-full">
+                    <button id="confirm-dashboard-btn"
+                        className={`flex items-center justify-center w-96 py-3 bg-blue-500 text-white rounded-md focus:outline-none cursor-pointer ${shouldEnableButton ? "" : "disable-confirm-dashboard-btn"
+                            }`}
+                        onClick={handleHideConnection}
+                    >
+                        {t("dashboard.Confirm")}
+                    </button>
+                </div>
             </div>
         </div>
     );

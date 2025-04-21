@@ -13,11 +13,11 @@ const useFbProspectingStore = create((set) => ({
                 : folder
         )
     })),
-    setFolders: async (socialType) => {
+    setFolders: async (prospect_folder) => {
         try {
             const token = localStorage.getItem("token");
             const response = await fetch(
-                `${BASE_URL}groups/api/get-prospect-folders?social_type=${socialType}`,
+                `${BASE_URL}groups/api/get-prospect-folders?prospect_folder=${prospect_folder}`,
                 {
                     method: "GET",
                     headers: {
@@ -30,13 +30,12 @@ const useFbProspectingStore = create((set) => ({
                 throw new Error("Failed to fetch folders");
             }
             const data = await response.json();
-            // Assuming 'data' contains an array of folders
             set({ folders: data.data });
         } catch (error) {
             console.error("Error fetching folders:", error);
         }
     },
-    createFolder: async (folderName, social_type, selectedGroups) => {
+    createFolder: async (folderName, social_type, selectedGroups, prospect_folder) => {
         try {
             const token = localStorage.getItem("token");
             const response = await fetch(
@@ -50,7 +49,8 @@ const useFbProspectingStore = create((set) => ({
                     body: JSON.stringify({
                         folder_name: folderName,
                         social_type: social_type,
-                        selectedGroups: selectedGroups
+                        selectedGroups: selectedGroups,
+                        prospect_folder: prospect_folder
                     }),
                 }
             );

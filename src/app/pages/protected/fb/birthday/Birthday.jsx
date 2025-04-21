@@ -41,7 +41,7 @@ const Birthday = () => {
   },[])
 
   const handleSelectCRM = (data)=>{
-    const currCrm = CRMList?.find((grp)=>grp?.id === Number(data.id))?.id
+    const currCrm = CRMList?.find((grp)=>grp?.id === data)?.id
     setSelectedGroup(currCrm)
   }
 

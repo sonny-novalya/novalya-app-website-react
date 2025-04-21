@@ -21,9 +21,9 @@ const VideoSection = () => {
   }, []);
 
   return (
-    <div className="flex flex-col w-full">
-      <iframe
-        className="w-full h-full rounded-md"
+    <div className="relative pt-[56.6%] rounded-[10px] overflow-hidden">
+      <iframe 
+        className="absolute w-full h-full top-0 left-0"
         src={videoUrl}
         title="Video"
         allowFullScreen

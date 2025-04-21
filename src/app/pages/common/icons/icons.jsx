@@ -445,31 +445,32 @@ export const LinkRedIcon = () => (
     </svg>
 )
 export const GreenCheckRoundedIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#21BF7C" />
+    <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 0.5C4.5 0.5 0 5 0 10.5C0 16 4.5 20.5 10 20.5C15.5 20.5 20 16 20 10.5C20 5 15.5 0.5 10 0.5ZM8 15.5L3 10.5L4.41 9.09L8 12.67L15.59 5.08L17 6.5L8 15.5Z" fill="#21BF7C"/>
     </svg>
+
 
 )
 
 export const FBLogo = () => (
     <svg width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clipPath="url(#clip0_4869_12011)">
-            <rect width="75" height="75" rx="10" fill="url(#paint0_linear_4869_12011)" />
-            <path d="M31.3125 74.625C13.5 71.4375 0 56.0625 0 37.5C0 16.875 16.875 0 37.5 0C58.125 0 75 16.875 75 37.5C75 56.0625 61.5 71.4375 43.6875 74.625L41.625 72.9375H33.375L31.3125 74.625Z" fill="url(#paint1_linear_4869_12011)" />
-            <path d="M52.125 49.0001L53.8125 38.5001H43.875V31.1876C43.875 28.1876 45 25.9376 49.5 25.9376H54.375V16.3751C51.75 16.0001 48.75 15.6251 46.125 15.6251C37.5 15.6251 31.5 20.8751 31.5 30.2501V38.5001H22.125V49.0001H31.5V75.4376C33.5625 75.8126 35.625 76.0001 37.6875 76.0001C39.75 76.0001 41.8125 75.8126 43.875 75.4376V49.0001H52.125Z" fill="white" />
+        <g clip-path="url(#clip0_4836_10683)">
+        <rect width="75" height="75" rx="10" fill="url(#paint0_linear_4836_10683)"/>
+        <path d="M31.3125 74.625C13.5 71.4375 0 56.0625 0 37.5C0 16.875 16.875 0 37.5 0C58.125 0 75 16.875 75 37.5C75 56.0625 61.5 71.4375 43.6875 74.625L41.625 72.9375H33.375L31.3125 74.625Z" fill="url(#paint1_linear_4836_10683)"/>
+        <path d="M52.125 49.0001L53.8125 38.5001H43.875V31.1876C43.875 28.1876 45 25.9376 49.5 25.9376H54.375V16.3751C51.75 16.0001 48.75 15.6251 46.125 15.6251C37.5 15.6251 31.5 20.8751 31.5 30.2501V38.5001H22.125V49.0001H31.5V75.4376C33.5625 75.8126 35.625 76.0001 37.6875 76.0001C39.75 76.0001 41.8125 75.8126 43.875 75.4376V49.0001H52.125Z" fill="white"/>
         </g>
         <defs>
-            <linearGradient id="paint0_linear_4869_12011" x1="37.5019" y1="72.7555" x2="37.5019" y2="-0.013884" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#0062E0" />
-                <stop offset="1" stopColor="#19AFFF" />
-            </linearGradient>
-            <linearGradient id="paint1_linear_4869_12011" x1="37.5019" y1="72.3917" x2="37.5019" y2="-0.0138146" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#0062E0" />
-                <stop offset="1" stopColor="#19AFFF" />
-            </linearGradient>
-            <clipPath id="clip0_4869_12011">
-                <rect width="75" height="75" rx="10" fill="white" />
-            </clipPath>
+        <linearGradient id="paint0_linear_4836_10683" x1="37.5019" y1="72.7555" x2="37.5019" y2="-0.013884" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#0062E0"/>
+        <stop offset="1" stop-color="#19AFFF"/>
+        </linearGradient>
+        <linearGradient id="paint1_linear_4836_10683" x1="37.5019" y1="72.3917" x2="37.5019" y2="-0.0138146" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#0062E0"/>
+        <stop offset="1" stop-color="#19AFFF"/>
+        </linearGradient>
+        <clipPath id="clip0_4836_10683">
+        <rect width="75" height="75" rx="10" fill="white"/>
+        </clipPath>
         </defs>
     </svg>
 )

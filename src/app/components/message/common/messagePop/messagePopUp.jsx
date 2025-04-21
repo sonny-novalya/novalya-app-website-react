@@ -53,7 +53,7 @@ const MessagePopUp = ({setIsPop,messageList,setMessageData,preSelecetdMessage,lo
         </div>
         <div className='message-popup-wrap overflow-auto'>
           <div className='message-popup-content flex flex-col max-h-[85vh]'>
-            <div className='message-popup-searchbar flex items-center gap-5 mb-2.5 px-5 pt-8 pb-2'>
+            <div className='message-popup-searchbar flex items-center gap-5 mb-2.5 px-5 pt-14 pb-2'>
               <div className='message-search flex items-center gap-1.5 flex-grow text-.5 [#808183] border border-[#00040733] rounded px-4 py-2 text-base'>
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clipRule="evenodd" d="M10.9635 12.315C9.61561 13.3919 7.90657 13.9118 6.18734 13.768C4.46812 13.6242 2.86921 12.8276 1.71901 11.5417C0.568806 10.2558 -0.045372 8.57833 0.00261415 6.85376C0.0506003 5.12919 0.757107 3.48846 1.97703 2.26854C3.19696 1.04861 4.83769 0.342104 6.56226 0.294118C8.28682 0.246132 9.9643 0.86031 11.2502 2.01051C12.5361 3.16071 13.3327 4.75962 13.4765 6.47885C13.6203 8.19808 13.1004 9.90712 12.0235 11.255L17.1795 16.41C17.2531 16.4786 17.3122 16.5614 17.3532 16.6534C17.3942 16.7454 17.4163 16.8447 17.418 16.9454C17.4198 17.0461 17.4013 17.1462 17.3636 17.2396C17.3259 17.3329 17.2697 17.4178 17.1985 17.489C17.1273 17.5602 17.0424 17.6164 16.9491 17.6541C16.8557 17.6918 16.7556 17.7103 16.6549 17.7086C16.5542 17.7068 16.4549 17.6847 16.3629 17.6437C16.2709 17.6027 16.1881 17.5436 16.1195 17.47L10.9635 12.315ZM3.03746 10.753C2.3035 10.0189 1.80361 9.08379 1.60097 8.06573C1.39833 7.04768 1.50203 5.9924 1.89897 5.03326C2.29591 4.07412 2.96827 3.25418 3.83107 2.67706C4.69388 2.09994 5.7084 1.79154 6.74643 1.79084C7.78445 1.79015 8.79939 2.09718 9.66297 2.67314C10.5266 3.2491 11.2 4.06813 11.5982 5.02673C11.9965 5.98533 12.1016 7.04047 11.9003 8.0588C11.6991 9.07713 11.2004 10.0129 10.4675 10.748L10.4625 10.753L10.4575 10.757C9.47255 11.7396 8.13788 12.2911 6.74663 12.2903C5.35537 12.2896 4.0213 11.7366 3.03746 10.753Z" fill="#808183"/>
@@ -61,12 +61,12 @@ const MessagePopUp = ({setIsPop,messageList,setMessageData,preSelecetdMessage,lo
                 </svg>
                 <input className='flex-grow focus:outline-none' type='text' placeholder='Search novalya' value={searchText} onChange={(e) => setSearchText(e.target.value)}/>
               </div>
-              {/* <button className='flex items-center gap-2 border border-[#00040733] px-4 py-2 rounded text-[#808183] min-w-[160px]'>
+              <button className='flex items-center gap-2 border border-[#00040733] px-4 py-2 rounded text-[#808183] min-w-[160px]'>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M3.33333 15H6.66667C7.125 15 7.5 14.625 7.5 14.1667C7.5 13.7083 7.125 13.3333 6.66667 13.3333H3.33333C2.875 13.3333 2.5 13.7083 2.5 14.1667C2.5 14.625 2.875 15 3.33333 15ZM2.5 5.83333C2.5 6.29167 2.875 6.66667 3.33333 6.66667H16.6667C17.125 6.66667 17.5 6.29167 17.5 5.83333C17.5 5.375 17.125 5 16.6667 5H3.33333C2.875 5 2.5 5.375 2.5 5.83333ZM3.33333 10.8333H11.6667C12.125 10.8333 12.5 10.4583 12.5 10C12.5 9.54167 12.125 9.16667 11.6667 9.16667H3.33333C2.875 9.16667 2.5 9.54167 2.5 10C2.5 10.4583 2.875 10.8333 3.33333 10.8333Z" fill="#808183"/>
                 </svg>
                 Sort by
-              </button> */}
+              </button>
               <button onClick={()=>setIsMessage(true)} className='bg-[#0087FF] px-4 py-3 rounded-[10px] text-white text-sm min-h-[44px] min-w-[210px]'>{t("prospecting.Create New Message")}</button>
             </div>
             <div className='message-popup-list flex-grow overflow-auto mx-5 pr-0.5 gray-scroll'>
@@ -94,7 +94,7 @@ const MessagePopUp = ({setIsPop,messageList,setMessageData,preSelecetdMessage,lo
               }
              
             </div>
-            <div className='flex justify-end px-5 py-2'>
+            <div className='flex justify-end px-5 pt-3 pb-4'>
               <button className='bg-[#0087FF] px-4 py-2 rounded-[10px] text-white text-sm min-h-[44px] min-w-[125px]' onClick={()=>handleSelect()}>Select</button>
             </div>
           </div>

@@ -15,6 +15,8 @@ import IgFollowers from "./ig/prospecting/FollowersTable";
 import IgHashtags from "./ig/prospecting/HashtagsTable";
 import IgPost from "./ig/prospecting/PostsTable";
 import GroupsTable from "./fb/prospecting/GroupsTable";
+import FbProspecting from "./fb/prospecting/index";
+import IgProspecting from "./ig/prospecting/index";
 import PostsTable from "./fb/prospecting/PostTable";
 import Unfriended from "./fb/friends-list/Unfriended";
 import Deactivated from "./fb/friends-list/Deactivated";
@@ -28,6 +30,8 @@ const AffiliatePage = withSidebarLayout(AffiliateDashboard);
 const AffiliateLinksPage= withSidebarLayout(AffiliateLinks);
 const LevelCommissionPage = withSidebarLayout(LevelCommission);
 const AffiliateSettingsPage = withSidebarLayout(AffiliateSettings);
+const FbProspectingPage = withSidebarLayout(FbProspecting);
+const IgProspectingPage = withSidebarLayout(IgProspecting);
 const FbGroupsTablePage = withSidebarLayout(GroupsTable);
 const FbPostTablePage = withSidebarLayout(PostsTable);
 const CrmPage = withSidebarLayout(Crm);
@@ -45,4 +49,4 @@ const IgCrmPage = withSidebarLayout(IgCrm);
 const AiCommentsPage = withSidebarLayout(AiComments);
 const KeywordsPage = withSidebarLayout(Keywords);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage, AiCommentsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, KeywordsPage, ConnectionDashboardPage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, IgCrmPage, AiCommentsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage }
