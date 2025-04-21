@@ -16,8 +16,11 @@ import AddStageModal from "./AddStageModal";
 import NoteUserModal from "./NoteUserModal";
 
 import { t } from "i18next";
+import usefbCRM from "../../../../../store/fb/fbCRM";
 
 const RightSectionCrm = ({ selectedGroup }) => {
+  const {selectedGrpData}=usefbCRM()
+
   const [selectedUsersMap, setSelectedUsersMap] = useState({});
   const [openCampaignModal, setOpenCampaignModal] = useState(false);
   const [openMoveToStageModal, setOpenMoveToStageModal] = useState(false);
@@ -30,24 +33,22 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
   useEffect(() => {
     
-   if(selectedGroup?.stage?.length ){ let newStages = [...selectedGroup.stage].sort(
+   if(selectedGrpData?.stage?.length ){ 
+    let newStages = [...selectedGrpData.stage].sort(
         (a, b) => a.stage_num - b.stage_num
       );
       const fakeLeads = (id)=>{
-      return  [...Array(6)].map((_, i) => ({
-            id: `lead-${i}-stage-${id}`,
-            name: `John Doe ${i+1}`,
-            time: "2 days ago",
-            avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-          }));
+      const leads =   selectedGrpData?.taggedUsers?.filter((data)=>data?.stage_id === id)
+      return leads
       }
-      newStages=  newStages.map((element )=> {
+      newStages=  newStages?.map((element )=> {
         return {...element,leads:fakeLeads(element.id) }
       });
+
       setSortedStages(newStages)
     }
 
-  }, [selectedGroup])
+  }, [selectedGrpData])
   
   //  const startIndexRef = useRef(null);
 
@@ -79,10 +80,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     setOpenAddStageModal(true);
   };
 
-  const totalLeadsCount = sortedStages.reduce((sum, stage) => {
-    const leads = stage.leads || [];
-    return sum + leads.length;
-  }, 0);
+
 
   const handleDrop = (targetColId) => {
     if (!draggedItem || targetColId === draggedItem?.stageId) return
@@ -101,9 +99,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
     }))
 
     setSortedStages(newArr)
-
-
-
 
     setDraggedItem(null);
   };
@@ -154,7 +149,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     stage,
     toggleUserSelection,
   }) => {
-   
+   console.log(lead?.profile_pic)
 
     return (
       <div
@@ -181,12 +176,12 @@ const RightSectionCrm = ({ selectedGroup }) => {
           }}
         >
           <img
-            src={lead.avatar}
-            alt={lead.name}
+            src={lead?.profile_pic}
+            alt={lead?.name}
             className="w-8 h-8 rounded-full"
           />
           <div>
-            <p className="font-medium text-sm">{lead.name}</p>
+            <p className="font-medium text-sm">{lead.fb_name}</p>
             <p className="text-xs text-gray-400">{lead.time}</p>
           </div>
         </div>
@@ -209,7 +204,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full">
       <TopbarRightSection
         companyName={selectedGroup.name}
-        leadsCount={totalLeadsCount}
+        leadsCount={selectedGrpData?.taggedUsers?.length || 0}
         onSearch={handleSearch}
         onAddStage={handleAddStage}
       />
@@ -250,10 +245,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Checkbox
-                          checked={selectedUsers.length === stage.leads.length}
+                          checked={selectedUsers?.length === stage?.leads?.length && selectedUsers?.length > 0}
                           indeterminate={
-                            selectedUsers.length > 0 &&
-                            selectedUsers.length < stage.leads.length
+                            selectedUsers?.length > 0 &&
+                            selectedUsers?.length < stage?.leads?.length
                           }
                           onChange={handleSelectAll}
                         />
@@ -261,7 +256,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                           {stage.name}
                         </span>
                         <Badge
-                          count={`${stage.leads.length} leads`}
+                          count={`${stage?.leads?.length} leads`}
                           style={{
                             backgroundColor: "white",
                             color: "#0087FF",

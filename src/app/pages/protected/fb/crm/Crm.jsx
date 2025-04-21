@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Input, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Layout from "../../Layout";
-import { useFbCrmGroupStore } from "../../../../../store/crm-groups/fb-groups";
 import LeftSectionCrm from "./LeftSectionCrm";
 import RightSectionCrm from "./RightSectionCrm";
 import AddGroupModal from "./AddGroupModal";
 import { t } from "i18next";
+import usefbCRM from "../../../../../store/fb/fbCRM";
 
 const initialGroups = [
   { id: "1", name: "TeckTalk" },
@@ -37,11 +37,12 @@ const Crm = () => {
     setGroups(items);
   };
 
-  const { fbCrmGroups, loading: fetchCrmGroupLoading, error: fetchCrmGroupError, fetchGroups } = useFbCrmGroupStore();
+
+  const {fetchCRMGroups,CRMList,fbCRMLoading, error ,reorderCRMGroupsFB}=usefbCRM()
 
   useEffect(() => {
-    fetchGroups();
-  }, [fetchGroups]);
+    fetchCRMGroups();
+  }, []);
 
   const toggleAddGroupModal = () => {
     setOpenAddGroupModal(!openAddGroupModal);
@@ -72,13 +73,14 @@ const Crm = () => {
           />
           <div className="flex-1 overflow-y-auto max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]">
             <LeftSectionCrm
-              isLoading={fetchCrmGroupLoading}
-              groups={fbCrmGroups}
+              isLoading={fbCRMLoading}
+              groups={CRMList}
               search={search}
               selectedGroup={selectedGroup}
               setSelectedGroup={setSelectedGroup}
               onDragEnd={onDragEnd}
-              error={fetchCrmGroupError}
+              error={error}
+              reorderCRMGroupsFB={reorderCRMGroupsFB}
             />
           </div>
         </div>

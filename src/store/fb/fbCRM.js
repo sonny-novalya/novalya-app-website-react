@@ -6,6 +6,9 @@ const usefbCRM = create((set) => ({
     CRMList:[],
     fbCRMLoading:false,
     error:null,
+    selectedGrpData:{},
+    selectedGrpLoader:false,
+
   
 //    setFlow: (val) => set(() => ({ flow: val })), 
   
@@ -29,6 +32,47 @@ const usefbCRM = create((set) => ({
           });
       }
   },
+  reorderCRMGroupsFB: async (data) => {
+  
+      try {
+          await apiCall({
+              method: 'POST',
+              url: '/user/api/reorderGroup',
+              data:data
+          });
+
+        
+       
+      } catch (error) {
+          set({
+              fbCRMLoading: false,
+              error: error?.message || 'Something went wrong',
+          });
+      }
+  },
+  getGroupById: async (id) => {
+    set({
+        selectedGrpLoader: true,
+     
+    });
+    try {
+      const res =  await apiCall({
+            method: 'GET',
+            url: `/user/api/group/${id}`,
+        });
+
+        set({
+            selectedGrpData: res?.data?.data || {},
+            selectedGrpLoader: false,
+        });
+     
+    } catch (error) {
+        set({
+            selectedGrpLoader: false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
 
 }));
 
