@@ -20,7 +20,11 @@ const menu = (record) => (
         <Menu.Item key="1" className="scale-80 transform" onClick={() => window.open(record.url, "_blank")}>
             <InstagramIcon />
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="2" className="sync-members" data-group={JSON.stringify({
+            id: record.id,
+            url: record.url,
+            type: record.group_type
+        })}>
             <SyncBlueIcon />
         </Menu.Item>
         <Menu.Item key="3">
@@ -48,6 +52,7 @@ const IgProspecting = () => {
     const prospect_folder = "ig";
 
     const [activeKey, setActiveKey] = useState(1);
+    const [primaryGroupId, setPrimaryGroupId] = useState(null); 
 
     const handleOpenSettingsTab = (value) => {
         setActiveKey(value);
@@ -65,8 +70,8 @@ const IgProspecting = () => {
     };
 
     const handleOpenConfirmModal = (group) => {
+        setPrimaryGroupId(group?.id || null)
         setConfirmModalOpen(true);
-        console.log("group", group)
     };
 
     const handleCloseConfirmModal = () => {
@@ -506,6 +511,7 @@ const IgProspecting = () => {
                         groups={groups}
                         socialType={socialType}
                         handleOpenSettingsTab={handleOpenSettingsTab}
+                        primaryGroupId={primaryGroupId}
                     />
                 )}
 
