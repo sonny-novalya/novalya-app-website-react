@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useRef, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
@@ -15,24 +16,6 @@ import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
 
-const menu = (record) => (
-    <Menu className="flex items-center justify-center">
-        <Menu.Item key="1" className="scale-80 transform" onClick={() => window.open(record.url, "_blank")}>
-            <InstagramIcon />
-        </Menu.Item>
-        <Menu.Item key="2" className="sync-members" data-group={JSON.stringify({
-            id: record.id,
-            url: record.url,
-            type: record.group_type
-        })}>
-            <SyncBlueIcon />
-        </Menu.Item>
-        <Menu.Item key="3">
-            <DeleteFillRedIcon />
-        </Menu.Item>
-    </Menu>
-);
-
 const IgProspecting = () => {
     const [searchParams] = useSearchParams();
     const f = searchParams.get("f");
@@ -47,12 +30,16 @@ const IgProspecting = () => {
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup } = useGroupStore();
     const socialType = "fb_groups";
     const prospect_folder = "ig";
 
     const [activeKey, setActiveKey] = useState(1);
     const [primaryGroupId, setPrimaryGroupId] = useState(null); 
+
+    const [openDropdownKey, setOpenDropdownKey] = useState(null);
+    const [confirmModalKey, setConfirmModalKey] = useState(null);
+    const dropdownRefs = useRef({});
 
     const handleOpenSettingsTab = (value) => {
         setActiveKey(value);
@@ -260,6 +247,80 @@ const IgProspecting = () => {
         });
     };
 
+        const toggleDropdown = (key) => {
+            if (confirmModalKey === null) {
+                setOpenDropdownKey(openDropdownKey === key ? null : key);
+            }
+        };
+        
+        const handleMenuClick = (key, action) => {
+            if (action === 'Delete') {
+                setOpenDropdownKey(null);
+                setConfirmModalKey(key);
+    
+                setTimeout(() => {
+                    setConfirmModalKey(null);
+                    setOpenDropdownKey(key);
+                }, 3000);
+            } else {
+                setOpenDropdownKey(null);
+            }
+        };
+    
+        const setDropdownRef = (key, element) => {
+            dropdownRefs.current[key] = element;
+        };
+        const RowDropdown = ({ record }) => {
+            const isOpen = openDropdownKey === record.id;
+            const isConfirming = confirmModalKey === record.id;
+    
+            return (
+                <div className="relative" ref={(el) => setDropdownRef(record.id, el)}>
+                    {isOpen && !isConfirming && (
+                        <div className="absolute right-0 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg focus:outline-none">
+                            <div className="flex space-x-3 px-2 py-1 rounded-md">
+                                <button
+                                    onClick={() => window.open(record.url, "_blank")}
+                                    className="cursor-pointer"
+                                >
+                                    <InstagramIcon />
+                                </button>
+                                <button
+                                    className=" sync-members  cursor-pointer"
+                                    data-group={JSON.stringify({
+                                        id: record.id,
+                                        url: record.url,
+                                        type: record.group_type
+                                    })}
+                                >
+                                    <SyncBlueIcon />
+                                </button>
+                                <button
+                                    onClick={() => handleMenuClick(record.id, 'Delete')}
+                                    className="cursor-pointer"
+                                >
+                                    <DeleteFillRedIcon />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+    
+                    {isConfirming && (
+                        <div className="absolute right-3 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg" 
+                            onClick={async () => {
+                                await deleteGroup({ id: record.id });
+                                setConfirmModalKey(null);
+                                setOpenDropdownKey(null);
+                                fetchGroups({ ...storeFilters, type: "instagram" }); 
+                            }}
+                            >
+                            <p className="px-4 py-1.5 text-red-500 cursor-pointer">Really??</p>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
     const groupColumns = [
         {
             title: (GroupNameColumn),
@@ -322,9 +383,14 @@ const IgProspecting = () => {
         {
             title: t("prospecting.Action"),
             render: (_, record) => (
-                <Dropdown overlay={menu(record)} trigger={["click"]} >
-                    <Button icon={<MoreOutlined />} className="bg-gray-200 px-3 py-1 rounded-md" />
-                </Dropdown>
+                <div ref={(el) => setDropdownRef(record.id, el)} className="relative">
+                    <Button
+                        icon={<MoreOutlined />}
+                        className="bg-gray-200 px-3 py-1 rounded-md"
+                        onClick={() => toggleDropdown(record.id)}
+                    />
+                    <RowDropdown record={record} />
+                </div>
             ),
         },
     ];
@@ -398,6 +464,20 @@ const IgProspecting = () => {
         }
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const openKey = openDropdownKey;
+            if (openKey && dropdownRefs.current[openKey] &&
+                !dropdownRefs.current[openKey].contains(event.target)) {
+                setOpenDropdownKey(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [openDropdownKey]);
 
     useEffect(() => {
         fetchGroups({ ...storeFilters, type: "instagram" } );
