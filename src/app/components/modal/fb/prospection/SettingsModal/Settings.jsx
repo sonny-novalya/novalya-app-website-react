@@ -48,7 +48,7 @@ const Settings = ({ isInstagram}) => {
     const handleUpdate = (field, value) => {
         if (field === "norequest") {
             if (value === "Custom") {
-                updateProspection({ ...prospection, norequest: value });
+                updateProspection({ ...prospection, norequest: Number(customRequest) });
             } else {
                 updateProspection({ ...prospection, norequest: value });
             }
@@ -56,6 +56,7 @@ const Settings = ({ isInstagram}) => {
             updateProspection({ ...prospection, [field]: value });
         }
     };
+
 
     return (
         <div className="">
@@ -111,7 +112,7 @@ const Settings = ({ isInstagram}) => {
                                 </button>
                             );
                         })}
-                        {norequest === "Custom" && (
+                        {norequest !== undefined && !requestOptions.includes(String(norequest)) && (
                             <>
                                 <p className="col-span-1 text-xs my-auto">(Min 1 and Max 50)</p>
                                 <input
@@ -122,7 +123,7 @@ const Settings = ({ isInstagram}) => {
                                     onChange={(e) => {
                                         const val = e.target.value;
                                         if (val === "" || (Number(val) >= 1 && Number(val) <= 50)) {
-                                            setCustomRequest(val); 
+                                            setCustomRequest(val);
                                         }
                                     }}
                                     onBlur={() => {
@@ -136,6 +137,7 @@ const Settings = ({ isInstagram}) => {
                                 />
                             </>
                         )}
+
 
                     </div>
                 </div>

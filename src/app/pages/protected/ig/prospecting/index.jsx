@@ -164,13 +164,14 @@ const IgProspecting = () => {
     const GroupNameColumn = (
         <div className="flex items-center space-x-2">
             <span>Group Name </span>
-            {storeFilters.sort_by === 0 ? (
+            {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
                     className="w-8 h-8 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
                             sort_by: 1,
+                            field: "name",
                             type: "instagram"
                         });
                     }}
@@ -206,6 +207,87 @@ const IgProspecting = () => {
                         updateFilters({
                             ...storeFilters,
                             sort_by: 0,
+                            field: "name",
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-0"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            )}
+
+        </div>
+    );
+
+    const TotalMemberColumn = (
+        <div className="flex items-center space-x-2">
+            <span>Total Members</span>
+            {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 1,
+                            field: "total_member",
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-180"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            ) : (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 0,
+                            field: "total_member",
                             type: "instagram"
                         });
                     }}
@@ -351,7 +433,8 @@ const IgProspecting = () => {
         },
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
-            title: t("prospecting.Total Members"), dataIndex: "total_member", render: (text) => (
+            title: (TotalMemberColumn),
+            dataIndex: "total_member", render: (text) => (
                 <span>{formatNumber(text)}</span>
             )
         },
