@@ -21,12 +21,16 @@ const Filters = ({ keyWordList }) => {
     };
 
     const handleUpdate = (field, value) => {
+        const updatedValue = field === "keyword" && value === "none" ? null : value;
+
         updateProspection({
             ...prospection,
-            [field]: value
+            [field]: updatedValue
         });
+
         setDropdownOpen(false);
     };
+
 
     useEffect(() => {
         const handleClickOutside = (event) => {
