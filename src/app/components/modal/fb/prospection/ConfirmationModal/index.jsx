@@ -27,10 +27,11 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
     };
 
     useEffect(() => {
-        fetchKeywords({ page: 1, limit: 100 });
-        fetchProspectionData(isInstagram ? 'instagram' : 'facebook', primaryGroupId);
-        fetchMessages({ page: 1, limit: 200 });
-        fetchCRMGroups();
+        if(primaryGroupId)
+            fetchKeywords({ page: 1, limit: 100 });
+            fetchProspectionData(isInstagram ? 'instagram' : 'facebook', primaryGroupId);
+            fetchMessages({ page: 1, limit: 200 });
+            fetchCRMGroups();
     }, []);
 
     const messageTitle = tempMessageList.find((item) => item.id === message) || "Message123";
