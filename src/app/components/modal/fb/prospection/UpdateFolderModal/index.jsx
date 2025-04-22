@@ -9,7 +9,7 @@ import { DeleteFillIcon } from "../../../../../pages/common/icons/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { t } from "i18next";
 
-const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose }) => {
+const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, prospectFolder }) => {
     const [selectedGroups, setSelectedGroups] = useState([]);
     const [newFolderName, setNewFolderName] = useState(folderName);
     const { groups, initialGroups, fetchInitialGroups, fetchGroups } = useGroupStore();
@@ -20,6 +20,7 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
             checked ? [...prev, id] : prev.filter((groupId) => groupId !== id)
         );
     };
+
     const location = useLocation();
     
     const handleSave = async () => {
@@ -60,10 +61,14 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
             fetchGroups(socialType, folderId);
             fetchInitialGroups(socialType);
         }
-    }, [folderId]);
+
+        if (prospectFolder) {
+            const type = prospectFolder === "ig" ? "instagram" : "facebook";
+            fetchInitialGroups(type);
+        }
+    }, [folderId, prospectFolder]);
 
     useEffect(() => {
-        // Sync selected groups with API-loaded groups
         if (groups.length > 0) {
             const selected = groups.map((g) => g.id);
             setSelectedGroups(selected);
@@ -163,8 +168,9 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
 };
 
 UpdateFolderModal.propTypes = {
-    folderId: PropTypes.any,
+    prospectFolder: PropTypes.string,
     folderName: PropTypes.string,
+    folderId: PropTypes.string,
     socialType: PropTypes.string,
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,

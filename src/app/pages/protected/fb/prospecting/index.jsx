@@ -25,13 +25,12 @@ const FbProspecting = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState(null);
     const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
     const [openUpdateFolderModal, setOpenUpdateFolderModal] = useState(false);
-    const [folderId, setFolderId] = useState(null);
+    // const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup, folderUpdateId, setFolderUpdateId } = useGroupStore();
     const socialType = "fb_groups";
     const prospect_folder = "fb";
 
@@ -47,22 +46,23 @@ const FbProspecting = () => {
         setModalOpen(true);
     };
 
-    const handleOpenSettings = (group) => {
-        setSelectedGroup(group);
+    const handleOpenSettings = (groupId) => {
+        setPrimaryGroupId(groupId)
         setModalOpen(true);
     };
-
+    
     const handleCloseModal = () => {
+        setPrimaryGroupId(null);
         setModalOpen(false);
-        setSelectedGroup(null);
     };
 
-    const handleOpenConfirmModal = (group) => {
-        setPrimaryGroupId(group?.id || null)
+    const handleOpenConfirmModal = (groupId) => {
+        setPrimaryGroupId(groupId)
         setConfirmModalOpen(true);
     };
-
+    
     const handleCloseConfirmModal = () => {
+        // setPrimaryGroupId(null)
         setConfirmModalOpen(false);
     };
 
@@ -126,7 +126,6 @@ const FbProspecting = () => {
             </div>
         );
     };
-
 
     const groupTypeColumn = (
         <div className="flex items-center space-x-3">
@@ -442,7 +441,7 @@ const FbProspecting = () => {
                 <Button
                     icon={<SettingOutlined />}
                     className="bg-blue-500 text-white px-3 py-1 rounded-md"
-                    onClick={() => handleOpenSettings(record)}
+                    onClick={() => handleOpenSettings(record.id)}
                 >
                     Settings
                 </Button>
@@ -454,7 +453,7 @@ const FbProspecting = () => {
                 <Button
                     icon={<SendOutlined />}
                     className="bg-gray-200 px-3 py-1 rounded-md"
-                    onClick={() => handleOpenConfirmModal(record)} />
+                    onClick={() => handleOpenConfirmModal(record.id)} />
             )
         },
         {
@@ -549,7 +548,10 @@ const FbProspecting = () => {
                                 <div className="flex items-center" key={index}>
                                     <button
                                         className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
-                                        onClick={() => handleFolderClick(folder.id)}
+                                        onClick={() => {
+                                            setFolderUpdateId(folder.id)
+                                            handleFolderClick(folder.id)
+                                        }}
                                     >
                                         <div className="flex space-x-2 items-center">
                                             <span>{folder.folder_name}</span>
@@ -570,7 +572,7 @@ const FbProspecting = () => {
                                         </div>
                                     </button>
                                     <span className="ml-1 cursor-pointer" onClick={() => {
-                                        setFolderId(folder.id)
+                                        // setFolderId(folder.id)
                                         setFolderName(folder.folder_name)
                                         setOpenUpdateFolderModal(true)
                                     }}>
@@ -626,7 +628,7 @@ const FbProspecting = () => {
                     <SettingsModal
                         visible={modalOpen}
                         onClose={handleCloseModal}
-                        group={selectedGroup}
+                        groupId={primaryGroupId}
                         socialType={socialType}
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
@@ -637,10 +639,8 @@ const FbProspecting = () => {
                     <ConfirmationModal
                         visible={confirmModalOpen}
                         onClose={handleCloseConfirmModal}
-                        groups={groups}
-                        socialType={socialType}
+                        groupId={primaryGroupId}
                         handleOpenSettingsTab={handleOpenSettingsTab}
-                        primaryGroupId={primaryGroupId}
                     />
                 )}
 
@@ -655,11 +655,12 @@ const FbProspecting = () => {
 
                 {openUpdateFolderModal && (
                     <UpdateFolderModal
-                        folderId={folderId}
+                        folderId={folderUpdateId}
                         folderName={folderName}
                         visible={openUpdateFolderModal}
                         onClose={handleCloseUpdateFolderModal}
                         socialType={socialType}
+                        prospectFolder={prospect_folder}
                     />
                 )}
             </div>

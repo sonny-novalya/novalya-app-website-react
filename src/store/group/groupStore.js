@@ -4,6 +4,8 @@ import { BASE_URL } from "../../services/ApiCalls";
 const useGroupStore = create((set) => ({
     groups: [],
     initialGroups: [],
+    folderUpdateId: null,
+    setFolderUpdateId: (val) => (set({ folderUpdateId: val})),
     loading:false,
     initialStoreFilters: {
         sort_by: 0,
@@ -74,7 +76,7 @@ const useGroupStore = create((set) => ({
         }
     },
 
-    fetchInitialGroups: async ({type = "facebook"}) => {
+    fetchInitialGroups: async (type) => {
         try {
             const token = localStorage.getItem("token");
             const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;

@@ -24,7 +24,6 @@ const IgProspecting = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState(null);
     const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
     const [openUpdateFolderModal, setOpenUpdateFolderModal] = useState(false);
     const [folderId, setFolderId] = useState(null);
@@ -46,22 +45,23 @@ const IgProspecting = () => {
         setModalOpen(true);
     };
 
-    const handleOpenSettings = (group) => {
-        setSelectedGroup(group);
+    const handleOpenSettings = (groupId) => {
+        setPrimaryGroupId(groupId)
         setModalOpen(true);
     };
 
     const handleCloseModal = () => {
+        setPrimaryGroupId(null);
         setModalOpen(false);
-        setSelectedGroup(null);
     };
 
-    const handleOpenConfirmModal = (group) => {
-        setPrimaryGroupId(group?.id || null)
+    const handleOpenConfirmModal = (groupId) => {
+        setPrimaryGroupId(groupId)
         setConfirmModalOpen(true);
     };
 
     const handleCloseConfirmModal = () => {
+        // setPrimaryGroupId(null)
         setConfirmModalOpen(false);
     };
 
@@ -449,7 +449,7 @@ const IgProspecting = () => {
                 <Button
                     icon={<SettingOutlined />}
                     className="bg-blue-500 text-white px-3 py-1 rounded-md"
-                    onClick={() => handleOpenSettings(record)}
+                    onClick={() => handleOpenSettings(record.id)}
                 >
                     Settings
                 </Button>
@@ -461,7 +461,7 @@ const IgProspecting = () => {
                 <Button
                     icon={<SendOutlined />}
                     className="bg-gray-200 px-3 py-1 rounded-md"
-                    onClick={() => handleOpenConfirmModal(record)} />
+                    onClick={() => handleOpenConfirmModal(record.id)} />
             )
         },
         {
@@ -661,7 +661,7 @@ const IgProspecting = () => {
                     <SettingsModal
                         visible={modalOpen}
                         onClose={handleCloseModal}
-                        group={selectedGroup}
+                        groupId={primaryGroupId}
                         socialType={socialType}
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
@@ -672,9 +672,8 @@ const IgProspecting = () => {
                     <ConfirmationModal
                         visible={confirmModalOpen}
                         onClose={handleCloseConfirmModal}
-                        groups={groups}
+                        groupId={primaryGroupId}
                         handleOpenSettingsTab={handleOpenSettingsTab}
-                        primaryGroupId={primaryGroupId}
                     />
                 )}
 
