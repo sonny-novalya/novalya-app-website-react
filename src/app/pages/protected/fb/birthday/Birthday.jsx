@@ -10,6 +10,7 @@ import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
 import usefbCRM from "../../../../../store/fb/fbCRM";
 import { useEffect } from "react";
 import useBirthdayStore from "../../../../../store/fb/birthday";
+import { TickFillIcon } from "../../../common/icons/icons";
 
 
 const Birthday = () => {
@@ -28,6 +29,17 @@ const Birthday = () => {
   const [messageData, setMessageData] = useState(null);
   const [isMessagePop, setIsMessagePop] = useState(false);
   const [preSelecetdMessage, setPreSelecetdMessage] = useState(null);
+  const reTargetUserData = [
+    {
+        label: "Yes",
+        value: "yes"
+    },
+    {
+        label: "No",
+        value: "no"
+    }
+];
+ const [prospect , setProspect] = useState("no");
 
 
  
@@ -62,10 +74,11 @@ const Birthday = () => {
         let action = data?.action ? JSON.parse(data?.action) :null
         setSelectedWishType(data.type || "message")
         setSelectedStrategy(data?.birthday_type || "today")
-        setSelectedTag(data?.prospect || "yes")
+        setSelectedTag(action?.moveGroupId  ? "yes":"no")
         setMessageData(data?.newMessage)
         setSelectedGroup(action?.moveGroupId || null)
         setSelectedStage(action?.moveStageId || null)
+        setProspect(data?.prospect || "no")
      
       }
     } catch (error) {
@@ -78,16 +91,17 @@ const Birthday = () => {
 
 
   const createBithday =async () =>{
-    const actionData = {
+    let actionData = {
       moveStageId:selectedStage,
       moveGroupId:selectedGroup
     }
+     actionData= actionData ? JSON.stringify(actionData) : ""
         const params = {
       type: selectedWishType,
       birthday_type: selectedStrategy,
       birthday_id: messageData?.id || null,
-      action: actionData ? JSON.stringify(actionData) : "",
-      prospect:selectedTag
+      action: selectedTag === "yes"?actionData:"" ,
+      prospect:prospect
   };
 
 
@@ -178,6 +192,31 @@ const Birthday = () => {
           templates={templates}
         /> */}
 
+       
+        <div className="border border-gray-300 p-4 rounded-lg mb-4">
+                <p className="font-medium text-gray-800 mb-2 flex items-center">
+                    Retarget same user
+                </p>
+                <div className="grid grid-cols-1 gap-3">
+                    {reTargetUserData.map((option) => (
+                        <button
+                            key={option.value}
+                            className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${prospect === option.value
+                                ? "bg-[#CCE7FF] border-[#CCE7FF]"
+                                : "bg-white border-[#0087FF]"
+                                }`}
+                            onClick={() => setProspect(option.value)}
+                        >
+                            {option.label}
+                            {prospect === option.value && (
+                                <span className="absolute -right-2 -top-2">
+                                    <TickFillIcon />
+                                </span>
+                            )}
+                        </button>
+                    ))}
+                </div>
+            </div>
         <div className="border border-[#DADADA] p-4 rounded-lg">
             <div class="flex items-center gap-[6px] mb-4">
               <p className="text-xl mb-0 font-[500]">{t("prospecting.Select Message")} Template</p>
@@ -187,6 +226,8 @@ const Birthday = () => {
               </svg>
               </div>
 
+           
+
             <div
                 className="w-full rounded-lg bg-white border cursor-pointer p-[11px] border-gray-300 px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                 style={{ height: "50px" }} 
@@ -195,11 +236,13 @@ const Birthday = () => {
               { messageData?.title || "Select Template"}
             </div>
         </div>
+      
+  
 
 
         {/* Send Birthday Wishes */}
         <div className="flex items-center justify-center">
-          <button onClick={()=>createBithday()} className="w-fit py-3 mt-6 rounded-lg text-lg bg-green-500 text-white px-40 cursor-pointer">
+          <button onClick={()=>createBithday()} className="w-fit py-3 mt-6 rounded-lg text-lg bg-green-500 text-white px-40 cursor-pointer send_birthday_message">
             Send Birthday Wishes
           </button>
         </div>

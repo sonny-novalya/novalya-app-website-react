@@ -28,7 +28,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
 
     useEffect(() => {
         fetchKeywords({ page: 1, limit: 100 });
-        fetchProspectionData();
+        fetchProspectionData(isInstagram ? 'instagram' : 'facebook');
         fetchMessages({ page: 1, limit: 200 });
         fetchCRMGroups();
     }, []);

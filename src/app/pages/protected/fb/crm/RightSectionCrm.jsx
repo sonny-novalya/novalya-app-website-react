@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Checkbox, Badge, Dropdown, Menu } from "antd";
+import { Checkbox, Badge, Dropdown, Menu, message } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import {
@@ -19,7 +19,7 @@ import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
 
 const RightSectionCrm = ({ selectedGroup }) => {
-  const {selectedGrpData}=usefbCRM()
+  const {selectedGrpData,moveTaggedUsers,createStage,addGrpLoader}=usefbCRM()
 
   const [selectedUsersMap, setSelectedUsersMap] = useState({});
   const [openCampaignModal, setOpenCampaignModal] = useState(false);
@@ -29,7 +29,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [sortedStages,setSortedStages]= useState([])
   const [draggedItem, setDraggedItem] = useState(null);
-  
 
   useEffect(() => {
     
@@ -82,7 +81,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
 
 
-  const handleDrop = (targetColId) => {
+  const handleDrop = async(targetColId) => {
     if (!draggedItem || targetColId === draggedItem?.stageId) return
 
 
@@ -99,8 +98,13 @@ const RightSectionCrm = ({ selectedGroup }) => {
     }))
 
     setSortedStages(newArr)
-
     setDraggedItem(null);
+
+    const res =await moveTaggedUsers({id:draggedItem.lead.id,stage_id:targetColId})
+
+    if (res?.status !== 200) {
+      message.error("Unable to move tagged user")
+    }
   };
 
 
@@ -239,7 +243,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
               <DroppableStage stageId={stage.id}>
                 <div
                   key={stage.id}
-                  className="min-w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md"
+                  className="min-w-[300px] min-h-[640px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-y-scroll"
+
                 >
                   <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
                     <div className="flex items-center justify-between">
@@ -256,7 +261,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                           {stage.name}
                         </span>
                         <Badge
-                          count={`${stage?.leads?.length} leads`}
+                          count={`${stage?.leads?.length || 0} leads`}
                           style={{
                             backgroundColor: "white",
                             color: "#0087FF",
@@ -342,6 +347,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
             console.log("moving with data:", data);
             setOpenMoveToStageModal(false);
           }}
+          createStage={createStage}
+          setSortedStages={setSortedStages}
+          selectedGroup={selectedGroup}
+          addGrpLoader={addGrpLoader}
         />
       )}
 

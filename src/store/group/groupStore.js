@@ -105,6 +105,27 @@ const useGroupStore = create((set) => ({
             console.error("Error fetching groups:", error);
         }
     },
+    deleteGroup: async ({ id }) => {
+        try {
+            const token = localStorage.getItem("token");
+            const endpoint = `${BASE_URL}groups/api/delete/${id}`;
+
+            const response = await fetch(endpoint, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch groups");
+            }
+
+        } catch (error) {
+            console.error("Error fetching groups:", error);
+        }
+    },
 }));
 
 export default useGroupStore;

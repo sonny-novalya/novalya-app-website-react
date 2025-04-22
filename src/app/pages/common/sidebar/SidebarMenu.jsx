@@ -17,6 +17,7 @@ import {
     CollapsedLeftIcon
 } from "../icons/icons";
 import NovaBlueLogo from "../../../../assets/img/nova-blue.png"
+import SidebarActive from "../../../../assets/img/sidebar-active.jpeg"
 import NovalyaBlueLogo from "../../../../assets/img/novalya-blue.png"
 import LocalizationOptions from "../../../../helpers/shared/LocalizationOptions";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -146,7 +147,9 @@ const SidebarMenu = () => {
                                                     }
                                                 >
                                                     <button
+
                                                         className={`w-full rounded px-3 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
+
                                                             } cursor-pointer`}
                                                         onClick={(e) => e.preventDefault()}
                                                     >
@@ -207,7 +210,9 @@ const SidebarMenu = () => {
                                             {item.subNav ? (
                                                 <>
                                                     <button
+
                                                         className={`w-full rounded px-4 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
+
                                                             } cursor-pointer`}
                                                         onClick={(e) => toggleSubNav(e, item.id)}
                                                     >
