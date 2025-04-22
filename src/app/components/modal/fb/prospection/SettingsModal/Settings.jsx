@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const Settings = ({ isInstagram}) => {
     const { prospection , updateProspection } = SettingStore();
 
-    const { stratagy, norequest, interval } = prospection 
+    const { pro_stratagy, norequest, interval } = prospection 
     const [customRequest, setCustomRequest] = useState(interval);
 
     const strategies = [
@@ -70,13 +70,13 @@ const Settings = ({ isInstagram}) => {
                         {strategies.map((option) => (
                             <button
                                 key={option.value}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${stratagy === option.value
+                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("stratagy",option.value)}
+                                onClick={() => handleUpdate("pro_stratagy",option.value)}
                             >
                                 {option.label}
-                                {stratagy === option.value && (
+                                {pro_stratagy === option.value && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>

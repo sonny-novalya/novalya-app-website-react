@@ -3,7 +3,7 @@ import { EditIconSquaredIcon } from "../../../../../pages/common/icons/icons";
 import PropTypes from "prop-types";
 // import SettingStore from "../../../../../../store/prospection/settings-store";
 
-const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
+const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
 
     // const { prospection, updateProspection } = SettingStore();
     // const handleClick = (field, value) => {
@@ -28,7 +28,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
     ];
 
     const selectedInterval =  intervalOptions?.find((item) => item.value === interval)
-    const selectedStratagy = strategies?.find((item) => item.value == stratagy)?.label
+    const selectedStratagy = strategies?.find((item) => item.value == proStratagy)?.label
     return (
         <main className="">
             <div className="flex gap-3 items-center">
@@ -63,7 +63,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
 };
 
 Settings.propTypes = {
-    stratagy: PropTypes.number,
+    proStratagy: PropTypes.number,
     norequest: PropTypes.string,
     interval: PropTypes.string,
     handleOpen: PropTypes.func,

@@ -18,6 +18,7 @@ const SettingStore = create((set) => ({
         keyword: null,
         prospect: "no", // retarget same user
         pro_convo: 0, // Existing conversation
+        pro_stratagy: 0, // Request + Message
         action: "no", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
         datevalue: null,
         group_id: null,
@@ -70,6 +71,7 @@ const SettingStore = create((set) => ({
                         keyword: responseData?.keyword,
                         prospect: responseData?.prospect,
                         pro_convo: responseData?.pro_convo,
+                        pro_stratagy: responseData?.pro_stratagy,
                         action: responseData?.action ,
                         datevalue: responseData?.datevalue,
                         group_id: responseData?.group_id,

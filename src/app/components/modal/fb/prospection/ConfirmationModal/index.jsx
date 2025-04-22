@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGroupId }) => {
     const { prospection, fetchProspectionData } = SettingStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
-    const { message, stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
+    const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { fetchCRMGroups, CRMList } = usefbCRM();
     const location = useLocation();
@@ -53,7 +53,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
                     {messageTitle}
                 </h3>
                 <Settings
-                    stratagy={stratagy}
+                    proStratagy={pro_stratagy}
                     norequest={norequest}
                     interval={interval}
                     handleOpen={handleOpen}
