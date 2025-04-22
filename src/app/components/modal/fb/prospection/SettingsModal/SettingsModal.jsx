@@ -13,7 +13,7 @@ import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 import usefbCRM from "../../../../../../store/fb/fbCRM";
 import { useLocation } from "react-router-dom";
 
-const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey }) => {
+const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, group }) => {
     const { prospection, fetchProspectionData, createSocialTarget, loading } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
@@ -26,7 +26,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey }) => {
         { label: t("prospecting.Settings"), key: 2, children: <Settings isInstagram={isInstagram} /> },
         ...(isInstagram ? [] : [{ label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} /> }]),
         { label: t("prospecting.Advanced Options"), key: isInstagram ? 3 : 4, children: <AdvOptions /> },
-        { label: t("prospecting.Add Tags"), key: isInstagram ? 4 : 5, children: <AddTags CRMList={CRMList} /> },
+        { label: t("prospecting.Add Tags"), key: isInstagram ? 4 : 5, children: <AddTags CRMList={CRMList} groupId={group?.id} /> },
     ];
 
     useEffect(() => {
