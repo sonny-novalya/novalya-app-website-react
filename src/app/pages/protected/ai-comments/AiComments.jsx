@@ -102,19 +102,19 @@ const AiComments = () => {
                 <SelectGender />
                 {data.map((categoryData) => (
                     <div key={categoryData.category}>
-                        <div className="text-[20px] font-[500] text-[#0087FF] bg-[#0087FF42] border border-[#0087FF7D] py-2 px-4 rounded-lg">
+                        <div className="text-[18px] font-[500] text-[#0087FF] bg-[#0087FF42] border border-[#0087FF7D] py-2.5 px-5 rounded-[6px]">
                             {categoryData.category} 
                             
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-[14px] gap-y-[24px] mt-6">
                             {categoryData.items.map((item) => (
-                                <div key={item.id} className="bg-white p-4 rounded-lg border border-[#DADADA]">
+                                <div key={item.id} className="bg-white p-5 rounded-lg border border-[#DADADA]">
                                     <div className="">
-                                        <span className="text-[#0087FF] bg-[#0087FF30] p-2 px-2.5 rounded-full mr-2">{item.id}</span>
-                                        <span className="text-lg">{item.title}</span>
+                                        <span className="text-[#0087FF] bg-[#0087FF30] inline-flex w-[36px] h-[36px] items-center justify-center text-[16px] font-normal rounded-full mr-2">{item.id}</span>
+                                        <span className="text-[20px] font-[500]">{item.title}</span>
                                     </div>
                                     <p
-                                     className="mt-4 text-base">{item.description}</p>
+                                     className="mt-4 text-[16px]">{item.description}</p>
                                 </div>
                             ))}
                         </div>

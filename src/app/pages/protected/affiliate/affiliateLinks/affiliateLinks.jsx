@@ -7,7 +7,7 @@ const { Option } = Select;
 
 const AffiliateLinks = () => {
   return (<>
-  <div className="p-6 bg-gray-100 min-h-screen">
+  <div className="p-6 bg-gray-100 h-screen overflow-s">
   <AfiliateTopBar/>
     {/* Affiliate Code Section */}
     <div className="bg-white p-6 shadow rounded-md mt-6">
