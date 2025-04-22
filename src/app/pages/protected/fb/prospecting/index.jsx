@@ -27,10 +27,10 @@ const FbProspecting = () => {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
     const [openUpdateFolderModal, setOpenUpdateFolderModal] = useState(false);
-    const [folderId, setFolderId] = useState(null);
+    // const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup, folderUpdateId, setFolderUpdateId } = useGroupStore();
     const socialType = "fb_groups";
     const prospect_folder = "fb";
 
@@ -548,7 +548,10 @@ const FbProspecting = () => {
                                 <div className="flex items-center" key={index}>
                                     <button
                                         className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
-                                        onClick={() => handleFolderClick(folder.id)}
+                                        onClick={() => {
+                                            setFolderUpdateId(folder.id)
+                                            handleFolderClick(folder.id)
+                                        }}
                                     >
                                         <div className="flex space-x-2 items-center">
                                             <span>{folder.folder_name}</span>
@@ -569,7 +572,7 @@ const FbProspecting = () => {
                                         </div>
                                     </button>
                                     <span className="ml-1 cursor-pointer" onClick={() => {
-                                        setFolderId(folder.id)
+                                        // setFolderId(folder.id)
                                         setFolderName(folder.folder_name)
                                         setOpenUpdateFolderModal(true)
                                     }}>
@@ -652,11 +655,12 @@ const FbProspecting = () => {
 
                 {openUpdateFolderModal && (
                     <UpdateFolderModal
-                        folderId={folderId}
+                        folderId={folderUpdateId}
                         folderName={folderName}
                         visible={openUpdateFolderModal}
                         onClose={handleCloseUpdateFolderModal}
                         socialType={socialType}
+                        prospectFolder={prospect_folder}
                     />
                 )}
             </div>
