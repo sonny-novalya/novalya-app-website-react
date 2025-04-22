@@ -11,7 +11,7 @@ const SettingStore = create((set) => ({
         keywordData: [],
         crmGroupData: [],
         stratagy: 0, // 0 set for Follow + message
-        norequest: "10", // How many Requests
+        norequest: 10, // How many Requests
         interval: "2-4", // make different interval for fb and ig
         selectedinterval: "1", // selected interval custom goes here
         gender: "female",
@@ -58,25 +58,25 @@ const SettingStore = create((set) => ({
                 const responseData = data.data[0];
                 set({
                     prospection: {
-                        group: responseData.group ? [responseData.group] : [],
-                        messageData: responseData.messages ? [responseData.messages] : [],
-                        keywordData: responseData.keywords ? [responseData.keywords] : [],
-                        crmGroupData: responseData.groups ? [responseData.groups] : [],
-                        stratagy: responseData.pro_stratagy || 0,
-                        norequest: responseData.norequest || "10",
-                        interval: responseData.interval || "2-4",
-                        selectedinterval: responseData.selectedinterval || "90",
-                        gender: responseData.gender || "female",
-                        keyword: responseData.keyword || 1,
-                        prospect: responseData.prospect || "no",
-                        pro_convo: responseData.pro_convo || 0,
-                        action: responseData.action || "no",
-                        datevalue: responseData.datevalue || null,
-                        group_id: responseData.group_id || null,
-                        message: responseData.message || null,
-                        post_target: responseData.post_target || "Like",
-                        newMessage: responseData.newMessage || null,
-                        keywords: responseData.keywords || null,
+                        group: responseData?.group,
+                        messageData: responseData?.messages ,
+                        keywordData: responseData?.keywords ,
+                        crmGroupData: responseData?.groups ,
+                        stratagy: responseData?.pro_stratagy,
+                        norequest: responseData?.norequest,
+                        interval: responseData?.interval,
+                        selectedinterval: responseData?.selectedinterval ,
+                        gender: responseData?.gender,
+                        keyword: responseData?.keyword,
+                        prospect: responseData?.prospect,
+                        pro_convo: responseData?.pro_convo,
+                        action: responseData?.action ,
+                        datevalue: responseData?.datevalue,
+                        group_id: responseData?.group_id,
+                        message: responseData?.message,
+                        post_target: responseData?.post_target,
+                        newMessage: responseData?.newMessage,
+                        keywords: responseData?.keywords,
                     }
                 });
             }
