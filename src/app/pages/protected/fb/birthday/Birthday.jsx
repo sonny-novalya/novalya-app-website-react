@@ -40,6 +40,7 @@ const Birthday = () => {
     }
 ];
  const [prospect , setProspect] = useState("no");
+ const [isApi,setIsApi]=useState(0)
 
 
  
@@ -108,6 +109,7 @@ const Birthday = () => {
   const res = await saveBirthdayData(params)
   if (res?.status === 200) {
     message.success("Birthday Created Successfully")
+    setIsApi(1)
   }
   }
   
@@ -247,7 +249,7 @@ const Birthday = () => {
 
         {/* Send Birthday Wishes */}
         <div className="flex items-center justify-center">
-          <button onClick={()=>createBithday()} className="w-fit py-3 mt-6 rounded-lg text-lg bg-green-500 text-white px-40 cursor-pointer send_birthday_message">
+          <button onClick={()=>createBithday()} isapi={isApi} className="w-fit py-3 mt-6 rounded-lg text-lg bg-green-500 text-white px-40 cursor-pointer send_birthday_message">
             Send Birthday Wishes
           </button>
         </div>
