@@ -4,12 +4,11 @@ import { useState } from "react";
 import { t } from "i18next";
 const { Option } = Select;
 
-const MoveToStageModal = ({ visible, onCancel ,selectedUsersMap,moveStage,sortedStages}) => {
+const MoveToStageModal = ({ visible, onCancel ,selectedUsersMap,moveStage,sortedStages,setSortedStages,setSelectedUsersMap}) => {
     const [selectedStage, setSelectedStage] = useState(null);
     const allIds = Object.values(selectedUsersMap).flat();
 
  
-   console.log(selectedUsersMap)
     const  moverTaggedUsers = async ()=>{
      
 
@@ -25,6 +24,26 @@ const MoveToStageModal = ({ visible, onCancel ,selectedUsersMap,moveStage,sorted
 
     if(res.status === 200){
         message.success("Users has been moved")
+        const newArr=[]
+      let tempArr =  sortedStages?.map((s)=>{
+            s.leads.forEach((l)=>{
+                if (allIds.includes(l.id)) {
+                    newArr.push(l)
+                }
+            })
+            return {...s,leads:s?.leads?.filter((f)=>!allIds.includes(f.id))}
+        })
+
+        tempArr= tempArr.map((data)=>{
+            if (data.id === Number(selectedStage)) {
+                return {...data,leads:[...data?.leads,...newArr]}
+            }else{
+                return data
+            }
+        })
+        setSelectedUsersMap({})
+        setSortedStages(tempArr)
+    
         onCancel()
     }
 
