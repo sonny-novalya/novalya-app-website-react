@@ -88,9 +88,12 @@ const Filters = ({ keyWordList }) => {
                             className="flex justify-between items-center px-4 py-3 rounded-md border text-[#0087FF] w-full cursor-pointer"
                             onClick={toggleDropdown}
                         >
-                            {keyword ? updatedKeywordList.find(k => k.id === keyword)?.name : "Select Keyword"}
+                            {keyword === null
+                                ? "None"
+                                : updatedKeywordList.find(k => k.id === keyword)?.name || "Select Keyword"}
                             <UpperArrowIcon className={`transform transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                         </button>
+
 
                         {dropdownOpen && (
                             <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA] mt-2 rounded-md shadow-md z-10">
