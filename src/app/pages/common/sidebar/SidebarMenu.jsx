@@ -280,7 +280,7 @@ const SidebarMenu = () => {
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />
-                                    <span>Logout</span>
+                                    <span className="text-[16px] font-[500]">Logout</span>
                                 </button>
                             </div>
                         </>
