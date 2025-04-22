@@ -74,10 +74,11 @@ const Birthday = () => {
         let action = data?.action ? JSON.parse(data?.action) :null
         setSelectedWishType(data.type || "message")
         setSelectedStrategy(data?.birthday_type || "today")
-        setSelectedTag(data?.prospect || "yes")
+        setSelectedTag(action?.moveGroupId  ? "yes":"no")
         setMessageData(data?.newMessage)
         setSelectedGroup(action?.moveGroupId || null)
         setSelectedStage(action?.moveStageId || null)
+        setProspect(data?.prospect || "no")
      
       }
     } catch (error) {
@@ -90,16 +91,17 @@ const Birthday = () => {
 
 
   const createBithday =async () =>{
-    const actionData = {
+    let actionData = {
       moveStageId:selectedStage,
       moveGroupId:selectedGroup
     }
+     actionData= actionData ? JSON.stringify(actionData) : ""
         const params = {
       type: selectedWishType,
       birthday_type: selectedStrategy,
       birthday_id: messageData?.id || null,
-      action: actionData ? JSON.stringify(actionData) : "",
-      prospect:selectedTag
+      action: selectedTag === "yes"?actionData:"" ,
+      prospect:prospect
   };
 
 
