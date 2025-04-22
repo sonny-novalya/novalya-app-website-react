@@ -15,6 +15,11 @@ const Settings = ({ isInstagram}) => {
         { value: 1, label: t("prospecting.Message Only") },
     ];
 
+    const FbStrategies = [
+        { value: 0, label: "Message + Request" },
+        { value: 1, label: t("prospecting.Message Only") },
+    ];
+
     const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
     
     const fbIntervalOptions = [
@@ -35,6 +40,8 @@ const Settings = ({ isInstagram}) => {
     const findInterval = () => {
         return !intervalList.some(option => option.value === interval);
     };
+
+    const newStratagies = isInstagram ? strategies : FbStrategies
 
     useEffect(() => {
         if (findInterval()) {
@@ -67,7 +74,7 @@ const Settings = ({ isInstagram}) => {
                 <div className="border border-gray-300 p-4 rounded-lg">
                     <p className="font-medium mb-2 text-gray-800 flex items-center">{t("prospecting.Strategy")}</p>
                     <div className="grid grid-cols-1 gap-2">
-                        {strategies.map((option) => (
+                        {newStratagies.map((option) => (
                             <button
                                 key={option.value}
                                 className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
