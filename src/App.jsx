@@ -22,8 +22,9 @@ if (token && userId) {
   document.cookie = `authToken=${token}; expires=${expirationDate.toUTCString()}; path=/`;
   document.cookie = `user_id=${userId}; expires=${expirationDate.toUTCString()}; path=/`;
   localStorage.setItem('token', token)
-  const curr = window.location.href.split('?')
-  window.location.href=curr[0]
+  localStorage.setItem("loggedin","/?loggedin=true")
+
+ 
 }
 
 useEffect(() => {

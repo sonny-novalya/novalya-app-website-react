@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Modal } from "antd";
+import { message, Modal, Spin } from "antd";
 import { RgbaColorPicker } from "react-colorful";
 import PropTypes from "prop-types";
 import { formatColorToString } from "../../../../../helpers/formatColorToString";
 import { t } from "i18next";
 
-const AddGroupModal = ({ createGroup, handleGroupSave, handleColorChange }) => {
+const AddGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoader}) => {
     const [groupName, setGroupName] = useState('');
     const [color, setColor] = useState({ r: 255, g: 255, b: 255, a: 1 });
     const [colorSource, setColorSource] = useState("picker"); 
@@ -24,14 +24,37 @@ const AddGroupModal = ({ createGroup, handleGroupSave, handleColorChange }) => {
     const handleColorChangeInternal = (newColor) => {
         setColor(newColor); 
         setColorSource("picker"); 
-        handleColorChange(newColor);
     };
 
     const handlePresetColorChange = (newColor) => {
         setColor(newColor);
         setColorSource("preset");
-        handleColorChange(newColor);
+       
     };
+
+    const  handleSubmit =async ()=>{
+
+        if (!groupName.trim()) {
+            message.error("Group Name is required")
+            return
+        }
+       
+      const  payloadRGB = `rgba(${color['r']},${color["g"]},${color["b"]},${color["a"]})`
+      const payload= {
+        custom_color:payloadRGB,
+        name:groupName,
+        no_stages_group: false
+    }
+
+    const res = await createCRMGroup(payload)
+
+    if (res.status === 200) {
+        message.success("Group has been created")
+        fetchCRMGroups()
+        createGroup.onClose();
+
+    }
+    }
 
     return (
         <Modal
@@ -104,24 +127,16 @@ const AddGroupModal = ({ createGroup, handleGroupSave, handleColorChange }) => {
                     {t("crm.Cancel")}
                 </button>
                 <button
-                    onClick={handleGroupSave}
+                    onClick={handleSubmit}
                     className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
                 >
-                    {t("crm.Add")}
+                    {!addGrpLoader? t("crm.Add"):<Spin size="small" style={{color:"white"}}/>}
                 </button>
             </div>
         </Modal>
     );
 };
 
-// Prop validation
-AddGroupModal.propTypes = {
-    createGroup: PropTypes.shape({
-        isOpen: PropTypes.bool.isRequired,
-        onClose: PropTypes.func.isRequired,
-    }).isRequired,
-    handleGroupSave: PropTypes.func.isRequired,
-    handleColorChange: PropTypes.func.isRequired,
-};
+
 
 export default AddGroupModal;

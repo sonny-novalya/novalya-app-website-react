@@ -15,10 +15,12 @@ const useGroupStore = create((set) => ({
         page: 1,
         limit: 25,
     },
+    totalPages: 0,
+    totalGrp: 0,
     storeFilters: {
         sort_by: 0,
         type: 'facebook',
-        id: 0, // folder id
+        id: 0,
         search_grp: "",
         social_type: "",
         group_type: "",
@@ -29,7 +31,7 @@ const useGroupStore = create((set) => ({
         storeFilters: { ...newValues }
     })),
 
-    fetchGroups: async ({ sort_by, type, id, search_grp, social_type, group_type }) => {
+    fetchGroups: async ({ sort_by, type, id, search_grp, social_type, group_type, page, limit }) => {
         try {
             set({ loading : true })
             const token = localStorage.getItem("token");
@@ -40,8 +42,8 @@ const useGroupStore = create((set) => ({
                 search_grp,
                 social_type,
                 group_type,
-                page: 1,
-                limit: 25,
+                page,
+                limit,
             };
 
             const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;
@@ -60,6 +62,8 @@ const useGroupStore = create((set) => ({
             }
 
             const data = await response.json();
+            set({ totalPages: data.totalPages });
+            set({ totalGrp: data.totalGrp });
             set({ groups: data.data });
             set({ loading: false })
         } catch (error) {
@@ -97,6 +101,27 @@ const useGroupStore = create((set) => ({
 
             const data = await response.json();
             set({ initialGroups: data.data });
+        } catch (error) {
+            console.error("Error fetching groups:", error);
+        }
+    },
+    deleteGroup: async ({ id }) => {
+        try {
+            const token = localStorage.getItem("token");
+            const endpoint = `${BASE_URL}groups/api/delete/${id}`;
+
+            const response = await fetch(endpoint, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch groups");
+            }
+
         } catch (error) {
             console.error("Error fetching groups:", error);
         }

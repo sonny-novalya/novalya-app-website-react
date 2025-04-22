@@ -14,7 +14,7 @@ import usefbCRM from "../../../../../../store/fb/fbCRM";
 import { useLocation } from "react-router-dom";
 
 const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey }) => {
-    const { prospection ,fetchProspectionData, createSocialTarget } = SettingStore();
+    const { prospection, fetchProspectionData, createSocialTarget, loading } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
     const { fetchCRMGroups, CRMList } = usefbCRM()
@@ -56,6 +56,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey }) => {
 
         try {
             await createSocialTarget(prospectionData);
+            onClose()
         } catch (error) {
             console.error("Error creating social target:", error);
         }
@@ -103,7 +104,11 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey }) => {
                         disabled={activeKey !== tabItems.length}
                         onClick={handleSave}
                     >
-                        Save
+                        {
+                            loading 
+                            ? "Saving..."
+                            : "Save"
+                        }
                     </button>
                 </div>
                 <div className="h-full w-[1px] bg-[#DADADA] mx-4" />

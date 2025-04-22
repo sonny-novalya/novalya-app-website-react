@@ -38,7 +38,7 @@ const Crm = () => {
   };
 
 
-  const {fetchCRMGroups,CRMList,fbCRMLoading, error ,reorderCRMGroupsFB}=usefbCRM()
+  const {fetchCRMGroups,CRMList,fbCRMLoading, error, createCRMGroup,reorderCRMGroupsFB , addGrpLoader}=usefbCRM()
 
   useEffect(() => {
     fetchCRMGroups();
@@ -93,8 +93,9 @@ const Crm = () => {
         <AddGroupModal
           createGroup={{ isOpen: openAddGroupModal, onClose: toggleAddGroupModal }}
           showColorPicker={{ isOpen: false, toggle: () => { } }} 
-          handleGroupSave={() => { }}
-          handleColorChange={() => { }}
+          createCRMGroup={createCRMGroup}
+          fetchCRMGroups={fetchCRMGroups}
+          addGrpLoader={addGrpLoader}
         />
       )}
     </Layout>
