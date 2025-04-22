@@ -15,23 +15,26 @@ const AddTags = ({ CRMList, groupId }) => {
         action = 'no'; 
     }
 
+    console.log("action", action)
+
     const [actionType, setActionType] = useState(action !== "no" ? "yes" : "no");
 
     const [selectedGroupId, setSelectedGroupId] = useState(action?.moveGroupId || null);
     const [selectedStageId, setSelectedStageId] = useState(action?.moveStageId || null);
     const [selectedStageNum, setSelectedStageNum] = useState(action?.stage_num || null);
 
-    const handleSave = () => {
+    const handleSave = (moveGroupId, moveStageId, stage_num) => {
         updateProspection({
             ...prospection,
             group_id: groupId,
             action: JSON.stringify({
-                moveStageId: action !== "no" ? selectedStageId : null,
-                moveGroupId: action !== "no" ? selectedGroupId : null,
-                stage_num: action !== "no" ? selectedStageNum : null,
-            })
+                moveGroupId: actionType !== "no" ? moveGroupId : null,
+                moveStageId: actionType !== "no" ? moveStageId : null,
+                stage_num: actionType !== "no" ? stage_num : null,
+            }),
         });
     };
+
 
     const addTagsOptions = [
         { label: "No", value: "no" },
@@ -82,8 +85,9 @@ const AddTags = ({ CRMList, groupId }) => {
                             value={selectedGroupId || ""}
                             onChange={(e) => {
                                 setSelectedGroupId(e.target.value);
-                                handleSave();
+                                handleSave(e.target.value, selectedStageId, selectedStageNum);
                             }}
+
                         >
                             <option value="">{t("prospecting.Select Group")}</option>
                             {CRMList?.map((group) => (
@@ -106,9 +110,10 @@ const AddTags = ({ CRMList, groupId }) => {
                                 if (selectedStage) {
                                     setSelectedStageId(selectedStage.id);
                                     setSelectedStageNum(selectedStage.stage_num);
-                                    handleSave();
+                                    handleSave(selectedGroupId, selectedStage.id, selectedStage.stage_num);
                                 }
                             }}
+
                         >
                             <option value="">{t("prospecting.Select Stage")}</option>
                             {sortedStages.map((stage) => (
