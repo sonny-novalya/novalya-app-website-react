@@ -104,7 +104,12 @@ const Birthday = () => {
     <Layout>
     <div>
     {birthdayLoader && <div className="absolute z-10 w-[85%] h-full bg-white/50 flex items-center justify-center"> <Spin size="large" /> </div>}
-
+    <input type="hidden" id="birthdayType" value={selectedWishType} />
+    <input type="hidden" id="birthdayStrategy" value={selectedStrategy} />
+    <input type="hidden" id="birthdayAddTag" value={selectedTag} />
+    <input type="hidden" id="birthdaySelectedGroup" value={selectedGroup} />
+    <input type="hidden" id="birthdaySelectedStage" value={selectedStage} />
+    <input type="hidden" id="birthdayMessage" value={messageData?.id || ""} />
     <h2 className="text-[24px] font-[500] mb-4">Wish your friends birthday automatically</h2>
       <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
       <div className="bg-white p-6 border border-[#DADADA] rounded-lg shadow-md mx-auto ">
