@@ -25,6 +25,7 @@ const Filters = ({ keyWordList }) => {
             ...prospection,
             [field]: value
         });
+        setDropdownOpen(false);
     };
 
     useEffect(() => {
@@ -43,8 +44,14 @@ const Filters = ({ keyWordList }) => {
         };
     }, [dropdownOpen]);
 
+    const updatedKeywordList = [
+        { id: "none", name: "None" },
+        ...(Array.isArray(keyWordList) ? keyWordList : [])
+    ];
+
+
     return (
-        <div className="">
+        <div>
             <h2 className="text-xl font-bold mb-4">{t("prospecting.Filters")}</h2>
 
             <div className="grid grid-cols-2 gap-4">
@@ -77,16 +84,16 @@ const Filters = ({ keyWordList }) => {
                             className="flex justify-between items-center px-4 py-3 rounded-md border text-[#0087FF] w-full cursor-pointer"
                             onClick={toggleDropdown}
                         >
-                            {keyword ? keyWordList?.find(k => k.id === keyword)?.name : "Select Keyword"}
+                            {keyword ? updatedKeywordList.find(k => k.id === keyword)?.name : "Select Keyword"}
                             <UpperArrowIcon className={`transform transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                         </button>
 
                         {dropdownOpen && (
-                            <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA]  mt-2 rounded-md shadow-md z-10">
-                                {keyWordList?.map((option) => (
+                            <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA] mt-2 rounded-md shadow-md z-10">
+                                {updatedKeywordList.map((option) => (
                                     <button
-                                        key={option.value}
-                                        className={`relative flex items-center justify-between px-4 py-3 rounded-md  cursor-pointer w-full ${keyword === option.id ? "bg-[#CCE7FF] border-[#DADADA]" : "bg-white border-[#0087FF]"}`}
+                                        key={option.id}
+                                        className={`relative flex items-center justify-between px-4 py-3 rounded-md cursor-pointer w-full ${keyword === option.id ? "bg-[#CCE7FF] border-[#DADADA]" : "bg-white border-[#0087FF]"}`}
                                         onClick={() => handleUpdate("keyword", option.id)}
                                     >
                                         {option.name}

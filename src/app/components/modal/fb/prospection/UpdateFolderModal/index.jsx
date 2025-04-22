@@ -21,7 +21,6 @@ const UpdateFolderModal = ({ socialType, folderId, folderName, visible, onClose 
         );
     };
     const location = useLocation();
-    console.log("location.pathname", location.pathname)
     
     const handleSave = async () => {
         if (selectedGroups.length === 0) return;
