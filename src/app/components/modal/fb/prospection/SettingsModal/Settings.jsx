@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 const Settings = ({ isInstagram}) => {
     const { prospection , updateProspection } = SettingStore();
 
-    const { stratagy, norequest, interval, selectedinterval } = prospection 
-    const [customRequest, setCustomRequest] = useState(selectedinterval);
+    const { stratagy, norequest, interval } = prospection 
+    const [customRequest, setCustomRequest] = useState(interval);
 
     const strategies = [
         { value: 0, label: t("prospecting.Follow + Message") },
@@ -49,7 +49,6 @@ const Settings = ({ isInstagram}) => {
         if (field === "norequest") {
             if (value === "Custom") {
                 updateProspection({ ...prospection, norequest: value });
-                setCustomRequest(""); // reset input on selection
             } else {
                 updateProspection({ ...prospection, norequest: value });
             }
@@ -90,34 +89,46 @@ const Settings = ({ isInstagram}) => {
                 <div className="border border-gray-300 p-4 rounded-lg">
                     <p className="font-medium mb-2 text-gray-800">{t("prospecting.How many Requests")}</p>
                     <div className="grid grid-cols-3 gap-2">
-                        {requestOptions.map((option) => (
-                            <button
-                                key={option}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${norequest === option
-                                    ? "bg-[#CCE7FF] border-[#CCE7FF]"
-                                    : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("norequest", option)}
-                            >
-                                {option}
-                                {norequest === option && (
-                                    <span className="absolute -right-2 -top-2">
-                                        <TickFillIcon />
-                                    </span>
-                                )}
-                            </button>
-                        ))}
+                        {requestOptions.map((option) => {
+                            const isCustom = option === "Custom";
+                            const isSelected = isCustom
+                                ? norequest === "Custom"
+                                : norequest === Number(option);
+
+                            return (
+                                <button
+                                    key={option}
+                                    className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${isSelected ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"
+                                        }`}
+                                    onClick={() => handleUpdate("norequest", isCustom ? "Custom" : Number(option))}
+                                >
+                                    {option}
+                                    {isSelected && (
+                                        <span className="absolute -right-2 -top-2">
+                                            <TickFillIcon />
+                                        </span>
+                                    )}
+                                </button>
+                            );
+                        })}
                         {norequest === "Custom" && (
                             <>
                                 <p className="col-span-1 text-xs my-auto">(Min 1 and Max 50)</p>
                                 <input
                                     type="number"
-                                    min="0"
+                                    min="1"
                                     max="50"
                                     value={customRequest}
                                     onChange={(e) => {
                                         const val = e.target.value;
-                                        if (val === "" || (Number(val) >= 0 && Number(val) <= 50)) {
-                                            setCustomRequest(val);
+                                        if (val === "" || (Number(val) >= 1 && Number(val) <= 50)) {
+                                            setCustomRequest(val); 
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        const parsed = Number(customRequest);
+                                        if (parsed >= 1 && parsed <= 50) {
+                                            updateProspection({ ...prospection, norequest: parsed });
                                         }
                                     }}
                                     placeholder="Enter value"
