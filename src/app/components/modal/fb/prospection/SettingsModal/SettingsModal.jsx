@@ -30,10 +30,12 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, group })
     ];
 
     useEffect(() => {
-        fetchKeywords({page: 1,limit: 100})
-        fetchProspectionData(isInstagram ? 'instagram' : 'facebook')
-        fetchMessages({limit: 200, page: 1})
-        fetchCRMGroups()
+        if(group && group.id){
+            fetchKeywords({ page: 1, limit: 100 })
+            fetchProspectionData(isInstagram ? 'instagram' : 'facebook', group.id)
+            fetchMessages({ limit: 200, page: 1 })
+            fetchCRMGroups()
+        }
     }, []);
 
     const handleNext = async () => {
