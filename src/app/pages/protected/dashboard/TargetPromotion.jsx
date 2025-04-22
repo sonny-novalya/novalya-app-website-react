@@ -8,7 +8,7 @@ const TargetedPromotion = () => {
     ]
 
     return (
-        <div className="bg-white rounded-[10px] px-5 py-6 mt-6">
+        <div className="bg-white rounded-[10px] px-5 pt-4 pb-10 mt-6">
             <h4 className="font-[500] text-[24px] mb-4">{t("dashboard.Next Actions")}</h4>
             {actions.map((action, index) => (
                 <div key={index} className="flex items-center justify-between border border-[#21BF7C33] px-2 py-1.5 pl-5 rounded mb-2.5">

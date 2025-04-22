@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 const SocialStatsPage = ({ isLoading, limit_data }) => {
     return (
-        <div className="mt-6 relative">
+        <div className="mt-7 relative">
             {isLoading && (
                 <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg">
                     <Spin size="large" />

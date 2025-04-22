@@ -39,8 +39,11 @@ const InstagramCard = ({ data }) => {
         <>
         <div className="flex-1 bg-white rounded-[16px] overflow-hidden relative dashboard-ig-card">
             <div className="relative">
-                <img src={IgImg} alt="Cover" className="w-full h-16" />
-                <div className="absolute -bottom-12 left-4">
+                <div className="flex items-center h-15 justify-end items-center h-15 p-2 bg-[linear-gradient(90deg,_#3a0ca3_0%,_#b5179e_25%,_#f72585_45%,_#fb5607_70%,_#ffbe0b_100%)]">
+                    <img src={IgImg} alt="Cover" className="w-full max-w-[120px]" />
+                </div>
+
+                <div className="absolute -bottom-11 left-4">
                     <img
                         src={profile_image}
                         alt="Profile"
@@ -51,7 +54,7 @@ const InstagramCard = ({ data }) => {
 
             <div className="mt-4 ml-30 flex justify-between items-center  ">
                 <p className="font-medium d-ig-card-uname">@{insta_user_name}</p>
-                <div className="flex gap-3 mr-3">
+                <div className="flex gap-3 mr-5">
                     <button className="text-blue-600 cursor-pointer instagram-sync">
                         <SyncBlueIcon />
                     </button>
@@ -61,9 +64,9 @@ const InstagramCard = ({ data }) => {
                 </div>
             </div>
 
-            <div className="mt-6 px-3">
+            <div className="mt-3 px-5 mb-4">
                 <p className="font-[500] d-ig-card-name">{insta_user_id}</p>
-                <div className="flex justify-between mt-4 text-sm text-gray-700 pb-3">
+                <div className="flex justify-between mt-4 text-sm text-gray-700">
                     <div className="flex-1 text-center">
                         <p className="font-[500] text-[18px] d-ig-card-followers">{total_followers}</p>
                         <p className="text-[color:#0f1b4db3] text-[13px]">{t("dashboard.Followers")}</p>

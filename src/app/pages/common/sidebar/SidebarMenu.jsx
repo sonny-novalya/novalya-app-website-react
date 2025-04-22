@@ -110,11 +110,11 @@ const SidebarMenu = () => {
 
     return (
         <div className={`relative `}>
-            <div className={`bg-white text-black ${collapsed ? 'w-20' : 'w-64'} h-screen flex flex-col transition-all duration-300 relative overflow-visible`}>
+            <div className={`bg-white text-black ${collapsed ? 'w-20' : 'w-63'} h-screen flex flex-col transition-all duration-300 relative overflow-visible`}>
                 {
                     collapsed
                         ? <>
-                            <div className={`flex items-center justify-between h-20 border-b border-[#0000001A] mb-4`}>
+                            <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-4`}>
                                 <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-8`} />
                                 <button onClick={toggleSidebar} className="absolute top-10 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 rotate-180`}>
@@ -123,13 +123,13 @@ const SidebarMenu = () => {
                                 </button>
                             </div>
 
-                            <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
+                            <div className="flex-1 overflow-y-auto hide_scrollbar px-4 ">
                                 {sidebarData.map((item) => {
                                     const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
                                     const isActive = (currentPath === item.path || currentPath === `${item.path}/`) || isSubItemActive;
 
                                     return (
-                                        <div key={item.id} className="w-full relative group">
+                                        <div key={item.id} className="w-full mb-2 relative group">
                                             {item.subNav && collapsed ? (
                                                 <Dropdown
                                                     placement="rightTop"
@@ -147,7 +147,9 @@ const SidebarMenu = () => {
                                                     }
                                                 >
                                                     <button
-                                                        className={`w-full rounded px-3 py-2 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3 sidebar-active' : 'hover:bg-[#E6F1FB]'
+
+                                                        className={`w-full rounded px-3 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
+
                                                             } cursor-pointer`}
                                                         onClick={(e) => e.preventDefault()}
                                                     >
@@ -189,9 +191,9 @@ const SidebarMenu = () => {
                             </div>
                         </>
                         : <>
-                            <div className={`flex items-center justify-between h-20 border-b border-[#0000001A] mb-4`}>
+                            <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-7 relative`}>
                                 <img src={NovalyaBlueLogo} alt="logo" className={`w-full object-contain h-12 mr-5`} />
-                                <button onClick={toggleSidebar} className="absolute top-10 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                <button onClick={toggleSidebar} className="absolute bottom-[16px] -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 `}>
                                         <CollapsedLeftIcon />
                                     </div>
@@ -204,16 +206,18 @@ const SidebarMenu = () => {
                                     const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
 
                                     return (
-                                        <div key={item.id} className="w-full">
+                                        <div key={item.id} className="w-full mb-2">
                                             {item.subNav ? (
                                                 <>
                                                     <button
-                                                        className={`w-full rounded px-3 py-2 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3] sidebar-active' : 'hover:bg-[#E6F1FB]'
+
+                                                        className={`w-full rounded px-4 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
+
                                                             } cursor-pointer`}
                                                         onClick={(e) => toggleSubNav(e, item.id)}
                                                     >
-                                                        <div className="flex items-center space-x-4">
-                                                            <span className="h-6 w-6">{item.icon}</span>
+                                                        <div className="flex items-center space-x-5">
+                                                            <span className="h-6 w-6 flex items-enter justify-center">{item.icon}</span>
                                                             {!collapsed && (
                                                                 <span className="capitalize text-black/55">{item.text}</span>
                                                             )}
@@ -225,7 +229,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                     {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '10'} mt-1 ml-10 flex flex-col space-y-1`}>
+                                                        <div className={`pl-${collapsed ? '4' : '6'} mt-1 ml-10 flex flex-col space-y-1`}>
                                                             {item.subNav.map((subItem) => (
                                                                 <SidebarItem
                                                                     key={subItem.id}
@@ -249,7 +253,7 @@ const SidebarMenu = () => {
                                     );
                                 })}
                             </div>
-                            <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-0.5">
+                            <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-0.5 gap-[8px] mb-3">
                                 <div className="w-full">
                                     <LocalizationOptions />
                                 </div>
@@ -269,7 +273,7 @@ const SidebarMenu = () => {
 
                                 <button
                                     type="button"
-                                    className="flex items-center space-x-2 bg-[#FF000012] p-2 mt-2 rounded-sm w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
+                                    className="flex items-center space-x-5 bg-[#FF000012] px-4 py-3 mt-2 rounded-sm w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />

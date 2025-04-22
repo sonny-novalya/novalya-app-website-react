@@ -21,7 +21,7 @@ const VideoSection = () => {
   }, []);
 
   return (
-    <div className="relative pt-[56.6%] rounded-[10px] overflow-hidden">
+    <div className="relative pt-[40%] rounded-[10px] overflow-hidden">
       <iframe 
         className="absolute w-full h-full top-0 left-0"
         src={videoUrl}
