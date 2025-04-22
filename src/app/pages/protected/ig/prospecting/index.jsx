@@ -31,7 +31,7 @@ const IgProspecting = () => {
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup } = useGroupStore();
-    const socialType = "fb_groups";
+    const socialType = "ig_followers";
     const prospect_folder = "ig";
 
     const [activeKey, setActiveKey] = useState(1);
@@ -244,6 +244,7 @@ const IgProspecting = () => {
             ...storeFilters,
             page: obj.current,
             limit: obj.pageSize,
+            type: "instagram",
         });
     };
 
@@ -589,7 +590,6 @@ const IgProspecting = () => {
                         visible={confirmModalOpen}
                         onClose={handleCloseConfirmModal}
                         groups={groups}
-                        socialType={socialType}
                         handleOpenSettingsTab={handleOpenSettingsTab}
                         primaryGroupId={primaryGroupId}
                     />

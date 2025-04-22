@@ -2,13 +2,14 @@ import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Settings = ({ isInstagram}) => {
     const { prospection , updateProspection } = SettingStore();
 
-    const { stratagy, norequest, interval } = prospection 
-    
+    const { stratagy, norequest, interval, selectedinterval } = prospection 
+    const [customRequest, setCustomRequest] = useState(selectedinterval);
+
     const strategies = [
         { value: 0, label: t("prospecting.Follow + Message") },
         { value: 1, label: t("prospecting.Message Only") },
@@ -45,10 +46,16 @@ const Settings = ({ isInstagram}) => {
     }, []);
 
     const handleUpdate = (field, value) => {
-        updateProspection({
-            ...prospection,
-            [field]: value
-        });
+        if (field === "norequest") {
+            if (value === "Custom") {
+                updateProspection({ ...prospection, norequest: value });
+                setCustomRequest(""); // reset input on selection
+            } else {
+                updateProspection({ ...prospection, norequest: value });
+            }
+        } else {
+            updateProspection({ ...prospection, [field]: value });
+        }
     };
 
     return (
@@ -99,6 +106,26 @@ const Settings = ({ isInstagram}) => {
                                 )}
                             </button>
                         ))}
+                        {norequest === "Custom" && (
+                            <>
+                                <p className="col-span-1 text-xs my-auto">(Min 1 and Max 50)</p>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="50"
+                                    value={customRequest}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        if (val === "" || (Number(val) >= 0 && Number(val) <= 50)) {
+                                            setCustomRequest(val);
+                                        }
+                                    }}
+                                    placeholder="Enter value"
+                                    className="col-span-2 border border-[#0087FF] rounded-md px-4 py-2 text-gray-800 focus:outline-none "
+                                />
+                            </>
+                        )}
+
                     </div>
                 </div>
             </div>

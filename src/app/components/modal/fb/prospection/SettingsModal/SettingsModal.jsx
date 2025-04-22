@@ -31,7 +31,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey }) => {
 
     useEffect(() => {
         fetchKeywords({page: 1,limit: 100})
-        fetchProspectionData()
+        fetchProspectionData(isInstagram ? 'instagram' : 'facebook')
         fetchMessages({limit: 200, page: 1})
         fetchCRMGroups()
     }, []);

@@ -13,7 +13,7 @@ const SettingStore = create((set) => ({
         stratagy: 0, // 0 set for Follow + message
         norequest: "10", // How many Requests
         interval: "2-4", // make different interval for fb and ig
-        selectedinterval: "90", // selected interval custom goes here
+        selectedinterval: "1", // selected interval custom goes here
         gender: "female",
         keyword: 1,
         prospect: "no", // retarget same user
@@ -43,7 +43,7 @@ const SettingStore = create((set) => ({
     updateProspection: (newValues) => set(() => ({
         prospection: { ...newValues }
     })),
-    fetchProspectionData: async (prospectionType = 'facebook') => {
+    fetchProspectionData: async (prospectionType) => {
         try {
             const response = await apiCall({
                 method: 'GET',
