@@ -8,7 +8,8 @@ const useGroupStore = create((set) => ({
     initialStoreFilters: {
         sort_by: 0,
         type: 'facebook',
-        id: 0, // folder id
+        id: 0, // folder id,
+        field:"",
         search_grp: "",
         social_type: "",
         group_type: "",
@@ -21,6 +22,7 @@ const useGroupStore = create((set) => ({
         sort_by: 0,
         type: 'facebook',
         id: 0,
+        field:"",
         search_grp: "",
         social_type: "",
         group_type: "",
@@ -31,7 +33,7 @@ const useGroupStore = create((set) => ({
         storeFilters: { ...newValues }
     })),
 
-    fetchGroups: async ({ sort_by, type, id, search_grp, social_type, group_type, page, limit }) => {
+    fetchGroups: async ({ sort_by, type, id, search_grp, social_type, group_type, page, limit, field }) => {
         try {
             set({ loading : true })
             const token = localStorage.getItem("token");
@@ -41,6 +43,7 @@ const useGroupStore = create((set) => ({
                 id,
                 search_grp,
                 social_type,
+                field,
                 group_type,
                 page,
                 limit,
