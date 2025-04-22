@@ -574,7 +574,7 @@ const Request = () => {
             <button
               onClick={() => handleSubmit()}
 
-              className="bg-[#21BF7C] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6bg-[#21BF7C] hover:bg-[#15AE6D] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250"
+              className="bg-[#21BF7C] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6bg-[#21BF7C] hover:bg-[#15AE6D] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250 start-manage-request"
 
             >
              {t("FB_request.Save & Check Requests")} 
