@@ -3,6 +3,7 @@ import apiCall from '../../services/api';
 
 const SettingStore = create((set) => ({
     // States
+    loading: false,
     prospection: {
         step: 1,
         group: [],
@@ -55,7 +56,6 @@ const SettingStore = create((set) => ({
 
             if (data.status === "success" && data.data.length > 0) {
                 const responseData = data.data[0];
-                console.log("responseData", responseData)
                 set({
                     prospection: {
                         group: responseData.group ? [responseData.group] : [],
@@ -105,7 +105,8 @@ const SettingStore = create((set) => ({
     },
     createSocialTarget: async (prospectionData) => {
         try {
-
+            set({ loading : true})
+            
             const response = await apiCall({
                 method: 'POST',
                 url: "/target/setting/api/create",
@@ -119,6 +120,7 @@ const SettingStore = create((set) => ({
                     }
                 });
             }
+            set({ loading: false })
         } catch (error) {
             console.error("Error creating social target:", error);
         }
