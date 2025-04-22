@@ -94,7 +94,7 @@ const Settings = ({ isInstagram}) => {
                             const isCustom = option === "Custom";
                             const isSelected = isCustom
                                 ? norequest === "Custom"
-                                : norequest === Number(option);
+                                : norequest == option;
 
                             return (
                                 <button

@@ -15,8 +15,8 @@ import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 import usefbCRM from "../../../../../../store/fb/fbCRM";
 
-const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, group }) => {
-    const { prospection, fetchProspectionData, createSocialTarget, loading } = SettingStore();
+const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId }) => {
+    const { prospection, fetchProspectionData, createSocialTarget, loading, updateProspection } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
     const { fetchCRMGroups, CRMList } = usefbCRM();
@@ -28,17 +28,15 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, group })
         { label: t("prospecting.Settings"), key: 2, children: <Settings isInstagram={isInstagram} /> },
         ...(isInstagram ? [] : [{ label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} /> }]),
         { label: t("prospecting.Advanced Options"), key: isInstagram ? 3 : 4, children: <AdvOptions /> },
-        { label: t("prospecting.Add Tags"), key: isInstagram ? 4 : 5, children: <AddTags CRMList={CRMList} groupId={group?.id} /> },
+        { label: t("prospecting.Add Tags"), key: isInstagram ? 4 : 5, children: <AddTags CRMList={CRMList} groupId={groupId} /> },
     ];
-
-    useEffect(() => {
-        if (group?.id) {
-            fetchKeywords({ page: 1, limit: 100 });
-            fetchProspectionData(isInstagram ? "instagram" : "facebook", group.id);
-            fetchMessages({ limit: 200, page: 1 });
-            fetchCRMGroups();
-        }
-    }, []);
+    
+    const handleUpdateGroupId = () => {
+        updateProspection({
+            ...prospection,
+            group_id: groupId
+        });
+    };
 
     const handleNext = () => {
         let nextKey = activeKey + 1;
@@ -53,18 +51,28 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, group })
 
     const handleSave = async () => {
         if (isInstagram || activeKey === 4 || activeKey === 5) {
+            const type = isInstagram ? "instagram" : "facebook"
             const prospectionData = {
                 ...prospection,
-                prospection_type: isInstagram ? "instagram" : "facebook",
+                prospection_type: type ,
             };
             try {
-                await createSocialTarget(prospectionData);
+                await createSocialTarget({ ...prospectionData });
                 onClose();
             } catch (error) {
                 console.error("Error creating social target:", error);
             }
         }
     };
+
+    useEffect(() => {
+        handleUpdateGroupId()
+        fetchKeywords({ page: 1, limit: 100 });
+        groupId && fetchProspectionData(isInstagram ? "instagram" : "facebook", groupId);
+        fetchMessages({ limit: 200, page: 1 });
+        fetchCRMGroups();
+    }, []);
+
 
     return (
         <Modal open={visible} onCancel={onClose} footer={null} width={1100} centered>
@@ -148,13 +156,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, group })
 SettingsModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    group: PropTypes.object,
+    groupId: PropTypes.any,
     activeKey: PropTypes.number,
     setActiveKey: PropTypes.func,
-};
-
-SettingsModal.defaultProps = {
-    group: null,
 };
 
 export default SettingsModal;
