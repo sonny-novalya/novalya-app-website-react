@@ -4,7 +4,7 @@ import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const AddTags = ({ CRMList }) => {
+const AddTags = ({ CRMList, groupId }) => {
     const { prospection, updateProspection } = SettingStore();
     let { action } = prospection;
 
@@ -24,6 +24,7 @@ const AddTags = ({ CRMList }) => {
     const handleSave = () => {
         updateProspection({
             ...prospection,
+            group_id: groupId,
             action: JSON.stringify({
                 moveStageId: action !== "no" ? selectedStageId : null,
                 moveGroupId: action !== "no" ? selectedGroupId : null,
@@ -125,6 +126,7 @@ const AddTags = ({ CRMList }) => {
 
 AddTags.propTypes = {
     CRMList: PropTypes.object,
+    groupId: PropTypes.string,
 };
 
 export default AddTags;

@@ -43,11 +43,11 @@ const SettingStore = create((set) => ({
     updateProspection: (newValues) => set(() => ({
         prospection: { ...newValues }
     })),
-    fetchProspectionData: async (prospectionType) => {
+    fetchProspectionData: async (prospectionType, groupId) => {
         try {
             const response = await apiCall({
                 method: 'GET',
-                url: `/target/setting/api/all?prospection_type=${prospectionType}`
+                url: `/target/setting/api/all?prospection_type=${prospectionType}&grp_id=${groupId}`
             });
             if (response.statusText !== "OK") {
                 throw new Error("Failed to fetch prospection data");
