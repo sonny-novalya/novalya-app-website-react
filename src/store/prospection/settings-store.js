@@ -62,7 +62,7 @@ const SettingStore = create((set) => ({
                         messageData: responseData?.messages ,
                         keywordData: responseData?.keywords ,
                         crmGroupData: responseData?.groups ,
-                        stratagy: responseData?.pro_stratagy,
+                        stratagy: responseData?.stratagy,
                         norequest: responseData?.norequest,
                         interval: responseData?.interval,
                         selectedinterval: responseData?.selectedinterval ,

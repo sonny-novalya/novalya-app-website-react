@@ -13,6 +13,8 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
     //     });
     // };
 
+    console.log("stratagy", stratagy)
+    
     const strategies = [
         { value: 0, label: t("prospecting.Follow + Message") },
         { value: 1, label: t("prospecting.Message Only") },
@@ -28,7 +30,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
     ];
 
     const selectedInterval =  intervalOptions?.find((item) => item.value === interval)
-
+    const selectedStratagy = strategies?.find((item) => item.value == stratagy)?.label
     return (
         <main className="">
             <div className="flex gap-3 items-center">
@@ -43,9 +45,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
                 <div className="flex flex-col flex-1 pr-4 space-y-2">
                     <h3 className="font-medium" >{t("prospecting.Strategy")}</h3>
                     <p className="w-full text-center border border-[#00000014] rounded-md p-2">
-                        {
-                            strategies?.find((item) => item.value === stratagy)?.label
-                        }
+                        {selectedStratagy}
                     </p>
                 </div>
                 <div className="border-x-2 border-[#00000014] px-5 space-y-2">

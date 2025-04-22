@@ -34,8 +34,8 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
             fetchCRMGroups();
     }, []);
 
-    const messageTitle = tempMessageList.find((item) => item.id === message) || "Message123";
-    const keywordTitle = keyWordList.find((item) => item.id === keyword) || "Message123";
+    const messageTitle = tempMessageList.find((item) => item.id == message)?.title || 'Message' ;
+    const keywordTitle = keyWordList.find((item) => item.id == keyword)?.name ?? "None" ;
 
     return (
         <Modal

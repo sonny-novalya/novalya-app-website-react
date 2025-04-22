@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Input, Button } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { EditIcon, PreviewIcon } from "../../../../../pages/common/icons/icons";
@@ -18,9 +18,9 @@ const SelectMessage = ({ tempMessageList }) => {
 
     const { prospection, updateProspection } = SettingStore();
     const { message } = prospection;
-    const [selectedRow, setSelectedRow] = useState(
-        message ?? (tempMessageList.length > 0 ? tempMessageList[0].id : null)
-    );
+
+    console.log("messagess",message)
+    const [selectedRow, setSelectedRow] = useState(null);
     const [searchText, setSearchText] = useState('');
 
     const handleUpdate = (field, value) => {
@@ -54,6 +54,11 @@ const SelectMessage = ({ tempMessageList }) => {
         );
     }, [searchText, tempMessageList]);
 
+    useEffect(()=>{
+        setSelectedRow(message ? message :  (tempMessageList.length > 0 ? tempMessageList[0].id : null))
+    }, [message])
+
+
     return (
         <div className="w-full h-full bg-white rounded-lg flex flex-col">
             <h2 className="font-medium text-lg">{t("prospecting.Select Message")}</h2>
@@ -68,7 +73,7 @@ const SelectMessage = ({ tempMessageList }) => {
                 {filteredMessages?.map((record) => (
                     <div
                         key={record?.id}
-                        className={`cursor-pointer flex w-full items-center justify-between p-2 border ${selectedRow === record?.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white"}`}
+                        className={`cursor-pointer flex w-full items-center justify-between p-2 border ${selectedRow == record?.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white"}`}
                         onClick={() => handleRowClick(record?.id)}
                     >
                         <h2>

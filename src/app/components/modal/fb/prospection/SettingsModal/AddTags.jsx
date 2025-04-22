@@ -15,8 +15,6 @@ const AddTags = ({ CRMList, groupId }) => {
         action = 'no'; 
     }
 
-    console.log("action", action)
-
     const [actionType, setActionType] = useState(action !== "no" ? "yes" : "no");
 
     const [selectedGroupId, setSelectedGroupId] = useState(action?.moveGroupId || null);
