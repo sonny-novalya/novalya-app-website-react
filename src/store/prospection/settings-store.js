@@ -15,7 +15,7 @@ const SettingStore = create((set) => ({
         interval: "2-4", // make different interval for fb and ig
         selectedinterval: "1", // selected interval custom goes here
         gender: "female",
-        keyword: 1,
+        keyword: null,
         prospect: "no", // retarget same user
         pro_convo: 0, // Existing conversation
         action: "no", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  

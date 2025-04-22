@@ -21,11 +21,9 @@ const Filters = ({ keyWordList }) => {
     };
 
     const handleUpdate = (field, value) => {
-        const updatedValue = field === "keyword" && value === "none" ? null : value;
-
         updateProspection({
             ...prospection,
-            [field]: updatedValue
+            [field]: value
         });
 
         setDropdownOpen(false);
@@ -88,29 +86,32 @@ const Filters = ({ keyWordList }) => {
                             className="flex justify-between items-center px-4 py-3 rounded-md border text-[#0087FF] w-full cursor-pointer"
                             onClick={toggleDropdown}
                         >
-                            {keyword === null
-                                ? "None"
-                                : updatedKeywordList.find(k => k.id === keyword)?.name || "Select Keyword"}
+                            {keyword && updatedKeywordList.find(k => k.id == keyword)?.name || "Select Keyword"}
                             <UpperArrowIcon className={`transform transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                         </button>
 
 
                         {dropdownOpen && (
                             <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA] mt-2 rounded-md shadow-md z-10">
-                                {updatedKeywordList.map((option) => (
-                                    <button
-                                        key={option.id}
-                                        className={`relative flex items-center justify-between px-4 py-3 rounded-md cursor-pointer w-full ${keyword === option.id ? "bg-[#CCE7FF] border-[#DADADA]" : "bg-white border-[#0087FF]"}`}
-                                        onClick={() => handleUpdate("keyword", option.id)}
-                                    >
-                                        {option.name}
-                                        {keyword === option.id && (
-                                            <span className="absolute right-2">
-                                                <TickFillIcon />
-                                            </span>
-                                        )}
-                                    </button>
-                                ))}
+                                {updatedKeywordList.map((option) => {
+                                    const isSelected = (option.id === "none" && keyword === null) || keyword === option.id;
+                                    const valueToUpdate = option.id === "none" ? null : option.id;
+
+                                    return (
+                                        <button
+                                            key={option.id}
+                                            className={`relative flex items-center justify-between px-4 py-3 rounded-md cursor-pointer w-full ${isSelected ? "bg-[#CCE7FF] border-[#DADADA]" : "bg-white border-[#0087FF]"}`}
+                                            onClick={() => handleUpdate("keyword", valueToUpdate)}
+                                        >
+                                            {option.name}
+                                            {isSelected && (
+                                                <span className="absolute right-2">
+                                                    <TickFillIcon />
+                                                </span>
+                                            )}
+                                        </button>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>

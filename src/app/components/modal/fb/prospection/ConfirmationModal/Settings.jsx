@@ -13,8 +13,6 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
     //     });
     // };
 
-    console.log("stratagy", stratagy)
-    
     const strategies = [
         { value: 0, label: t("prospecting.Follow + Message") },
         { value: 1, label: t("prospecting.Message Only") },
