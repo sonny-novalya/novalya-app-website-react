@@ -145,6 +145,16 @@ const Request = () => {
     </div>}
       <div className="nw-manage-requests">
         <div>
+        
+        <input type="hidden" id="requestAcceptMsg" value={acceptedData?.selectedMessage?.id || ""}/>
+        <input type="hidden" id="requestAcceptTag" value={acceptedData?.isTag} />
+        <input type="hidden" id="requestAcceptGroup" value={acceptedData?.selectedGroup || 0} />
+        <input type="hidden" id="requestAcceptStage" value={acceptedData?.selecetdStage || 0} />
+        <input type="hidden" id="requestDeclineMsg" value={rejectedData?.selectedMessage?.id || ""}/>
+        <input type="hidden" id="requestDeclineTag" value={rejectedData?.isTag} />
+        <input type="hidden" id="requestDeclineGroup" value={rejectedData?.selectedGroup || 0} />
+        <input type="hidden" id="requestDeclineStage" value={rejectedData?.selecetdStage || 0} />
+
           <h1 className="text-2xl font-[500] mb-4">
              {t("FB_request.Auto-Reply to Requests")}
           </h1>
@@ -383,6 +393,7 @@ const Request = () => {
                   </defs>
                 </svg>
               </h1>
+              
               <div
                 onClick={() => handleMessagePOP(0)}
                 className="w-full border border-[#DADADA] bg-white p-2 rounded-[6px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] p-[13px]"
