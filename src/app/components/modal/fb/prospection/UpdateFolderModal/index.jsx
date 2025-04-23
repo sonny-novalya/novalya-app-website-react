@@ -86,7 +86,7 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
         >
             <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto">
             <div className="flex justify-between">
-                    <h2 className="font-medium text-lg">{t("prospecting.Edit")} Folder</h2>
+                    <h2 className="font-medium text-lg">{t("prospecting.Edit Folder")}</h2>
                     <button
                         className="h-4 cursor-pointer"
                         onClick={handleDelete}
@@ -99,7 +99,7 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
                     type="text"
                     value={newFolderName}
                     onChange={(e) => setNewFolderName(e.target.value)}
-                    placeholder="Enter folder name"
+                    placeholder={t("prospecting.Enter folder name")}
                     className="border border-[#00000014] rounded-md p-4"
                 />
                 <h2 className="font-medium text-lg mb-4">{t("prospecting.Select Group")}s</h2>
@@ -109,10 +109,10 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
                             <thead className="bg-[#F6F6F6]">
                                 <tr className="text-left font-normal">
                                     <th className="p-3 w-10"></th>
-                                    <th className="p-3 font-medium">Group&apos;s Name</th>
-                                    <th className="p-3 font-medium">Members</th>
-                                    <th className="p-3 font-medium">Privacy</th>
-                                    <th className="p-3 font-medium">{t("prospecting.Message")}s Sent</th>
+                                    <th className="p-3 font-medium">{t("prospecting.Group Name")}</th>
+                                    <th className="p-3 font-medium">{t("prospecting.Members")}</th>
+                                    <th className="p-3 font-medium">{t("prospecting.Privacy")}</th>
+                                    <th className="p-3 font-medium">{t("prospecting.Messages Sent")}</th>
                                 </tr>
                             </thead>
                             <tbody>

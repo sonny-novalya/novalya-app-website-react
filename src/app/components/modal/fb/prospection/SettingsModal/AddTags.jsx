@@ -43,8 +43,8 @@ const AddTags = ({ CRMList, groupId }) => {
 
 
     const addTagsOptions = [
-        { label: "No", value: "no" },
-        { label: "Yes", value: "yes" }
+        { label: t("prospecting.No"), value: "no" },
+        { label: t("prospecting.Yes"), value: "yes" }
     ];
 
     const selectedGroupData = CRMList.find((item) => item.id == selectedGroupId);

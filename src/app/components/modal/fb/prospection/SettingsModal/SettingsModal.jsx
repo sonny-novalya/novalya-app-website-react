@@ -118,7 +118,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
                         disabled={activeKey !== tabItems.length}
                         onClick={handleSave}
                     >
-                        {loading ? "Saving..." : "Save"}
+                        {loading ? t("prospecting.Saving") : t("prospecting.Save")}
                     </button>
                 </div>
 
@@ -135,7 +135,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
                             className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
                             onClick={handleBack}
                         >
-                            Back
+                            {t("prospecting.Back")}
                         </button>
                         <button
                             className={`px-12 py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey === tabItems.length ? "opacity-50" : ""

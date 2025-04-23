@@ -32,8 +32,8 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId })
         fetchCRMGroups({ type });
     }, []);
 
-    const messageTitle = tempMessageList.find((item) => item.id == message)?.title || 'Message';
-    const keywordTitle = keyWordList.find((item) => item.id == keyword)?.name ?? "None";
+    const messageTitle = tempMessageList.find((item) => item.id == message)?.title || t("prospecting.Message");
+    const keywordTitle = keyWordList.find((item) => item.id == keyword)?.name ?? t("prospecting.None");
 
     return (
         <Modal
@@ -71,7 +71,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId })
                     className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
                     onClick={() => onClose()}
                 >
-                    Cancel
+                    {t("prospecting.Cancel")}
                 </button>
                 <button
                     className={`px-12 py-2 rounded-lg bg-[#21BF7C] text-white cursor-pointer `}
