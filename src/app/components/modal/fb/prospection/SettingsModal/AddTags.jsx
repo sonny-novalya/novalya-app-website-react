@@ -16,8 +16,14 @@ const AddTags = ({ CRMList, groupId }) => {
         parsedAction = 'no';
     }
 
+    const isNoAction =
+        parsedAction === "no" ||
+        (parsedAction &&
+            parsedAction.moveGroupId === null &&
+            parsedAction.moveStageId === null &&
+            parsedAction.stage_num === null);
 
-    const [actionType, setActionType] = useState(parsedAction !== "no" ? "yes" : "no");
+    const [actionType, setActionType] = useState(isNoAction ? "no" : "yes");
 
     const [selectedGroupId, setSelectedGroupId] = useState(parsedAction?.moveGroupId || null);
     const [selectedStageId, setSelectedStageId] = useState(parsedAction?.moveStageId || null);
@@ -60,7 +66,11 @@ const AddTags = ({ CRMList, groupId }) => {
                                 : "bg-white border-[#0087FF]"}`}
                             onClick={() => {
                                 setActionType(option.value);
-                                handleSave();
+                                if (option.value === "no") {
+                                    handleSave(null, null, null);
+                                } else {
+                                    handleSave(selectedGroupId, selectedStageId, selectedStageNum);
+                                }
                             }}
                         >
                             {option.label}
