@@ -12,10 +12,10 @@ import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import usefbCRM from "../../../../../../store/fb/fbCRM";
 import { useLocation } from "react-router-dom";
 
-const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGroupId }) => {
+const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId }) => {
     const { prospection, fetchProspectionData } = SettingStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
-    const { message, stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
+    const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { fetchCRMGroups, CRMList } = usefbCRM();
     const location = useLocation();
@@ -28,13 +28,13 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
 
     useEffect(() => {
         fetchKeywords({ page: 1, limit: 100 });
-        fetchProspectionData();
+        groupId && fetchProspectionData(isInstagram ? 'instagram' : 'facebook', groupId);
         fetchMessages({ page: 1, limit: 200 });
         fetchCRMGroups();
     }, []);
 
-    const messageTitle = tempMessageList.find((item) => item.id === message) || "Message123";
-    const keywordTitle = keyWordList.find((item) => item.id === keyword) || "Message123";
+    const messageTitle = tempMessageList.find((item) => item.id == message)?.title || 'Message';
+    const keywordTitle = keyWordList.find((item) => item.id == keyword)?.name ?? "None";
 
     return (
         <Modal
@@ -52,7 +52,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
                     {messageTitle}
                 </h3>
                 <Settings
-                    stratagy={stratagy}
+                    proStratagy={pro_stratagy}
                     norequest={norequest}
                     interval={interval}
                     handleOpen={handleOpen}
@@ -78,7 +78,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
                     className={`px-12 py-2 rounded-lg bg-[#21BF7C] text-white cursor-pointer `}
                     id="start-novayla-connect"
                     // eslint-disable-next-line react/no-unknown-property
-                    groupId={primaryGroupId}
+                    groupId={groupId}
                 >
                     {t("prospecting.Next")}
                 </button>
@@ -90,13 +90,8 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, primaryGro
 ConfirmationModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    group: PropTypes.object,
     handleOpenSettingsTab: PropTypes.func,
-    primaryGroupId: PropTypes.number,
-};
-
-ConfirmationModal.defaultProps = {
-    group: null,
+    groupId: PropTypes.string,
 };
 
 export default ConfirmationModal;

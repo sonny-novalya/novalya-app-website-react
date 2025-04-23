@@ -1,7 +1,7 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
 
-import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, FbGroupsTablePage, FbPostTablePage, IgFollowersPage, IgPostsPage, IgHashtagPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage } from "../pages/protected";
+import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
 
@@ -17,14 +17,9 @@ const AuthentictedRoutes = () => {
         <Route path="/connection" element={<ConnectionDashboardPage />} />
         <Route path="/fb/prospecting" element={<FbProspectingPage />} />
         <Route path="/ig/prospecting" element={<IgProspectingPage />} />
-        <Route path="/fb/prospecting/groups" element={<FbGroupsTablePage />} />
-        <Route path="/fb/prospecting/posts" element={<FbPostTablePage />} />
         <Route path="/fb/birthday" element={<BirthdayPage />} />
         <Route path="/fb/crm" element={<CrmPage />} />
         <Route path="/fb/request" element={<RequestPage />} />
-        <Route path="/ig/prospecting/followers" element={<IgFollowersPage />} />
-        <Route path="/ig/prospecting/posts" element={<IgPostsPage />} />
-        <Route path="/ig/prospecting/hashtags" element={<IgHashtagPage />} />
         <Route path="/ig/crm" element={<IgCrmPage />} />
         <Route path="/ai-comments" element={<AiCommentsPage />} />
         <Route path="/affiliate" element={<AffiliatePage />} />

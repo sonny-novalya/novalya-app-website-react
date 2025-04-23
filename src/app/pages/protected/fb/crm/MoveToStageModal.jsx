@@ -1,13 +1,54 @@
 import PropTypes from "prop-types";
-import { Modal, Select } from "antd";
+import { message, Modal, Select } from "antd";
 import { useState } from "react";
 import { t } from "i18next";
 const { Option } = Select;
 
-const MoveToStageModal = ({ visible, onCancel }) => {
+const MoveToStageModal = ({ visible, onCancel ,selectedUsersMap,moveStage,sortedStages,setSortedStages,setSelectedUsersMap}) => {
     const [selectedStage, setSelectedStage] = useState(null);
-    const stages = ["stage 1", "stage 2", "stage 3"];
+    const allIds = Object.values(selectedUsersMap).flat();
 
+ 
+    const  moverTaggedUsers = async ()=>{
+     
+
+        if (!selectedStage) {
+            message.error("Stage cant be empty")
+            return
+        }
+        const data = {
+            stage_id:selectedStage,
+            tagged_user_ids:allIds
+        }
+    const res = await moveStage(data)
+
+    if(res.status === 200){
+        message.success("Users has been moved")
+        const newArr=[]
+      let tempArr =  sortedStages?.map((s)=>{
+            s.leads.forEach((l)=>{
+                if (allIds.includes(l.id)) {
+                    newArr.push(l)
+                }
+            })
+            return {...s,leads:s?.leads?.filter((f)=>!allIds.includes(f.id))}
+        })
+
+        tempArr= tempArr.map((data)=>{
+            if (data.id === Number(selectedStage)) {
+                return {...data,leads:[...data?.leads,...newArr]}
+            }else{
+                return data
+            }
+        })
+        setSelectedUsersMap({})
+        setSortedStages(tempArr)
+    
+        onCancel()
+    }
+
+
+    }
     return (
         <Modal
             open={visible}
@@ -20,8 +61,7 @@ const MoveToStageModal = ({ visible, onCancel }) => {
                 <h2 className="text-xl font-medium ">{t("crm.Move to Stage")}</h2>
             </div>
             <h2 className="text-lg font-medium my-3">{t("crm.Where would you like to move")}{" "}
-            01 
-            {" "}{t("crm.users?")}</h2>
+            {allIds?.length + " "}{t("crm.users?")}</h2>
             <Select
                 className="w-full rounded-lg bg-white border border-gray-300 px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder={t("crm.Select stage")}
@@ -30,9 +70,9 @@ const MoveToStageModal = ({ visible, onCancel }) => {
                 dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
                 style={{ height: "50px" }}
             >
-                {stages?.map((stage) => (
-                    <Option key={stage} value={stage} className="h-[50px] flex items-center px-4">
-                        {stage}
+                {sortedStages?.map((stage) => (
+                    <Option key={stage.id} value={stage.id} className="h-[50px] flex items-center px-4">
+                        {stage.name}
                     </Option>
                 ))}
             </Select>
@@ -44,7 +84,7 @@ const MoveToStageModal = ({ visible, onCancel }) => {
                     {t("crm.Cancel")}
                 </button>
                 <button
-                    onClick={() => console.log("Move")}
+                    onClick={() => moverTaggedUsers()}
                     className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
                 >
                     {t("crm.Move")}

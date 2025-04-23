@@ -8,7 +8,7 @@ const AfiliateTopBar = () => {
    
   return (
     <div className="mb-5">
-    <h1 className="text-2xl font-semibold mb-6" >Affiliates</h1>
+    <h1 className="text-2xl font-[500] mb-6" >Affiliates</h1>
     <div className="flex justify-between gap-6 affiliate-btn-wrap">
       <Button className={`${location.pathname === "/affiliate"?"affiliate-btn-Active": "affiliate-btn" }  w-full min-h-12 sm:w-1/4 border-gray-300 font-[500] text-[16px] sm:text-[18px] leading-[25.2px] !text-[16px] sm:!text-[18px] !p-3`} onClick={()=>navigate('/affiliate')}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

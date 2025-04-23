@@ -24,14 +24,13 @@ const IgProspecting = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState(null);
     const [openCreateFolderModal, setOpenCreateFolderModal] = useState(false);
     const [openUpdateFolderModal, setOpenUpdateFolderModal] = useState(false);
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
     const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup } = useGroupStore();
-    const socialType = "fb_groups";
+    const socialType = "ig_followers";
     const prospect_folder = "ig";
 
     const [activeKey, setActiveKey] = useState(1);
@@ -46,22 +45,23 @@ const IgProspecting = () => {
         setModalOpen(true);
     };
 
-    const handleOpenSettings = (group) => {
-        setSelectedGroup(group);
+    const handleOpenSettings = (groupId) => {
+        setPrimaryGroupId(groupId)
         setModalOpen(true);
     };
 
     const handleCloseModal = () => {
+        setPrimaryGroupId(null);
         setModalOpen(false);
-        setSelectedGroup(null);
     };
 
-    const handleOpenConfirmModal = (group) => {
-        setPrimaryGroupId(group?.id || null)
+    const handleOpenConfirmModal = (groupId) => {
+        setPrimaryGroupId(groupId)
         setConfirmModalOpen(true);
     };
 
     const handleCloseConfirmModal = () => {
+        // setPrimaryGroupId(null)
         setConfirmModalOpen(false);
     };
 
@@ -92,7 +92,14 @@ const IgProspecting = () => {
             </span>
         </div>;
 
-        const folderIdArray = JSON.parse(folderIds);
+        let folderIdArray = [];
+        try {
+            folderIdArray = JSON.parse(folderIds);
+            if (!Array.isArray(folderIdArray)) folderIdArray = [];
+        } catch (error) {
+            console.warn("Invalid folderIds:", error);
+            folderIdArray = [];
+        }
         const folderNames = folderIdArray
             .map(id => {
                 const folder = folders.find(f => f.id === id);
@@ -164,13 +171,14 @@ const IgProspecting = () => {
     const GroupNameColumn = (
         <div className="flex items-center space-x-2">
             <span>Group Name </span>
-            {storeFilters.sort_by === 0 ? (
+            {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
                     className="w-8 h-8 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
                             sort_by: 1,
+                            field: "name",
                             type: "instagram"
                         });
                     }}
@@ -206,6 +214,87 @@ const IgProspecting = () => {
                         updateFilters({
                             ...storeFilters,
                             sort_by: 0,
+                            field: "name",
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-0"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            )}
+
+        </div>
+    );
+
+    const TotalMemberColumn = (
+        <div className="flex items-center space-x-2">
+            <span>Total Members</span>
+            {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 1,
+                            field: "total_member",
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-180"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            ) : (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 0,
+                            field: "total_member",
                             type: "instagram"
                         });
                     }}
@@ -244,6 +333,7 @@ const IgProspecting = () => {
             ...storeFilters,
             page: obj.current,
             limit: obj.pageSize,
+            type: "instagram",
         });
     };
 
@@ -350,7 +440,8 @@ const IgProspecting = () => {
         },
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
-            title: t("prospecting.Total Members"), dataIndex: "total_member", render: (text) => (
+            title: (TotalMemberColumn),
+            dataIndex: "total_member", render: (text) => (
                 <span>{formatNumber(text)}</span>
             )
         },
@@ -365,7 +456,7 @@ const IgProspecting = () => {
                 <Button
                     icon={<SettingOutlined />}
                     className="bg-blue-500 text-white px-3 py-1 rounded-md"
-                    onClick={() => handleOpenSettings(record)}
+                    onClick={() => handleOpenSettings(record.id)}
                 >
                     Settings
                 </Button>
@@ -377,7 +468,7 @@ const IgProspecting = () => {
                 <Button
                     icon={<SendOutlined />}
                     className="bg-gray-200 px-3 py-1 rounded-md"
-                    onClick={() => handleOpenConfirmModal(record)} />
+                    onClick={() => handleOpenConfirmModal(record.id)} />
             )
         },
         {
@@ -577,7 +668,7 @@ const IgProspecting = () => {
                     <SettingsModal
                         visible={modalOpen}
                         onClose={handleCloseModal}
-                        group={selectedGroup}
+                        groupId={primaryGroupId}
                         socialType={socialType}
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
@@ -588,10 +679,8 @@ const IgProspecting = () => {
                     <ConfirmationModal
                         visible={confirmModalOpen}
                         onClose={handleCloseConfirmModal}
-                        groups={groups}
-                        socialType={socialType}
+                        groupId={primaryGroupId}
                         handleOpenSettingsTab={handleOpenSettingsTab}
-                        primaryGroupId={primaryGroupId}
                     />
                 )}
 

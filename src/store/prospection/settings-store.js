@@ -11,13 +11,14 @@ const SettingStore = create((set) => ({
         keywordData: [],
         crmGroupData: [],
         stratagy: 0, // 0 set for Follow + message
-        norequest: "10", // How many Requests
+        norequest: 10, // How many Requests
         interval: "2-4", // make different interval for fb and ig
-        selectedinterval: "90", // selected interval custom goes here
+        selectedinterval: "1", // selected interval custom goes here
         gender: "female",
-        keyword: 1,
+        keyword: null,
         prospect: "no", // retarget same user
         pro_convo: 0, // Existing conversation
+        pro_stratagy: 0, // Request + Message
         action: "no", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
         datevalue: null,
         group_id: null,
@@ -43,11 +44,11 @@ const SettingStore = create((set) => ({
     updateProspection: (newValues) => set(() => ({
         prospection: { ...newValues }
     })),
-    fetchProspectionData: async (prospectionType = 'facebook') => {
+    fetchProspectionData: async (prospectionType, groupId) => {
         try {
             const response = await apiCall({
                 method: 'GET',
-                url: `/target/setting/api/all?prospection_type=${prospectionType}`
+                url: `/target/setting/api/all?prospection_type=${prospectionType}&grp_id=${groupId}`
             });
             if (response.statusText !== "OK") {
                 throw new Error("Failed to fetch prospection data");
@@ -58,25 +59,26 @@ const SettingStore = create((set) => ({
                 const responseData = data.data[0];
                 set({
                     prospection: {
-                        group: responseData.group ? [responseData.group] : [],
-                        messageData: responseData.messages ? [responseData.messages] : [],
-                        keywordData: responseData.keywords ? [responseData.keywords] : [],
-                        crmGroupData: responseData.groups ? [responseData.groups] : [],
-                        stratagy: responseData.pro_stratagy || 0,
-                        norequest: responseData.norequest || "10",
-                        interval: responseData.interval || "2-4",
-                        selectedinterval: responseData.selectedinterval || "90",
-                        gender: responseData.gender || "female",
-                        keyword: responseData.keyword || 1,
-                        prospect: responseData.prospect || "no",
-                        pro_convo: responseData.pro_convo || 0,
-                        action: responseData.action || "no",
-                        datevalue: responseData.datevalue || null,
-                        group_id: responseData.group_id || null,
-                        message: responseData.message || null,
-                        post_target: responseData.post_target || "Like",
-                        newMessage: responseData.newMessage || null,
-                        keywords: responseData.keywords || null,
+                        group: responseData?.group || [],
+                        messageData: responseData?.messages || [] ,
+                        keywordData: responseData?.keywords || [],
+                        crmGroupData: responseData?.groups || [],
+                        stratagy: responseData?.stratagy || 0,
+                        norequest: responseData?.norequest || 10,
+                        interval: responseData?.interval || "10-15",
+                        selectedinterval: responseData?.selectedinterval || "1",
+                        gender: responseData?.gender || "male",
+                        keyword: responseData?.keyword || null,
+                        prospect: responseData?.prospect || "no",
+                        pro_convo: responseData?.pro_convo || 0,
+                        pro_stratagy: responseData?.pro_stratagy || 0,
+                        action: responseData?.action || "no" ,
+                        datevalue: responseData?.datevalue || null,
+                        group_id: responseData?.group_id || null,
+                        message: responseData?.message || null,
+                        post_target: responseData?.post_target || "Like",
+                        newMessage: responseData?.newMessage || null,
+                        keywords: responseData?.keywords || null,
                     }
                 });
             }

@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
-import { Checkbox, Badge, Dropdown, Menu, message } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { Checkbox, Badge, Dropdown, message, Button } from "antd";
+import { useEffect, useRef, useState } from "react";
 import {
   DeleteFillRedIcon,
   MoveStageGreenIcon,
   SendBlueIcon,
   SendIcon,
   SyncGreenIcon,
+  VerticalDotsIcon,
 } from "../../../common/icons/icons";
 import TopbarRightSection from "./TopBarRightSection";
 import SendCampaignModal from "./SendCampaignModal";
@@ -17,39 +17,93 @@ import NoteUserModal from "./NoteUserModal";
 
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
+import EditstageModal from "./editStageModal";
 
 const RightSectionCrm = ({ selectedGroup }) => {
-  const {selectedGrpData,moveTaggedUsers,createStage,addGrpLoader}=usefbCRM()
+  const {
+    selectedGrpData,
+    moveTaggedUsers,
+    createStage,
+    addGrpLoader,
+    deleteStage,
+    setSelectStage,
+    moveStage,
+    deleteTaggedUser
+  } = usefbCRM();
 
   const [selectedUsersMap, setSelectedUsersMap] = useState({});
   const [openCampaignModal, setOpenCampaignModal] = useState(false);
   const [openMoveToStageModal, setOpenMoveToStageModal] = useState(false);
   const [openAddStageModal, setOpenAddStageModal] = useState(false);
+  const [openEditStageModal, setOpenEditStageModal] = useState(false);
+  
   const [openNoteModal, setOpenNoteModal] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
-  const [sortedStages,setSortedStages]= useState([])
+  const [sortedStages, setSortedStages] = useState([]);
   const [draggedItem, setDraggedItem] = useState(null);
+  const [isDel,setIsDel]=useState(false)
+  const totalSlectedIds = selectedUsersMap? Object.values(selectedUsersMap).flat():null
+
+    const delTime = useRef();
+
+ 
+  
 
   useEffect(() => {
-    
-   if(selectedGrpData?.stage?.length ){ 
-    let newStages = [...selectedGrpData.stage].sort(
+    if (selectedGrpData?.stage?.length) {
+      let newStages = [...selectedGrpData.stage].sort(
         (a, b) => a.stage_num - b.stage_num
       );
-      const fakeLeads = (id)=>{
-      const leads =   selectedGrpData?.taggedUsers?.filter((data)=>data?.stage_id === id)
-      return leads
-      }
-      newStages=  newStages?.map((element )=> {
-        return {...element,leads:fakeLeads(element.id) }
+      const fakeLeads = (id) => {
+        const leads = selectedGrpData?.taggedUsers?.filter(
+          (data) => data?.stage_id === id
+        );
+        return leads;
+      };
+      newStages = newStages?.map((element) => {
+        return { ...element, leads: fakeLeads(element.id) };
       });
 
-      setSortedStages(newStages)
+
+      setSortedStages(newStages);
+    }
+  }, [selectedGrpData])
+
+  const handleUserDelete = async()=>{
+
+    if(isDel){
+      const stageId= Object.keys(selectedUsersMap)?.[0]
+      const res =  await deleteTaggedUser(totalSlectedIds[0])
+   
+      if (res.status === 200) {
+       message.success("user has been deleted")
+       const newArr = sortedStages?.map((data) => {
+         if (data.id === Number(stageId)) {
+         
+           return {
+             ...data,
+             leads: data?.leads?.filter((card) => card?.id !== totalSlectedIds?.[0]),
+           };
+         }
+           return data;
+         
+       });
+    
+       setSelectedUsersMap({})
+       setSortedStages(newArr)
+       setIsDel(false)
+      }
+    }else{
+      setIsDel(true)
+     setTimeout(()=>{
+      setIsDel(false)
+     },3000)
     }
 
-  }, [selectedGrpData])
-  
-  //  const startIndexRef = useRef(null);
+
+
+  }
+
 
   if (!selectedGroup || !selectedGroup.stage) {
     return (
@@ -60,56 +114,48 @@ const RightSectionCrm = ({ selectedGroup }) => {
   }
 
   
-  const menu = (
-    <Menu
-      items={[
-        { key: "1", label: "Rename Stage" },
-        { key: "2", label: "Delete Stage" },
-      ]}
-    />
-  );
 
 
-
-  const handleSearch = (value) => {
-    console.log("Search value:", value);
-  };
 
   const handleAddStage = () => {
     setOpenAddStageModal(true);
   };
 
+  const handleDrop = async (targetColId) => {
+    if (!draggedItem || targetColId === draggedItem?.stageId) return;
 
+    const newArr = sortedStages?.map((data) => {
+      if (data.id === draggedItem?.stageId) {
+        console.log({
+          ...data,
+          leads: data.leads.filter((card) => card.id !== draggedItem.lead.id),
+        });
+        return {
+          ...data,
+          leads: data.leads.filter((card) => card.id !== draggedItem.lead.id),
+        };
+      } else if (data.id === targetColId) {
+        return { ...data, leads: [...data.leads, draggedItem.lead] };
+      } else {
+        return data;
+      }
+    });
 
-  const handleDrop = async(targetColId) => {
-    if (!draggedItem || targetColId === draggedItem?.stageId) return
-
-
-    const newArr = sortedStages?.map(((data)=>{
-        if (data.id === draggedItem?.stageId) {
-          console.log({...data,leads:data.leads.filter((card)=>card.id !== draggedItem.lead.id) })
-            return {...data,leads:data.leads.filter((card)=>card.id !== draggedItem.lead.id) }
-        }else if(data.id === targetColId){
-            return {...data,leads:[...data.leads,draggedItem.lead] }
-
-        }else{
-            return data
-        }
-    }))
-
-    setSortedStages(newArr)
+    setSortedStages(newArr);
     setDraggedItem(null);
 
-    const res =await moveTaggedUsers({id:draggedItem.lead.id,stage_id:targetColId})
+    const res = await moveTaggedUsers({
+      id: draggedItem.lead.id,
+      stage_id: targetColId,
+    });
 
     if (res?.status !== 200) {
-      message.error("Unable to move tagged user")
+      message.error("Unable to move tagged user");
     }
   };
 
-
   const buttonActions = [
-    {
+    {id:1,
       label: t("crm.Send Campaign"),
       icon: <SendBlueIcon />,
       textColor: "text-blue-600",
@@ -118,7 +164,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         setOpenCampaignModal(true);
       },
     },
-    {
+    {id:2,
       label: t("crm.Move to stage"),
       icon: <MoveStageGreenIcon />,
       textColor: "text-green-600",
@@ -127,7 +173,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         setOpenMoveToStageModal(true);
       },
     },
-    {
+    {id:3,
       label: t("crm.Synchronize date"),
       icon: <SyncGreenIcon />,
       textColor: "text-green-600",
@@ -136,16 +182,66 @@ const RightSectionCrm = ({ selectedGroup }) => {
         console.log("yes");
       },
     },
-    {
-      label: t("crm.Delete"),
+    {id:4,
+      label:!isDel? t("crm.Delete"):"Really ?",
       icon: <DeleteFillRedIcon />,
       textColor: "text-red-600",
       borderColor: "border-red-100",
       onClick: () => {
-        console.log("Delete clicked");
+        handleUserDelete()
       },
     },
   ];
+
+  const DropdownMenu = ({ item }) => {
+    const [isDel,setIsDel]=useState(false)
+
+ 
+    
+    const handleDelete = async (id) => {
+      if (isDel) {
+       const res =await deleteStage(id)
+       if (res.status === 200) {
+        message.success("Staged has been deleted")
+        const newArr = sortedStages?.filter((s)=>s.id !== Number(id))
+        setSortedStages(newArr)
+       }
+       setIsDel(false)
+      } else {
+        setIsDel(true)
+        delTime.current = setTimeout(()=>{
+          setIsDel(false)
+        },3000)
+  
+      }
+    };
+
+    return(
+     <div
+     className="bg-white rounded-md shadow-md p-2"
+     onClick={(e) => e.stopPropagation()} // Prevent closing on click
+   >
+     <div
+       onClick={() =>{
+        setSelectStage(item)
+        setOpenEditStageModal(true)
+       }}
+       className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
+     >
+       Rename
+     </div>
+     <div
+       onClick={() => {
+         handleDelete(item.id)}}
+       className="px-3 py-2 hover:bg-red-100 cursor-pointer rounded"
+     >
+       {isDel ? "Really?" : "Delete"}
+     </div>
+   </div>
+    )
+  }
+  
+  
 
   const SortableItem = ({
     lead,
@@ -153,7 +249,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
     stage,
     toggleUserSelection,
   }) => {
-   console.log(lead?.profile_pic)
 
     return (
       <div
@@ -163,10 +258,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
             ? "border-[#0087FF] bg-[#D9EDFF]"
             : "border-white bg-white"
         }`}
-
         draggable={true}
-        onDrag={()=>setDraggedItem({lead,stageId:stage?.id})}
-      
+        onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
       >
         <Checkbox
           checked={selectedUsers.includes(lead.id)}
@@ -198,117 +291,133 @@ const RightSectionCrm = ({ selectedGroup }) => {
       <div
         className="min-w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md"
         onDragOver={(e) => e.preventDefault()}
-       onDrop={()=>handleDrop(stageId)}
+        onDrop={() => handleDrop(stageId)}
       >
         {children}
       </div>
     );
   };
   return (
-    <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full">
+    <div  className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full">
       <TopbarRightSection
         companyName={selectedGroup.name}
         leadsCount={selectedGrpData?.taggedUsers?.length || 0}
-        onSearch={handleSearch}
+        setSortedStages={setSortedStages}
         onAddStage={handleAddStage}
+        selectedGrpData={selectedGrpData}
       />
 
       <div className="flex gap-4 p-4 min-w-max">
-    
-          {sortedStages.map((stage) => {
-            const selectedUsers = selectedUsersMap[stage.id] || [];
+        {sortedStages.map((stage) => {
+          const selectedUsers = selectedUsersMap[stage.id] || [];
 
-            const handleSelectAll = (e) => {
-              setSelectedUsersMap((prev) => ({
+          const handleSelectAll = (e) => {
+            setSelectedUsersMap((prev) => ({
+              ...prev,
+              [stage.id]: e.target.checked
+                ? stage.leads.map((lead) => lead.id)
+                : [],
+            }));
+          };
+
+          const toggleUserSelection = (id) => {
+            setSelectedUsersMap((prev) => {
+              const current = prev[stage.id] || [];
+              return {
                 ...prev,
-                [stage.id]: e.target.checked
-                  ? stage.leads.map((lead) => lead.id)
-                  : [],
-              }));
-            };
+                [stage.id]: current.includes(id)
+                  ? current.filter((uid) => uid !== id)
+                  : [...current, id],
+              };
+            });
+          };
 
-            const toggleUserSelection = (id) => {
-              setSelectedUsersMap((prev) => {
-                const current = prev[stage.id] || [];
-                return {
-                  ...prev,
-                  [stage.id]: current.includes(id)
-                    ? current.filter((uid) => uid !== id)
-                    : [...current, id],
-                };
-              });
-            };
 
-            return (
-              <DroppableStage stageId={stage.id}>
-                <div
-                  key={stage.id}
-                  className="min-w-[300px] min-h-[640px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-y-scroll"
-
-                >
-                  <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          checked={selectedUsers?.length === stage?.leads?.length && selectedUsers?.length > 0}
-                          indeterminate={
-                            selectedUsers?.length > 0 &&
-                            selectedUsers?.length < stage?.leads?.length
-                          }
-                          onChange={handleSelectAll}
+          return (
+            <DroppableStage stageId={stage.id}>
+              <div
+                key={stage.id}
+                className="min-w-[300px] min-h-[640px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-y-scroll"
+              >
+                <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        checked={
+                          selectedUsers?.length === stage?.leads?.length &&
+                          selectedUsers?.length > 0
+                        }
+                        indeterminate={
+                          selectedUsers?.length > 0 &&
+                          selectedUsers?.length < stage?.leads?.length
+                        }
+                        onChange={handleSelectAll}
+                      />
+                      <span className="text-sm font-semibold">
+                        {stage.name}
+                      </span>
+                      <Badge
+                        count={`${stage?.leads?.length || 0} leads`}
+                        style={{
+                          backgroundColor: "white",
+                          color: "#0087FF",
+                          fontSize: "10px",
+                          padding: "0 6px",
+                        }}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span
+                        onClick={() => setOpenCampaignModal(true)}
+                        className="cursor-pointer"
+                      >
+                        <SendIcon />
+                      </span>
+                  
+                      <Dropdown
+                      overlay={
+                        <DropdownMenu
+                          item={stage}
+                        
                         />
-                        <span className="text-sm font-semibold">
-                          {stage.name}
-                        </span>
-                        <Badge
-                          count={`${stage?.leads?.length || 0} leads`}
-                          style={{
-                            backgroundColor: "white",
-                            color: "#0087FF",
-                            fontSize: "10px",
-                            padding: "0 6px",
-                          }}
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span
-                          onClick={() => setOpenCampaignModal(true)}
-                          className="cursor-pointer"
-                        >
-                          <SendIcon />
-                        </span>
-                        <Dropdown overlay={menu} trigger={["click"]}>
-                          <MoreOutlined
-                            style={{ fontSize: "18px", cursor: "pointer" }}ß
-                          />
-                        </Dropdown>
-                      </div>
+                      }
+                      trigger={["click"]}
+                      placement="bottomRight"
+                    >
+                      <Button
+                        type="text"
+                        icon={<VerticalDotsIcon color={"white"} />}
+                       
+                        className="!text-[#808183] !h-9 btn-hover"
+                      />
+                    </Dropdown>
+
                     </div>
                   </div>
-
-                  {/* Leads */}
-                  <div className="flex flex-col gap-2 px-2">
-                 
-                      {stage?.leads?.map((lead) => (
-                        <SortableItem
-                          key={lead.id}
-                          lead={lead}
-                          selectedUsers={selectedUsers}
-                          stage={stage}
-                          toggleUserSelection={toggleUserSelection}
-                        />
-                      ))}
-                  
-                  </div>
                 </div>
-              </DroppableStage>
-            );
-          })}
-       
+
+                {/* Leads */}
+                <div className="flex flex-col gap-2 px-2">
+                  {stage?.leads?.map((lead) => (
+                    <SortableItem
+                      key={lead.id}
+                      lead={lead}
+                      selectedUsers={selectedUsers}
+                      stage={stage}
+                      toggleUserSelection={toggleUserSelection}
+                    />
+                  ))}
+                </div>
+              </div>
+            </DroppableStage>
+          );
+        })}
       </div>
       <div className="flex gap-4 p-4 items-center justify-center border border-[#DADADA] w-fit mx-auto rounded-lg mt-auto">
-        {buttonActions.map((action, index) => (
-          <button
+        {buttonActions.map((action, index) => {
+        
+          if(totalSlectedIds?.length>1 &&  action.id === 4) return null
+        return   <button
             key={index}
             onClick={action.onClick}
             className={`flex items-center gap-2 border rounded-md px-4 py-2 hover:shadow transition cursor-pointer ${action.textColor} ${action.borderColor}`}
@@ -316,7 +425,11 @@ const RightSectionCrm = ({ selectedGroup }) => {
             {action.icon}
             <span className="font-medium">{action.label}</span>
           </button>
-        ))}
+        }
+      
+  
+        
+        )}
       </div>
 
       {openCampaignModal && (
@@ -333,10 +446,12 @@ const RightSectionCrm = ({ selectedGroup }) => {
         <MoveToStageModal
           visible={openMoveToStageModal}
           onCancel={() => setOpenMoveToStageModal(false)}
-          onSend={(data) => {
-            console.log("moving with data:", data);
-            setOpenMoveToStageModal(false);
-          }}
+          selectedUsersMap={selectedUsersMap}
+          moveStage={moveStage}
+          sortedStages={sortedStages}
+          setSortedStages={setSortedStages}
+          setSelectedUsersMap={ setSelectedUsersMap}
+
         />
       )}
       {openAddStageModal && (
@@ -354,6 +469,15 @@ const RightSectionCrm = ({ selectedGroup }) => {
         />
       )}
 
+      {openEditStageModal && (
+        <EditstageModal
+          visible={openEditStageModal}
+          onCancel={() => setOpenEditStageModal(false)}
+          setSortedStages={setSortedStages}
+          sortedStages={sortedStages}
+        />
+      )}
+
       {openNoteModal && selectedLead && (
         <NoteUserModal
           visible={openNoteModal}
@@ -364,8 +488,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
     </div>
   );
 };
-
-
 
 RightSectionCrm.propTypes = {
   selectedGroup: PropTypes.object,

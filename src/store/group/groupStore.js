@@ -1,14 +1,17 @@
 import { create } from "zustand";
-import { BASE_URL } from "../../services/ApiCalls";
+import apiCall from "../../services/api";
 
 const useGroupStore = create((set) => ({
     groups: [],
     initialGroups: [],
+    folderUpdateId: null,
+    setFolderUpdateId: (val) => (set({ folderUpdateId: val})),
     loading:false,
     initialStoreFilters: {
         sort_by: 0,
         type: 'facebook',
-        id: 0, // folder id
+        id: 0, // folder id,
+        field:"",
         search_grp: "",
         social_type: "",
         group_type: "",
@@ -21,6 +24,7 @@ const useGroupStore = create((set) => ({
         sort_by: 0,
         type: 'facebook',
         id: 0,
+        field:"",
         search_grp: "",
         social_type: "",
         group_type: "",
@@ -31,101 +35,90 @@ const useGroupStore = create((set) => ({
         storeFilters: { ...newValues }
     })),
 
-    fetchGroups: async ({ sort_by, type, id, search_grp, social_type, group_type, page, limit }) => {
+    fetchGroups: async ({ sort_by, type, id, search_grp, social_type, group_type, page, limit, field }) => {
         try {
-            set({ loading : true })
-            const token = localStorage.getItem("token");
+            set({ loading: true });
+
             const payload = {
                 sort_by,
-                type: type,         
+                type,
                 id,
                 search_grp,
                 social_type,
+                field,
                 group_type,
                 page,
                 limit,
             };
 
-            const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;
-
-            const response = await fetch(endpoint, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload)
+            const response = await apiCall({
+                method: 'POST',
+                url: '/groups/api/get-group-by-folder',
+                data: payload,
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch groups");
-            }
+            const result = response.data.data;
 
-            const data = await response.json();
-            set({ totalPages: data.totalPages });
-            set({ totalGrp: data.totalGrp });
-            set({ groups: data.data });
-            set({ loading: false })
+            set({
+                totalPages: result.totalPages,
+                totalGrp: result.totalGrp,
+                groups: result.data,
+                loading: false,
+            });
+
         } catch (error) {
             console.error("Error fetching groups:", error);
+            set({ loading: false });
         }
     },
 
-    fetchInitialGroups: async ({type = "facebook"}) => {
+    fetchInitialGroups: async (type) => {
         try {
-            const token = localStorage.getItem("token");
-            const endpoint = `${BASE_URL}groups/api/get-group-by-folder`;
-
             const payload = {
                 sort_by: 0,
                 type: type,
                 id: 0,
-                search_grp :"",
+                search_grp: "",
                 social_type: "",
-                group_type:"",
+                group_type: "",
                 page: 1,
                 limit: 25,
-            }
-            const response = await fetch(endpoint, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload)
+            };
+
+            const response = await apiCall({
+                method: 'POST',
+                url: '/groups/api/get-group-by-folder',
+                data: payload,
             });
 
-            if (!response.ok) {
+            if (response.statusText !== "OK") {
                 throw new Error("Failed to fetch groups");
             }
+            console.log("response2", response)
 
-            const data = await response.json();
-            set({ initialGroups: data.data });
+            
+            // set({ initialGroups: result.data });
+
         } catch (error) {
             console.error("Error fetching groups:", error);
         }
     },
+
     deleteGroup: async ({ id }) => {
         try {
-            const token = localStorage.getItem("token");
-            const endpoint = `${BASE_URL}groups/api/delete/${id}`;
-
-            const response = await fetch(endpoint, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
+            const response = await apiCall({
+                method: 'GET',
+                url: `/groups/api/delete/${id}`,
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch groups");
+            if (response.statusText !== "OK") {
+                throw new Error("Failed to delete group");
             }
-
         } catch (error) {
-            console.error("Error fetching groups:", error);
+            console.error("Error deleting group:", error);
         }
-    },
+    }
+
 }));
 
 export default useGroupStore;

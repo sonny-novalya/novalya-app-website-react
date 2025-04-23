@@ -9,9 +9,10 @@ const usefbCRM = create((set) => ({
     selectedGrpData:{},
     selectedGrpLoader:false,
     addGrpLoader:false,
+    selectStage:{},
 
   
-//    setFlow: (val) => set(() => ({ flow: val })), 
+   setSelectStage: (val) => set(() => ({ selectStage: val })), 
   
 
 
@@ -130,9 +131,81 @@ createStage: async (data) => {
         });
     }
 },
+deleteStage:async (id) => {
+    try {
+      const res =  await apiCall({
+            method: 'GET',
+            url: `/stages/api/delete/${id}`
+        });
+       return res
+     
+    } catch (error) {
+        set({
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+editStage:async (data) => {
+    set({addGrpLoader:true})
+    try {
+      const res =  await apiCall({
+            method: 'PUT',
+            url: `/stages/api/${data.id}`,
+            data:{name:data.name}
+        });
+        set({addGrpLoader:false})
+       return res
+     
+    } catch (error) {
+        set({
+         addGrpLoader:false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+moveStage:async (data) => {
+    set({addGrpLoader:true})
+    try {
+      const res =  await apiCall({
+            method: 'PATCH',
+            url: `/user/api/taggedusersmove`,
+            data:data
+        });
+        set({addGrpLoader:false})
+       return res
+     
+    } catch (error) {
+        set({
+         addGrpLoader:false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+deleteTaggedUser:async (id)=>{
+   
+    set({addGrpLoader:true})
+    try {
+      const res =  await apiCall({
+            method: 'DELETE',
+            url: `/user/api/taggeduser/${id}`,
+        });
+        set({addGrpLoader:false})
+       return res
+     
+    } catch (error) {
+        console.log(error)
+        set({
+         addGrpLoader:false,
+            error: error?.message || 'Something went wrong',
+        });
+      
+    }
+}
 
 
-}));
+}))
+
+
 
 
 export default usefbCRM;

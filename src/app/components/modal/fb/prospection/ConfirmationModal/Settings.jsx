@@ -1,9 +1,10 @@
 import { t } from "i18next";
 import { EditIconSquaredIcon } from "../../../../../pages/common/icons/icons";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 // import SettingStore from "../../../../../../store/prospection/settings-store";
 
-const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
+const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
 
     // const { prospection, updateProspection } = SettingStore();
     // const handleClick = (field, value) => {
@@ -12,9 +13,11 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
     //         [field]: value
     //     });
     // };
+    const location = useLocation();
+    const isInstagram = location.pathname.split("/")[1] === "ig";
 
     const strategies = [
-        { value: 0, label: t("prospecting.Follow + Message") },
+        { value: 0, label: isInstagram ? t("prospecting.Follow + Message") : "Message + Request" },
         { value: 1, label: t("prospecting.Message Only") },
     ];
 
@@ -28,7 +31,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
     ];
 
     const selectedInterval =  intervalOptions?.find((item) => item.value === interval)
-
+    const selectedStratagy = strategies?.find((item) => item.value == proStratagy)?.label
     return (
         <main className="">
             <div className="flex gap-3 items-center">
@@ -43,9 +46,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
                 <div className="flex flex-col flex-1 pr-4 space-y-2">
                     <h3 className="font-medium" >{t("prospecting.Strategy")}</h3>
                     <p className="w-full text-center border border-[#00000014] rounded-md p-2">
-                        {
-                            strategies?.find((item) => item.value === stratagy)?.label
-                        }
+                        {selectedStratagy}
                     </p>
                 </div>
                 <div className="border-x-2 border-[#00000014] px-5 space-y-2">
@@ -65,7 +66,7 @@ const Settings = ({ stratagy, norequest, interval, handleOpen }) => {
 };
 
 Settings.propTypes = {
-    stratagy: PropTypes.number,
+    proStratagy: PropTypes.number,
     norequest: PropTypes.string,
     interval: PropTypes.string,
     handleOpen: PropTypes.func,

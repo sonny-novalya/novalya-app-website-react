@@ -11,16 +11,17 @@ const ConnectionFirstStep = () => {
     }, [])
 
     return (
-        <div className={`flex flex-col w-full gap-6 border rounded-[10px] px-5 py-6 ${isExtConnected ? 'border-[#21BF7C] ' : 'border-[#DADADA]'}`}>
-            <div className="flex items-center space-x-2 ">
+        <div className={`flex flex-col w-full gap-6.5 border rounded-[10px] px-5 py-6.5 ${isExtConnected ? 'border-[#21BF7C] ' : 'border-[#DADADA]'}`}>
+            <div className="flex items-center space-x-[18px]">
                 {
                     isExtConnected
                         ? <GreenCheckRoundedIcon />
                         : <div className="w-5 h-5 rounded-full border-2 border-red-500 bg-white" />
                 }
-                <h2 className="font-[500] text-[24px]">{t("dashboard.Step-1-Install Chrome Extension")}</h2>
+                {/* <h2 className="font-[500] text-[24px] ">{t("dashboard.Step-1-Install Chrome Extension")}</h2> */}
+                <h2 className="font-[500] text-[24px] ">Step-1: <span className='pl-4'>Install Chrome Extension</span></h2>
             </div>
-            <p className='text-[#000407]  text-[14px]'>
+            <p className='text-[#000407] text-[14px] tracking-[0.02em]'>
                 {t("dashboard.Connect your Instagram account to manage direct messages, comments, and follower insights.")}
             </p>
 

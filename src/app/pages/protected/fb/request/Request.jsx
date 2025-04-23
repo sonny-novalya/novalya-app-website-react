@@ -146,12 +146,12 @@ const Request = () => {
       <div className="nw-manage-requests">
         <div>
           <h1 className="text-2xl font-[500] mb-4">
-             {t("FB_request.Auto-Reply to Requests")} 
+             {t("FB_request.Auto-Reply to Requests")}
           </h1>
           <div className="nv-content-wrapper"></div> {/* to display account syncing message */}
-          <div className="border border-[#DADADA] p-4 pt-8 bg-white rounded-[8px] mb-7">
+          <div className="border border-[#DADADA] px-5 pt-7.5 pb-8  bg-white rounded-[8px] mb-7">
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px] mb-6">
-              <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px] mb-6">
+              <h1 className="text-xl font-[500] flex items-center gap-[10px] mb-6">
               {t("FB_request.When a request is accepted")} :
                 <svg
                   width="26"
@@ -184,7 +184,7 @@ const Request = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7 mb-3">
                 <div className="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px]">
-                  <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
+                  <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px]">
                   {t("FB_request.Do you want to add a tag?")} 
                     <svg
                       width="16"
@@ -285,7 +285,7 @@ const Request = () => {
                 {acceptedData?.isTag === "yes" ? (
                   <div className="border border-[#DADADA] bg-white px-4 py-3 rounded-[6px] ">
                   <div className="flex items-baseline gap-[10px]">
-                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
+                   <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px]">
                     {t("FB_request.Select Group")} 
                       <svg
                         width="16"
@@ -357,7 +357,7 @@ const Request = () => {
               </div>
             </div>
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px]">
-              <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px] mb-6">
+              <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px] mb-6">
               {t("FB_request.When a request is declined")} :
                 <svg
                   width="26"
@@ -393,7 +393,7 @@ const Request = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mt-7">
                 <div className="border border-[#DADADA] bg-white p-4 rounded-[6px]">
-                  <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
+                  <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px]">
                   {t("FB_request.Do you want to add a tag?")} 
                     <svg
                       width="16"
@@ -499,7 +499,7 @@ const Request = () => {
                 {rejectedData?.isTag === "yes" ? (
                   <div className="border border-[#DADADA] bg-white p-4 rounded-[6px]">
                    <div className="flex items-baseline gap-[10px]">
-                   <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px]">
+                   <h1 className="text-xl font-[500] mb-3 flex items-center gap-[10px]">
                     {t("FB_request.Select Group")} 
                       <svg
                         width="16"
@@ -573,17 +573,19 @@ const Request = () => {
             </div>
             <button
               onClick={() => handleSubmit()}
-              className="bg-[#21BF7C] text-white rounded-[10px] font-semibold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6bg-[#21BF7C] hover:bg-[#15AE6D] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250"
+
+              className="bg-[#21BF7C] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6bg-[#21BF7C] hover:bg-[#15AE6D] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250 start-manage-request"
+
             >
              {t("FB_request.Save & Check Requests")} 
             </button>
           </div>
-          <h1 className="text-2xl font-semibold mb-4">{t("FB_request.Pending Requests Sent")}</h1>
+          <h1 className="text-[24px] font-[500] mb-4">{t("FB_request.Pending Requests Sent")}</h1>
           <div className="border border-[#DADADA] p-4 pb-7 bg-white rounded-[8px]">
-            <h1 className="text-xl font-semibold mb-3 flex items-center gap-[10px] mb-6">
+            <h1 className="text-[20px] font-[500] mb-3 flex items-center gap-[10px] mb-6">
             {t("FB_request.do_you_delete_all")} 
             </h1>
-            <button className="flex items-center justify-center gap-[8px] bg-[#21BF7C] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 bg-[#FF0000] hover:bg-[#F40000] text-white rounded-[10px] font-semibold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250">
+            <button className="flex items-center justify-center gap-[8px] bg-[#21BF7C] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 bg-[#FF0000] hover:bg-[#F40000] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250">
               <svg
                 width="24"
                 height="24"

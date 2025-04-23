@@ -1,12 +1,34 @@
 import { useState } from "react";
 import { FemaleGenderActiveIcon, FemaleGenderIcon, MaleGenderActiveIcon, MaleGenderIcon } from "../../common/icons/icons";
+import apiCall from "../../../../services/api";
+import { message } from "antd";
 
 const SelectGender = () => {
     const [gender, setGender] = useState("male");
 
+    
+
+
+    const handleGender = async(gen)=>{
+        try{
+    const res = await apiCall({
+        method: 'POST',
+        url: `/plan/update-gender`,
+        data:{gender:gen}
+
+    });
+
+    if (res.status === 200) {
+        message.success("Gender has been Updated")
+    }
+        }catch(err){
+
+        }
+    }
+
     return (
         <div className="space-y-4">
-            <div className="flex items-center gap-2.5 text-[20px] font-[500]">
+            <div className="flex items-center gap-2.5 text-[20px] font-[500] mb-5">
                 Select Your Gender
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
@@ -16,7 +38,10 @@ const SelectGender = () => {
             </div>
             <div className="flex items-center space-x-4">
                 <button
-                    onClick={() => setGender("male")}
+                    onClick={() =>{ 
+                        setGender("male")
+                        handleGender("male")
+                        }}
                     className={`flex items-center justify-center space-x-3 px-4 py-2.5 border rounded-[6px] cursor-pointer w-[120px]  
             ${gender === "male" ? "border-[#0087FF] text-white bg-[#0087FF]" : "border-[#0087FF] text-[#0087FF]"}`}
                 >
@@ -28,8 +53,11 @@ const SelectGender = () => {
                     <span className="text-[14px]">Male</span>
                 </button>
                 <button
-                    onClick={() => setGender("female")}
-                    className={`flex items-center space-x-2 px-4 py-2 border rounded-[6px] cursor-pointer   
+                    onClick={() =>{ 
+                        setGender("female")
+                        handleGender("female")
+                        }}
+                    className={`flex items-center justify-center space-x-2 px-4 py-2 border rounded-[6px] cursor-pointer w-[120px]  
             ${gender === "female" ? "border-[#0087FF] text-white bg-[#0087FF]" : "border-[#0087FF] text-[#0087FF]"}`}
                 >
                     {

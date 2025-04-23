@@ -2,15 +2,21 @@ import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Settings = ({ isInstagram}) => {
     const { prospection , updateProspection } = SettingStore();
 
-    const { stratagy, norequest, interval } = prospection 
-    
+    const { pro_stratagy, norequest, interval } = prospection 
+    const [customRequest, setCustomRequest] = useState(interval);
+
     const strategies = [
         { value: 0, label: t("prospecting.Follow + Message") },
+        { value: 1, label: t("prospecting.Message Only") },
+    ];
+
+    const FbStrategies = [
+        { value: 0, label: "Message + Request" },
         { value: 1, label: t("prospecting.Message Only") },
     ];
 
@@ -35,6 +41,8 @@ const Settings = ({ isInstagram}) => {
         return !intervalList.some(option => option.value === interval);
     };
 
+    const newStratagies = isInstagram ? strategies : FbStrategies
+
     useEffect(() => {
         if (findInterval()) {
             updateProspection({
@@ -45,11 +53,17 @@ const Settings = ({ isInstagram}) => {
     }, []);
 
     const handleUpdate = (field, value) => {
-        updateProspection({
-            ...prospection,
-            [field]: value
-        });
+        if (field === "norequest") {
+            if (value === "Custom") {
+                updateProspection({ ...prospection, norequest: Number(customRequest) });
+            } else {
+                updateProspection({ ...prospection, norequest: value });
+            }
+        } else {
+            updateProspection({ ...prospection, [field]: value });
+        }
     };
+
 
     return (
         <div className="">
@@ -60,16 +74,16 @@ const Settings = ({ isInstagram}) => {
                 <div className="border border-gray-300 p-4 rounded-lg">
                     <p className="font-medium mb-2 text-gray-800 flex items-center">{t("prospecting.Strategy")}</p>
                     <div className="grid grid-cols-1 gap-2">
-                        {strategies.map((option) => (
+                        {newStratagies.map((option) => (
                             <button
                                 key={option.value}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${stratagy === option.value
+                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("stratagy",option.value)}
+                                onClick={() => handleUpdate("pro_stratagy",option.value)}
                             >
                                 {option.label}
-                                {stratagy === option.value && (
+                                {pro_stratagy === option.value && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>
@@ -83,22 +97,55 @@ const Settings = ({ isInstagram}) => {
                 <div className="border border-gray-300 p-4 rounded-lg">
                     <p className="font-medium mb-2 text-gray-800">{t("prospecting.How many Requests")}</p>
                     <div className="grid grid-cols-3 gap-2">
-                        {requestOptions.map((option) => (
-                            <button
-                                key={option}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${norequest === option
-                                    ? "bg-[#CCE7FF] border-[#CCE7FF]"
-                                    : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("norequest", option)}
-                            >
-                                {option}
-                                {norequest === option && (
-                                    <span className="absolute -right-2 -top-2">
-                                        <TickFillIcon />
-                                    </span>
-                                )}
-                            </button>
-                        ))}
+                        {requestOptions.map((option) => {
+                            const isCustom = option === "Custom";
+                            const isSelected = isCustom
+                                ? norequest === "Custom"
+                                : norequest == option;
+
+                            return (
+                                <button
+                                    key={option}
+                                    className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${isSelected ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"
+                                        }`}
+                                    onClick={() => handleUpdate("norequest", isCustom ? "Custom" : Number(option))}
+                                >
+                                    {option}
+                                    {isSelected && (
+                                        <span className="absolute -right-2 -top-2">
+                                            <TickFillIcon />
+                                        </span>
+                                    )}
+                                </button>
+                            );
+                        })}
+                        {norequest !== undefined && !requestOptions.includes(String(norequest)) && (
+                            <>
+                                <p className="col-span-1 text-xs my-auto">(Min 1 and Max 50)</p>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="50"
+                                    value={customRequest}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        if (val === "" || (Number(val) >= 1 && Number(val) <= 50)) {
+                                            setCustomRequest(val);
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        const parsed = Number(customRequest);
+                                        if (parsed >= 1 && parsed <= 50) {
+                                            updateProspection({ ...prospection, norequest: parsed });
+                                        }
+                                    }}
+                                    placeholder="Enter value"
+                                    className="col-span-2 border border-[#0087FF] rounded-md px-4 py-2 text-gray-800 focus:outline-none "
+                                />
+                            </>
+                        )}
+
+
                     </div>
                 </div>
             </div>
