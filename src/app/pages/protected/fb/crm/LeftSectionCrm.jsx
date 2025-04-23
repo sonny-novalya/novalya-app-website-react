@@ -24,6 +24,10 @@ const SortableItem = ({
   selectedGroup,
   setSelectedGroup,
   getGroupById,
+  setSelectedGrp,
+  setOpenEditGroupModal,
+  deleteCRMGroup,
+  fetchCRMGroups
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: group.id });
@@ -62,7 +66,13 @@ const SortableItem = ({
 
     const handleDelete = async (id) => {
       if (isDel) {
+
+        const res = await deleteCRMGroup(id)
+        if (res.status === 200) {
+          fetchCRMGroups()
+        }
         setIsDel(false);
+        clearTimeout(delTime.current)
       } else {
         setIsDel(true);
         delTime.current = setTimeout(() => {
@@ -77,13 +87,17 @@ const SortableItem = ({
         onClick={(e) => e.stopPropagation()} // Prevent closing on click
       >
         <div
-          onClick={() => {}}
+          onClick={() => {
+            console.log("in edit")
+            setSelectedGrp(group)
+            setOpenEditGroupModal(true)
+          }}
           className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded relative z-99999"
         >
           Edit
         </div>
         <div
-          onClick={() => {}}
+          onClick={() => handleDelete(item.id)}
           className="px-3 py-2 hover:bg-red-100 cursor-pointer rounded relative z-99999"
         >
           {isDel ? "Really?" : "Delete"}
@@ -129,7 +143,7 @@ const SortableItem = ({
       </div>
       <div className="absolute right-[10px] top-[10px]">
         <Dropdown
-          overlay={<DropdownMenu />}
+          overlay={<DropdownMenu item={group}/>}
           trigger={["click"]}
           placement="bottomRight"
         >
@@ -153,10 +167,11 @@ const LeftSectionCrm = ({
   error,
   isLoading,
   reorderCRMGroupsFB,
+  setOpenEditGroupModal
 }) => {
   const [localGroups, setLocalGroups] = useState(groups);
   const startIndexRef = useRef(null);
-  const { getGroupById } = usefbCRM();
+  const { getGroupById ,setSelectedGrp,deleteCRMGroup,fetchCRMGroups} = usefbCRM();
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -227,6 +242,10 @@ const LeftSectionCrm = ({
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
                 getGroupById={getGroupById}
+                setSelectedGrp={setSelectedGrp}
+                setOpenEditGroupModal={setOpenEditGroupModal}
+                deleteCRMGroup={deleteCRMGroup}
+                fetchCRMGroups={fetchCRMGroups}
               />
             ))}
         </div>

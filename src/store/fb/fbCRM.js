@@ -10,9 +10,11 @@ const usefbCRM = create((set) => ({
     selectedGrpLoader:false,
     addGrpLoader:false,
     selectStage:{},
+    selectedGrp:{},
 
   
    setSelectStage: (val) => set(() => ({ selectStage: val })), 
+   setSelectedGrp: (val) => set(() => ({ selectedGrp: val })), 
   
 
 
@@ -34,6 +36,7 @@ const usefbCRM = create((set) => ({
           });
       }
   },
+//   /user/api/group/28068
   reorderCRMGroupsFB: async (data) => {
   
       try {
@@ -100,6 +103,42 @@ createCRMGroup: async (data) => {
             method: 'POST',
             url: `/user/api/group`,
             data:data
+        });
+        set({addGrpLoader:false})
+       return res
+     
+    } catch (error) {
+        set({
+         addGrpLoader:false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+editCRMGroup: async (data) => {
+    set({addGrpLoader:true})
+    try {
+      const res =  await apiCall({
+            method: 'PATCH',
+            url: `/user/api/group/${data.id}`,
+            data:{name:data.name,custom_color:data.custom_color}
+        });
+        set({addGrpLoader:false})
+       return res
+     
+    } catch (error) {
+        set({
+         addGrpLoader:false,
+            error: error?.message || 'Something went wrong',
+        });
+    }
+},
+deleteCRMGroup: async (id) => {
+    set({addGrpLoader:true})
+    try {
+      const res =  await apiCall({
+            method: 'DELETE',
+            url: `/user/api/group/${id}`,
+           
         });
         set({addGrpLoader:false})
        return res
