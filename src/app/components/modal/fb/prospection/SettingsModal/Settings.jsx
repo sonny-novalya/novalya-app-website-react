@@ -11,13 +11,13 @@ const Settings = ({ isInstagram}) => {
     const [customRequest, setCustomRequest] = useState(interval);
 
     const strategies = [
-        { value: 0, label: t("prospecting.Follow + Message") },
-        { value: 1, label: t("prospecting.Message Only") },
+        { value: 1, label: t("prospecting.Follow + Message") },
+        { value: 0, label: t("prospecting.Message Only") },
     ];
 
     const FbStrategies = [
-        { value: 0, label: "Message + Request" },
-        { value: 1, label: t("prospecting.Message Only") },
+        { value: 1, label: "Message + Request" },
+        { value: 0, label: t("prospecting.Message Only") },
     ];
 
     const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
