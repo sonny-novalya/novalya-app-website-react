@@ -94,10 +94,8 @@ const useGroupStore = create((set) => ({
             if (response.statusText !== "OK") {
                 throw new Error("Failed to fetch groups");
             }
-            console.log("response2", response)
-
-            
-            // set({ initialGroups: result.data });
+            const result = response.data.data;
+            set({ initialGroups: result.data });
 
         } catch (error) {
             console.error("Error fetching groups:", error);

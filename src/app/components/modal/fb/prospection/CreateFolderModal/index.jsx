@@ -33,7 +33,7 @@ const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder }) =>
 
     useEffect(() => {
         if(prospect_folder){
-            const type = prospect_folder && "ig" ? "instagram" : "facebook"
+            const type = prospect_folder === "ig" ? "instagram" : "facebook"
             fetchInitialGroups(type)
         }
     }, []);
