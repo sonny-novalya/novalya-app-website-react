@@ -17,8 +17,8 @@ const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
     const strategies = [
-        { value: 0, label: isInstagram ? t("prospecting.Follow + Message") : "Message + Request" },
-        { value: 1, label: t("prospecting.Message Only") },
+        { value: 1, label: isInstagram ? t("prospecting.Follow + Message") : "Message + Request" },
+        { value: 0, label: t("prospecting.Message Only") },
     ];
 
     const intervalOptions = [
