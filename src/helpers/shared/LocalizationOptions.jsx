@@ -62,7 +62,7 @@ const LocalizationOptions = () => {
                                     // style={{ marginRight: 8, width: 20, height: 20 }}
                                     className="w-6 rounded-xs"
                                 />
-                                <span className="ml-2">
+                                <span className="ml-5 text-base text-[#00000073]">
                                     {language.label}
                                 </span>
                             </div>
