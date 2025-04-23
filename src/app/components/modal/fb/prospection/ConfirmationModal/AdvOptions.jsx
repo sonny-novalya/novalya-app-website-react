@@ -18,13 +18,13 @@ const AdvOptions = ({ pro_convo, prospect, handleOpen }) => {
                 </span>
             </div>
             <div className="flex justify-between border border-[#00000014] rounded-md p-4">
-                <div className=" space-y-2 flex-1">
-                    <h3 className="font-medium">{t("prospecting.Existing conversation")}</h3>
+                <div className="flex flex-col flex-1 space-y-2 pr-5">
+                    <h3 className="font-medium">{t("prospecting.Retarget same user")}</h3>
                     <p className="w-full text-center border border-[#00000014] rounded-md p-2 capitalize">{prospect}</p>
                 </div>
                 <div className="bg-[#00000014] w-[1px] mx-4"/>
-                <div className="flex flex-col flex-1 space-y-2 pr-5">
-                    <h3 className="font-medium">{t("prospecting.Retarget same user")}</h3>
+                <div className=" space-y-2 flex-1">
+                    <h3 className="font-medium">{t("prospecting.Existing conversation")}</h3>
                     <p className="w-full text-center border border-[#00000014] rounded-md p-2">{pro_convo === 1 ? "Yes" : "No"}</p>
                 </div>
             </div>

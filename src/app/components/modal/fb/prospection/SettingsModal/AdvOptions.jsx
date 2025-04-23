@@ -48,7 +48,7 @@ const AdvOptions = () => {
                     {reTargetUserData.map((option) => (
                         <button
                             key={option.value}
-                            className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${prospect === option.value
+                            className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${prospect == option.value
                                 ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                 : "bg-white border-[#0087FF]"
                                 }`}
@@ -74,7 +74,7 @@ const AdvOptions = () => {
                     {existingConversationData.map((option) => (
                         <button
                             key={option.value}
-                            className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_convo === option.value
+                            className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_convo == option.value
                                 ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                 : "bg-white border-[#0087FF]"
                                 }`}
