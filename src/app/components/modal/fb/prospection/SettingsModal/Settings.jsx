@@ -24,7 +24,7 @@ const Settings = ({ isInstagram}) => {
     
     const fbIntervalOptions = [
         { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
-        { label: t("prospecting.Slow"), value: "3-5"},
+        { label: t("prospecting.Slow"), value: "3-5", time: t("prospecting.3 to 5 minutes") },
         { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes")},
     ];
 
