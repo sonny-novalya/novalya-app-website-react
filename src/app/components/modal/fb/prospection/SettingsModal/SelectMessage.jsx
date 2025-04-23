@@ -19,7 +19,6 @@ const SelectMessage = ({ tempMessageList }) => {
     const { prospection, updateProspection } = SettingStore();
     const { message } = prospection;
 
-    console.log("messagess",message)
     const [selectedRow, setSelectedRow] = useState(null);
     const [searchText, setSearchText] = useState('');
 

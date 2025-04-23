@@ -45,6 +45,17 @@ const Settings = ({ isInstagram}) => {
         }
     }, []);
 
+    useEffect(() => {
+        if (
+            !requestOptions.includes(String(norequest)) &&
+            Number(norequest) >= 1 &&
+            Number(norequest) <= 50
+        ) {
+            setCustomRequest(norequest);
+        }
+    }, [norequest]);
+
+
     const handleUpdate = (field, value) => {
         if (field === "norequest") {
             if (value === "Custom") {
@@ -93,8 +104,11 @@ const Settings = ({ isInstagram}) => {
                         {requestOptions.map((option) => {
                             const isCustom = option === "Custom";
                             const isSelected = isCustom
-                                ? norequest === "Custom"
-                                : norequest == option;
+                                ? !requestOptions.includes(String(norequest)) &&
+                                Number(norequest) >= 1 &&
+                                Number(norequest) <= 50
+                                : Number(norequest) === Number(option);
+
 
                             return (
                                 <button

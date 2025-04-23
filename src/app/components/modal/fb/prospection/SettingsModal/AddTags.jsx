@@ -8,18 +8,20 @@ const AddTags = ({ CRMList, groupId }) => {
     const { prospection, updateProspection } = SettingStore();
     let { action } = prospection;
 
+    let parsedAction;
     try {
-        action = action ?? (action !== 'no' ? JSON.parse(action) : 'no');
+        parsedAction = action !== 'no' ? JSON.parse(action) : 'no';
     } catch (error) {
         console.error('Error parsing action:', error);
-        action = 'no'; 
+        parsedAction = 'no';
     }
 
-    const [actionType, setActionType] = useState(action !== "no" ? "yes" : "no");
 
-    const [selectedGroupId, setSelectedGroupId] = useState(action?.moveGroupId || null);
-    const [selectedStageId, setSelectedStageId] = useState(action?.moveStageId || null);
-    const [selectedStageNum, setSelectedStageNum] = useState(action?.stage_num || null);
+    const [actionType, setActionType] = useState(parsedAction !== "no" ? "yes" : "no");
+
+    const [selectedGroupId, setSelectedGroupId] = useState(parsedAction?.moveGroupId || null);
+    const [selectedStageId, setSelectedStageId] = useState(parsedAction?.moveStageId || null);
+    const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
 
     const handleSave = (moveGroupId, moveStageId, stage_num) => {
         updateProspection({
