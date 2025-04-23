@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { BASE_URL } from "../../services/ApiCalls";
+import apiCall from "../../services/api";
 
 const useFbProspectingStore = create((set) => ({
     folders: [], // Array to store folders
@@ -15,109 +15,85 @@ const useFbProspectingStore = create((set) => ({
     })),
     setFolders: async (prospect_folder) => {
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(
-                `${BASE_URL}groups/api/get-prospect-folders?prospect_folder=${prospect_folder}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            if (!response.ok) {
+            const response = await apiCall({
+                method: 'GET',
+                url: `/groups/api/get-prospect-folders?prospect_folder=${prospect_folder}`,
+            });
+
+            if (response.statusText !== "OK") {
                 throw new Error("Failed to fetch folders");
             }
-            const data = await response.json();
-            set({ folders: data.data });
+
+            set({ folders: response.data.data });
         } catch (error) {
             console.error("Error fetching folders:", error);
         }
     },
     createFolder: async (folderName, social_type, selectedGroups, prospect_folder) => {
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(
-                `${BASE_URL}groups/api/create-prospect-folder`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        folder_name: folderName,
-                        social_type: social_type,
-                        selectedGroups: selectedGroups,
-                        prospect_folder: prospect_folder
-                    }),
-                }
-            );
-            if (!response.ok) {
+            const response = await apiCall({
+                method: 'POST',
+                url: '/groups/api/create-prospect-folder',
+                data: {
+                    folder_name: folderName,
+                    social_type,
+                    selectedGroups,
+                    prospect_folder,
+                },
+            });
+
+            if (response.statusText !== "OK") {
                 throw new Error("Failed to create folder");
             }
-            const data = await response.json();
-            console.log("Folder created successfully:", data);
+
+            console.log("Folder created successfully:", response.data);
         } catch (error) {
             console.error("Error creating folder:", error);
         }
     },
     updateFolder: async (folderName, folderId, social_type, selectedGroups) => {
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(
-                `${BASE_URL}groups/api/update-prospect-folder`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        folder_name: folderName,
-                        folder_id: folderId,
-                        social_type,
-                        selectedGroups,
-                    }),
-                }
-            );
-            if (!response.ok) {
+            const response = await apiCall({
+                method: 'PUT',
+                url: '/groups/api/update-prospect-folder',
+                data: {
+                    folder_name: folderName,
+                    folder_id: folderId,
+                    social_type,
+                    selectedGroups,
+                },
+            });
+
+            if (response.statusText !== "OK") {
                 throw new Error("Failed to update folder");
             }
-            const data = await response.json();
-            return data;
+
+            return response.data;
         } catch (error) {
             console.error("Error updating folder:", error);
         }
     },
     deleteFolder: async (folderId, selectedGroups) => {
         try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(
-                `${BASE_URL}groups/api/delete-prospect-folder`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        folder_id: folderId,
-                        selectedGroups: selectedGroups
-                    }),
-                }
-            );
-            if (!response.ok) {
+            const response = await apiCall({
+                method: 'POST',
+                url: '/groups/api/delete-prospect-folder',
+                data: {
+                    folder_id: folderId,
+                    selectedGroups,
+                },
+            });
+
+            if (response.statusText !== "OK") {
                 throw new Error("Failed to delete folder");
             }
-            const data = await response.json();
-            console.log("Delete Response:", data);
-            return data;
+
+            console.log("Delete Response:", response.data);
+            return response.data;
         } catch (error) {
             console.error("Error deleting folder:", error);
         }
-    }
+    },
 
 
 }));

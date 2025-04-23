@@ -85,7 +85,7 @@ const SortableItem = ({ group, selectedGroup ,setSelectedGroup,getGroupById}) =>
           <span className="text-xl text-gray-400">⋮</span>
         </div>
         <div className="flex items-center justify-between w-full">
-          <span className="text-sm text-gray-600">20 leads</span>
+          {/* <span className="text-sm text-gray-600">20 leads</span> */}
           <span className="text-sm text-gray-400">{formatDate(group.createdAt)}</span>
         </div>
       </div>

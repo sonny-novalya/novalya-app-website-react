@@ -3,7 +3,7 @@ import { useState } from "react";
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
 
-const EditstageModal = ({ visible, onCancel, setSortedStages}) => {
+const EditstageModal = ({ visible, onCancel, setSortedStages,sortedStages}) => {
     const {
         selectStage,
         editStage, 
@@ -24,20 +24,24 @@ console.log(selectStage)
         name:stageName,
         id:selectStage.id
     }
-   const res = editStage(data)
+   const res =await editStage(data)
     if (res.status === 200) {
         message.success("Stage has been Updated")
-        setSortedStages((prev)=>{
-            let newArr= [...prev]
-            newArr.map((stage)=>{
-                if (stage.id === selectStage.id) {
-                    return {...stage,name:stageName}
-                }
-             return stage
-            })
-            console.log(newArr)
-            return newArr
+        let newArr = sortedStages
+        newArr=  newArr.map((stage)=>{
+            console.log(stage.id ,selectStage.id)
+            if (stage.id === selectStage.id) {
+                console.log("in here")
+                console.log({...stage,name:stageName})
+                return {...stage,name:stageName}
+            }else{
+                return stage
+            }
+            
+    
         })
+        console.log(newArr)
+        setSortedStages(newArr)
 
         onCancel()
     }

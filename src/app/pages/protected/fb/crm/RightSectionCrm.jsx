@@ -41,6 +41,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [sortedStages, setSortedStages] = useState([]);
   const [draggedItem, setDraggedItem] = useState(null);
+  const [isDel,setIsDel]=useState(false)
   const totalSlectedIds = selectedUsersMap? Object.values(selectedUsersMap).flat():null
 
     const delTime = useRef();
@@ -69,26 +70,38 @@ const RightSectionCrm = ({ selectedGroup }) => {
   }, [selectedGrpData])
 
   const handleUserDelete = async()=>{
-   const stageId= Object.keys(selectedUsersMap)?.[0]
-   const res =  await deleteTaggedUser(totalSlectedIds[0])
 
-   if (res.status === 200) {
-    message.success("user has been deleted")
-    const newArr = sortedStages?.map((data) => {
-      if (data.id === stageId) {
-      
-        return {
-          ...data,
-          leads: data?.leads?.filter((card) => card?.id !== totalSlectedIds?.[0]),
-        };
+    if(isDel){
+      const stageId= Object.keys(selectedUsersMap)?.[0]
+      const res =  await deleteTaggedUser(totalSlectedIds[0])
+   
+      if (res.status === 200) {
+       message.success("user has been deleted")
+       const newArr = sortedStages?.map((data) => {
+         if (data.id === Number(stageId)) {
+         
+           return {
+             ...data,
+             leads: data?.leads?.filter((card) => card?.id !== totalSlectedIds?.[0]),
+           };
+         }
+           return data;
+         
+       });
+    
+       setSelectedUsersMap({})
+       setSortedStages(newArr)
+       setIsDel(false)
       }
-        return data;
-      
-    });
-    console.log(newArr)
-    setSelectedUsersMap({})
-    setSortedStages(newArr)
-   }
+    }else{
+      setIsDel(true)
+     setTimeout(()=>{
+      setIsDel(false)
+     },3000)
+    }
+
+
+
   }
 
 
@@ -170,7 +183,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
       },
     },
     {id:4,
-      label: t("crm.Delete"),
+      label:!isDel? t("crm.Delete"):"Really ?",
       icon: <DeleteFillRedIcon />,
       textColor: "text-red-600",
       borderColor: "border-red-100",
@@ -188,6 +201,11 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const handleDelete = async (id) => {
       if (isDel) {
        const res =await deleteStage(id)
+       if (res.status === 200) {
+        message.success("Staged has been deleted")
+        const newArr = sortedStages?.filter((s)=>s.id !== Number(id))
+        setSortedStages(newArr)
+       }
        setIsDel(false)
       } else {
         setIsDel(true)
@@ -431,6 +449,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
           selectedUsersMap={selectedUsersMap}
           moveStage={moveStage}
           sortedStages={sortedStages}
+          setSortedStages={setSortedStages}
+          setSelectedUsersMap={ setSelectedUsersMap}
 
         />
       )}
@@ -454,6 +474,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
           visible={openEditStageModal}
           onCancel={() => setOpenEditStageModal(false)}
           setSortedStages={setSortedStages}
+          sortedStages={sortedStages}
         />
       )}
 

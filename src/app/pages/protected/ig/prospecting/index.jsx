@@ -92,7 +92,14 @@ const IgProspecting = () => {
             </span>
         </div>;
 
-        const folderIdArray = JSON.parse(folderIds);
+        let folderIdArray = [];
+        try {
+            folderIdArray = JSON.parse(folderIds);
+            if (!Array.isArray(folderIdArray)) folderIdArray = [];
+        } catch (error) {
+            console.warn("Invalid folderIds:", error);
+            folderIdArray = [];
+        }
         const folderNames = folderIdArray
             .map(id => {
                 const folder = folders.find(f => f.id === id);

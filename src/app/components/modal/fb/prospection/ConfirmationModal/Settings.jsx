@@ -1,6 +1,7 @@
 import { t } from "i18next";
 import { EditIconSquaredIcon } from "../../../../../pages/common/icons/icons";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 // import SettingStore from "../../../../../../store/prospection/settings-store";
 
 const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
@@ -12,9 +13,11 @@ const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
     //         [field]: value
     //     });
     // };
+    const location = useLocation();
+    const isInstagram = location.pathname.split("/")[1] === "ig";
 
     const strategies = [
-        { value: 0, label: t("prospecting.Follow + Message") },
+        { value: 0, label: isInstagram ? t("prospecting.Follow + Message") : "Message + Request" },
         { value: 1, label: t("prospecting.Message Only") },
     ];
 
