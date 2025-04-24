@@ -4,6 +4,7 @@ import apiCall from '../../services/api';
 const SettingStore = create((set) => ({
     // States
     loading: false,
+    CRMList: [],
     prospection: {
         step: 1,
         group: [],
@@ -126,7 +127,24 @@ const SettingStore = create((set) => ({
         } catch (error) {
             console.error("Error creating social target:", error);
         }
-    }
+    },
+    fetchCRMGroups: async ({ data, type }) => {
+        try {
+            const res = await apiCall({
+                method: 'POST',
+                url: `/user/api/${type}/get-all-groups`,
+                data: data,
+            });
+
+            set({
+                CRMList: res?.data?.data || [],
+                fbCRMLoading: false
+            });
+        } catch (error) {
+            console.error("Error getting response", error);
+        }
+    },
+
 }));
 
 export default SettingStore;

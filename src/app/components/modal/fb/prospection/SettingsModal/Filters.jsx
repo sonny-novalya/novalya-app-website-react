@@ -11,9 +11,9 @@ const Filters = ({ keyWordList }) => {
     const { gender: propGender, keyword } = prospection;
 
     const genders = [
-        { label: "Male", value: "male", icon: <MaleGenderIcon /> },
-        { label: "Female", value: "female", icon: <FemaleGenderIcon /> },
-        { label: "Both", value: "both", icon: <BothGenderIcon /> }
+        { label: t("prospecting.Male"), value: "male", icon: <MaleGenderIcon /> },
+        { label: t("prospecting.Female"), value: "female", icon: <FemaleGenderIcon /> },
+        { label: t("prospecting.Both"), value: "both", icon: <BothGenderIcon /> }
     ];
 
     const toggleDropdown = () => {
@@ -80,7 +80,7 @@ const Filters = ({ keyWordList }) => {
 
                 {/* Keywords Dropdown Filter */}
                 <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium text-gray-800 mb-2 flex items-center">Keyword</p>
+                    <p className="font-medium text-gray-800 mb-2 flex items-center">{t("prospecting.Keywords")}</p>
                     <div className="relative">
                         <button
                             className="flex justify-between items-center px-4 py-3 rounded-md border text-[#0087FF] w-full cursor-pointer"

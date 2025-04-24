@@ -11,20 +11,20 @@ const Settings = ({ isInstagram}) => {
     const [customRequest, setCustomRequest] = useState(interval);
 
     const strategies = [
-        { value: 0, label: t("prospecting.Follow + Message") },
-        { value: 1, label: t("prospecting.Message Only") },
+        { value: 1, label: t("prospecting.Follow + Message") },
+        { value: 0, label: t("prospecting.Message Only") },
     ];
 
     const FbStrategies = [
-        { value: 0, label: "Message + Request" },
-        { value: 1, label: t("prospecting.Message Only") },
+        { value: 1, label: t("prospecting.Message + Request") },
+        { value: 0, label: t("prospecting.Message Only") },
     ];
 
     const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
     
     const fbIntervalOptions = [
-        { label: t("prospecting.Medium"), value: "1-3", time: "1 to 3 minutes" },
-        { label: t("prospecting.Slow"), value: "3-5", time: "3 to 5 minutes" },
+        { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
+        { label: t("prospecting.Slow"), value: "3-5", time: t("prospecting.3 to 5 minutes") },
         { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes")},
     ];
 
@@ -51,6 +51,17 @@ const Settings = ({ isInstagram}) => {
             });
         }
     }, []);
+
+    useEffect(() => {
+        if (
+            !requestOptions.includes(String(norequest)) &&
+            Number(norequest) >= 1 &&
+            Number(norequest) <= 50
+        ) {
+            setCustomRequest(norequest);
+        }
+    }, [norequest]);
+
 
     const handleUpdate = (field, value) => {
         if (field === "norequest") {
@@ -100,8 +111,11 @@ const Settings = ({ isInstagram}) => {
                         {requestOptions.map((option) => {
                             const isCustom = option === "Custom";
                             const isSelected = isCustom
-                                ? norequest === "Custom"
-                                : norequest == option;
+                                ? !requestOptions.includes(String(norequest)) &&
+                                Number(norequest) >= 1 &&
+                                Number(norequest) <= 50
+                                : Number(norequest) === Number(option);
+
 
                             return (
                                 <button
@@ -110,7 +124,7 @@ const Settings = ({ isInstagram}) => {
                                         }`}
                                     onClick={() => handleUpdate("norequest", isCustom ? "Custom" : Number(option))}
                                 >
-                                    {option}
+                                    {isCustom ? t("prospecting.Custom") : option}
                                     {isSelected && (
                                         <span className="absolute -right-2 -top-2">
                                             <TickFillIcon />
@@ -121,7 +135,7 @@ const Settings = ({ isInstagram}) => {
                         })}
                         {norequest !== undefined && !requestOptions.includes(String(norequest)) && (
                             <>
-                                <p className="col-span-1 text-xs my-auto">(Min 1 and Max 50)</p>
+                                <p className="col-span-1 text-xs my-auto">({t("prospecting.Min-Max-50")})</p>
                                 <input
                                     type="number"
                                     min="1"

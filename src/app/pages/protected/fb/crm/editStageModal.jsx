@@ -24,7 +24,7 @@ console.log(selectStage)
         name:stageName,
         id:selectStage.id
     }
-   const res =await editStage(data)
+   const res =await editStage({ data, type: 'fb'})
     if (res.status === 200) {
         message.success("Stage has been Updated")
         let newArr = sortedStages

@@ -33,7 +33,7 @@ const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder }) =>
 
     useEffect(() => {
         if(prospect_folder){
-            const type = prospect_folder && "ig" ? "instagram" : "facebook"
+            const type = prospect_folder === "ig" ? "instagram" : "facebook"
             fetchInitialGroups(type)
         }
     }, []);
@@ -52,7 +52,7 @@ const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder }) =>
                     type="text"
                     value={folderName}
                     onChange={(e) => setFolderName(e.target.value)}
-                    placeholder="Enter folder name"
+                    placeholder={t("prospecting.Enter folder name")}
                     className="border border-[#00000014] rounded-md p-4"
                 />
                 <h2 className="font-medium text-lg mb-4">{t("prospecting.Select Group")}</h2>
@@ -86,14 +86,14 @@ const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder }) =>
                             className="border border-[#0087FF] text-[#0087FF] w-1/2 py-2 rounded-md cursor-pointer"
                             onClick={() => setSelectedGroups([])}
                         >
-                            Cancel
+                            {t("prospecting.Cancel")}
                         </button>
                         <button
                             className={`border bg-[#0087FF] text-white w-1/2 py-2 rounded-md ${selectedGroups.length === 0 || !folderName ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                             disabled={selectedGroups.length === 0 || !folderName}
                             onClick={handleCreateFolder}
                         >
-                            Create Folder
+                            {t("prospecting.Create Folder")}
                         </button>
                     </div>
                 </div>

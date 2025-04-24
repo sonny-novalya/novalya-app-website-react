@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { message, Modal, Spin } from "antd";
 import { RgbaColorPicker } from "react-colorful";
-import PropTypes from "prop-types";
 import { formatColorToString } from "../../../../../helpers/formatColorToString";
 import { t } from "i18next";
 
@@ -9,7 +8,6 @@ const AddGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoader
     const [groupName, setGroupName] = useState('');
     const [color, setColor] = useState({ r: 255, g: 255, b: 255, a: 1 });
     const [colorSource, setColorSource] = useState("picker"); 
-    console.log("colorSource", colorSource)
     
     const colorOptions = [
         { 'r': 242, 'g': 7, 'b': 7, 'a': 1 },
@@ -46,11 +44,11 @@ const AddGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoader
         no_stages_group: false
     }
 
-    const res = await createCRMGroup(payload)
+    const res = await createCRMGroup({ data: payload, type: 'fb'})
 
     if (res.status === 200) {
         message.success("Group has been created")
-        fetchCRMGroups()
+        fetchCRMGroups({ type: "fb" })
         createGroup.onClose();
 
     }

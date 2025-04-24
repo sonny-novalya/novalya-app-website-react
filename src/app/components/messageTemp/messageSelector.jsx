@@ -1,7 +1,7 @@
 import React from 'react'
 import writingImg from "../../../assets/img/Writing-img.svg"
-import tempIconImg from "../../../assets/img/template-icons.svg"
-import aiIconImg from "../../../assets/img/Content-Creation-Writing.svg"
+import tempIconImg from "../../../assets/img/template-icons2.svg"
+import aiIconImg from "../../../assets/img/Content-Creation-Writing2.svg"
 import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { useTranslation } from 'react-i18next'
 
@@ -18,7 +18,7 @@ const MessageSelector = ({containerRef}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen z-[9999]" >
         
-        <div ref={containerRef} className="bg-white px-8 pt-11 pb-6 rounded-[10px] max-w-[1125px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+        <div ref={containerRef} className="bg-white px-6.5 py-9 rounded-[10px] max-w-[1140px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           {/* <button className='bg-[#f6f6f6] px-5 py-[2px] rounded-[24px] mb-4 border border-[#d2d2d2] cursor-pointer'>Back</button> */}
           
           <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>
@@ -29,7 +29,7 @@ const MessageSelector = ({containerRef}) => {
           
           <div className='grid grid-cols-3 gap-12'>
             {data.map((item, index) => (
-              <div key={index} className="border border-[#D2D2D2] rounded-[6px] text-center px-5 py-[16px]" onClick={()=>handleSelector(index)}>
+              <div key={index} className="border border-[#0087FF33] rounded-[6px] text-center px-5 py-[16px] ${item.color}" onClick={()=>handleSelector(index)}>
                 <img className='mx-auto flex mt-[36px] mb-[36px]' src={item.img} alt={item.title} />
                 <span className={`font-semibold text-[24px] leading-[36px] max-w-[220px] text-center block mx-auto ${item.color}`}>{t(`message.${item.title}`)}</span>
                 <button className={`font-medium text-[14px] leading-[20px] px-5 py-[10px] text-white rounded-[24px] w-full max-w-[200px] mt-2 ${item.bgColor}`}>{item.buttonText}</button>

@@ -145,8 +145,11 @@ const RightSectionCrm = ({ selectedGroup }) => {
     setDraggedItem(null);
 
     const res = await moveTaggedUsers({
-      id: draggedItem.lead.id,
-      stage_id: targetColId,
+      data: {
+        id: draggedItem.lead.id,
+        stage_id: targetColId,
+      },
+      type : "fb"
     });
 
     if (res?.status !== 200) {
@@ -200,7 +203,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     
     const handleDelete = async (id) => {
       if (isDel) {
-       const res =await deleteStage(id)
+       const res =await deleteStage({ id, type: 'fb'})
        if (res.status === 200) {
         message.success("Staged has been deleted")
         const newArr = sortedStages?.filter((s)=>s.id !== Number(id))

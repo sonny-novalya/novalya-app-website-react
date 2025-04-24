@@ -8,18 +8,26 @@ const AddTags = ({ CRMList, groupId }) => {
     const { prospection, updateProspection } = SettingStore();
     let { action } = prospection;
 
+    let parsedAction;
     try {
-        action = action ?? (action !== 'no' ? JSON.parse(action) : 'no');
+        parsedAction = action !== 'no' ? JSON.parse(action) : 'no';
     } catch (error) {
         console.error('Error parsing action:', error);
-        action = 'no'; 
+        parsedAction = 'no';
     }
 
-    const [actionType, setActionType] = useState(action !== "no" ? "yes" : "no");
+    const isNoAction =
+        parsedAction === "no" ||
+        (parsedAction &&
+            parsedAction.moveGroupId === null &&
+            parsedAction.moveStageId === null &&
+            parsedAction.stage_num === null);
 
-    const [selectedGroupId, setSelectedGroupId] = useState(action?.moveGroupId || null);
-    const [selectedStageId, setSelectedStageId] = useState(action?.moveStageId || null);
-    const [selectedStageNum, setSelectedStageNum] = useState(action?.stage_num || null);
+    const [actionType, setActionType] = useState(isNoAction ? "no" : "yes");
+
+    const [selectedGroupId, setSelectedGroupId] = useState(parsedAction?.moveGroupId || null);
+    const [selectedStageId, setSelectedStageId] = useState(parsedAction?.moveStageId || null);
+    const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
 
     const handleSave = (moveGroupId, moveStageId, stage_num) => {
         updateProspection({
@@ -35,8 +43,8 @@ const AddTags = ({ CRMList, groupId }) => {
 
 
     const addTagsOptions = [
-        { label: "No", value: "no" },
-        { label: "Yes", value: "yes" }
+        { label: t("prospecting.No"), value: "no" },
+        { label: t("prospecting.Yes"), value: "yes" }
     ];
 
     const selectedGroupData = CRMList.find((item) => item.id == selectedGroupId);
@@ -58,7 +66,11 @@ const AddTags = ({ CRMList, groupId }) => {
                                 : "bg-white border-[#0087FF]"}`}
                             onClick={() => {
                                 setActionType(option.value);
-                                handleSave();
+                                if (option.value === "no") {
+                                    handleSave(null, null, null);
+                                } else {
+                                    handleSave(selectedGroupId, selectedStageId, selectedStageNum);
+                                }
                             }}
                         >
                             {option.label}

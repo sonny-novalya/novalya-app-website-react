@@ -1,11 +1,16 @@
-import PropTypes from "prop-types";
 import { message, Modal, Spin } from "antd";
 import { useState } from "react";
 import { t } from "i18next";
+import usefbCRM from "../../../../../store/fb/fbCRM";
 
-const AddStageModal = ({ visible, onCancel, createStage, setSortedStages, selectedGroup, addGrpLoader }) => {
-    const [stageName, setStageName] = useState("");
-
+const EditstageModal = ({ visible, onCancel, setSortedStages, sortedStages }) => {
+    const {
+        selectStage,
+        editStage,
+        addGrpLoader
+    } = usefbCRM();
+    const [stageName, setStageName] = useState(selectStage?.name || "");
+    console.log(selectStage)
     const handleInputChange = (e) => {
         setStageName(e.target.value);
     };
@@ -17,18 +22,30 @@ const AddStageModal = ({ visible, onCancel, createStage, setSortedStages, select
         }
         const data = {
             name: stageName,
-            tag_id: selectedGroup.id
+            id: selectStage.id
         }
-
-        const res = await createStage({ data, type: 'ig' })
+        const res = await editStage({ data, type: 'ig'})
         if (res.status === 200) {
-            const stage = res?.data?.data
-            setSortedStages((prev) => {
-                return [...prev, stage]
+            message.success("Stage has been Updated")
+            let newArr = sortedStages
+            newArr = newArr.map((stage) => {
+                console.log(stage.id, selectStage.id)
+                if (stage.id === selectStage.id) {
+                    console.log("in here")
+                    console.log({ ...stage, name: stageName })
+                    return { ...stage, name: stageName }
+                } else {
+                    return stage
+                }
+
+
             })
-            message.success("Stage Has been created")
+            console.log(newArr)
+            setSortedStages(newArr)
+
             onCancel()
         }
+
     }
 
     return (
@@ -40,7 +57,7 @@ const AddStageModal = ({ visible, onCancel, createStage, setSortedStages, select
             centered
         >
             <div className="bg-gray-50 rounded-t-lg pb-4 ">
-                <h2 className="text-xl font-medium ">{t("crm.Add Stage")}</h2>
+                <h2 className="text-xl font-medium ">{"Edit Stage"}</h2>
             </div>
 
             <h2 className="text-lg font-medium my-2">{t("crm.Stage Name")}</h2>
@@ -78,9 +95,6 @@ const AddStageModal = ({ visible, onCancel, createStage, setSortedStages, select
     );
 };
 
-AddStageModal.propTypes = {
-    visible: PropTypes.bool.isRequired,
-    onCancel: PropTypes.func.isRequired,
-};
 
-export default AddStageModal;
+
+export default EditstageModal;

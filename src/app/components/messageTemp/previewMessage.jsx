@@ -26,7 +26,7 @@ const PreviewMessage = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen previeMessage z-[99999]">
     <div className="bg-white px-5 py-4 rounded-[10px] max-w-[1150px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-        <div className="flex items-center gap-[10px] text-[20px]"> {t("message.Message name")}
+        <div className="flex items-center gap-[10px] text-[20px] font-[500]"> {t("message.Message name")}
         <PreviewMessageIcon index={0}/>
         </div>
         <div className="flex items-center justify-between gap-4 mt-2">

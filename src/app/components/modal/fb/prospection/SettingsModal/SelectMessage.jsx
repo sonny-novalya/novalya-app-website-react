@@ -19,7 +19,6 @@ const SelectMessage = ({ tempMessageList }) => {
     const { prospection, updateProspection } = SettingStore();
     const { message } = prospection;
 
-    console.log("messagess",message)
     const [selectedRow, setSelectedRow] = useState(null);
     const [searchText, setSearchText] = useState('');
 
@@ -65,7 +64,7 @@ const SelectMessage = ({ tempMessageList }) => {
             <div className="flex gap-4 mt-2">
                 <Input placeholder="Search messages" prefix={<SearchOutlined />} className="w-full" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
                 <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsMessage(true)}>
-                    Create New Message
+                    {t("prospecting.Create New Message")}
                 </Button>
             </div>
 

@@ -116,3 +116,7 @@ li.ant-pagination-total-text {
     opacity: 60%;
     pointer-events: none;
 }
+
+.sidebar-lang .ant-select-selector {
+    border: none !important;
+}

@@ -15,7 +15,14 @@ const AddTags = ({ action = 'no', CRMList, handleOpen }) => {
     parsedAction = 'no';
   }
 
-  const actionType = parsedAction !== "no" ? "yes" : "no";
+  const isNoAction =
+    parsedAction === "no" ||
+    (parsedAction &&
+      parsedAction.moveGroupId === null &&
+      parsedAction.moveStageId === null &&
+      parsedAction.stage_num === null);
+      
+  const actionType = isNoAction ? "no" : "yes";
 
   const selectedGroupData = CRMList.find((item) => item.id == parsedAction?.moveGroupId);
   const stageData = selectedGroupData?.stage?.find((item) => item.id == parsedAction?.moveStageId);
@@ -34,7 +41,10 @@ const AddTags = ({ action = 'no', CRMList, handleOpen }) => {
       <div className="flex justify-between border border-[#00000014] rounded-md p-4">
         <div className="flex flex-col flex-1 pr-4 space-y-2">
           <h3 className="font-medium">{t("prospecting.Do you want to add a tag?")}</h3>
-          <p className="w-full text-center border border-[#00000014] rounded-md p-2">{parsedAction !== "no" ? "yes" : "no"}</p>
+          <p className="w-full text-center border border-[#00000014] rounded-md p-2">
+            {t(`prospecting.${actionType.charAt(0).toUpperCase() + actionType.slice(1)}`)}
+          </p>
+
         </div>
         {actionType === 'no'
           ? <div />

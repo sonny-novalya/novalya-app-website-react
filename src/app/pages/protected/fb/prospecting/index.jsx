@@ -80,7 +80,7 @@ const FbProspecting = () => {
             return (
                 <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folder ? folder.folder_name : "None"}
+                        {folder ? folder.folder_name : t("prospecting.None")}
                     </span>
                 </div>
             );
@@ -88,7 +88,7 @@ const FbProspecting = () => {
 
         if (folderIds === null) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                None
+                {t("prospecting.None")}
             </span>
         </div>;
 
@@ -109,7 +109,7 @@ const FbProspecting = () => {
         
         if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                None
+                {t("prospecting.None")}
             </span>
         </div>;
         if (folderNames.length === 1) {
@@ -136,14 +136,14 @@ const FbProspecting = () => {
 
     const groupTypeColumn = (
         <div className="flex items-center space-x-3">
-            <span>Type</span>
+            <span>{t("prospecting.Type")}</span>
             <Dropdown
                 overlay={
                     <Menu>
                         {[
-                            { key: 'member', label: 'Member' },
-                            { key: 'things in common', label: 'Things In Common' },
-                            { key: 'post-like', label: 'Post' },
+                            { key: 'member', label: t("prospecting.Member") },
+                            { key: 'things in common', label: t("prospecting.Things In Common") },
+                            { key: 'post-like', label: t("prospecting.Post") },
                         ].map((type, index) => (
                             <Menu.Item key={index} onClick={() => {
                                 updateFilters({
@@ -167,7 +167,7 @@ const FbProspecting = () => {
 
     const GroupNameColumn = (
         <div className="flex items-center space-x-2">
-            <span>Group Name </span>
+            <span>{t("prospecting.Group Name")}</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
                     className="w-8 h-8 border-none cursor-pointer"
@@ -245,7 +245,7 @@ const FbProspecting = () => {
 
     const TotalMemberColumn = (
         <div className="flex items-center space-x-2">
-            <span>Total Members</span>
+            <span>{t("prospecting.Total Members")}</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
                 <button
                     className="w-8 h-8 border-none cursor-pointer"
@@ -396,7 +396,7 @@ const FbProspecting = () => {
                             fetchGroups(storeFilters); 
                         }}
                         >
-                        <p className="px-4 py-1.5 text-red-500 cursor-pointer">Really??</p>
+                        <p className="px-4 py-1.5 text-red-500 cursor-pointer">{t("prospecting.Really")}??</p>
                     </div>
                 )}
             </div>
@@ -450,7 +450,7 @@ const FbProspecting = () => {
                     className="bg-blue-500 text-white px-3 py-1 rounded-md"
                     onClick={() => handleOpenSettings(record.id)}
                 >
-                    Settings
+                    {t("prospecting.Settings")}
                 </Button>
             ),
         },
@@ -479,9 +479,9 @@ const FbProspecting = () => {
     ];
 
     const buttonsData = [
-        { id: 0, folder_name: "All", selectedGroups: [] },
-        { id: 11111111111, folder_name: "Groups", selectedGroups: [] },
-        { id: 22222222222, folder_name: "Posts", selectedGroups: [] },
+        { id: 0, folder_name: t("prospecting.All"), selectedGroups: [] },
+        { id: 11111111111, folder_name: t("prospecting.Groups"), selectedGroups: [] },
+        { id: 22222222222, folder_name: t("prospecting.Posts"), selectedGroups: [] },
         // { id: 1, folder_name: "Archived", selectedGroups: [] },
     ];
 

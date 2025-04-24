@@ -13,13 +13,11 @@ import AddTags from "./AddTags";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
-import usefbCRM from "../../../../../../store/fb/fbCRM";
 
 const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId }) => {
-    const { prospection, fetchProspectionData, createSocialTarget, loading, updateProspection } = SettingStore();
+    const { prospection, fetchProspectionData, createSocialTarget, loading, updateProspection, fetchCRMGroups, CRMList } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
-    const { fetchCRMGroups, CRMList } = usefbCRM();
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
@@ -67,10 +65,11 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
 
     useEffect(() => {
         handleUpdateGroupId()
+        const type = isInstagram ? 'instagram' : 'facebook'
         fetchKeywords({ page: 1, limit: 100 });
-        groupId && fetchProspectionData(isInstagram ? "instagram" : "facebook", groupId);
-        fetchMessages({ limit: 200, page: 1 });
-        fetchCRMGroups();
+        groupId && fetchProspectionData(type, groupId);
+        fetchMessages({ page: 1, limit: 200 });
+        fetchCRMGroups({ type });
     }, []);
 
 
@@ -119,7 +118,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
                         disabled={activeKey !== tabItems.length}
                         onClick={handleSave}
                     >
-                        {loading ? "Saving..." : "Save"}
+                        {loading ? t("prospecting.Saving") : t("prospecting.Save")}
                     </button>
                 </div>
 
@@ -136,7 +135,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
                             className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
                             onClick={handleBack}
                         >
-                            Back
+                            {t("prospecting.Back")}
                         </button>
                         <button
                             className={`px-12 py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey === tabItems.length ? "opacity-50" : ""

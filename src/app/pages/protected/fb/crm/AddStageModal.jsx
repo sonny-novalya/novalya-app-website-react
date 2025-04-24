@@ -20,7 +20,7 @@ const AddStageModal = ({ visible, onCancel ,createStage,setSortedStages,selected
         tag_id:selectedGroup.id
     }
 
-    const  res = await createStage(data)
+    const  res = await createStage({ data, type: 'fb'})
     if (res.status === 200) {
         const stage = res?.data?.data
         setSortedStages((prev)=>{

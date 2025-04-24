@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Input, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Layout from "../../Layout";
-import { useIgCrmGroupStore } from "../../../../../store/crm-groups/ig-groups";
 import LeftSectionCrm from "./LeftSectionCrm";
 import RightSectionCrm from "./RightSectionCrm";
 import AddGroupModal from "./AddGroupModal";
 import { t } from "i18next";
+import usefbCRM from "../../../../../store/fb/fbCRM";
 
 const initialGroups = [
   { id: "1", name: "TeckTalk" },
@@ -22,12 +22,13 @@ const initialGroups = [
 
 const Crm = () => {
   const [groups, setGroups] = useState(initialGroups);
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState({});
   const [search, setSearch] = useState("");
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
+    console.log(result)
 
     const items = Array.from(groups);
     const [reorderedItem] = items.splice(result.source.index, 1);
@@ -36,11 +37,12 @@ const Crm = () => {
     setGroups(items);
   };
 
-  const { igCrmGroups, loading: fetchCrmGroupLoading, error: fetchCrmGroupError, fetchGroups } = useIgCrmGroupStore();
+
+  const { fetchCRMGroups, CRMList, fbCRMLoading, error, createCRMGroup, reorderCRMGroups, addGrpLoader } = usefbCRM()
 
   useEffect(() => {
-    fetchGroups();
-  }, [fetchGroups]);
+    fetchCRMGroups({type:'ig'});
+  }, []);
 
   const toggleAddGroupModal = () => {
     setOpenAddGroupModal(!openAddGroupModal);
@@ -48,7 +50,7 @@ const Crm = () => {
 
   return (
     <Layout>
-      <h2 className="text-xl font-medium mb-2">{t("crm.Instagram CRM")}</h2>
+      <h2 className="text-xl font-medium mb-2">{t("crm.Facebook CRM")}</h2>
       <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
       <div className="flex bg-gray-100 shadow-lg rounded-lg">
         <div className="w-[300px] bg-[#E6F1FB] p-4 flex flex-col overflow-hidden">
@@ -71,13 +73,14 @@ const Crm = () => {
           />
           <div className="flex-1 overflow-y-auto max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]">
             <LeftSectionCrm
-              isLoading={fetchCrmGroupLoading}
-              groups={igCrmGroups}
+              isLoading={fbCRMLoading}
+              groups={CRMList}
               search={search}
               selectedGroup={selectedGroup}
               setSelectedGroup={setSelectedGroup}
               onDragEnd={onDragEnd}
-              error={fetchCrmGroupError}
+              error={error}
+              reorderCRMGroups={reorderCRMGroups}
             />
           </div>
         </div>
@@ -89,9 +92,10 @@ const Crm = () => {
       {openAddGroupModal && (
         <AddGroupModal
           createGroup={{ isOpen: openAddGroupModal, onClose: toggleAddGroupModal }}
-          showColorPicker={{ isOpen: false, toggle: () => { } }} 
-          handleGroupSave={() => { }}
-          handleColorChange={() => { }}
+          showColorPicker={{ isOpen: false, toggle: () => { } }}
+          createCRMGroup={createCRMGroup}
+          fetchCRMGroups={fetchCRMGroups}
+          addGrpLoader={addGrpLoader}
         />
       )}
     </Layout>

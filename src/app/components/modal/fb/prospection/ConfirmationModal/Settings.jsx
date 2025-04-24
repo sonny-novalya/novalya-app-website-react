@@ -17,13 +17,13 @@ const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
     const strategies = [
-        { value: 0, label: isInstagram ? t("prospecting.Follow + Message") : "Message + Request" },
-        { value: 1, label: t("prospecting.Message Only") },
+        { value: 1, label: isInstagram ? t("prospecting.Follow + Message") : t("prospecting.Message + Request") },
+        { value: 0, label: t("prospecting.Message Only") },
     ];
 
     const intervalOptions = [
-        { label: t("prospecting.Medium"), value: "1-3", time: "1 to 3 minutes" },
-        { label: t("prospecting.Slow"), value: "3-5", time: "3 to 5 minutes" },
+        { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
+        { label: t("prospecting.Slow"), value: "3-5", time: t("prospecting.3 to 5 minutes") },
         { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
         { label: t("prospecting.Fast"), value: "2-4", time: t("prospecting.2 to 4 minutes") },
         { label: t("prospecting.Medium"), value: "4-6", time: t("prospecting.4 to 6 minutes") },
@@ -35,7 +35,7 @@ const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
     return (
         <main className="">
             <div className="flex gap-3 items-center">
-                <h2 className="font-medium text-lg">Settings</h2>
+                <h2 className="font-medium text-lg">{t("prospecting.Settings")}</h2>
                 <span 
                     className="cursor-pointer" 
                     onClick={() => handleOpen(2)}>
