@@ -142,7 +142,7 @@ const LoginPage = () => {
               <div className="flex items-center justify-center mt-7">
                 <button
                   type="submit"
-                  className="text-[16px] py-3 px-10 rounded-[6px] cursor-pointer rounded !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit"
+                  className="text-[16px] py-3 px-10 rounded-[6px] cursor-pointer submit-btn !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit"
                   disabled={isLoading}
                 >
                 {

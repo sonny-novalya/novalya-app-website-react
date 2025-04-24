@@ -276,7 +276,7 @@ const SidebarMenu = () => {
 
                                 <button
                                     type="button"
-                                    className="flex items-center space-x-5 bg-[#FF000012] px-4 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
+                                    className="flex items-center space-x-5 bg-[#FF000012] logout px-4 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />
