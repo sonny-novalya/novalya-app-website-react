@@ -273,7 +273,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         return (
             <div
                 key={lead.id + stage.id}
-                className={` border p-3 rounded-md flex gap-2 items-center shadow-sm ${selectedUsers.includes(lead.id)
+                className={` border p-3 rounded-md flex gap-2 items-center shadow-sm ${selectedUsers.includes(lead?.id)
                         ? "border-[#0087FF] bg-[#D9EDFF]"
                         : "border-white bg-white"
                     }`}
@@ -293,11 +293,11 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 >
                     <img
                         src={lead?.profile_pic}
-                        alt={lead?.name}
+                        alt={lead?.insta_name}
                         className="w-8 h-8 rounded-full"
                     />
                     <div>
-                        <p className="font-medium text-sm">{lead.fb_name}</p>
+                        <p className="font-medium text-sm">{lead?.insta_name}</p>
                         <p className="text-xs text-gray-400">{lead.time}</p>
                     </div>
                 </div>

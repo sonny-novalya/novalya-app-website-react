@@ -14,7 +14,7 @@ const TopbarRightSection = ({ companyName, leadsCount, onAddStage, setSortedStag
     const handleSearch = (value) => {
         const fakeLeads = (id) => {
             const leads = selectedGrpData?.taggedUsers?.filter(
-                (data) => data?.stage_id === id && data.fb_name.toLowerCase().includes(value?.toLowerCase())
+                (data) => data?.stage_id === id && data.insta_name.toLowerCase().includes(value?.toLowerCase())
             );
             return leads;
         };
