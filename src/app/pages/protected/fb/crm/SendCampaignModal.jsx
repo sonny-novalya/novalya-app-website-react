@@ -1,98 +1,125 @@
 import PropTypes from "prop-types";
 import { Modal, Select } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { t } from "i18next";
 import { TickFillIcon } from "../../../common/icons/icons";
+import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
+
 const { Option } = Select;
 
-const SendCampaignModal = ({ visible, onCancel }) => {
-    const [interval, setInterval] = useState("medium");
-    const [selectedMessage, setSelectedMessage] = useState(null);
-    const messages = ["message 1", "message 2", "message 3"];
+const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount }) => {
+    const { tempMessageList, fetchMessages } = useMessageSteps();
 
-    const intervalOptions = [
-            { label: t("prospecting.Fast"), value: t("prospecting.Fast"), time: t("prospecting.2 to 4 minutes") },
-            { label: t("prospecting.Medium"), value: t("prospecting.Medium"), time: t("prospecting.4 to 6 minutes") },
-            { label: t("prospecting.Slow"), value: t("prospecting.Slow"), time: t("prospecting.6 to 10 minutes") },
-            { label: t("prospecting.Very Slow"), value: "very_slow", time: t("prospecting.10 to 15 minutes") }
-        ];
+    const intervalList = [
+        { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
+        { label: t("prospecting.Slow"), value: "3-5", time: t("prospecting.3 to 5 minutes") },
+        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
+    ];
+
+    const [campiagnModalData, setCampiagnModalData] = useState({
+        userIds: userIds,
+        peopleCount: peopleCount,
+        time_interval: intervalList[0].value,
+        message_id: null,
+        selectAction: false,
+        moveStageId: null,
+        moveGroupId: null,
+    });
+
+    useEffect(() => {
+        fetchMessages({ page: 1, limit: 200 });
+    }, []);
+
+    const handleIntervalChange = (value) => {
+        setCampiagnModalData((prev) => ({
+            ...prev,
+            time_interval: value,
+        }));
+    };
+
+    const handleMessageChange = (value) => {
+        setCampiagnModalData((prev) => ({
+            ...prev,
+            message_id: value,
+        }));
+    };
+
     return (
-        <Modal
-            open={visible}
-            onCancel={onCancel}
-            footer={null}
-            width={800}
-            centered
-        >
-            <div className="bg-gray-50 rounded-t-lg border-b-[#DADADA] border-b pb-4 ">
-                <h2 className="text-xl font-medium ">{t('crm.SendCampaignToPeople', {count: 15 })}</h2>
+        <Modal open={visible} onCancel={onCancel} footer={null} width={800} centered>
+            <div className="bg-gray-50 rounded-t-lg border-b-[#DADADA] border-b pb-4">
+                <h2 className="text-xl font-medium">{t('crm.SendCampaignToPeople', { count: peopleCount })}</h2>
             </div>
+
+            {/* Time Interval */}
             <h2 className="text-lg font-medium mt-3">{t("crm.Select the time interval")}</h2>
             <div className="border border-gray-300 p-4 rounded-lg mt-4">
-                            <div className="grid grid-cols-4 gap-3">
-                                {intervalOptions.map((option) => (
-                                    <button
-                                        key={option.value}
-                                        className={`relative`}
-                                        onClick={() => setInterval(option.value)}
-                                    >
-                                        <span className="text-xs text-gray-500 mr-20">{option.time}</span>
-                                        <div className={` flex flex-col items-start p-4 rounded-lg border transition ${interval === option.value
-                                            ? "bg-[#CCE7FF] border-[#CCE7FF] text-[#0087FF] shadow-sm"
-                                            : "bg-white border-gray-300 text-gray-700"
-                                            }`}>
-                                            <span className="text-sm font-medium">{option.label}</span>
-                                        </div>
-                                        {interval === option.value && (
-                                            <span className="absolute -right-2 top-3">
-                                                <TickFillIcon />
-                                            </span>
-                                        )}
-                                    </button>
-                                ))}
+                <div className="grid grid-cols-4 gap-3">
+                    {intervalList.map((option) => (
+                        <button
+                            key={option.value}
+                            className="relative"
+                            onClick={() => handleIntervalChange(option.value)}
+                        >
+                            <span className="text-xs text-gray-500 mr-20">{option.time}</span>
+                            <div
+                                className={`flex flex-col items-start p-4 rounded-lg border transition ${campiagnModalData.time_interval === option.value
+                                        ? "bg-[#CCE7FF] border-[#CCE7FF] text-[#0087FF] shadow-sm"
+                                        : "bg-white border-gray-300 text-gray-700"
+                                    }`}
+                            >
+                                <span className="text-sm font-medium">{option.label}</span>
                             </div>
+                            {campiagnModalData.time_interval === option.value && (
+                                <span className="absolute -right-2 top-3">
+                                    <TickFillIcon />
+                                </span>
+                            )}
+                        </button>
+                    ))}
+                </div>
             </div>
+
+            {/* Message Selector */}
             <h2 className="text-lg font-medium my-3">{t('crm.Select a message')}</h2>
             <Select
-                className="w-full rounded-lg bg-white border border-gray-300 px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full"
                 placeholder={t('crm.Select Message')}
-                value={selectedMessage || undefined}
-                onChange={(value) => setSelectedMessage(value)}
+                value={campiagnModalData.message_id}
+                onChange={handleMessageChange}
                 dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
                 style={{ height: "50px" }}
             >
-                {messages?.map((message) => (
-                    <Option key={message} value={message} className="h-[50px] flex items-center px-4">
-                        {message}
+                {tempMessageList.map((message) => (
+                    <Option key={message.id} value={message.id}>
+                        {message.title}
                     </Option>
                 ))}
             </Select>
 
+            {/* Action Placeholder */}
             <h2 className="text-lg font-medium my-3">{t('crm.Select the next action')}</h2>
             <Select
-                className="w-full rounded-lg bg-white border border-gray-300 px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder={t('crm.Select Message')}
-                value={selectedMessage || undefined}
-                onChange={(value) => setSelectedMessage(value)}
+                className="w-full"
+                placeholder={t('crm.Select Action')}
+                value={"No Action"}
+                onChange={(value) =>  console.log(value)}
                 dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
                 style={{ height: "50px" }}
             >
-                {messages?.map((message) => (
-                    <Option key={message} value={message} className="h-[50px] flex items-center px-4">
-                        {message}
-                    </Option>
-                ))}
+                <Option value="no_action">No Action</Option>
             </Select>
 
+            {/* Footer Buttons */}
             <div className="bg-gray-50 mt-4 rounded-b-lg flex justify-end space-x-4">
                 <button
-                    onClick={() => console.log("Cancel")}
+                    onClick={onCancel}
                     className="bg-white w-32 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6"
                 >
                     {t('crm.Cancel')}
                 </button>
                 <button
-                    onClick={()=> console.log("send")}
+                    id="submit-campaign"
+                    attr-data={JSON.stringify(campiagnModalData)}
                     className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
                 >
                     {t('crm.Send')}
@@ -105,6 +132,8 @@ const SendCampaignModal = ({ visible, onCancel }) => {
 SendCampaignModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
+    userIds: PropTypes.array,
+    peopleCount: PropTypes.number,
 };
 
 export default SendCampaignModal;

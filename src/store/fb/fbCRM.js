@@ -58,7 +58,6 @@ const usefbCRM = create((set) => ({
                 method: 'GET',
                 url: url
             });
-
             set({
                 selectedGrpData: res?.data?.data || {},
                 selectedGrpLoader: false,

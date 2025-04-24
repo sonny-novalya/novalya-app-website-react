@@ -43,6 +43,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const [draggedItem, setDraggedItem] = useState(null);
     const [isDel, setIsDel] = useState(false)
     const totalSlectedIds = selectedUsersMap ? Object.values(selectedUsersMap).flat() : null
+    const [campaignModalData, setCampaignModalData] = useState({
+        userIds: [],
+        peopleCount: 0,
+    });
 
     const delTime = useRef();
 
@@ -168,6 +172,11 @@ const RightSectionCrm = ({ selectedGroup }) => {
             textColor: "text-blue-600",
             borderColor: "border-blue-100",
             onClick: () => {
+                const allUserIds = Object.values(selectedUsersMap).flat();
+                setCampaignModalData({
+                    userIds: allUserIds,
+                    peopleCount: allUserIds.length,
+                });
                 setOpenCampaignModal(true);
             },
         },
@@ -378,11 +387,19 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <span
-                                                onClick={() => setOpenCampaignModal(true)}
+                                                onClick={() => {
+                                                    const stageUsers = selectedUsersMap[stage.id] || [];
+                                                    setCampaignModalData({
+                                                        userIds: stageUsers,
+                                                        peopleCount: stageUsers.length,
+                                                    });
+                                                    setOpenCampaignModal(true);
+                                                }}
                                                 className="cursor-pointer"
                                             >
                                                 <SendIcon />
                                             </span>
+
 
                                             <Dropdown
                                                 overlay={
@@ -446,12 +463,15 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 <SendCampaignModal
                     visible={openCampaignModal}
                     onCancel={() => setOpenCampaignModal(false)}
+                    userIds={campaignModalData.userIds}
+                    peopleCount={campaignModalData.peopleCount}
                     onSend={(data) => {
                         console.log("Sending with data:", data);
                         setOpenCampaignModal(false);
                     }}
                 />
             )}
+
             {openMoveToStageModal && (
                 <MoveToStageModal
                     visible={openMoveToStageModal}
