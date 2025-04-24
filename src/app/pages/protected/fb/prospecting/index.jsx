@@ -49,6 +49,7 @@ const FbProspecting = () => {
     };
 
     const handleOpenSettings = (groupId) => {
+        setActiveKey(1)
         setPrimaryGroupId(groupId)
         setModalOpen(true);
     };
