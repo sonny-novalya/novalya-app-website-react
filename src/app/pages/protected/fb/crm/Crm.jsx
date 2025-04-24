@@ -40,10 +40,10 @@ const Crm = () => {
   };
 
 
-  const {fetchCRMGroups,CRMList,fbCRMLoading, error, createCRMGroup,reorderCRMGroupsFB , addGrpLoader,editCRMGroup,selectedGrp}=usefbCRM()
+  const {fetchCRMGroups,CRMList,fbCRMLoading, error, createCRMGroup,reorderCRMGroups, addGrpLoader,editCRMGroup,selectedGrp}=usefbCRM()
 
   useEffect(() => {
-    fetchCRMGroups();
+    fetchCRMGroups({type: 'fb'});
   }, []);
 
   const toggleAddGroupModal = () => {
@@ -86,7 +86,7 @@ const Crm = () => {
               setSelectedGroup={setSelectedGroup}
               onDragEnd={onDragEnd}
               error={error}
-              reorderCRMGroupsFB={reorderCRMGroupsFB}
+              reorderCRMGroups={reorderCRMGroups}
               setOpenEditGroupModal={setOpenEditGroupModal}
             />
           </div>

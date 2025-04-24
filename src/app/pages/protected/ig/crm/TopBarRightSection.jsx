@@ -1,20 +1,31 @@
 import PropTypes from "prop-types";
 import { Input, Button } from "antd";
-import { useState } from "react";
 import { TwoUsersIcon } from "../../../common/icons/icons";
 import { t } from "i18next";
 
-const TopbarRightSection = ({ companyName, leadsCount ,onSearch, onAddStage }) => {
-    const [searchValue, setSearchValue] = useState("");
+const TopbarRightSection = ({ companyName, leadsCount, onAddStage, setSortedStages, selectedGrpData }) => {
+    // const [searchValue, setSearchValue] = useState("");
 
-    const handleSearch = (value) => {
-        if (onSearch) onSearch(value);
-    };
+
 
     const handleAddStage = () => {
         if (onAddStage) onAddStage();
     };
+    const handleSearch = (value) => {
+        const fakeLeads = (id) => {
+            const leads = selectedGrpData?.taggedUsers?.filter(
+                (data) => data?.stage_id === id && data.fb_name.toLowerCase().includes(value?.toLowerCase())
+            );
+            return leads;
+        };
+        let newStages = [...selectedGrpData.stage]
+        newStages = newStages?.map((element) => {
+            return { ...element, leads: fakeLeads(element.id) };
+        });
+        setSortedStages(newStages)
 
+
+    }
     return (
         <div className="flex justify-between items-center px-4 py-2 bg-white shadow-sm">
             <div className="flex items-center gap-2">
@@ -30,9 +41,9 @@ const TopbarRightSection = ({ companyName, leadsCount ,onSearch, onAddStage }) =
             <div className="flex items-center gap-3">
                 <Input.Search
                     placeholder={t("crm.Search...")}
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    onSearch={handleSearch}
+                    onChange={(e) => {
+                        handleSearch(e.target.value)
+                    }}
                     style={{ width: 200 }}
                     allowClear
                 />

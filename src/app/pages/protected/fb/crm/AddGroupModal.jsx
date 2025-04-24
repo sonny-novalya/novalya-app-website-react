@@ -44,11 +44,11 @@ const AddGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoader
         no_stages_group: false
     }
 
-    const res = await createCRMGroup(payload)
+    const res = await createCRMGroup({ data: payload, type: 'fb'})
 
     if (res.status === 200) {
         message.success("Group has been created")
-        fetchCRMGroups()
+        fetchCRMGroups({ type: "fb" })
         createGroup.onClose();
 
     }
