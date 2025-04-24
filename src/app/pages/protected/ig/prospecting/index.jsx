@@ -38,6 +38,7 @@ const IgProspecting = () => {
 
     const [openDropdownKey, setOpenDropdownKey] = useState(null);
     const [confirmModalKey, setConfirmModalKey] = useState(null);
+    const [selectedSortLabel, setSelectedSortLabel] = useState("Sort By");
     const dropdownRefs = useRef({});
 
     const handleOpenSettingsTab = (value) => {
@@ -79,7 +80,7 @@ const IgProspecting = () => {
             return (
                 <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folder ? folder.folder_name : "None"}
+                        {folder ? folder.folder_name : t("prospecting.None")}
                     </span>
                 </div>
             );
@@ -88,7 +89,7 @@ const IgProspecting = () => {
 
         if (folderIds === null) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                None
+                {t("prospecting.None")}
             </span>
         </div>;
 
@@ -109,7 +110,7 @@ const IgProspecting = () => {
 
         if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                None
+                {t("prospecting.None")}
             </span>
         </div>;
 
@@ -136,41 +137,121 @@ const IgProspecting = () => {
     };
 
 
-    const groupTypeColumn = (
-        <div className="flex items-center space-x-3">
-            <span>Type</span>
-            <Dropdown
-                overlay={
-                    <Menu>
-                        {[
-                            { key: 'insta_profile', label: 'Profile' },
-                            { key: 'insta_likepost', label: 'Post' },
-                            { key: 'insta_hashtag', label: 'Hashtag' },
-                        ].map((type, index) => (
-                            <Menu.Item key={index} onClick={() => {
-                                updateFilters({
-                                    ...storeFilters,
-                                    group_type: type.key,
-                                    type: "instagram",
-                                    page: 1,
-                                    limit: 25,
-                                });
-                            }}>
-                                {type.label}
-                            </Menu.Item>
-                        ))}
-                    </Menu>
-                }
-                trigger={['click']}
-            >
-                <FilterOutlined className="cursor-pointer" />
-            </Dropdown>
+    // const groupTypeColumn = (
+    //     <div className="flex items-center space-x-3">
+    //         <span>Type</span>
+    //         <Dropdown
+    //             overlay={
+    //                 <Menu>
+    //                     {[
+    //                         { key: 'insta_profile', label: 'Profile' },
+    //                         { key: 'insta_likepost', label: 'Post' },
+    //                         { key: 'insta_hashtag', label: 'Hashtag' },
+    //                     ].map((type, index) => (
+    //                         <Menu.Item key={index} onClick={() => {
+    //                             updateFilters({
+    //                                 ...storeFilters,
+    //                                 group_type: type.key,
+    //                                 type: "instagram",
+    //                                 page: 1,
+    //                                 limit: 25,
+    //                             });
+    //                         }}>
+    //                             {type.label}
+    //                         </Menu.Item>
+    //                     ))}
+    //                 </Menu>
+    //             }
+    //             trigger={['click']}
+    //         >
+    //             <FilterOutlined className="cursor-pointer" />
+    //         </Dropdown>
+    //     </div>
+    // );
+
+    const TypeColumn = (
+        <div className="flex items-center space-x-2">
+            <span>{t("prospecting.Type")}</span>
+            {storeFilters.sort_by === 0 && storeFilters.field === "type" ? (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 1,
+                            field: "type",
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-180"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            ) : (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 0,
+                            field: "type",
+                            type: "instagram"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-0"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            )}
+
         </div>
     );
 
     const GroupNameColumn = (
         <div className="flex items-center space-x-2">
-            <span>Group Name </span>
+            <span>{t("prospecting.Group Name")}</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
                     className="w-8 h-8 border-none cursor-pointer"
@@ -250,7 +331,7 @@ const IgProspecting = () => {
 
     const TotalMemberColumn = (
         <div className="flex items-center space-x-2">
-            <span>Total Members</span>
+            <span>{t("prospecting.Total Members")}</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
                 <button
                     className="w-8 h-8 border-none cursor-pointer"
@@ -423,7 +504,7 @@ const IgProspecting = () => {
             ),
         },
         {
-            title: (groupTypeColumn),
+            title: (TypeColumn),
             dataIndex: "group_type",
             render: (text) => (
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -458,7 +539,7 @@ const IgProspecting = () => {
                     className="bg-blue-500 text-white px-3 py-1 rounded-md"
                     onClick={() => handleOpenSettings(record.id)}
                 >
-                    Settings
+                    {t("prospecting.Settings")}
                 </Button>
             ),
         },
@@ -628,7 +709,7 @@ const IgProspecting = () => {
                     </div>
                     
                 </div>
-                <div className="flex items-center justify-between my-3">
+                <div className="flex items-center justify-between my-3 space-x-4">
                     <Input
                         placeholder="Search groups"
                         prefix={<SearchOutlined />}
@@ -642,6 +723,52 @@ const IgProspecting = () => {
                         }}
                         className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
                     />
+                    <Dropdown
+                        trigger={['click']}
+                        overlay={
+                            <Menu>
+                                {[
+                                    { key: 'insta_profile', label: 'Profile' },
+                                    { key: 'insta_likepost', label: 'Post' },
+                                    { key: 'insta_hashtag', label: 'Hashtag' },
+                                ].map((type) => (
+                                    <Menu.Item
+                                        key={type.key}
+                                        onClick={() => {
+                                            updateFilters({
+                                                ...storeFilters,
+                                                group_type: type.key,
+                                                page: 1,
+                                                limit: 25,
+                                            });
+                                            setSelectedSortLabel(type.label);
+                                        }}
+                                    >
+                                        {type.label}
+                                    </Menu.Item>
+                                ))}
+                                <Menu.Item
+                                    key="clear"
+                                    onClick={() => {
+                                        updateFilters({
+                                            ...storeFilters,
+                                            group_type: "",
+                                            page: 1,
+                                            limit: 25,
+                                        });
+                                        setSelectedSortLabel(t("prospecting.Sort By"));
+                                    }}
+                                    style={{ color: 'red' }}
+                                >
+                                    Clear
+                                </Menu.Item>
+                            </Menu>
+                        }
+                    >
+                        <Button icon={<FilterOutlined />}>
+                            {selectedSortLabel}
+                        </Button>
+                    </Dropdown>
                 </div>
 
                 <Table
