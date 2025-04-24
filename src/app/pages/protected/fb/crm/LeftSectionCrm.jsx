@@ -54,7 +54,7 @@ const SortableItem = ({
   const onClick = async (data) => {
     setSelectedGroup(data);
 
-    await getGroupById(data.id);
+    await getGroupById({ id: data.id , type: 'fb' });
   };
 
   const DropdownMenu = ({ item }) => {
@@ -152,7 +152,7 @@ const LeftSectionCrm = ({
   onDragEnd,
   error,
   isLoading,
-  reorderCRMGroupsFB,
+  reorderCRMGroups,
 }) => {
   const [localGroups, setLocalGroups] = useState(groups);
   const startIndexRef = useRef(null);
@@ -185,7 +185,10 @@ const LeftSectionCrm = ({
       onDragEnd?.(newOrder);
     }
 
-    await reorderCRMGroupsFB({ destination: newIndex, source: oldIndex });
+    await reorderCRMGroups({
+      data: { destination: newIndex, source: oldIndex },
+      type: 'fb'
+    });
 
     startIndexRef.current = null; // cleanup
   };

@@ -20,7 +20,7 @@ const MoveToStageModal = ({ visible, onCancel ,selectedUsersMap,moveStage,sorted
             stage_id:selectedStage,
             tagged_user_ids:allIds
         }
-    const res = await moveStage(data)
+    const res = await moveStage({ data, type: 'fb'})
 
     if(res.status === 200){
         message.success("Users has been moved")
