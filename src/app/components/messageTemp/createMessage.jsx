@@ -216,7 +216,7 @@ const CreateMessage = ({containerRef}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
       <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
-        <div className="flex items-center gap-[10px] text-[20px]">
+        <div className="flex items-center gap-[10px] text-[20px] font-[500]">
             {t("message.Message name")} 
           <CreateMessageIcon index={0} />
         </div>
@@ -265,7 +265,7 @@ const CreateMessage = ({containerRef}) => {
         </div>
         <div className="flex gap-4 mt-4">
           <div className="w-[200px] bg-[#F5F5F5] rounded p-3">
-            <div className="flex items-center gap-[10px] text-[20px]">
+            <div className="flex items-center gap-[10px] text-[20px] font-[500]">
                {t("message.Your variants")}
               <CreateMessageIcon index={3} />
             </div>
@@ -296,7 +296,7 @@ const CreateMessage = ({containerRef}) => {
           </div>
           <div className="w-[685px] px-3 py-1">
             <div className="flex items-center justify-between gap-[10px] mb-1">
-              <div className="flex items-center gap-[10px] text-[20px]">
+              <div className="flex items-center gap-[10px] text-[20px] font-[500]">
                  {t("message.Write message")}
                 <CreateMessageIcon index={5} />
               </div>
@@ -397,7 +397,7 @@ const CreateMessage = ({containerRef}) => {
             </div>
           </div>
           <div className="w-[200px] bg-[#F5F5F5] rounded p-3 ">
-            <div className="flex items-center gap-[10px] text-[20px] mb-3">
+            <div className="flex items-center gap-[10px] text-[20px] mb-3 font-[500]">
               {t("message.Write with AI")}
               <CreateMessageIcon index={0} />
             </div>

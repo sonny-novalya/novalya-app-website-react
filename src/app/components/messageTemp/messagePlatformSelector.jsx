@@ -20,7 +20,7 @@ const MessagePlatformSelector = ({containerRef}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center flex-col bg-black/30 h-screen z-[9999]">
         
-        <div ref={containerRef} className=" bg-white px-6 pt-5 pb-6 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+        <div ref={containerRef} className=" bg-white p-5 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -33,16 +33,16 @@ const MessagePlatformSelector = ({containerRef}) => {
             </svg>
           </button>
             
-            <div className="flex items-center gap-[10px] mt-4">
-            {t("message.Select feature")}
+            <div className="flex items-center text-[20px] gap-[10px] mt-4">
+              {t("message.Select feature")}
             
               <PreviewMessageIcon index={0}/>
             </div>
             <div>
-              <button className='flex items-center gap-5 w-full p-5 mt-3 border border-[#0087FF] rounded-[10px] font-medium text-[24px] leading-[36px] text-[#0087FF]' onClick={()=>handleSelection("fb")}>
+              <button className='flex items-center gap-5 w-full px-5 py-7 mt-3 border border-[#0087FF] rounded-[10px] font-medium text-[24px] leading-[36px] text-[#0087FF]' onClick={()=>handleSelection("fb")}>
                 <img src={FBimg} alt='Facebook'/> Facebook
               </button>
-              <button className='flex items-center gap-5 w-full p-5 mt-3 border border-[#ED4B62] rounded-[10px] font-medium text-[24px] leading-[36px] text-[#F24D59]' onClick={()=>handleSelection("ig")} >
+              <button className='flex items-center gap-5 w-full px-5 py-7 mt-5 border border-[#ED4B62] rounded-[10px] font-medium text-[24px] leading-[36px] text-[#F24D59]' onClick={()=>handleSelection("ig")} >
                 <img src={IGimg} alt='Instagram'/> Instagram
               </button>
             </div>

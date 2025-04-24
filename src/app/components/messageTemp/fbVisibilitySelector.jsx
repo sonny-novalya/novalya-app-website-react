@@ -21,7 +21,7 @@ const FbVisibilitySelector = ({containerRef}) => {
       return (
         <div className="fixed inset-0 flex items-center flex-col justify-center bg-black/30 h-screen z-[9999]">
             
-            <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+            <div ref={containerRef} className="bg-white p-5 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
               
               <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@ const FbVisibilitySelector = ({containerRef}) => {
                 </svg>
               </button>
 
-                <div className="flex items-center gap-[10px] text-[20px] mt-4">
+                <div className="flex items-center font-[500] gap-[10px] text-[20px] mt-4">
                   {t("message.Select feature")}
                   <PreviewMessageIcon index={0}/>
                 </div>

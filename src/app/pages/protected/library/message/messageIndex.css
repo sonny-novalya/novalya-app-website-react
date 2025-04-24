@@ -1,8 +1,8 @@
 .ctm-list-design li.ant-list-item {
     border: none !important;
     background: #F5F5F5;
-    padding: 12px 20px !important;
-    border-radius: 10px;
+    padding: 14px 20px !important;
+    border-radius: 8px;
 }
 .ctm-list-design .ant-list {
     border: none;
@@ -89,4 +89,17 @@
 }
 .pros-dropdownItems:hover .normalIconHover {
     display: block;
+}
+.ctm-list-design  button:hover .fill-svg path {
+    fill: #fff;
+}
+.ctm-list-design li.ant-list-item:hover {
+    background: #0087FF33;
+    outline: 1px solid  #0087FF !important;
+}
+.message-template ul.divide-y li:hover img.template-arrow {
+    filter: invert(1);
+}
+.template-items {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(156, 208, 255, 0.38) 100%);
 }
