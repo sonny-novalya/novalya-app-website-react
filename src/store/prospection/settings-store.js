@@ -136,8 +136,6 @@ const SettingStore = create((set) => ({
                 data: data,
             });
 
-            console.log(res);
-
             set({
                 CRMList: res?.data?.data || [],
                 fbCRMLoading: false
