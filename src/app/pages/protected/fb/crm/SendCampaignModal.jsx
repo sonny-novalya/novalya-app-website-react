@@ -96,7 +96,7 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
             <h2 className="text-lg font-medium my-3">{t('crm.Select a message')}</h2>
             <Select
                 className="w-full"
-                placeholder={t('crm.Select Message')}
+                placeholder='Select Message'
                 value={campiagnModalData.message_id}
                 onChange={handleMessageChange}
                 dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
@@ -112,7 +112,7 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
             <h2 className="text-lg font-medium my-3">{t('crm.Select the next action')}</h2>
             <Select
                 className="w-full"
-                placeholder={t('crm.Select Action')}
+                placeholder='Select Action'
                 value={selectedAction}
                 onChange={(value) => {
                     setSelectedAction(value);
@@ -222,7 +222,7 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
                     <h2 className="text-lg font-medium my-3">Select Stage</h2>
                     <Select
                         className="w-full"
-                        placeholder={t('crm.Select Stage')}
+                        placeholder='Select Stage'
                         value={campiagnModalData.moveStageId}
                         onChange={(stageId) => {
                             setCampiagnModalData((prev) => ({
