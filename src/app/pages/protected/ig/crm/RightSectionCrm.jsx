@@ -295,7 +295,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         return (
             <div
                 key={lead.id + stage.id}
-                className={` border p-3 rounded-md flex gap-2 items-center shadow-sm ${selectedUsers.includes(lead?.id)
+                className={`border p-3 rounded-md flex gap-2 items-center shadow-sm ${selectedUsers.includes(lead?.id)
                         ? "border-[#0087FF] bg-[#D9EDFF]"
                         : "border-white bg-white"
                     }`}
@@ -378,7 +378,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                         <DroppableStage stageId={stage.id}>
                             <div
                                 key={stage.id}
-                                className="min-w-[300px] min-h-[640px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-y-scroll"
+                                className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
                             >
                                 <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
                                     <div className="flex items-center justify-between">
@@ -457,7 +457,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                 </div>
 
                                 {/* Leads */}
-                                <div className="flex flex-col gap-2 px-2">
+                                <div className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto">
                                     {stage?.leads?.map((lead) => (
                                         <SortableItem
                                             key={lead.id}
