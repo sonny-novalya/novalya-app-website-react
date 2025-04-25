@@ -187,7 +187,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
       },
     },
     {id:3,
-      label: t("crm.Synchronize date"),
+      label: "Synchronize data",
       icon: <SyncGreenIcon />,
       textColor: "text-green-600",
       borderColor: "border-green-100",
@@ -440,6 +440,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
         return   <button
             key={index}
             onClick={action.onClick}
+            id={action.id === 3 ? "sync-fbname" : undefined}
+            value={action.id === 3 ? selectedGroup.id : undefined}
             className={`flex items-center gap-2 border rounded-md px-4 py-2 hover:shadow transition cursor-pointer ${action.textColor} ${action.borderColor}`}
           >
             {action.icon}
@@ -463,7 +465,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                               setOpenCampaignModal(false);
                           }}
                           stages={sortedStages}
-                          groupId={selectedGroup.id}
+                          groupId={selectedGroup?.id}
                       />
                   )}
                   
