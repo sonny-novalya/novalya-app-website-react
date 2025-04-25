@@ -4,11 +4,11 @@ import { RgbaColorPicker } from "react-colorful";
 import { formatColorToString } from "../../../../../helpers/formatColorToString";
 import { t } from "i18next";
 
-const AddGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoader}) => {
+const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoader, existingGroupNames }) => {
     const [groupName, setGroupName] = useState('');
     const [color, setColor] = useState({ r: 255, g: 255, b: 255, a: 1 });
     const [colorSource, setColorSource] = useState("picker"); 
-    
+
     const colorOptions = [
         { 'r': 242, 'g': 7, 'b': 7, 'a': 1 },
         { 'r': 0, 'g': 135, 'b': 255, 'a': 1 },
@@ -30,29 +30,34 @@ const AddGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoader
        
     };
 
-    const  handleSubmit =async ()=>{
+    const handleSubmit = async () => {
+        const trimmedName = groupName.trim().toLowerCase();
 
-        if (!groupName.trim()) {
-            message.error("Group Name is required")
-            return
+        if (!trimmedName) {
+            message.error("Group Name is required");
+            return;
         }
-       
-      const  payloadRGB = `rgba(${color['r']},${color["g"]},${color["b"]},${color["a"]})`
-      const payload= {
-        custom_color:payloadRGB,
-        name:groupName,
-        no_stages_group: false
-    }
 
-    const res = await createCRMGroup({ data: payload, type: 'fb'})
+        if (existingGroupNames?.includes(trimmedName)) {
+            message.error("Group name already exists. Please choose a different name.");
+            return;
+        }
 
-    if (res.status === 200) {
-        message.success("Group has been created")
-        fetchCRMGroups({ type: "fb" })
-        createGroup.onClose();
+        const payloadRGB = `rgba(${color.r},${color.g},${color.b},${color.a})`;
+        const payload = {
+            custom_color: payloadRGB,
+            name: groupName,
+            no_stages_group: false
+        };
 
-    }
-    }
+        const res = await createCRMGroup({ data: payload, type: 'fb' });
+
+        if (res.status === 200) {
+            message.success("Group has been created");
+            fetchCRMGroups({ type: "fb" });
+            createGroup.onClose();
+        }
+    };
 
     return (
         <Modal

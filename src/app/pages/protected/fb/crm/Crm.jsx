@@ -27,6 +27,7 @@ const Crm = () => {
   const [search, setSearch] = useState("");
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
   const [openEditGroupModal, setOpenEditGroupModal] = useState(false);
+  const [ isValidName, setIsValidName] = useState(false);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -103,6 +104,7 @@ const Crm = () => {
           createCRMGroup={createCRMGroup}
           fetchCRMGroups={fetchCRMGroups}
           addGrpLoader={addGrpLoader}
+          existingGroupNames={CRMList.map(group => group.name.toLowerCase())} 
         />
       )}
 
