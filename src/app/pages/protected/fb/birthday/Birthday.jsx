@@ -128,7 +128,7 @@ const Birthday = () => {
     <input type="hidden" id="birthdayMessage" value={messageData?.id || ""} />
     <h2 className="text-[24px] font-[500] mb-4">Wish your friends birthday automatically</h2>
       <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
-      <div className="bg-white p-6 border border-[#DADADA] rounded-lg shadow-md mx-auto ">
+      <div className="bg-white p-6 rounded-[10px]  mx-auto ">
         
         {/* Wish Type Selector */}
         <WishTypeSelector 
