@@ -16,7 +16,7 @@ import { formatDate } from "../../../../../helpers/formatDate";
 import { t } from "i18next";
 import { useEffect, useRef, useState } from "react";
 import usefbCRM from "../../../../../store/fb/fbCRM";
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, message } from "antd";
 import { VerticalDotsIcon } from "../../../common/icons/icons";
 
 const SortableItem = ({
@@ -26,8 +26,8 @@ const SortableItem = ({
   getGroupById,
   setSelectedGrp,
   setOpenEditGroupModal,
-  deleteCRMGroup,
-  fetchCRMGroups
+  fetchCRMGroups,
+  deleteGroupById
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: group.id });
@@ -36,7 +36,7 @@ const SortableItem = ({
     transform: CSS.Transform.toString(transform),
     transition,
   };
-
+  const delTime = useRef();
   const isDragging = useRef(false);
   const startPos = useRef({ x: 0, y: 0 });
 
@@ -57,20 +57,27 @@ const SortableItem = ({
 
   const onClick = async (data) => {
     setSelectedGroup(data);
-
     await getGroupById({ id: data.id, type: 'ig' });
   };
 
   const DropdownMenu = ({ item }) => {
-    const [isDel, setIsDel] = useState(false);
+      const [isDelete, setIsDelete] = useState({ val:false, id:null });
 
     const handleDelete = async (id) => {
-      if (isDel) {
-        setIsDel(false);
+      if (isDelete.val ) {
+        const res = await deleteGroupById({ id, type: 'ig'})
+        if (res?.status === 200) {
+          message.success("Group deleted Sucessfully")
+          fetchCRMGroups({ type: "ig" })
+        }
+        setIsDelete({ val: false, id: null });
+        clearTimeout(delTime.current);
       } else {
-        setIsDel(true);
+        clearTimeout(delTime.current);
+
+        setIsDelete({ val: true, id: id });
         delTime.current = setTimeout(() => {
-          setIsDel(false);
+          setIsDelete({ val: true, id: null });
         }, 3000);
       }
     };
@@ -90,10 +97,10 @@ const SortableItem = ({
           Edit
         </div>
         <div
-          onClick={() => {}}
+          onClick={() => handleDelete(group?.id)}
           className="px-3 py-2 hover:bg-red-100 cursor-pointer rounded relative z-99999"
         >
-          {isDel ? "Really?" : "Delete"}
+         {isDelete.val ? "Really ?":"Delete"}
         </div>
       </div>
     );
@@ -164,7 +171,7 @@ const LeftSectionCrm = ({
 }) => {
   const [localGroups, setLocalGroups] = useState(groups);
   const startIndexRef = useRef(null);
-  const { getGroupById, setSelectedGrp, deleteCRMGroup, fetchCRMGroups } = usefbCRM();
+  const { getGroupById, setSelectedGrp, fetchCRMGroups, deleteGroupById } = usefbCRM();
 
 
   const sensors = useSensors(useSensor(PointerSensor));
@@ -238,8 +245,8 @@ const LeftSectionCrm = ({
                 setSelectedGroup={setSelectedGroup}
                 getGroupById={getGroupById}
                 setOpenEditGroupModal={setOpenEditGroupModal}
-                deleteCRMGroup={deleteCRMGroup}
                 fetchCRMGroups={fetchCRMGroups}
+                deleteGroupById={deleteGroupById}
               />
             ))}
         </div>

@@ -69,6 +69,22 @@ const usefbCRM = create((set) => ({
             });
         }
     },
+    deleteGroupById: async ({ id, type }) => {
+        set({ selectedGrpLoader: true });
+        const url = type === 'ig' ? `/user/api/instagram/group/${id}` : `/user/api/group/${id}`
+        try {
+            const res = await apiCall({
+                method: 'DELETE',
+                url: url
+            });
+            return res;
+        } catch (error) {
+            set({
+                selectedGrpLoader: false,
+                error: error?.message || 'Something went wrong',
+            });
+        }
+    },
 
     moveTaggedUsers: async ({ data, type }) => {
         const url = type === 'ig'
