@@ -36,6 +36,7 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
         selectAction: false,
         moveStageId: null,
         moveGroupId: null,
+        current_tag_id: groupId 
     });
 
     useEffect(() => {

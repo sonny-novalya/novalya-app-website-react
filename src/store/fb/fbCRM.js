@@ -105,7 +105,24 @@ const usefbCRM = create((set) => ({
             });
         }
     },
-
+    editCRMGroup: async ({ data, type, id }) => {
+        set({ addGrpLoader: true });
+        const url = type === 'ig' ? `/user/api/instagram/group/${id}` : `/user/api/group/${id}`
+        try {
+            const res = await apiCall({
+                method: 'PATCH',
+                url: url,
+                data: data 
+            });
+            set({ addGrpLoader: false });
+            return res;
+        } catch (error) {
+            set({
+                addGrpLoader: false,
+                error: error?.message || 'Something went wrong',
+            });
+        }
+    },
     createStage: async ({ data, type }) => {
         set({ addGrpLoader: true });
         const url = type === 'ig' ? `/instagram/stages/api/create` : `/stages/api/create`

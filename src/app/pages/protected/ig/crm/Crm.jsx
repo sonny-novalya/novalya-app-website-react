@@ -7,6 +7,7 @@ import RightSectionCrm from "./RightSectionCrm";
 import AddGroupModal from "./AddGroupModal";
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
+import EditGroupModal from "./EditGroupModal";
 
 const initialGroups = [
   { id: "1", name: "TeckTalk" },
@@ -25,6 +26,7 @@ const Crm = () => {
   const [selectedGroup, setSelectedGroup] = useState({});
   const [search, setSearch] = useState("");
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
+  const [openEditGroupModal, setOpenEditGroupModal] = useState(false);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -38,7 +40,7 @@ const Crm = () => {
   };
 
 
-  const { fetchCRMGroups, CRMList, fbCRMLoading, error, createCRMGroup, reorderCRMGroups, addGrpLoader } = usefbCRM()
+  const { fetchCRMGroups, CRMList, fbCRMLoading, error, createCRMGroup, reorderCRMGroups, addGrpLoader, editCRMGroup, selectedGrp } = usefbCRM()
 
   useEffect(() => {
     fetchCRMGroups({type:'ig'});
@@ -47,6 +49,10 @@ const Crm = () => {
   const toggleAddGroupModal = () => {
     setOpenAddGroupModal(!openAddGroupModal);
   };
+
+  const toggleEditGrpPop = () => {
+    setOpenEditGroupModal(false)
+  }
 
   return (
     <Layout>
@@ -81,6 +87,7 @@ const Crm = () => {
               onDragEnd={onDragEnd}
               error={error}
               reorderCRMGroups={reorderCRMGroups}
+              setOpenEditGroupModal={setOpenEditGroupModal}
             />
           </div>
         </div>
@@ -96,6 +103,18 @@ const Crm = () => {
           createCRMGroup={createCRMGroup}
           fetchCRMGroups={fetchCRMGroups}
           addGrpLoader={addGrpLoader}
+          existingGroupNames={CRMList.map(group => group.name.toLowerCase())}
+        />
+      )}
+
+      {openEditGroupModal && (
+        <EditGroupModal
+          createGroup={{ isOpen: openEditGroupModal, onClose: toggleEditGrpPop }}
+          showColorPicker={{ isOpen: false, toggle: () => { } }}
+          editCRMGroup={editCRMGroup}
+          fetchCRMGroups={fetchCRMGroups}
+          addGrpLoader={addGrpLoader}
+          selectedGrp={selectedGrp}
           existingGroupNames={CRMList.map(group => group.name.toLowerCase())}
         />
       )}

@@ -51,12 +51,12 @@ const EditGroupModal = ({ createGroup, editCRMGroup, fetchCRMGroups, addGrpLoade
     }
 
         const res = await editCRMGroup({
-        data: payload, type: 'fb', id: selectedGrp?.id
+        data: payload, type: 'ig', id: selectedGrp?.id
     })
 
     if (res.status === 200) {
         message.success("Group has been created")
-        fetchCRMGroups({ type: "fb" })
+        fetchCRMGroups({ type: "ig" })
         createGroup.onClose();
 
     }

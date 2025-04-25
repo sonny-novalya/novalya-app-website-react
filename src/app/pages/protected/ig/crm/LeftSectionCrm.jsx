@@ -24,6 +24,10 @@ const SortableItem = ({
   selectedGroup,
   setSelectedGroup,
   getGroupById,
+  setSelectedGrp,
+  setOpenEditGroupModal,
+  deleteCRMGroup,
+  fetchCRMGroups
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: group.id });
@@ -77,7 +81,10 @@ const SortableItem = ({
         onClick={(e) => e.stopPropagation()} // Prevent closing on click
       >
         <div
-          onClick={() => {}}
+          onClick={() => {
+            setSelectedGrp(group)
+            setOpenEditGroupModal(true)
+          }}
           className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded relative z-99999"
         >
           Edit
@@ -153,10 +160,12 @@ const LeftSectionCrm = ({
   error,
   isLoading,
   reorderCRMGroups,
+  setOpenEditGroupModal
 }) => {
   const [localGroups, setLocalGroups] = useState(groups);
   const startIndexRef = useRef(null);
-  const { getGroupById } = usefbCRM();
+  const { getGroupById, setSelectedGrp, deleteCRMGroup, fetchCRMGroups } = usefbCRM();
+
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -225,8 +234,12 @@ const LeftSectionCrm = ({
                 key={group.id}
                 group={group}
                 selectedGroup={selectedGroup}
+                setSelectedGrp={setSelectedGrp}
                 setSelectedGroup={setSelectedGroup}
                 getGroupById={getGroupById}
+                setOpenEditGroupModal={setOpenEditGroupModal}
+                deleteCRMGroup={deleteCRMGroup}
+                fetchCRMGroups={fetchCRMGroups}
               />
             ))}
         </div>

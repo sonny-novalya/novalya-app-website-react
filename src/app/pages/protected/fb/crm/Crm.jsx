@@ -27,7 +27,6 @@ const Crm = () => {
   const [search, setSearch] = useState("");
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
   const [openEditGroupModal, setOpenEditGroupModal] = useState(false);
-  const [ isValidName, setIsValidName] = useState(false);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -112,10 +111,11 @@ const Crm = () => {
         <EditGroupModal
           createGroup={{ isOpen: openEditGroupModal, onClose: toggleEditGrpPop  }}
           showColorPicker={{ isOpen: false, toggle: () => { } }} 
-          createCRMGroup={editCRMGroup}
+          editCRMGroup={editCRMGroup}
           fetchCRMGroups={fetchCRMGroups}
           addGrpLoader={addGrpLoader}
           selectedGrp={selectedGrp}
+          existingGroupNames={CRMList.map(group => group.name.toLowerCase())} 
         />
       )}
     </Layout>

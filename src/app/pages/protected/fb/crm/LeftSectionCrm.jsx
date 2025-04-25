@@ -88,7 +88,6 @@ const SortableItem = ({
       >
         <div
           onClick={() => {
-            console.log("in edit")
             setSelectedGrp(group)
             setOpenEditGroupModal(true)
           }}
