@@ -101,6 +101,14 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 setIsDel(false)
             }
         } else {
+            if (totalSlectedIds.length === 0) {
+                message.error("Select atleast one user")
+                return
+            }
+            if (totalSlectedIds.length === 2) {
+                message.error("Only one user can be removed at a single time")
+                return
+            }
             setIsDel(true)
             setTimeout(() => {
                 setIsDel(false)
@@ -227,8 +235,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const DropdownMenu = ({ item }) => {
         const [isDel, setIsDel] = useState(false)
 
-
-
         const handleDelete = async (id) => {
             if (isDel) {
                 const res = await deleteStage({ id, type: 'ig'})
@@ -239,6 +245,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 }
                 setIsDel(false)
             } else {
+                if (sortedStages.length === 1) {
+                    message.error("Can not delete this single Stage")
+                    return
+                }
                 setIsDel(true)
                 delTime.current = setTimeout(() => {
                     setIsDel(false)

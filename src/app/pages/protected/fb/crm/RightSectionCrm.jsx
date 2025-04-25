@@ -78,7 +78,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
     if(isDel){
       const stageId= Object.keys(selectedUsersMap)?.[0]
-      const res =  await deleteTaggedUser(totalSlectedIds[0])
+      const res =  await deleteTaggedUser({
+        id: totalSlectedIds[0],
+        type: 'fb'
+      })
    
       if (res.status === 200) {
        message.success("user has been deleted")
@@ -99,10 +102,18 @@ const RightSectionCrm = ({ selectedGroup }) => {
        setIsDel(false)
       }
     }else{
+      if (totalSlectedIds.length === 0 ) {
+        message.error("Select atleast one user")
+        return
+      }
+      if (totalSlectedIds.length === 2) {
+        message.error("Only one user can be removed at a single time")
+        return
+      }
       setIsDel(true)
-     setTimeout(()=>{
-      setIsDel(false)
-     },3000)
+      setTimeout(()=>{
+        setIsDel(false)
+      },3000)
     }
 
 
@@ -234,6 +245,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
        }
        setIsDel(false)
       } else {
+        if (sortedStages.length === 1) {
+          message.error("Can not delete this single Stage")
+          return
+        }
         setIsDel(true)
         delTime.current = setTimeout(()=>{
           setIsDel(false)
@@ -422,7 +437,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
                       overlay={
                         <DropdownMenu
                           item={stage}
-                        
                         />
                       }
                       trigger={["click"]}
