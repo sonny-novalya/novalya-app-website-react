@@ -163,13 +163,26 @@ const RightSectionCrm = ({ selectedGroup }) => {
   };
 
   const buttonActions = [
-    {id:1,
+    {
+      id: 1,
       label: t("crm.Send Campaign"),
       icon: <SendBlueIcon />,
       textColor: "text-blue-600",
       borderColor: "border-blue-100",
       onClick: () => {
         const allUserIds = Object.values(selectedUsersMap).flat();
+        const totalLeads = sortedStages.reduce((acc, stage) => acc + (stage?.leads?.length || 0), 0);
+
+        if (totalLeads === 0) {
+          message.warning("No users found");
+          return;
+        }
+
+        if (allUserIds.length === 0) {
+          message.warning("Please select at least 1 user");
+          return;
+        }
+
         setCampaignModalData({
           userIds: allUserIds,
           peopleCount: allUserIds.length,
@@ -383,6 +396,17 @@ const RightSectionCrm = ({ selectedGroup }) => {
                       <span
                         onClick={() => {
                           const stageUsers = selectedUsersMap[stage.id] || [];
+
+                          if (stage?.leads?.length === 0) {
+                            message.warning("No users found");
+                            return;
+                          }
+
+                          if (stageUsers.length === 0) {
+                            message.warning("Please select at least 1 user in this stage");
+                            return;
+                          }
+
                           setCampaignModalData({
                             userIds: stageUsers,
                             peopleCount: stageUsers.length,
