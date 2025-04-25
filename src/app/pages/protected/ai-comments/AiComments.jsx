@@ -95,10 +95,10 @@ const data = [
 const AiComments = () => {
     return (
         <Layout>
-            <h2 className="text-[24px] font-[500] mb-4">
+            <h2 className="text-[24px] font-[500] mb-5">
                 Generate Automated AI Comments
             </h2>
-            <div className="bg-white p-6 rounded-[10px] flex flex-col space-y-5 mb-5">
+            <div className="bg-white p-6 rounded-[10px] flex flex-col space-y-5.5 mb-5">
                 <SelectGender />
                 {data.map((categoryData) => (
                     <div key={categoryData.category}>
@@ -109,8 +109,8 @@ const AiComments = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-[14px] gap-y-[24px] mt-6">
                             {categoryData.items.map((item) => (
                                 <div key={item.id} className="bg-white p-5 rounded-lg border border-[#DADADA]">
-                                    <div className="">
-                                        <span className="text-[#0087FF] bg-[#0087FF30] inline-flex w-[36px] h-[36px] items-center justify-center text-[16px] font-normal rounded-full mr-2">{item.id}</span>
+                                    <div className="flex items-center">
+                                        <span className="text-[#0087FF] bg-[#0087FF30] inline-flex w-[34px] h-[34px] items-center justify-center text-[16px] font-normal rounded-full mr-2">{item.id}</span>
                                         <span className="text-[20px] font-[500]">{item.title}</span>
                                     </div>
                                     <p
