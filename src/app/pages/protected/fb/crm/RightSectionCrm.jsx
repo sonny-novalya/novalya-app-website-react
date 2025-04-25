@@ -462,6 +462,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
                               console.log("Sending with data:", data);
                               setOpenCampaignModal(false);
                           }}
+                          stages={sortedStages}
+                          groupId={selectedGroup.id}
                       />
                   )}
                   

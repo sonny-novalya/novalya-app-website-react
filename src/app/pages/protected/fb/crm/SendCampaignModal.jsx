@@ -4,11 +4,23 @@ import { useEffect, useState } from "react";
 import { t } from "i18next";
 import { TickFillIcon } from "../../../common/icons/icons";
 import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
+import usefbCRM from "../../../../../store/fb/fbCRM";
 
 const { Option } = Select;
 
-const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount }) => {
+const actionOptions = [
+    { label: "No Action", value: "no_action" },
+    { label: "Move To Stage", value: "move_to_stage" },
+    { label: "Move To Group", value: "move_to_group" },
+    { label: "Delete From Group", value: "delete_from_group" },
+];
+
+const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, groupId }) => {
     const { tempMessageList, fetchMessages } = useMessageSteps();
+    const { CRMList, fetchCRMGroups } = usefbCRM()
+    const [selectedAction, setSelectedAction] = useState("no_action");
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const selectedGroup = CRMList.find(group => group.id === selectedGroupId);
 
     const intervalList = [
         { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
@@ -28,6 +40,7 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount }) => {
 
     useEffect(() => {
         fetchMessages({ page: 1, limit: 200 });
+        fetchCRMGroups({ type: 'fb'})
     }, []);
 
     const handleIntervalChange = (value) => {
@@ -96,20 +109,141 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount }) => {
                 ))}
             </Select>
 
-            {/* Action Placeholder */}
             <h2 className="text-lg font-medium my-3">{t('crm.Select the next action')}</h2>
             <Select
                 className="w-full"
                 placeholder={t('crm.Select Action')}
-                value={"No Action"}
-                onChange={(value) =>  console.log(value)}
+                value={selectedAction}
+                onChange={(value) => {
+                    setSelectedAction(value);
+                    if (value === "no_action") {
+                        setCampiagnModalData((prev) => ({
+                            ...prev,
+                            selectAction: false,
+                            moveGroupId: null,
+                            moveStageId: null,
+                        }));
+                    } else if (value === "delete_from_group") {
+                        setCampiagnModalData((prev) => ({
+                            ...prev,
+                            selectAction: "Delete From Group",
+                            moveGroupId: null,
+                            moveStageId: null,
+                        }));
+                    } else if (value === "move_to_stage") {
+                        setCampiagnModalData((prev) => ({
+                            ...prev,
+                            selectAction: "Move To Stage",
+                            moveGroupId: groupId,
+                            moveStageId: null,
+                        }));
+                    } else if (value === "move_to_group") {
+                        setCampiagnModalData((prev) => ({
+                            ...prev,
+                            selectAction: "Move To Group",
+                            moveGroupId: null,
+                            moveStageId: null,
+                        }));
+                        setSelectedGroupId(null);
+                    } else {
+                        setCampiagnModalData((prev) => ({
+                            ...prev,
+                            selectAction: value,
+                            moveGroupId: null,
+                            moveStageId: null,
+                        }));
+                    }
+                }}
+
                 dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
                 style={{ height: "50px" }}
             >
-                <Option value="no_action">No Action</Option>
+                {actionOptions.map((option) => (
+                    <Option key={option.value} value={option.value}>
+                        {option.label}
+                    </Option>
+                ))}
             </Select>
 
-            {/* Footer Buttons */}
+            {selectedAction === "move_to_group" && (
+                <>
+                    <h2 className="text-lg font-medium my-3">Select Group</h2>
+                    <Select
+                        className="w-full"
+                        placeholder="Select Group"
+                        value={selectedGroupId}
+                        onChange={(groupId) => {
+                            setSelectedGroupId(groupId);
+                            setCampiagnModalData(prev => ({
+                                ...prev,
+                                moveGroupId: groupId,
+                                moveStageId: null
+                            }));
+                        }}
+                        dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
+                        style={{ height: "50px" }}
+                    >
+                        {CRMList.map(group => (
+                            <Option key={group.id} value={group.id}>
+                                {group.name}
+                            </Option>
+                        ))}
+                    </Select>
+
+                    {selectedGroup && selectedGroup.stage && (
+                        <>
+                            <h2 className="text-lg font-medium my-3">Select Stage</h2>
+                            <Select
+                                className="w-full"
+                                placeholder="Select Stage"
+                                value={campiagnModalData.moveStageId}
+                                onChange={(stageId) => {
+                                    setCampiagnModalData(prev => ({
+                                        ...prev,
+                                        moveStageId: stageId
+                                    }));
+                                }}
+                                dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
+                                style={{ height: "50px" }}
+                            >
+                                {selectedGroup.stage.sort((a, b) => a.stage_num - b.stage_num).map(stage => (
+                                    <Option key={stage.id} value={stage.id}>
+                                        {stage.name}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </>
+                    )}
+                </>
+            )}
+
+            {selectedAction === "move_to_stage" && (
+                <>
+                    <h2 className="text-lg font-medium my-3">Select Stage</h2>
+                    <Select
+                        className="w-full"
+                        placeholder={t('crm.Select Stage')}
+                        value={campiagnModalData.moveStageId}
+                        onChange={(stageId) => {
+                            setCampiagnModalData((prev) => ({
+                                ...prev,
+                                selectAction: "Move To Stage",
+                                moveGroupId: groupId,
+                                moveStageId: stageId,
+                            }));
+                        }}
+                        dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
+                        style={{ height: "50px" }}
+                    >
+                        {stages.map((stage) => (
+                            <Option key={stage.id} value={stage.id}>
+                                {stage.name}
+                            </Option>
+                        ))}
+                    </Select>
+                </>
+            )}
+
             <div className="bg-gray-50 mt-4 rounded-b-lg flex justify-end space-x-4">
                 <button
                     onClick={onCancel}
@@ -134,6 +268,8 @@ SendCampaignModal.propTypes = {
     onCancel: PropTypes.func.isRequired,
     userIds: PropTypes.array,
     peopleCount: PropTypes.number,
+    stages: PropTypes.array,
+    groupId: PropTypes.number,
 };
 
 export default SendCampaignModal;

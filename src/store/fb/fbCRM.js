@@ -13,7 +13,7 @@ const usefbCRM = create((set) => ({
     selectedGrp:{},
 
     setSelectStage: (val) => set(() => ({ selectStage: val })),
-   setSelectedGrp: (val) => set(() => ({ selectedGrp: val })), 
+    setSelectedGrp: (val) => set(() => ({ selectedGrp: val })), 
 
     fetchCRMGroups: async ({ data, type }) => {
         set({ fbCRMLoading: true });
