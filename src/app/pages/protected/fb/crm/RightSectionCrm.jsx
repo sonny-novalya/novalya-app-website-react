@@ -531,6 +531,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
           setSortedStages={setSortedStages}
           selectedGroup={selectedGroup}
           addGrpLoader={addGrpLoader}
+          existingStageNames={sortedStages.map((s) => s.name.toLowerCase())}
         />
       )}
 
