@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import { Modal, Select, Tag } from "antd";
 import { useState } from "react";
-import { DeleteFillRedIcon, MessengerIcon } from "../../../common/icons/icons";
+import { DeleteFillRedIcon, MessengerIcon, SyncBlueIcon } from "../../../common/icons/icons";
 import { t } from "i18next";
 const { Option } = Select;
 
@@ -61,9 +61,16 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <button className="rounded border border-[#0087FF7D] p-3 scale-90">
-                        <MessengerIcon />
-                    </button>
+                    { !(lead?.fb_user_e2ee_id && lead?.fb_user_id && lead?.numeric_fb_id) && 
+                        <button className="rounded border border-[#0087FF7D] p-3 scale-90" style={{minHeight:"44px", minWidth:"44px"}} id="sync-facebook-user" value={lead?.numeric_fb_id} alphaid={lead?.fb_user_id}>
+                            <SyncBlueIcon />
+                        </button>
+                    }
+                    <a 
+                        className="rounded border border-[#0087FF7D] p-3 scale-90" target="_blank"
+                        href={`https://www.facebook.com/messages/${lead.is_e2ee === 1 ? "e2ee/" : ""}t/${lead?.fb_user_e2ee_id || lead?.fb_user_id}`}>
+                            <MessengerIcon />
+                    </a>
                     <button className="rounded border border-[#0087FF7D] p-2">
                         <DeleteFillRedIcon />
                     </button>
