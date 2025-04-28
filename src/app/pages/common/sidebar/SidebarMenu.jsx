@@ -266,7 +266,7 @@ const SidebarMenu = () => {
                                     <UpgradeProIcon />
                                     <span className="text-base text-[#00000073]">Upgrade To Pro</span>
                                 </div>
-                                <div className="flex space-x-3 items-center w-full mb-0">
+                                <div className="flex space-x-3 items-center w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
                                     <span className="h-10 w-10 rounded-lg bg-purple-200 flex items-center justify-center">
                                         J
                                     </span>
