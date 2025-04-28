@@ -432,7 +432,7 @@ export const DeleteFillRedIcon = () => (
 )
 
 export const SyncBlueIcon = () => (
-    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="24" height="24" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15.9783 6.26828C14.8956 3.79573 12.2271 2.37939 9.35008 2.37939C5.71085 2.37939 2.71952 5.14206 2.36719 8.67939" stroke="#3C77F5" strokeWidth="1.55556"  strokeLinecap="round" strokeLinejoin="round" />
         <path d="M12.8623 6.57934H15.9501C16.0053 6.57945 16.06 6.56866 16.1111 6.5476C16.1621 6.52654 16.2085 6.49562 16.2476 6.45661C16.2867 6.41759 16.3177 6.37126 16.3388 6.32025C16.36 6.26924 16.3709 6.21457 16.3709 6.15935V3.07935M2.75977 12.4905C3.84243 14.963 6.51099 16.3793 9.38799 16.3793C13.0272 16.3793 16.0185 13.6167 16.3709 10.0793" stroke="#3C77F5" strokeWidth="1.55556"  strokeLinecap="round" strokeLinejoin="round" />
         <path d="M5.87574 12.1794H2.78797C2.73274 12.1793 2.67805 12.1901 2.627 12.2112C2.57595 12.2323 2.52956 12.2632 2.49048 12.3022C2.45139 12.3412 2.42039 12.3875 2.39923 12.4385C2.37808 12.4895 2.36719 12.5442 2.36719 12.5994V15.6794" stroke="#3C77F5" strokeWidth="0.978233"  strokeLinecap="round" strokeLinejoin="round" />
