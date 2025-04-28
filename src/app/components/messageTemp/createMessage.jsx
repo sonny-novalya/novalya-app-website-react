@@ -38,7 +38,10 @@ const CreateMessage = ({containerRef}) => {
     setSelecetdMessage,
     selecetdMessage,
     fetchMessages,
-    setBackStep
+    setBackStep,
+    searchKeyword,
+    attachment,
+    setAttachment
   } = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
@@ -49,13 +52,11 @@ const CreateMessage = ({containerRef}) => {
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpload,setIsUpload]=useState(false)
-  const [attachment,setAttachment]=useState(null)
+  // const [attachment,setAttachment]=useState(null)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
   const location =useLocation()
-
-
 
   const handleVisibilityChange = (val) => {
     if(!val.attachment && attachment){
@@ -74,8 +75,11 @@ const CreateMessage = ({containerRef}) => {
     }else{
     setVisibility(selecetdMessage?.visibility);
     }
+
     setVariants(
-      selecetdMessage ? [...selecetdMessage?.variants] : [...defaultVariants]
+      selecetdMessage
+        ? [...selecetdMessage?.variants]
+        : getDefaultVariants()
     );
     setName(selecetdMessage?.title || "");
   }, []);
@@ -111,11 +115,15 @@ const CreateMessage = ({containerRef}) => {
         count: updatedVariants[index].name.length,
       });
     }
-
+    console.log("here 2")
     setVariants(updatedVariants);
   };
 
   useEffect(() => {
+
+    console.log("variants")
+    console.log(variants)
+
     if (!selectedVariant?.name) {
       setSelectedVariant(variants?.[0] || {});
     }
@@ -138,6 +146,7 @@ const CreateMessage = ({containerRef}) => {
       variants: variants,
       title: name,
       visibility: visibility,
+      attachment: attachment
     };
     setPreviewMessage(message);
     setSelecetdMessage(message);
@@ -187,7 +196,7 @@ const CreateMessage = ({containerRef}) => {
     if (data.variants.length < 3) {
            message.error("Atleast 3 Variants are Required")
            return
-         }
+    }
     setIsLoading(true)
 
       try {
@@ -198,7 +207,7 @@ const CreateMessage = ({containerRef}) => {
       if (res?.status === 200) {
         message.success("Message Successfully Created")
         if (location.pathname === "/library/messages") {
-          fetchMessages()
+          fetchMessages(null, searchKeyword, null)
         }else{
           fetchMessages({limit:200,page:1})
         }
@@ -212,6 +221,10 @@ const CreateMessage = ({containerRef}) => {
         setIsLoading(false)
       }
   }
+
+  useEffect(() => {
+    console.log("attachment", attachment)
+  }, [attachment])
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
@@ -385,8 +398,7 @@ const CreateMessage = ({containerRef}) => {
                  {visibility?.attachment&&
                   <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
                     <CreateMessageIcon index={6} />
-                    {t("message.Upload image")}
-                   
+                    {attachment ? "Change image" : t("message.Upload image")}
                   </button>
                  }
                 </div>
@@ -477,7 +489,7 @@ const CreateMessage = ({containerRef}) => {
             </button>
           </div>
         </div>
-     { isUpload&&<Upload setIsUpload={setIsUpload}  setAttachment={setAttachment}/>}
+        { isUpload && <Upload setIsUpload={setIsUpload}  setAttachment={setAttachment}  attachment={attachment}/>}
 
       </div>
     </div>
@@ -537,5 +549,8 @@ const defaultVariants = [
   { id: 1, name: "", count: 0 },
   { id: 2, name: "", count: 0 },
 ];
+
+const getDefaultVariants = () => defaultVariants.map((variant) => ({ ...variant }));
+
 
 export default CreateMessage;

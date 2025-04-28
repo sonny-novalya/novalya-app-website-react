@@ -35,8 +35,12 @@ const MessageIndex = () => {
     setPreviewMessage,
     setBackStep,
     totalPages,
-    duplicateMessage
-  } = useMessageSteps();
+    duplicateMessage,
+    searchKeyword,
+    setSearchKeyword,
+    setMessageList
+  } = useMessageSteps(); 
+
   const [isDelete, setIsDelete] = useState(false);
   const [sort, setSort] = useState(false);
   const [pagination, setPagination] = useState({
@@ -44,10 +48,10 @@ const MessageIndex = () => {
     limit: 10,
   });
   const delTime = useRef();
-  const [query, setQuery] = useState('');
+  // const [query, setQuery] = useState('');
   const [visFilter, setVisFilter] = useState(null);
-  const debouncedQuery = useDebounce(query, 500);
-
+  const debouncedQuery = useDebounce(searchKeyword, 500);
+  
 
   const renderPlatformButton = (platform) => {
     const platformClass =
@@ -90,6 +94,12 @@ const MessageIndex = () => {
   };
 
   useEffect(() => {
+    return () => {
+      setSearchKeyword(""); //to clear the search so when user comes again to the page it loads all data not the last search one
+    };
+  }, []);
+
+  useEffect(() => {
     fetchMessages(pagination,debouncedQuery,sort,(visFilter?.id || ""));
     setBackStep(null);
     setSelecetdMessage(null);
@@ -98,9 +108,6 @@ const MessageIndex = () => {
 
  
  
-  
-  
-
 
   const handleEdit = (data) => {
     setSelecetdMessage(data);
@@ -199,6 +206,11 @@ const MessageIndex = () => {
     );
   };
 
+  const getNumberOfPages = (totalItems) => {
+    const data =(totalItems/pagination.limit) || 1;
+    return Math.ceil(data) || 1;
+  };
+
   const handleVisibilityChange = (data)=>{
     setVisFilter(data)
     console.log(data)
@@ -217,7 +229,7 @@ const MessageIndex = () => {
                 prefix={<SearchOutlined />}
                 placeholder="Search"
                 className="w-1/2 !rounded-[4px] min-h-[44px]"
-                onChange={(e)=>setQuery(e.target.value)}
+                onChange={(e)=>setSearchKeyword(e.target.value)}
               />
               <div className="flex gap-2.5 ml-2.5">
             <div className="pros-dropdownWrap relative">
@@ -229,7 +241,9 @@ const MessageIndex = () => {
                   <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 1H4C2.586 1 1.879 1 1.44 1.412C1.001 1.824 1 2.488 1 3.815V4.505C1 5.542 1 6.061 1.26 6.491C1.52 6.921 1.993 7.189 2.942 7.723L5.855 9.363C6.491 9.721 6.81 9.9 7.038 10.098C7.512 10.509 7.804 10.993 7.936 11.588C8 11.872 8 12.206 8 12.873V15.543C8 16.452 8 16.907 8.252 17.261C8.504 17.616 8.952 17.791 9.846 18.141C11.725 18.875 12.664 19.242 13.332 18.824C14 18.406 14 17.452 14 15.542V12.872C14 12.206 14 11.872 14.064 11.587C14.1896 11.0042 14.5059 10.4798 14.963 10.097C15.19 9.9 15.509 9.721 16.145 9.362L19.058 7.722C20.006 7.189 20.481 6.922 20.74 6.492C21 6.062 21 5.542 21 4.504V3.814C21 2.488 21 1.824 20.56 1.412C20.122 1 19.415 1 18 1Z" stroke="#808183" stroke-width="1.5"/>
                   </svg>
-                  <span className="flex-1 text-left">Filter</span>
+                  <span className="flex-1 text-left">
+                    {visFilter ? visFilter.label : 'Filter'}
+                  </span>
                   <span className="filter-arrow">
                     <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M4.99951 3.1716L7.82797 0.343099L9.24219 1.7574L4.99951 6L0.756909 1.7574L2.17111 0.343098L4.99951 3.1716Z" fill="#8C8C8C"/>
@@ -243,7 +257,7 @@ const MessageIndex = () => {
                     <div
                     key={visibility.id}
                       onClick={() => handleVisibilityChange(visibility)}
-                      className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white"
+                      className={`pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white ${visibility.id == visFilter?.id ? "active bg-[#0087FF] text-white" : ""}`}
                     >
                       <img className="normalIcon" src={visibility.icon} />
                       <img
@@ -386,12 +400,15 @@ const MessageIndex = () => {
               </div>
               <div className="pagination-wrap flex items-center gap-[10px] ">
                 <button
-                  onClick={() =>
-                    setPagination({
-                      ...pagination,
-                      page: pagination.page - 1,
-                    })
-                  }
+                  onClick={() => {
+                    if (pagination.page > 1) {
+                      setPagination({
+                        ...pagination,
+                        page: pagination.page - 1,
+                      });
+                    }
+                  }}
+                  disabled={pagination.page === 1}
                   className="flex items-center gap-[10px] font-medium text-[16px] leading-[1.5] text-[#404040] opacity-50 hover:opacity-100"
                 >
                   <svg
@@ -414,12 +431,15 @@ const MessageIndex = () => {
                   {reanderPaginationButton(totalPages)}
                 </ul>
                 <button
-                  onClick={() =>
-                    setPagination({
-                      ...pagination,
-                      page: pagination.page + 1,
-                    })
-                  }
+                  onClick={() => {
+                    if (pagination.page < getNumberOfPages(totalPages)) {
+                      setPagination({
+                        ...pagination,
+                        page: pagination.page + 1,
+                      })
+                    }
+                  }}
+                  disabled={pagination.page === getNumberOfPages(totalPages)}
                   className="flex items-center gap-[10px] font-medium text-[16px] leading-[1.5] text-[#404040] opacity-50 hover:opacity-100"
                 >
                   Next

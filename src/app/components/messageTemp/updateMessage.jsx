@@ -28,7 +28,8 @@ import { message, Spin } from "antd";
 import Upload from "./upload";
 
 const UpdateMessage = ({containerRef}) => {
-  const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessages} = useMessageSteps();
+  const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessages, attachment,
+    setAttachment} = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState({});
@@ -38,7 +39,7 @@ const UpdateMessage = ({containerRef}) => {
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpload,setIsUpload]=useState(false)
-  const [attachment,setAttachment]=useState(false)
+  // const [attachment,setAttachment]=useState(false)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
@@ -128,6 +129,7 @@ const UpdateMessage = ({containerRef}) => {
         variants: variants,
         title: name,
         visibility_type: [visibility.id],
+        attachment: attachment
     }
     setPreviewMessage(message);
     setSelecetdMessage(message)
@@ -375,7 +377,8 @@ const handleSubmit =async ()=>{
                                    {visibility?.attachment&&
                                     <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
                                       <CreateMessageIcon index={6} />
-                                      {t("message.Upload image")}
+                                      
+                                      {attachment ? "Change image" : t("message.Upload image")}
                                      
                                     </button>
                                    }
