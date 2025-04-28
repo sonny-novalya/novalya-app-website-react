@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './affiliateSettings.css'
 import AfiliateTopBar from '../../../../components/affilliate/shared/affiliateTopBar'
 import { Button, Input, Select, Upload, message } from "antd";
 import { UploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import adharFront from "../../../../../assets/img/adharBack.png"
 import  adharBack from "../../../../../assets/img/adharFront.png"
+import useAffiliateStore from '../../../../../store/affiliate/affiliate';
+import { countries } from '../../../../../helpers/helperData';
 
 const AffiliateSettings = () => {
+  const {uploadKYC,uploadBankDetails,getKycData}=useAffiliateStore()
   const [formData, setFormData] = useState({
     country: '',
     fullName: '',
@@ -18,11 +21,13 @@ const AffiliateSettings = () => {
     bankCountry: '',
     bankAccountNumber:'',
     bankAccountSwiftCode:'',
-    bankAccountRouting:''
+    bankAccountRouting:'',
+    type:"Bank"
   });
   const [errors, setErrors] = useState({});
   const [isEU, setIsEU] = useState(false)
   const [isPassport, setIsPassport] = useState(false)
+  const [picPrev,setPicPrev]=useState({front:null,back:null})
 
   // Handle input changes
   const handleChange = (e) => {
@@ -46,15 +51,19 @@ const AffiliateSettings = () => {
   };
 
 
-  const handleUpload = (info) => {
-    if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
+  const handleUpload = (info,type) => {
+    const file =info?.fileList[0]
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (type) {
+        setPicPrev({...picPrev,front:e.target.result})
+      }else{
+        setPicPrev({...picPrev,back:e.target.result})
+
+      }
+     
+    };
+    reader.readAsDataURL(file.originFileObj);
   };
 
  
@@ -80,11 +89,17 @@ const AffiliateSettings = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (validate()) {
       const data = validateFormData(formData);  // Remove unnecessary fields based on EU or non-EU country
       console.log('Submitted Data:', data);
-      message.success('Form submitted successfully!');
+
+      const  res = await uploadBankDetails(data)
+
+      if (res.status === 200) {
+        message.success("Bank details been Updated")
+      }
+      
     } else {
       message.error('Please correct the errors before submitting.');
     }
@@ -103,6 +118,46 @@ const AffiliateSettings = () => {
     return data;
   }
 
+  const handleKYCSubmit = async () =>{
+    const formDataVal = new FormData();
+    const idenType = isPassport ? "Passport":"Identity Card"
+    formDataVal.append("identityType", idenType);
+
+    if (idenType === "Passport") {
+      if (!picPrev.front) {
+      message.error("Add image of Passport")
+        return; // Don't proceed with form submission
+      } else {
+        formDataVal.append("idcardFront", picPrev.front);
+      }
+    } else if (idenType === "Identity Card") {
+      if (!picPrev.front || !picPrev.back) {
+        message.error("Add images of ID card")
+        return; // Don't proceed with form submission
+      } else {
+        formDataVal.append("idcardFront", picPrev.front);
+        formDataVal.append("idcardBack", picPrev.back);
+      }
+    }
+
+    const res = await uploadKYC(formDataVal)
+
+    if (res.status === 200) {
+      message.success("KYC details Uploaded")
+    }
+  }
+
+  const checkKycData = async ()=>{
+    const res = await getKycData()
+    if (res.status === 200) {
+      console.log(res?.data?.data?.kyc_data)
+    }
+  }
+
+  useEffect(() => {
+    checkKycData()
+  }, [])
+  
 
 
   return (
@@ -114,30 +169,35 @@ const AffiliateSettings = () => {
           {/* KYC Section */}
           <div className='bg-white px-5 py-7 rounded-[10px]'>
 
-              <div className='grid grid-cols-[40%_60%] items-center gap-4 items-center mb-6'>
+              <div className='grid grid-cols-[40%_60%]  gap-4 items-center mb-6'>
                   <h4 className='font-medium text-[20px] leading-[150%]'>KYC Status</h4>
                   <div>
                     <button className='font-medium text-[14px] leading-[150%] border border-[#0087FF] text-[#0087FF] rounded-[6px] px-5 py-2.5'>Not Verified</button>
                   </div>
               </div>
 
-              <div className='grid grid-cols-[40%_60%] items-center gap-4 items-center mb-6'>
+              <div className='grid grid-cols-[40%_60%]  gap-4 items-center mb-6'>
                   <h4 className='font-medium text-[20px] leading-[150%]'>Bank Review Status</h4>
                   <div>
                     <button className='font-medium text-[14px] leading-[150%] border border-[#0087FF] text-[#0087FF] rounded-[6px] px-5 py-2.5'>Not Setup</button>
                   </div>
               </div>
 
-              <div className='grid grid-cols-[40%_60%] items-center gap-4 items-center'>
+              <div className='grid grid-cols-[40%_60%]  gap-4 items-center'>
                 <h4 className='font-medium text-[20px] leading-[150%]'>Start Verification Document</h4>
                 <div className='flex items-center gap-5'>
                   <div className='flex items-center gap-5'>
-                    <input className='transform scale-[1.35]' value={false} onChange={()=>setIsPassport(false)} checked={!isPassport} type='radio' id='ID-Card' name='kyc-varification'/>
+                    <input className='transform scale-[1.35]' value={false} onChange={()=>{
+                      setIsPassport(false)
+                     setPicPrev({front:null,back:null})}} checked={!isPassport} type='radio' id='ID-Card' name='kyc-varification'/>
                     <label className='ctm-label font-medium text-[14px] leading-[150%] bg-white text-[#0087FF] px-7 py-2.5 rounded-[6px] border border-[#0087FF] cursor-pointer' for='ID-Card'>ID Card</label>
                   </div>
                   <h5 className='font-medium text-[20px] leading-[150%] text-black'>Or</h5>
                   <div className='flex items-center gap-5'>
-                    <input className='transform scale-[1.35]' value={true} onChange={()=>setIsPassport(true)}  checked={isPassport}  type='radio' id='Passport' name='kyc-varification'/>
+                    <input className='transform scale-[1.35]' value={true} onChange={()=>{
+                      setIsPassport(true)
+                      setPicPrev({front:null,back:null})
+                    }}  checked={isPassport}  type='radio' id='Passport' name='kyc-varification'/>
                     <label className='ctm-label font-medium text-[14px] leading-[150%] bg-white text-[#0087FF] px-7 py-2.5 rounded-[6px] border border-[#0087FF] cursor-pointer' for='Passport'>Passport</label>
                   </div>
                 </div>
@@ -145,8 +205,8 @@ const AffiliateSettings = () => {
               
               <div className='grid grid-cols-2 gap-5 mt-7'>
                 <div>
-                  <h6 className='font-normal text-[14px] leading-[150%] mb-[10px]'>Select front image</h6>
-                  <Upload className="w-full ctm-upload" onChange={handleUpload}>
+                  <h6 className='font-normal text-[14px] leading-[150%] mb-[10px]'>Select { !isPassport ? "front":""} image</h6>
+                  <Upload className="w-full ctm-upload"  showUploadList={false}  maxCount={1} beforeUpload={() => false} onChange={(value)=>handleUpload(value,1)}>
                     <Button icon={<UploadOutlined />}>Drag and Drop files here or Choose File</Button>
                   </Upload>
                   <div className='flex items-center justify-between mt-[10px]'>
@@ -154,12 +214,12 @@ const AffiliateSettings = () => {
                     <span className='text-[12px] leading-[150%] text-black/50'>Maximum size: 5MB</span>
                   </div>
                   <div className='p-6'>
-                    <img className='border border-[#00000042] rounded-[12px] min-h-[125px]' src={adharFront} alt='id-1'></img>
+                    <img className='border border-[#00000042] rounded-[12px] min-h-[125px] w-[350px] h-[200px]' src={picPrev.front || adharFront} alt='id-1'></img>
                   </div>
                 </div>
-                <div>
+                {!isPassport && <div>
                   <h6 className='font-normal text-[14px] leading-[150%] mb-[10px]'>Select back image</h6>
-                  <Upload className="w-full ctm-upload" onChange={handleUpload}>
+                  <Upload className="w-full ctm-upload" showUploadList={false}  maxCount={1} beforeUpload={() => false}  onChange={(value)=>handleUpload(value,0)}>
                     <Button icon={<UploadOutlined />}>Drag and Drop files here or Choose File</Button>
                   </Upload>
                   <div className='flex items-center justify-between mt-[10px]'>
@@ -167,13 +227,13 @@ const AffiliateSettings = () => {
                     <span className='text-[12px] leading-[150%] text-black/50'>Maximum size: 5MB</span>
                   </div>
                   <div className='p-6'>
-                    <img className='border border-[#00000042] rounded-[12px] min-h-[125px]' src={adharBack} alt='id-1'></img>
+                    <img className='border border-[#00000042] rounded-[12px] min-h-[125px] w-[350px] h-[200px]' src={ picPrev.back ||  adharBack} alt='id-1'></img>
                   </div>
-                </div>
+                </div>}
               </div>
 
               <div>
-                <button className='bg-[#21BF7C] font-[Outfit] font-medium text-[14px] leading-[150%] text-white px-9 py-2.5 rounded-[6px] cursor-pointer'>Submit</button>
+                <button onClick={()=>handleKYCSubmit()} className='bg-[#21BF7C] font-[Outfit] font-medium text-[14px] leading-[150%] text-white px-9 py-2.5 rounded-[6px] cursor-pointer'>Submit</button>
               </div>
 
               <div className="border border-dashed border-[#0087FF] bg-[#0087FF33] rounded-[10px] mt-[20px] px-[30px] py-[20px] flex items-center gap-[16px]">
@@ -205,14 +265,27 @@ const AffiliateSettings = () => {
         <div>
           <label className="text-[14px] leading-[150%] mb-[10px] block">Bank Account Country</label>
           <Select
-            placeholder="Select Country"
-            className="w-full ctm-select"
-            onChange={(value) => handleSelectChange(value, 'bankCountry')}
-            value={formData.bankCountry}
-          >
-            <Option value="US">United States</Option>
-            <Option value="UK">United Kingdom</Option>
-          </Select>
+  placeholder="Select Country"
+  className="w-full ctm-select"
+  onChange={(value) => handleSelectChange(value, 'bankCountry')}
+  value={formData.bankCountry}
+  options={countries.map(item => ({
+    label: (
+      <span>
+        <img
+          loading="lazy"
+          style={{ width: 25, marginRight: 8 }}
+          src={`https://flagcdn.com/w20/${item.code.toLowerCase()}.png`}
+          srcSet={`https://flagcdn.com/w40/${item.code.toLowerCase()}.png 2x`}
+          alt=""
+        />
+        {item.label} ({item.code})
+      </span>
+    ),
+    value: item.label
+  }))}
+  optionLabelProp="label"
+/>
           {errors.bankCountry && <p className="text-red-500 text-xs mt-3">{errors.bankCountry}</p>}
         </div>
 
@@ -304,64 +377,7 @@ const AffiliateSettings = () => {
 
           </div>
 
-          {/* KYC Status Section */}
-          {/* <div className="bg-white p-6 shadow rounded-md w-full max-w-4xl">
-            <h2 className="text-lg font-semibold mb-4">KYC Status</h2>
-            <Button type="primary" danger className="mr-2">Not Verified</Button>
-            <Button type="default">Not Setup</Button>
-          </div> */}
-          
-          {/* Verification Document Section */}
-          {/* <div className="bg-white p-6 shadow rounded-md w-full max-w-4xl mt-6">
-            <h2 className="text-lg font-semibold mb-4">Start Verification Document</h2>
-            <Radio.Group defaultValue="id-card" className="mb-4">
-              <Radio value="id-card">ID Card</Radio>
-              <Radio value="passport">Passport</Radio>
-            </Radio.Group>
-¡
-            <div className="grid grid-cols-2 gap-4">
-              <Upload className="w-full" onChange={handleUpload}>
-                <Button icon={<UploadOutlined />}>Upload Front Image</Button>
-              </Upload>
-              <Upload className="w-full" onChange={handleUpload}>
-                <Button icon={<UploadOutlined />}>Upload Back Image</Button>
-              </Upload>
-            </div>
-
-            <Button type="primary" className="mt-4 bg-green-500">Submit</Button>
-          </div> */}
-
-          {/* Payment Information Section */}
-          {/* <div className="bg-white p-6 shadow rounded-md w-full max-w-4xl mt-6">
-            <h2 className="text-lg font-semibold mb-4">Payment Information</h2>
-            <Radio.Group defaultValue="europe" className="mb-4">
-              <Radio value="europe">Europe</Radio>
-              <Radio value="outside-eu">Outside EU</Radio>
-            </Radio.Group>
-            <div className="flex items-center bg-blue-100 p-3 rounded-md text-blue-700">
-              <InfoCircleOutlined className="mr-2" />
-              Payment is made in Euro and EUR 5 will be deducted as a processing fee.
-            </div>
-          </div> */}
-          
-          {/* Bank Details Section */}
-          {/* <div className="bg-white p-6 shadow rounded-md w-full max-w-4xl mt-6">
-            <h2 className="text-lg font-semibold mb-4">Bank Details</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <Select placeholder="Select Country" className="w-full">
-                <Option value="US">United States</Option>
-                <Option value="UK">United Kingdom</Option>
-              </Select>
-              <Input placeholder="Your Full Name" />
-              <Input placeholder="Bank Account IBAN" />
-              <Input placeholder="Bank Account BIC" />c
-              <Input placeholder="Personal Address" />
-              <Input placeholder="City" />
-              <Input placeholder="Zip Code" />
-              <Input placeholder="Country" />
-            </div>
-            <Button type="primary" className="mt-4 bg-green-500">Submit</Button>
-          </div> */}
+        
         </div>
         <div className='bg-[#0087FF33] border border-[#0087FF] rounded-[10px] p-5 h-[250px] flex flex-col justify-center items-center gap-4'>
           <h3 className='font-medium text-[20px] leading-[150%]'>Documents</h3>
