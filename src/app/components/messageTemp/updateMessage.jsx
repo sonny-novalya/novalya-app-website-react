@@ -47,10 +47,44 @@ const UpdateMessage = ({containerRef}) => {
 
 
   const handleVisibilityChange = (val) => {
-     if(!val.attachment && attachment){
-          message.error(`${val.label} does not support Attachment it will be removed if you have selected any.`)
+      console.log(val);
+      if (variants.length > 0) {
+        let updatedVariants = variants.map(item => ({ ...item })); // Always clone variants initially
+    
+        if (!val.inputs && !val.attachment) {
+          message.error(`${val.label} does not support Name & Attachment, it will be removed if you have selected any.`);
+          updatedVariants = updatedVariants.map(item => {
+            const updatedText = item.name.replace(/\[first name\]/gi, "").replace(/\[last name\]/gi, "");
+            return {
+              ...item,
+              name: updatedText,
+              count: updatedText.length
+            };
+          });
+          setAttachment(null);
+        } else if (val.inputs && !val.attachment) {
+          message.error(`${val.label} does not support Attachment, it will be removed if you have selected any.`);
+          setAttachment(null);
+        } else if (!val.inputs && val.attachment) {
+          message.error(`${val.label} does not support Name, it will be removed if you have selected any.`);
+          updatedVariants = updatedVariants.map(item => {
+            const updatedText = item.name.replace(/\[first name\]/gi, "").replace(/\[last name\]/gi, "");
+            return {
+              ...item,
+              name: updatedText,
+              count: updatedText.length
+            };
+          });
         }
-    setVisibility(val);
+    
+        setVariants(updatedVariants);
+        if (selectedVariant?.id != null) {
+          const newSelected = updatedVariants.find(v => v.id === selectedVariant.id);
+          setSelectedVariant(newSelected || updatedVariants[0]); // update textarea binding
+        }
+      }
+    
+      setVisibility(val);
   };
 
   const handleCaretPosition = (e) => {
@@ -168,6 +202,12 @@ const handleSubmit =async ()=>{
       }
       if (!visibility.id) {
         message.error("visibility is Required")
+        return
+      }
+
+      // .some() checks if at least one item matches the condition.
+      if (variants.some(v => v.name.trim() === "")) {
+        message.error("Some variants have an empty message.");
         return
       }
       let file=null

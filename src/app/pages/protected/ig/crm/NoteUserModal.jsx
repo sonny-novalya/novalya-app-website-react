@@ -61,9 +61,9 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <button className="rounded border border-[#0087FF7D] p-3 scale-90">
+                    <a className="rounded border border-[#0087FF7D] p-3 scale-90" target="_blank" href={`https://www.instagram.com/direct/t/${lead?.thread_id}`}>
                         <MessengerIcon />
-                    </button>
+                    </a>
                     <button className="rounded border border-[#0087FF7D] p-2">
                         <DeleteFillRedIcon />
                     </button>
