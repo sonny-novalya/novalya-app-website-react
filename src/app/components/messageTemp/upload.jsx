@@ -42,6 +42,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
     const handleDelete = ()=>{
       setFileData(null)
       setPreviewUrl(null)
+      setAttachment(null)
     }
   
     return (

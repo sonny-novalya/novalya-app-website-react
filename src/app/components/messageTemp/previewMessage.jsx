@@ -142,8 +142,11 @@ const CarouselComponent = ({ MessagePreview = { variants: [] } }) => {
                       <img src={messageImg} className="w-full" />
                       <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%]">
                         <p className="my-[10px]">{variant?.name}</p>
+                        {MessagePreview?.attachment != null && <img className="my-[10px]" src={MessagePreview?.attachment} style={{ maxWidth: "100%", maxHeight: "150px"}}/>}
                       </div>
+                      
                     </div>
+                    
                   </div>
                   <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full max-w-[160px] mt-4 mx-auto px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">
                     <PreviewMessageIcon index={1} />

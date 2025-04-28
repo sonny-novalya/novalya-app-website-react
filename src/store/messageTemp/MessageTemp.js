@@ -18,7 +18,8 @@ const useMessageSteps = create((set) => ({
    tempList:[],
    totalPages: 1,
    flow:0,
-
+   searchKeyword: null,
+   attachment: null,
 
 
    setStep: (val) => set(() => ({ step:val})), 
@@ -38,10 +39,12 @@ const useMessageSteps = create((set) => ({
    setPreviewMessage: (val) => set(() => ({ MessagePreview: val })), 
    setSelecetdMessage: (val) => set(() => ({ selecetdMessage: val })), 
    setPagination: (val) => set(() => ({ pagination: val })), 
-
+   setSearchKeyword: (val) => set(() => ({ searchKeyword: val })), 
+   setAttachment: (val) => set(() => ({ attachment: val })), 
+   setMessageList: (val) => set(() => ({ messageList: val })), 
 
    fetchMessages: async (pagination,search,sort,vis) => {
-    if (pagination.limit === 200) {
+    if (pagination?.limit === 200) {
         set({ tempMessageLoader: true, error: null });
     }else{
         set({ loading: true, error: null });
@@ -62,7 +65,7 @@ const useMessageSteps = create((set) => ({
           });
           const total = res?.data?.message?.total || 1
 
-         if (pagination.limit === 200) {
+         if (pagination?.limit === 200) {
           set({ tempMessageList: res?.data?.message?.messages || [], tempMessageLoader: false});
          }else{
             set({ messageList: res?.data?.message?.messages || [], loading: false, totalPages:total });

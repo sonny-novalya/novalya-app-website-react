@@ -91,10 +91,10 @@ input:focus-visible {
 .normalIconHover {
     display: none;
 }
-.pros-dropdownItems:hover .normalIcon {
+.pros-dropdownItems:hover .normalIcon, .pros-dropdownItems.active .normalIcon {
     display: none;
 }
-.pros-dropdownItems:hover .normalIconHover {
+.pros-dropdownItems:hover .normalIconHover, .pros-dropdownItems.active .normalIconHover {
     display: block;
 }
 .ctm-list-design  button:hover .fill-svg path {
