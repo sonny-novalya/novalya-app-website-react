@@ -1,33 +1,56 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./levelCommission.css"
 import AfiliateTopBar from '../../../../components/affilliate/shared/affiliateTopBar'
-import { Table, Button, Tabs, Input, Select } from "antd";
+import { Table,  Input, Select, Button } from "antd";
+import useAffiliateStore from '../../../../../store/affiliate/affiliate';
 
-const { TabPane } = Tabs;
+
 const { Option } = Select;
 
 const LevelCommission = () => {
-  const data = [
-    {
-      key: "1",
-      amount: "$2316",
-      currency: "Dollars $",
-      sender: "Name",
-      type: "Nov 29, 2024",
-      payout: "25%",
-      date: "02/12/2024",
-    },
-  ];
+  const {fetchCommissionData,affiliateComList,affiliateComLoader}=useAffiliateStore()
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
+ 
+
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [years, setYears] = useState([]);
+  const [search,setSearch]=useState("")
+
+  const data = affiliateComList?.filter(item => item?.sender?.toLowerCase().includes(search.toLowerCase()))
 
   const columns = [
-    { title: "#", dataIndex: "key", key: "key" },
+    { title: "#", dataIndex: "indx", key: "key" },
     { title: "Amount", dataIndex: "amount", key: "amount" },
     { title: "Currency", dataIndex: "currency", key: "currency" },
     { title: "Sender", dataIndex: "sender", key: "sender" },
-    { title: "Type", dataIndex: "type", key: "type" },
-    { title: "% Payout", dataIndex: "payout", key: "payout" },
+    // { title: "Type", dataIndex: "type", key: "type" },
+    // { title: "% Payout", dataIndex: "payout", key: "payout" },
     { title: "Date", dataIndex: "date", key: "date" },
   ];
+
+  const handleAllYears =  () =>{
+    const YearList =[]
+    for (let i = 2024; i <= currentYear ; i++) {
+      YearList.push({ label: i, value: i })
+    }
+    setYears(YearList)
+
+  }
+
+  useEffect(() => {
+    const PayLoad = {month:selectedMonth,year:selectedYear}
+    fetchCommissionData(PayLoad)
+    handleAllYears()
+  }, [])
+
+  const onGo = ()=>{
+    const PayLoad = {month:selectedMonth,year:selectedYear}
+    fetchCommissionData(PayLoad)
+  }
+  
+
 
   return (
   <>
@@ -38,31 +61,43 @@ const LevelCommission = () => {
       {/* Level Commission Section */}
       <div className="bg-white p-6 shadow rounded-md">
         <h2 className="text-lg font-semibold mb-4">Level Commission</h2>
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="Level 1" key="1" />
-          <TabPane tab="Level 2" key="2" />
-          <TabPane tab="Others" key="3" />
-        </Tabs>
+    
 
-        <div className="flex justify-between items-center my-4">
-          <Input placeholder="Search" className="w-1/3" />
-          <div className="flex space-x-2">
-            <Select defaultValue="February">
-              <Option value="January">January</Option>
-              <Option value="February">February</Option>
+        <div className="flex justify-between items-center my-4 gap-1">
+          <Input placeholder="Search" value={search}  onChange={(e)=>setSearch(e.target.value)} />
+          <div className="flex space-x-2 gap-1">
+            <Select defaultValue={selectedMonth} onChange={(value)=>setSelectedMonth(value)}>
+            {
+              months?.map((item) => <Option value={item.value}>{item.label}</Option>)
+            }
             </Select>
-            <Select defaultValue="2025">
-              <Option value="2024">2024</Option>
-              <Option value="2025">2025</Option>
+            <Select defaultValue={selectedYear} onChange={(value)=>setSelectedYear(value)}>
+              {years?.map((item)=><Option value={item.value}>{item.label}</Option>)}
             </Select>
+            <Button onClick={onGo}>Go</Button>
           </div>
         </div>
 
-        <Table columns={columns} dataSource={data} pagination={false} />
+        <Table columns={columns} dataSource={data} pagination={false}  loading={affiliateComLoader}/>
       </div>
     </div>
   </>
   );
 }
+
+const months = [
+  { label: "January", value: 1 },
+  { label: "February", value: 2 },
+  { label: "March", value: 3 },
+  { label: "April", value: 4 },
+  { label: "May", value: 5 },
+  { label: "June", value: 6 },
+  { label: "July", value: 7 },
+  { label: "August", value: 8 },
+  { label: "September", value: 9 },
+  { label: "October", value: 10 },
+  { label: "November", value: 11 },
+  { label: "December", value: 12 }
+];
 
 export default LevelCommission

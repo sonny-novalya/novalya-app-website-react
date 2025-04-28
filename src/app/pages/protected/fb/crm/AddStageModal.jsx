@@ -3,33 +3,38 @@ import { message, Modal, Spin } from "antd";
 import { useState } from "react";
 import { t } from "i18next";
 
-const AddStageModal = ({ visible, onCancel ,createStage,setSortedStages,selectedGroup,addGrpLoader}) => {
+const AddStageModal = ({ visible, onCancel, createStage, setSortedStages, selectedGroup, addGrpLoader, existingStageNames=[] }) => {
     const [stageName, setStageName] = useState("");
 
     const handleInputChange = (e) => {
         setStageName(e.target.value);
     };
 
-    const onsubmit =async ()=>{
-    if(!stageName?.trim()){
-        message.error("Stage Name is Required")
-        return
-    }
-    const data  = {
-        name:stageName,
-        tag_id:selectedGroup.id
-    }
+    const onsubmit = async () => {
+        if (!stageName?.trim()) {
+            message.error("Stage Name is Required");
+            return;
+        }
 
-    const  res = await createStage({ data, type: 'fb'})
-    if (res.status === 200) {
-        const stage = res?.data?.data
-        setSortedStages((prev)=>{
-            return [...prev,stage]
-        })
-        message.success("Stage Has been created")
-        onCancel()
-    }
-    }
+        const normalizedName = stageName.trim().toLowerCase();
+        if (existingStageNames.includes(normalizedName)) {
+            message.error("Stage name already exists");
+            return;
+        }
+
+        const data = {
+            name: stageName.trim(),
+            tag_id: selectedGroup.id,
+        };
+
+        const res = await createStage({ data, type: "fb" });
+        if (res.status === 200) {
+            const stage = res?.data?.data;
+            setSortedStages((prev) => [...prev, stage]);
+            message.success("Stage has been created");
+            onCancel();
+        }
+    };
 
     return (
         <Modal

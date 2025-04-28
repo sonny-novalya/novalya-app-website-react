@@ -42,7 +42,7 @@ const SelectGender = () => {
                         setGender("male")
                         handleGender("male")
                         }}
-                    className={`flex items-center justify-center space-x-3 px-4 py-2.5 border rounded-[6px] cursor-pointer w-[120px]  
+                    className={`flex items-center justify-center space-x-3 px-4 h-[44px] py-2.5 border rounded-[6px] cursor-pointer w-[120px] tracking-[0.28px]  
             ${gender === "male" ? "border-[#0087FF] text-white bg-[#0087FF]" : "border-[#0087FF] text-[#0087FF]"}`}
                 >
                     {
@@ -57,7 +57,7 @@ const SelectGender = () => {
                         setGender("female")
                         handleGender("female")
                         }}
-                    className={`flex items-center justify-center space-x-2 px-4 py-2 border rounded-[6px] cursor-pointer w-[120px]  
+                    className={`flex items-center justify-center space-x-2 px-4 py-2.5 h-[44px] border rounded-[6px] cursor-pointer w-[120px] tracking-[0.32px]  
             ${gender === "female" ? "border-[#0087FF] text-white bg-[#0087FF]" : "border-[#0087FF] text-[#0087FF]"}`}
                 >
                     {

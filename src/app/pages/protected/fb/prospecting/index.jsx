@@ -39,6 +39,8 @@ const FbProspecting = () => {
 
     const [openDropdownKey, setOpenDropdownKey] = useState(null);
     const [confirmModalKey, setConfirmModalKey] = useState(null);
+    const [selectedSortLabel, setSelectedSortLabel] = useState("Sort By");
+
     const dropdownRefs = useRef({});
 
     const handleOpenSettingsTab = (value) => {
@@ -47,6 +49,7 @@ const FbProspecting = () => {
     };
 
     const handleOpenSettings = (groupId) => {
+        setActiveKey(1)
         setPrimaryGroupId(groupId)
         setModalOpen(true);
     };
@@ -134,36 +137,36 @@ const FbProspecting = () => {
         );
     };
 
-    const groupTypeColumn = (
-        <div className="flex items-center space-x-3">
-            <span>{t("prospecting.Type")}</span>
-            <Dropdown
-                overlay={
-                    <Menu>
-                        {[
-                            { key: 'member', label: t("prospecting.Member") },
-                            { key: 'things in common', label: t("prospecting.Things In Common") },
-                            { key: 'post-like', label: t("prospecting.Post") },
-                        ].map((type, index) => (
-                            <Menu.Item key={index} onClick={() => {
-                                updateFilters({
-                                    ...storeFilters,
-                                    group_type: type.key,
-                                    page: 1,
-                                    limit: 25,
-                                });
-                            }}>
-                                {type.label}
-                            </Menu.Item>
-                        ))}
-                    </Menu>
-                }
-                trigger={['click']}
-            >
-                <FilterOutlined className="cursor-pointer" />
-            </Dropdown>
-        </div>
-    );
+    // const groupTypeColumn = (
+    //     <div className="flex items-center space-x-3">
+    //         <span>{t("prospecting.Type")}</span>
+    //         <Dropdown
+    //             overlay={
+    //                 <Menu>
+    //                     {[
+    //                         { key: 'member', label: t("prospecting.Member") },
+    //                         { key: 'things in common', label: t("prospecting.Things In Common") },
+    //                         { key: 'post-like', label: t("prospecting.Post") },
+    //                     ].map((type, index) => (
+    //                         <Menu.Item key={index} onClick={() => {
+    //                             updateFilters({
+    //                                 ...storeFilters,
+    //                                 group_type: type.key,
+    //                                 page: 1,
+    //                                 limit: 25,
+    //                             });
+    //                         }}>
+    //                             {type.label}
+    //                         </Menu.Item>
+    //                     ))}
+    //                 </Menu>
+    //             }
+    //             trigger={['click']}
+    //         >
+    //             <FilterOutlined className="cursor-pointer" />
+    //         </Dropdown>
+    //     </div>
+    // );
 
     const GroupNameColumn = (
         <div className="flex items-center space-x-2">
@@ -211,6 +214,84 @@ const FbProspecting = () => {
                             ...storeFilters,
                             sort_by: 0,
                             field: "name"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-0"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            )}
+
+        </div>
+    );
+
+    const TypeColumn = (
+        <div className="flex items-center space-x-2">
+            <span>{t("prospecting.Type")}</span>
+            {storeFilters.sort_by === 0 && storeFilters.field === "type" ? (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 1,
+                            field: "type"
+                        });
+                    }}
+                >
+                    <svg
+                        className="transform rotate-180"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.062 12.0249L10.0036 17.0832L4.94531 12.0249"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M10 2.91675V16.9417"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+            ) : (
+                <button
+                    className="w-8 h-8 border-none cursor-pointer"
+                    onClick={() => {
+                        updateFilters({
+                            ...storeFilters,
+                            sort_by: 0,
+                            field: "type"
                         });
                     }}
                 >
@@ -415,7 +496,7 @@ const FbProspecting = () => {
             ),
         },
         {
-            title: (groupTypeColumn),
+            title: (TypeColumn),
             dataIndex: "group_type",
             render: (text) => (
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -595,7 +676,7 @@ const FbProspecting = () => {
                     </div>
                     <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">{t("prospecting.Add new group")}</Button>
                 </div>
-                <div className="flex items-center justify-between my-3">
+                <div className="flex items-center justify-between my-3 space-x-4">
                     <Input
                         placeholder="Search groups"
                         prefix={<SearchOutlined />}
@@ -609,6 +690,52 @@ const FbProspecting = () => {
                         }}
                         className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
                     />
+                    <Dropdown
+                        trigger={['click']}
+                        overlay={
+                            <Menu>
+                                {[
+                                    { key: 'member', label: t("prospecting.Member") },
+                                    { key: 'things in common', label: t("prospecting.Things In Common") },
+                                    { key: 'post-like', label: t("prospecting.Post") },
+                                ].map((type) => (
+                                    <Menu.Item
+                                        key={type.key}
+                                        onClick={() => {
+                                            updateFilters({
+                                                ...storeFilters,
+                                                group_type: type.key,
+                                                page: 1,
+                                                limit: 25,
+                                            });
+                                            setSelectedSortLabel(type.label);
+                                        }}
+                                    >
+                                        {type.label}
+                                    </Menu.Item>
+                                ))}
+                                <Menu.Item
+                                    key="clear"
+                                    onClick={() => {
+                                        updateFilters({
+                                            ...storeFilters,
+                                            group_type: "",
+                                            page: 1,
+                                            limit: 25,
+                                        });
+                                        setSelectedSortLabel(t("prospecting.Sort By"));
+                                    }}
+                                    style={{ color: 'red' }}
+                                >
+                                    Clear
+                                </Menu.Item>
+                            </Menu>
+                        }
+                    >
+                        <Button icon={<FilterOutlined />}>
+                            {selectedSortLabel}
+                        </Button>
+                    </Dropdown>
                 </div>
                 <Table
                     columns={groupColumns}

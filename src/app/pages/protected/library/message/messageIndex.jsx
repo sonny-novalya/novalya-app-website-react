@@ -220,7 +220,7 @@ const MessageIndex = () => {
     <>
       <div className="pl-10 pr-8 py-8 bg-[#f2f2f2] h-screen overflow-auto message-main-wraper">
         <div className="">
-          <h1 className="text-[24px] font-[600] mb-4.5 pl-5 mt-0">
+          <h1 className="text-[24px] font-[500] mb-4.5 mt-0">
             Messages Templates
           </h1>
           <div className="bg-white p-5 rounded-[16px]">

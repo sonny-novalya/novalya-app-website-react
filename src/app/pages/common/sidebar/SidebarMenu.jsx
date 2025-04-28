@@ -24,6 +24,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LocalizationOptionsIcons from "../../../../helpers/shared/LocalizationOptionsIcons";
 import { Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
+import { removeAllCookies } from "../../../../helpers/helper";
 
 const SidebarMenu = () => {
     const [openSubNav, setOpenSubNav] = useState(null);
@@ -38,6 +39,7 @@ const SidebarMenu = () => {
     const onLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('selectedLocale');
+        removeAllCookies();
         navigate("/login");
     };
 

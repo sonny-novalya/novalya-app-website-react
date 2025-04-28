@@ -13,7 +13,7 @@ const usefbCRM = create((set) => ({
     selectedGrp:{},
 
     setSelectStage: (val) => set(() => ({ selectStage: val })),
-   setSelectedGrp: (val) => set(() => ({ selectedGrp: val })), 
+    setSelectedGrp: (val) => set(() => ({ selectedGrp: val })), 
 
     fetchCRMGroups: async ({ data, type }) => {
         set({ fbCRMLoading: true });
@@ -58,11 +58,26 @@ const usefbCRM = create((set) => ({
                 method: 'GET',
                 url: url
             });
-
             set({
                 selectedGrpData: res?.data?.data || {},
                 selectedGrpLoader: false,
             });
+        } catch (error) {
+            set({
+                selectedGrpLoader: false,
+                error: error?.message || 'Something went wrong',
+            });
+        }
+    },
+    deleteGroupById: async ({ id, type }) => {
+        set({ selectedGrpLoader: true });
+        const url = type === 'ig' ? `/user/api/instagram/group/${id}` : `/user/api/group/${id}`
+        try {
+            const res = await apiCall({
+                method: 'DELETE',
+                url: url
+            });
+            return res;
         } catch (error) {
             set({
                 selectedGrpLoader: false,
@@ -106,7 +121,24 @@ const usefbCRM = create((set) => ({
             });
         }
     },
-
+    editCRMGroup: async ({ data, type, id }) => {
+        set({ addGrpLoader: true });
+        const url = type === 'ig' ? `/user/api/instagram/group/${id}` : `/user/api/group/${id}`
+        try {
+            const res = await apiCall({
+                method: 'PATCH',
+                url: url,
+                data: data 
+            });
+            set({ addGrpLoader: false });
+            return res;
+        } catch (error) {
+            set({
+                addGrpLoader: false,
+                error: error?.message || 'Something went wrong',
+            });
+        }
+    },
     createStage: async ({ data, type }) => {
         set({ addGrpLoader: true });
         const url = type === 'ig' ? `/instagram/stages/api/create` : `/stages/api/create`

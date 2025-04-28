@@ -4,13 +4,11 @@ import { RgbaColorPicker } from "react-colorful";
 import { formatColorToString ,formatStringToColor} from "../../../../../helpers/formatColorToString";
 import { t } from "i18next";
 
-const EditGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoader,selectedGrp}) => {
+const EditGroupModal = ({ createGroup, editCRMGroup, fetchCRMGroups, addGrpLoader, selectedGrp, existingGroupNames }) => {
     const [groupName, setGroupName] = useState(selectedGrp?.name || '');
     const [color, setColor] = useState( formatStringToColor(selectedGrp?.custom_color) || { r: 255, g: 255, b: 255, a: 1 });
     const [colorSource, setColorSource] = useState("picker"); 
 
-    console.log(selectedGrp,color)
-    
     const colorOptions = [
         { 'r': 242, 'g': 7, 'b': 7, 'a': 1 },
         { 'r': 0, 'g': 135, 'b': 255, 'a': 1 },
@@ -34,24 +32,31 @@ const EditGroupModal = ({ createGroup ,createCRMGroup,fetchCRMGroups,addGrpLoade
 
     const  handleSubmit =async ()=>{
 
-        if (!groupName.trim()) {
-            message.error("Group Name is required")
-            return
+        const trimmedName = groupName.trim().toLowerCase();
+
+        if (!trimmedName) {
+            message.error("Group Name is required");
+            return;
         }
-       
+
+        if (existingGroupNames?.includes(trimmedName)) {
+            message.error("Group name already exists. Please choose a different name.");
+            return;
+        }
     //   const  payloadRGB = `rgba(${color['r']},${color["g"]},${color["b"]},${color["a"]})`
-      const payload= {
-        custom_color:formatColorToString(color),
+    const payload= {
         name:groupName,
-        no_stages_group: false,
-        id:selectedGrp?.id
+        custom_color:formatColorToString(color),
+        // no_stages_group: false,
     }
 
-    const res = await createCRMGroup(payload)
+        const res = await editCRMGroup({
+        data: payload, type: 'fb', id: selectedGrp?.id
+    })
 
     if (res.status === 200) {
         message.success("Group has been created")
-        fetchCRMGroups()
+        fetchCRMGroups({ type: "fb" })
         createGroup.onClose();
 
     }

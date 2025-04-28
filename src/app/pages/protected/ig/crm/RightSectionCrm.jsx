@@ -43,6 +43,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const [draggedItem, setDraggedItem] = useState(null);
     const [isDel, setIsDel] = useState(false)
     const totalSlectedIds = selectedUsersMap ? Object.values(selectedUsersMap).flat() : null
+    const [campaignModalData, setCampaignModalData] = useState({
+        userIds: [],
+        peopleCount: 0,
+    });
 
     const delTime = useRef();
 
@@ -97,6 +101,14 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 setIsDel(false)
             }
         } else {
+            if (totalSlectedIds.length === 0) {
+                message.error("Select atleast one user")
+                return
+            }
+            if (totalSlectedIds.length === 2) {
+                message.error("Only one user can be removed at a single time")
+                return
+            }
             setIsDel(true)
             setTimeout(() => {
                 setIsDel(false)
@@ -168,6 +180,23 @@ const RightSectionCrm = ({ selectedGroup }) => {
             textColor: "text-blue-600",
             borderColor: "border-blue-100",
             onClick: () => {
+                const allUserIds = Object.values(selectedUsersMap).flat();
+                const totalLeads = sortedStages.reduce((acc, stage) => acc + (stage?.leads?.length || 0), 0);
+
+                if (totalLeads === 0) {
+                    message.warning("No users found");
+                    return;
+                }
+
+                if (allUserIds.length === 0) {
+                    message.warning("Please select at least 1 user");
+                    return;
+                }
+
+                setCampaignModalData({
+                    userIds: allUserIds,
+                    peopleCount: allUserIds.length,
+                });
                 setOpenCampaignModal(true);
             },
         },
@@ -183,7 +212,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         },
         {
             id: 3,
-            label: t("crm.Synchronize date"),
+            label: "Synchronize data",
             icon: <SyncGreenIcon />,
             textColor: "text-green-600",
             borderColor: "border-green-100",
@@ -206,8 +235,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const DropdownMenu = ({ item }) => {
         const [isDel, setIsDel] = useState(false)
 
-
-
         const handleDelete = async (id) => {
             if (isDel) {
                 const res = await deleteStage({ id, type: 'ig'})
@@ -218,6 +245,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 }
                 setIsDel(false)
             } else {
+                if (sortedStages.length === 1) {
+                    message.error("Can not delete this single Stage")
+                    return
+                }
                 setIsDel(true)
                 delTime.current = setTimeout(() => {
                     setIsDel(false)
@@ -264,7 +295,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         return (
             <div
                 key={lead.id + stage.id}
-                className={` border p-3 rounded-md flex gap-2 items-center shadow-sm ${selectedUsers.includes(lead.id)
+                className={`border p-3 rounded-md flex gap-2 items-center shadow-sm ${selectedUsers.includes(lead?.id)
                         ? "border-[#0087FF] bg-[#D9EDFF]"
                         : "border-white bg-white"
                     }`}
@@ -284,11 +315,11 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 >
                     <img
                         src={lead?.profile_pic}
-                        alt={lead?.name}
+                        alt={lead?.insta_name}
                         className="w-8 h-8 rounded-full"
                     />
                     <div>
-                        <p className="font-medium text-sm">{lead.fb_name}</p>
+                        <p className="font-medium text-sm">{lead?.insta_name}</p>
                         <p className="text-xs text-gray-400">{lead.time}</p>
                     </div>
                 </div>
@@ -347,7 +378,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                         <DroppableStage stageId={stage.id}>
                             <div
                                 key={stage.id}
-                                className="min-w-[300px] min-h-[640px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-y-scroll"
+                                className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
                             >
                                 <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
                                     <div className="flex items-center justify-between">
@@ -378,11 +409,30 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <span
-                                                onClick={() => setOpenCampaignModal(true)}
+                                                onClick={() => {
+                                                    const stageUsers = selectedUsersMap[stage.id] || [];
+
+                                                    if (stage?.leads?.length === 0) {
+                                                        message.warning("No users found");
+                                                        return;
+                                                    }
+
+                                                    if (stageUsers.length === 0) {
+                                                        message.warning("Please select at least 1 user in this stage");
+                                                        return;
+                                                    }
+
+                                                    setCampaignModalData({
+                                                        userIds: stageUsers,
+                                                        peopleCount: stageUsers.length,
+                                                    });
+                                                    setOpenCampaignModal(true);
+                                                }}
                                                 className="cursor-pointer"
                                             >
                                                 <SendIcon />
                                             </span>
+
 
                                             <Dropdown
                                                 overlay={
@@ -407,7 +457,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                 </div>
 
                                 {/* Leads */}
-                                <div className="flex flex-col gap-2 px-2">
+                                <div className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto">
                                     {stage?.leads?.map((lead) => (
                                         <SortableItem
                                             key={lead.id}
@@ -430,6 +480,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     return <button
                         key={index}
                         onClick={action.onClick}
+                        id={action.id === 3 ? "sync-instaname" : undefined}
+                        value={action.id === 3 ? selectedGroup.id : undefined}
                         className={`flex items-center gap-2 border rounded-md px-4 py-2 hover:shadow transition cursor-pointer ${action.textColor} ${action.borderColor}`}
                     >
                         {action.icon}
@@ -446,12 +498,17 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 <SendCampaignModal
                     visible={openCampaignModal}
                     onCancel={() => setOpenCampaignModal(false)}
+                    userIds={campaignModalData.userIds}
+                    peopleCount={campaignModalData.peopleCount}
                     onSend={(data) => {
                         console.log("Sending with data:", data);
                         setOpenCampaignModal(false);
                     }}
+                    stages={sortedStages}
+                    groupId={selectedGroup.id}
                 />
             )}
+
             {openMoveToStageModal && (
                 <MoveToStageModal
                     visible={openMoveToStageModal}
@@ -476,6 +533,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     setSortedStages={setSortedStages}
                     selectedGroup={selectedGroup}
                     addGrpLoader={addGrpLoader}
+                    existingStageNames={sortedStages.map((s) => s.name.toLowerCase())}
                 />
             )}
 

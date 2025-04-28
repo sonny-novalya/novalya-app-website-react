@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { t } from "i18next";
@@ -56,6 +56,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
             };
             try {
                 await createSocialTarget({ ...prospectionData });
+                message.success("Settings created successfully");
                 onClose();
             } catch (error) {
                 console.error("Error creating social target:", error);

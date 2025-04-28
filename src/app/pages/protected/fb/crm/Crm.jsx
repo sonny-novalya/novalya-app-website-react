@@ -103,6 +103,7 @@ const Crm = () => {
           createCRMGroup={createCRMGroup}
           fetchCRMGroups={fetchCRMGroups}
           addGrpLoader={addGrpLoader}
+          existingGroupNames={CRMList.map(group => group.name.toLowerCase())} 
         />
       )}
 
@@ -110,10 +111,11 @@ const Crm = () => {
         <EditGroupModal
           createGroup={{ isOpen: openEditGroupModal, onClose: toggleEditGrpPop  }}
           showColorPicker={{ isOpen: false, toggle: () => { } }} 
-          createCRMGroup={editCRMGroup}
+          editCRMGroup={editCRMGroup}
           fetchCRMGroups={fetchCRMGroups}
           addGrpLoader={addGrpLoader}
           selectedGrp={selectedGrp}
+          existingGroupNames={CRMList.map(group => group.name.toLowerCase())} 
         />
       )}
     </Layout>

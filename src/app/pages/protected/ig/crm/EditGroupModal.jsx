@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { message, Modal, Spin } from "antd";
 import { RgbaColorPicker } from "react-colorful";
-import { formatColorToString } from "../../../../../helpers/formatColorToString";
+import { formatColorToString ,formatStringToColor} from "../../../../../helpers/formatColorToString";
 import { t } from "i18next";
 
-const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoader, existingGroupNames }) => {
-    const [groupName, setGroupName] = useState('');
-    const [color, setColor] = useState({ r: 255, g: 255, b: 255, a: 1 });
+const EditGroupModal = ({ createGroup, editCRMGroup, fetchCRMGroups, addGrpLoader, selectedGrp, existingGroupNames }) => {
+    const [groupName, setGroupName] = useState(selectedGrp?.name || '');
+    const [color, setColor] = useState( formatStringToColor(selectedGrp?.custom_color) || { r: 255, g: 255, b: 255, a: 1 });
     const [colorSource, setColorSource] = useState("picker"); 
 
     const colorOptions = [
@@ -30,7 +30,8 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
        
     };
 
-    const handleSubmit = async () => {
+    const  handleSubmit =async ()=>{
+
         const trimmedName = groupName.trim().toLowerCase();
 
         if (!trimmedName) {
@@ -42,22 +43,24 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
             message.error("Group name already exists. Please choose a different name.");
             return;
         }
+    //   const  payloadRGB = `rgba(${color['r']},${color["g"]},${color["b"]},${color["a"]})`
+    const payload= {
+        name:groupName,
+        custom_color:formatColorToString(color),
+        // no_stages_group: false,
+    }
 
-        const payloadRGB = `rgba(${color.r},${color.g},${color.b},${color.a})`;
-        const payload = {
-            custom_color: payloadRGB,
-            name: groupName,
-            no_stages_group: false
-        };
+        const res = await editCRMGroup({
+        data: payload, type: 'ig', id: selectedGrp?.id
+    })
 
-        const res = await createCRMGroup({ data: payload, type: 'fb' });
+    if (res.status === 200) {
+        message.success("Group has been created")
+        fetchCRMGroups({ type: "ig" })
+        createGroup.onClose();
 
-        if (res.status === 200) {
-            message.success("Group has been created");
-            fetchCRMGroups({ type: "fb" });
-            createGroup.onClose();
-        }
-    };
+    }
+    }
 
     return (
         <Modal
@@ -70,7 +73,7 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
             className="rounded-lg"
         >
             <div className="bg-gray-50 text-center rounded-t-lg">
-                <h2 className="text-2xl font-medium text-gray-700">{t("crm.Add Group")}</h2>
+                <h2 className="text-2xl font-medium text-gray-700">{"Edit Group"}</h2>
             </div>
 
             <div className="flex flex-col space-y-2">
@@ -133,7 +136,7 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
                     onClick={handleSubmit}
                     className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
                 >
-                    {!addGrpLoader? t("crm.Add"):<Spin size="small" style={{color:"white"}}/>}
+                    {!addGrpLoader? "Edit":<Spin size="small" style={{color:"white"}}/>}
                 </button>
             </div>
         </Modal>
@@ -142,4 +145,4 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
 
 
 
-export default AddGroupModal;
+export default EditGroupModal;

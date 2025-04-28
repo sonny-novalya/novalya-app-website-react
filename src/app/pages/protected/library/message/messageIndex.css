@@ -1,3 +1,6 @@
+input:focus-visible {
+    outline: none !important;
+}
 .ctm-list-design li.ant-list-item {
     border: none !important;
     background: #F5F5F5;
@@ -27,7 +30,7 @@
     color: white;
 }
 .message-main-wraper .anticon-search svg {
-    color: rgb(0 0 0 / 25%);
+    color: #8C8E8F;
     width: 20px;
     height: 20px;
 }
@@ -35,6 +38,10 @@
     font-family: 'Outfit';
     letter-spacing: .25px;
     font-size: 16px;
+    color: #8C8E8F;
+}
+.message-main-wraper input.ant-input::placeholder {
+    color: #8C8E8F;
 }
 .message-main-wraper input.ant-input::placeholder {
     font-size: 16px;
@@ -102,4 +109,8 @@
 }
 .template-items {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(156, 208, 255, 0.38) 100%);
+}
+.ctm-blue-btn svg {
+    width: 18px;
+    height: 18px;
 }
