@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { EditOutlined, PhoneOutlined } from '@ant-design/icons';
 import { countries } from '../../../../helpers/helperData';
+import useProfileStore from '../../../../store/profile/profile';
+import PropTypes from 'prop-types';
+import { message, Spin } from 'antd';
+import { CameraIcon } from '../../common/icons/icons';
 
-const ProfileComponent = () => {
+const ProfileComponent = ({ loginUserData, userDataLoading }) => {
     const [editFields, setEditFields] = useState({
         firstName: false,
         lastName: false,
@@ -15,24 +19,32 @@ const ProfileComponent = () => {
     });
 
     const [formData, setFormData] = useState({
-        firstName: 'John',
-        lastName: 'Doe',
-        address: 'H.no 1',
-        country: 'India',
-        city: 'Delhi',
-        phone: '8570887999',
-        postal: '110006',
-        state: 'Delhi',
+        firstName: '',
+        lastName: '',
+        address: '',
+        country: '',
+        city: '',
+        phone: '',
+        postal: '',
+        state: '',
     });
 
     const [selectedCountry, setSelectedCountry] = useState({
-        code: 'US',
+        code: 'us',
         phone: '1',
     });
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const { updateUserProfile, loading, updateProfilePicture } = useProfileStore();  
 
     const countryDropdownRef = useRef(null);
     const addressInputRef = useRef(null);
+    const photoDropdownRef = useRef(null);
+    const fileInputRef = useRef(null);
+
+    const [showPhotoDropdown, setShowPhotoDropdown] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFileName, setSelectedFileName] = useState(null);
 
     const toggleEdit = (field) => {
         setEditFields((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -42,6 +54,117 @@ const ProfileComponent = () => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
+    const getChangedFields = () => {
+        const updatedFields = {};
+        if (formData.firstName !== loginUserData.firstname) {
+            updatedFields.firstname = formData.firstName;
+        }
+        if (formData.lastName !== loginUserData.lastname) {
+            updatedFields.lastname = formData.lastName;
+        }
+        if (formData.phone !== loginUserData.mobile) {
+            updatedFields.mobile = formData.phone;
+        }
+        if (formData.postal !== loginUserData.zip_code) {
+            updatedFields.zip_code = formData.postal;
+        }
+        if (formData.address !== loginUserData.address1) {
+            updatedFields.address1 = formData.address;
+        }
+
+        const selectedCountryCode = selectedCountry.code.toUpperCase();
+        if (selectedCountryCode !== loginUserData.country) {
+            updatedFields.country = selectedCountryCode;
+        }
+
+        if (formData.city !== loginUserData.city) {
+            updatedFields.city = formData.city;
+        }
+        return updatedFields;
+    };
+
+    const handleSubmit = async () => {
+        const changedFields = getChangedFields();
+
+        if (Object.keys(changedFields).length === 0) {
+            message.error("No changes detected.");
+            return;
+        }
+
+        try {
+            await updateUserProfile(changedFields);
+            setEditFields({
+                firstName: false,
+                lastName: false,
+                address: false,
+                country: false,
+                city: false,
+                phone: false,
+                postal: false,
+                state: false,
+            });
+            // message.success("Profile updated successfully!");
+        } catch (error) {
+            console.error("Profile update failed:", error);
+            message.error("Failed to update profile. Please try again.");
+        }
+    };
+
+    const handleProfileImageUpload = () => {
+        if (!selectedFile) {
+            message.error("Please select an image file first.");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onloadend = async () => {
+            const base64Image = reader.result; 
+
+            try {
+                const payload = new FormData();
+                payload.append("image", base64Image); 
+
+                await updateProfilePicture({ image: payload }); 
+                message.success("Profile picture updated successfully");
+
+                setShowPhotoDropdown(false);
+                setSelectedFile(null);
+                setSelectedFileName('');
+
+            } catch (err) {
+                console.error("Error uploading base64 image:", err);
+                message.error("Failed to upload image");
+            }
+        };
+
+        reader.readAsDataURL(selectedFile);
+    };
+
+    useEffect(() => {
+        if (loginUserData) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                firstName: loginUserData.firstname || '',
+                lastName: loginUserData.lastname || '',
+                phone: loginUserData.mobile || '',
+                postal: loginUserData.zip_code || '',
+                address: loginUserData.address1 || '',
+                country: countries.find((item) => item.code === loginUserData.country)?.label || loginUserData.country,
+                city: loginUserData.city,
+            }));
+
+            const countryData = countries.find((item) => item.code === loginUserData.country) 
+
+            if (countryData) {
+                setSelectedCountry({
+                    code: countryData.code,
+                    phone: countryData.phone,
+                });
+            }
+        }
+    }, [loginUserData]);
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target)) {
@@ -50,6 +173,18 @@ const ProfileComponent = () => {
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+    
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (photoDropdownRef.current && !photoDropdownRef.current.contains(event.target)) {
+                setShowPhotoDropdown(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     useEffect(() => {
@@ -123,26 +258,90 @@ const ProfileComponent = () => {
         <div className="bg-white p-5 rounded-md rounded-tl-none shadow-md border border-[#0087FF33]">
             {/* Email */}
             <p className="text-gray-600 text-[16px] mb-4">
-                <span className="font-semibold">Email :</span> Test.novalya.com
+                <span className="font-semibold">Email :</span> {loginUserData?.email}
             </p>
 
             {/* Profile Info */}
-            <div className="border border-[#DADADA] p-5 rounded-md">
-                {/* Profile Image and Name */}
-                <div className="flex items-center mb-8">
-                    <div className="relative">
-                        <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-2xl">
-                            📷
-                        </div>
-                        <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1">
-                            <EditOutlined className="text-white text-xs" />
-                        </div>
+            <div className="border border-[#DADADA] p-5 rounded-md relative">
+                {userDataLoading && (
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-full">
+                        <Spin size="large" />
                     </div>
-                    <h2 className="text-2xl font-semibold ml-4">John Doe</h2>
+                )}
+                {/* Profile Image and Name */}
+                <div className="flex items-center">
+
+                    <div className="relative">
+                        <img src={loginUserData?.profilepictureurl} alt="" className='w-40 h-40 rounded-full'/>
+                        <div className="absolute bottom-4 right-0 w-10 border-2 border-white rounded-full">
+                            <div onClick={() => setShowPhotoDropdown(!showPhotoDropdown)} className="cursor-pointer">
+                                <CameraIcon />
+                            </div>
+
+                            {showPhotoDropdown && (
+                                <div
+                                    ref={photoDropdownRef}
+                                    className="absolute top-5 left-10 w-[320px] bg-white rounded-lg shadow-lg border border-[#DADADA] p-4 z-50"
+                                >
+                                    <div className="flex items-center space-x-4 mb-4">
+                                        <img
+                                            src={loginUserData?.profilepictureurl}
+                                            alt="Preview"
+                                            className="w-12 h-12 rounded-full object-cover"
+                                        />
+                                        <p className="font-semibold text-gray-800">{loginUserData?.firstname}</p>
+                                    </div>
+
+                                    <div className="flex items-center border rounded-md overflow-hidden mb-4">
+                                        <label
+                                            htmlFor="profileImageInput"
+                                            className="bg-white px-4 py-2 text-sm font-semibold text-black border-r border-gray-200 cursor-pointer"
+                                        >
+                                            Choose File
+                                        </label>
+                                        <span className="flex-1 px-3 text-gray-600 text-sm truncate">
+                                            {selectedFileName || 'No file selected'}
+                                        </span>
+                                        <div
+                                            className="bg-green-100 p-2 cursor-pointer"
+                                            onClick={() => fileInputRef.current?.click()}
+                                        >
+                                            <CameraIcon />
+                                        </div>
+                                        <input
+                                            type="file"
+                                            id="profileImageInput"
+                                            ref={fileInputRef}
+                                            className="hidden"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                const file = e.target.files[0];
+                                                if (file) {
+                                                    setSelectedFile(file);
+                                                    setSelectedFileName(file.name);
+                                                }
+                                            }}
+                                        />
+
+                                    </div>
+
+                                    <button
+                                        onClick={handleProfileImageUpload}
+                                        className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            )}
+
+                        </div>
+
+                    </div>
+                    <h2 className="text-2xl font-semibold ml-4">{`${loginUserData?.firstname} ${loginUserData?.lastname}`}</h2>
                 </div>
 
                 {/* Form Fields */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-6" >
                     {/* First Name */}
                     <div>
                         <p className="text-gray-600 mb-1">First name</p>
@@ -262,7 +461,7 @@ const ProfileComponent = () => {
                     </div>
 
                     {/* State/Province */}
-                    <div>
+                    {/* <div>
                         <p className="text-gray-600 mb-1">State/Province</p>
                         <div className="relative">
                             <input
@@ -278,7 +477,7 @@ const ProfileComponent = () => {
                                 className="absolute right-3 top-2.5 text-gray-500 cursor-pointer"
                             />
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Phone Number */}
                     <div>
@@ -307,17 +506,19 @@ const ProfileComponent = () => {
                                 </div>
                             )}
 
-                            <div
-                                ref={countryDropdownRef}
-                                className="flex items-center px-2 py-2.5 border border-[#DADADA] rounded-l-md bg-gray-100 cursor-pointer"
-                                onClick={() => setDropdownOpen(!dropdownOpen)}
-                            >
-                                <img
-                                    src={`https://flagcdn.com/w40/${selectedCountry.code.toLowerCase()}.png`}
-                                    alt="flag"
-                                    className="w-8 h-5 rounded"
-                                />
-                            </div>
+                            {selectedCountry.code && (
+                                <div
+                                    ref={countryDropdownRef}
+                                    className="flex items-center px-2 py-2.5 border border-[#DADADA] rounded-l-md bg-gray-100 cursor-pointer"
+                                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                                >
+                                        <img
+                                            src={`https://flagcdn.com/w40/${selectedCountry.code.toLowerCase()}.png`}
+                                            alt="flag"
+                                            className="w-8 h-5 rounded"
+                                        />
+                                </div>
+                            )}
 
                             <input
                                 type="text"
@@ -332,10 +533,40 @@ const ProfileComponent = () => {
                             />
                         </div>
                     </div>
+                    
+                </div>
+                <div className="flex items-center justify-between">
+                    <button></button>
+                    <button
+                        onClick={handleSubmit}
+                        disabled={loading || !Object.values(editFields).some(Boolean)}
+                        className={`bg-blue-500 text-white px-8 py-2 rounded-md transition ${loading || !Object.values(editFields).some(Boolean)
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'hover:bg-blue-600'
+                            }`}
+                    >
+                        {loading ? 'Updating...' : 'Submit'}
+                    </button>
+
                 </div>
             </div>
         </div>
     );
+};
+
+ProfileComponent.propTypes = {
+    userDataLoading: PropTypes.Boolean,
+    loginUserData: PropTypes.shape({
+        email: PropTypes.string,
+        firstname: PropTypes.string,
+        lastname: PropTypes.string,
+        mobile: PropTypes.string,
+        zip_code: PropTypes.string,
+        address1: PropTypes.string,
+        country: PropTypes.string,
+        city: PropTypes.string,
+        profilepictureurl: PropTypes.string,
+    }).isRequired,
 };
 
 export default ProfileComponent;
