@@ -246,8 +246,19 @@ const handleSubmit =async ()=>{
     }
 }
 
+  const getGroupedVisibilityOptions = (options) => {
+    const grouped = {};
+    options.forEach((option) => {
+      if (!grouped[option.platform]) {
+        grouped[option.platform] = [];
+      }
+      grouped[option.platform].push(option);
+    });
+    return Object.entries(grouped);
+  };
+
   return (
-     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
+      <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
           <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
             <div className="flex items-center gap-[10px] text-[20px] font-[500]">
                 {t("message.Message name")} 
@@ -274,8 +285,34 @@ const handleSubmit =async ()=>{
                   <span className="flex-1 text-[14px]">{visibility?.label}</span>
                   <CreateMessageIcon index={1} />
                 </div>
-                <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
-                  {visibilityOptions?.map((visibility) => {
+                <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px]">
+                  {getGroupedVisibilityOptions(visibilityOptions).map(([platform, options]) => (
+                    <div key={platform} className="mt-3 ">
+                      {/* Platform Heading - no background, just light text + border */}
+                      <div className="text-gray-500 text-sm font-semibold capitalize border-b border-gray-200 pb-1 mb-2 px-4">
+                        {platform}
+                      </div>
+                  
+                      {/* List the options with indent */}
+                      <div className="px-2">
+                        {options.map((visibility) => (
+                          <div
+                            key={visibility.id}
+                            onClick={() => handleVisibilityChange(visibility)}
+                            className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white"
+                          >
+                            <img className="normalIcon" src={visibility.icon} />
+                            <img className="normalIconHover" src={visibility.iconLight} />
+                            <span className="flex-1 text-[14px]">
+                              {t(`message.${visibility.label}`)}
+                            </span>
+                            <CreateMessageIcon index={2} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  {/* {visibilityOptions?.map((visibility) => {
                     return (
                       <div
                         onClick={() => handleVisibilityChange(visibility)}
@@ -292,7 +329,7 @@ const handleSubmit =async ()=>{
                         <CreateMessageIcon index={2} />
                       </div>
                     );
-                  })}
+                  })} */}
                 </div>
               </div>
             </div>
@@ -522,7 +559,8 @@ const visibilityOptions = [
     icon: propSearch,
     iconLight: prospWhite,
     inputs: true,
-    attachment: false
+    attachment: false,
+    platform: "facebook"
   },
   {
     id: "fb_crm",
@@ -530,14 +568,16 @@ const visibilityOptions = [
     icon: messangerIcon,
     iconLight: messangerWhite,
     inputs: true,
-    attachment: true
+    attachment: true,
+    platform: "facebook"
   },
   { id: "birthday", 
     label: "Birthday", 
     icon: BdayIcon, 
     iconLight: BdayWhite,
     inputs: true,
-    attachment: true
+    attachment: true,
+    platform: "facebook"
   },
   {
     id: "request",
@@ -545,22 +585,25 @@ const visibilityOptions = [
     icon: requestIcon,
     iconLight: requestWhite,
     inputs: true,
-    attachment: true
+    attachment: true,
+    platform: "facebook"
   },
   {
     id: "ig_prospecting",
     label: "Prospecting",
     icon: IgProsp,
-    iconLight: IgCrmWhite,
+    iconLight: prospWhite,
     inputs: false,
-    attachment: false
+    attachment: false,
+    platform: "instagram"
   },
   { id: "ig_crm",
     label: "CRM", 
     icon: IgCrm, 
     iconLight: IgCrmWhite ,  
     inputs: false,
-    attachment: true 
+    attachment: true,
+    platform: "instagram" 
   },
 ];
 
