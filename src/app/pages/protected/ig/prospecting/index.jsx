@@ -497,9 +497,9 @@ const IgProspecting = () => {
         {
             title: (GroupNameColumn),
             dataIndex: "name",
-            render: (text) => (
+            render: (text, record) => (
                 <div className="flex items-center space-x-2">
-                    <img src={GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
+                    <img src={record.post_image || GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{text}</span>
                 </div>
             ),
