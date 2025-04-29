@@ -75,7 +75,7 @@ const SidebarMenu = () => {
                 { text: "Keywords", id: "keywords", path: "/library/keywords" },
             ]
         },
-        { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
+        // { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
         { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon /> },
         {
             text: "FB Friendlist",
@@ -117,9 +117,7 @@ const SidebarMenu = () => {
                     collapsed
                         ? <>
                             <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-4`}>
-                                <div className="">
-                                    <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-12`} />
-                                </div>
+                                <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-12`} />
                                 <button onClick={toggleSidebar} className="absolute top-12 -right-3 z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 rotate-180`}>
                                         <CollapsedLeftIcon />
@@ -151,10 +149,7 @@ const SidebarMenu = () => {
                                                     }
                                                 >
                                                     <button
-
-                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
-
-                                                            } cursor-pointer`}
+                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
                                                         onClick={(e) => e.preventDefault()}
                                                     >
                                                         <span className="h-6 w-6">{item.icon}</span>
@@ -216,9 +211,7 @@ const SidebarMenu = () => {
                                                 <>
                                                     <button
 
-                                                        className={`w-full rounded-[8px] px-4 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'
-
-                                                            } cursor-pointer`}
+                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
                                                         onClick={(e) => toggleSubNav(e, item.id)}
                                                     >
                                                         <div className="flex items-center space-x-5">
@@ -234,7 +227,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                     {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-2 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
+                                                        <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-4 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
                                                             {item.subNav.map((subItem) => (
                                                                 <SidebarItem 
                                                                     key={subItem.id}
@@ -278,11 +271,11 @@ const SidebarMenu = () => {
 
                                 <button
                                     type="button"
-                                    className="flex items-center space-x-5 bg-[#FF000012] logout px-4 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
+                                    className="flex items-center space-x-5 bg-[#FF000012] logout px-3 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FF000018] text-[#00000045] hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />
-                                    <span className="text-[16px] font-[500]">Logout</span>
+                                    <span className="text-[16px] ">Logout</span>
                                 </button>
                             </div>
                         </>
