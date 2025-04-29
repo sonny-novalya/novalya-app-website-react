@@ -527,3 +527,14 @@ export const EditIconSquaredIcon = () => (
         <path d="M17 9.14853L20 12.1167M15 23H23M7 19.0424L6 23L10 22.0106L21.586 10.5475C21.9609 10.1765 22.1716 9.67324 22.1716 9.14853C22.1716 8.62383 21.9609 8.12061 21.586 7.74954L21.414 7.57936C21.0389 7.2084 20.5303 7 20 7C19.4697 7 18.9611 7.2084 18.586 7.57936L7 19.0424Z" stroke="#C0C0C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
 )
+
+export const CameraIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="100" fill="#0087ff" />
+        <path d="M135,70H115l-5-10H90l-5,10H65c-8.28,0-15,6.72-15,15v50c0,8.28,6.72,15,15,15h70c8.28,0,15-6.72,15-15V85C150,76.72,143.28,70,135,70z" fill="#ffffff" />
+        <circle cx="100" cy="110" r="25" fill="#ffffff" />
+        <circle cx="100" cy="110" r="20" fill="#0087ff" />
+        <circle cx="100" cy="110" r="15" fill="#ffffff" />
+    </svg>
+
+)
