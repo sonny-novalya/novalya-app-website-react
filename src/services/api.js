@@ -52,8 +52,6 @@ const apiCall = async ({
       params,
       data
     };
-
-
     const response = await axios(config);
     return response; // Just return the data for convenience
   } catch (error) {

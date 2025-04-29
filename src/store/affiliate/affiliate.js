@@ -35,6 +35,69 @@ const useAffiliateStore = create((set) => ({
           });
       }
   },
+  uploadBankDetails: async (data) => {
+      try {
+       
+          const res = await apiCall({
+              method: 'POST',
+              url: '/user/api/updatepayoutdetails',
+              data:data
+          });
+      
+          return res
+
+         
+       
+      } catch (error) {
+          set({
+              error: error?.message || 'Something went wrong',
+          });
+      }
+  },
+  uploadKYC: async (data) =>{
+
+    try {
+       
+        const res = await apiCall({
+            method: 'POST',
+            url: '/user/api/uploadkycdata',
+            data:data,
+            headers: {
+                "Content-Type": "multipart/form-data",
+              },
+        });
+    
+        return res
+
+       
+     
+    } catch (error) {
+        set({
+            error: error?.message || 'Something went wrong',
+        });
+    }
+  },
+  getKycData:async ()=>{
+   
+
+    try {
+       
+        const res = await apiCall({
+            method: 'POST',
+            url: '/user/api/affiliate/kyc-data'
+        });
+    
+        return res
+
+       
+     
+    } catch (error) {
+        set({
+            error: error?.message || 'Something went wrong',
+        });
+    }
+  }
+
 
 
 }));
