@@ -52,43 +52,31 @@ const MessageIndex = () => {
   const [visFilter, setVisFilter] = useState(null);
   const debouncedQuery = useDebounce(searchKeyword, 500);
   
+  const getMsgFeature = (visibility) => {
+    if(!visibility){
+      return;
+    }
 
-  const renderPlatformButton = (platform) => {
-    const platformClass =
-      platform === "Facebook" ? "bg-blue-600" : "bg-red-500";
+    visibility = JSON.parse(visibility);
+    console.log(visibility[0])
+
+    const matchedOption = visibilityOptions.find(option => option.id === visibility[0]);
+    return matchedOption;
+  }
+  const renderPlatformButton = (visibility) => {
+
+    const feature = getMsgFeature(visibility)
+    console.log(feature)
+    
+    const platformClasses = feature.platform === "facebook" ? 
+      "!text-[#1877F2] !border-[#1877F2] shiv" : 
+      "!text-[#f34e55] !border-[#f34e55]";
     return (
       <Button
-        className={`${platformClass} !text-[#1877F2] !border-[#1877F2] px-3 py-1 !rounded-[25px] !font-medium text-[14px] leading-[21px] tracking-normal gap-[4px] p-[6px_12px] flex !h-9`}
+        className={`${platformClasses} capitalize px-3 py-1 !rounded-[25px] !font-medium text-[14px] leading-[21px] tracking-normal gap-[4px] p-[6px_12px] flex !h-9`}
       >
-        <svg
-          width="23"
-          height="22"
-          viewBox="0 0 23 22"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g clip-path="url(#clip0_3567_13827)">
-            <path
-              d="M22.5 11C22.5 4.92491 17.5751 0 11.5 0C5.42491 0 0.5 4.92491 0.5 11C0.5 16.4904 4.52256 21.0412 9.78125 21.8664V14.1797H6.98828V11H9.78125V8.57656C9.78125 5.81969 11.4235 4.29688 13.9362 4.29688C15.1396 4.29688 16.3984 4.51172 16.3984 4.51172V7.21875H15.0114C13.6449 7.21875 13.2188 8.0667 13.2188 8.93664V11H16.2695L15.7818 14.1797H13.2188V21.8664C18.4774 21.0412 22.5 16.4905 22.5 11Z"
-              fill="#1877F2"
-            />
-            <path
-              d="M15.7779 14.1797L16.2656 11H13.2148V8.93664C13.2148 8.06661 13.641 7.21875 15.0075 7.21875H16.3945V4.51172C16.3945 4.51172 15.1357 4.29688 13.9322 4.29688C11.4196 4.29688 9.77734 5.81969 9.77734 8.57656V11H6.98438V14.1797H9.77734V21.8664C10.3459 21.9555 10.9206 22.0001 11.4961 22C12.0716 22.0001 12.6463 21.9555 13.2148 21.8664V14.1797H15.7779Z"
-              fill="white"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_3567_13827">
-              <rect
-                width="22"
-                height="22"
-                fill="white"
-                transform="translate(0.5)"
-              />
-            </clipPath>
-          </defs>
-        </svg>
-        {platform}
+        <img className="normalIcon" src={feature.icon} />
+        {feature.label}
       </Button>
     );
   };
@@ -216,6 +204,17 @@ const MessageIndex = () => {
     console.log(data)
   }
 
+  const getGroupedVisibilityOptions = (options) => {
+    const grouped = {};
+    options.forEach((option) => {
+      if (!grouped[option.platform]) {
+        grouped[option.platform] = [];
+      }
+      grouped[option.platform].push(option);
+    });
+    return Object.entries(grouped);
+  };
+
   return (
     <>
       <div className="pl-10 pr-8 py-8 bg-[#f2f2f2] h-screen overflow-auto message-main-wraper">
@@ -251,8 +250,34 @@ const MessageIndex = () => {
                   </span>
                 </Button>
               </div>
-              <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
-                {visibilityOptions?.map((visibility) => {
+              <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px]">
+                {getGroupedVisibilityOptions(visibilityOptions).map(([platform, options]) => (
+                  <div key={platform} className="mt-3 ">
+                    {/* Platform Heading - no background, just light text + border */}
+                    <div className="text-gray-500 text-sm font-semibold capitalize border-b border-gray-200 pb-1 mb-2 px-4">
+                      {platform}
+                    </div>
+  
+                    {/* List the options with indent */}
+                    <div className="px-2">
+                      {options.map((visibility) => (
+                        <div
+                          key={visibility.id}
+                          onClick={() => handleVisibilityChange(visibility)}
+                          className={`pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white ${visibility.id == visFilter?.id ? "active bg-[#0087FF] text-white" : ""}`}
+                        >
+                          <img className="normalIcon" src={visibility.icon} />
+                          <img className="normalIconHover" src={visibility.iconLight} />
+                          <span className="flex-1 text-[14px]">
+                            {t(`message.${visibility.label}`)}
+                          </span>
+                          <CreateMessageIcon index={2} />
+                        </div>
+                      ))}
+                    </div> 
+                  </div>
+                ))}
+                {/* {visibilityOptions?.map((visibility) => {
                   return (
                     <div
                     key={visibility.id}
@@ -270,7 +295,7 @@ const MessageIndex = () => {
                       <CreateMessageIcon index={2} />
                     </div>
                   );
-                })}
+                })} */}
               </div>
             </div>
             
@@ -326,7 +351,7 @@ const MessageIndex = () => {
                 >
                   <span className="cursor-pointer">{item.title}</span>
                   <div className="flex gap-4 items-center">
-                    {renderPlatformButton(item.platform)}
+                    {renderPlatformButton(item.visibility_type)}
 
                     <Button
                       // icon={<EditOutlined />}
@@ -474,7 +499,8 @@ const visibilityOptions = [
     icon: propSearch,
     iconLight: prospWhite,
     inputs: true,
-    attachment: false
+    attachment: false,
+    platform: "facebook"
   },
   {
     id: "fb_crm",
@@ -482,14 +508,16 @@ const visibilityOptions = [
     icon: messangerIcon,
     iconLight: messangerWhite,
     inputs: true,
-    attachment: true
+    attachment: true,
+    platform: "facebook"
   },
   { id: "birthday", 
     label: "Birthday", 
     icon: BdayIcon, 
     iconLight: BdayWhite,
     inputs: true,
-    attachment: true
+    attachment: true,
+    platform: "facebook"
   },
   {
     id: "request",
@@ -497,22 +525,25 @@ const visibilityOptions = [
     icon: requestIcon,
     iconLight: requestWhite,
     inputs: true,
-    attachment: true
+    attachment: true,
+    platform: "facebook"
   },
   {
     id: "ig_prospecting",
     label: "Prospecting",
     icon: IgProsp,
-    iconLight: IgCrmWhite,
+    iconLight: prospWhite,
     inputs: false,
-    attachment: false
+    attachment: false,
+    platform: "instagram"
   },
   { id: "ig_crm",
     label: "CRM", 
     icon: IgCrm, 
     iconLight: IgCrmWhite ,  
     inputs: false,
-    attachment: true 
+    attachment: true,
+    platform: "instagram" 
   },
 ];
 

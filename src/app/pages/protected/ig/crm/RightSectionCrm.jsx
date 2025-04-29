@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Checkbox, Badge, Dropdown, message, Button } from "antd";
 import { useEffect, useRef, useState } from "react";
+import { Spin } from "antd";
 import {
     DeleteFillRedIcon,
     MoveStageGreenIcon,
@@ -28,7 +29,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
         deleteStage,
         setSelectStage,
         moveStage,
-        deleteTaggedUser
+        deleteTaggedUser,
+        selectedGrpLoader
     } = usefbCRM();
 
     const [selectedUsersMap, setSelectedUsersMap] = useState({});
@@ -339,7 +341,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         );
     };
     return (
-        <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full">
+        <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
             <TopbarRightSection
                 companyName={selectedGroup.name}
                 leadsCount={selectedGrpData?.taggedUsers?.length || 0}
@@ -347,7 +349,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 onAddStage={handleAddStage}
                 selectedGrpData={selectedGrpData}
             />
-
+            {selectedGrpLoader && <div className="absolute z-10 w-[100%] h-full bg-white/50 flex pt-50 justify-center"> <Spin size="large" /> </div>}
             <div className="flex gap-4 p-4 min-w-max">
                 {sortedStages.map((stage) => {
                     const selectedUsers = selectedUsersMap[stage.id] || [];
