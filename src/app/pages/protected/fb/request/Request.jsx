@@ -121,7 +121,7 @@ const Request = () => {
   };
 
   useEffect(() => {
-    fetchCRMGroups();
+    fetchCRMGroups({data: {}, type: "fb"});
     fetchMessages({limit:200,page:1});
     preSelectedSettings();
   }, []);

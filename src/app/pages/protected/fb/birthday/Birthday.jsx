@@ -49,7 +49,7 @@ const Birthday = () => {
     if (!tempMessageList?.length) {
     fetchMessages({limit:200,page:1})
     }
-    fetchCRMGroups()
+    fetchCRMGroups({data: {}, type: "fb"})
     preSelectedData()
   },[])
 
