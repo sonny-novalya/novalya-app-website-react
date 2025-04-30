@@ -47,13 +47,13 @@ const IgProspecting = () => {
     };
 
     const handleOpenSettings = (groupId) => {
+        localStorage.setItem("selectedGroupId", groupId); 
         setActiveKey(1)
         setPrimaryGroupId(groupId)
         setModalOpen(true);
     };
 
     const handleCloseModal = () => {
-        setPrimaryGroupId(null);
         setModalOpen(false);
     };
 
@@ -653,6 +653,13 @@ const IgProspecting = () => {
     }, [openDropdownKey]);
 
     useEffect(() => {
+        const savedGroupId = localStorage.getItem("selectedGroupId");
+        if (savedGroupId) {
+            setPrimaryGroupId(savedGroupId);
+        }
+    }, []);
+
+    useEffect(() => {
         fetchGroups({ ...storeFilters, type: "instagram" } );
     }, [storeFilters]);
 
@@ -782,6 +789,11 @@ const IgProspecting = () => {
                         onChange: handlePageChange,
                         showSizeChanger: false,
                     }}
+                    rowClassName={(record) =>
+                        record.id?.toString() === primaryGroupId?.toString()
+                            ? 'group-selected-row'
+                            : ''
+                    }
                     className="custom-table"
                     loading={loading}
                     current={storeFilters.page}
