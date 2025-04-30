@@ -64,19 +64,19 @@ const MessageIndex = () => {
     return matchedOption;
   }
   const renderPlatformButton = (visibility) => {
+    if (!visibility) return null
 
     const feature = getMsgFeature(visibility)
-    console.log(feature)
     
-    const platformClasses = feature.platform === "facebook" ? 
+    const platformClasses = feature?.platform === "facebook" ? 
       "!text-[#1877F2] !border-[#1877F2] shiv" : 
       "!text-[#f34e55] !border-[#f34e55]";
     return (
       <Button
         className={`${platformClasses} capitalize px-3 py-1 !rounded-[25px] !font-medium text-[14px] leading-[21px] tracking-normal gap-[4px] p-[6px_12px] flex !h-9`}
       >
-        <img className="normalIcon" src={feature.icon} />
-        {feature.label}
+        <img className="normalIcon" src={feature?.icon} />
+        {feature?.label}
       </Button>
     );
   };
@@ -349,9 +349,9 @@ const MessageIndex = () => {
                 <List.Item
                   className={`flex justify-between items-center bg-[#0087FF33]`}
                 >
-                  <span className="cursor-pointer">{item.title}</span>
+                  <span className="cursor-pointer">{item?.title}</span>
                   <div className="flex gap-4 items-center">
-                    {renderPlatformButton(item.visibility_type)}
+                    {renderPlatformButton(item?.visibility_type)}
 
                     <Button
                       // icon={<EditOutlined />}
