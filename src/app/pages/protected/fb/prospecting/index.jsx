@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
+import { SearchOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
@@ -10,12 +10,14 @@ import useFbProspectingStore from "../../../../../store/fb/prospecting";
 import { useSearchParams } from "react-router-dom";
 import useGroupStore from "../../../../../store/group/groupStore";
 import { formatNumber } from "../../../../../helpers/formatGroupMembers";
-import { DeleteFillRedIcon, EditIcon2, FacebookIcon, SyncBlueIcon } from "../../../common/icons/icons";
+import { DeleteFillRedIcon, EditIcon2, FacebookIcon, SendIconBlue, SendIconGray, SettingsIconWhite, SyncBlueIcon } from "../../../common/icons/icons";
 import UpdateFolderModal from "../../../../components/modal/fb/prospection/UpdateFolderModal";
 import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
 import { useRef } from "react";
+
+
 
 const FbProspecting = () => {
     const [searchParams] = useSearchParams();
@@ -527,22 +529,29 @@ const FbProspecting = () => {
         {
             title: t("prospecting.Settings"),
             render: (_, record) => (
-                <Button
-                    icon={<SettingOutlined />}
-                    className="bg-blue-500 text-white px-3 py-1 rounded-md"
+                <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
                     onClick={() => handleOpenSettings(record.id)}
                 >
-                    {t("prospecting.Settings")}
-                </Button>
+                   <span>
+                        <SettingsIconWhite />
+                   </span> 
+                   <span>
+                        {t("prospecting.Settings")}
+                   </span>
+                </button>
             ),
         },
         {
             title: t("prospecting.Send"),
             render: (_, record) => (
-                <Button
-                    icon={<SendOutlined />}
-                    className="bg-gray-200 px-3 py-1 rounded-md"
-                    onClick={() => handleOpenConfirmModal(record.id)} />
+                    <button onClick={() => handleOpenConfirmModal(record.id)}  className="cursor-pointer mt-1">
+                    {
+                        record.id?.toString() === primaryGroupId?.toString()
+                            ? <SendIconBlue />
+                            : <SendIconGray />
+                    }
+                    </button>
             )
         },
         {
