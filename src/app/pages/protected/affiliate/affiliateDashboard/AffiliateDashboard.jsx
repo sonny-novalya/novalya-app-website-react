@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { message,Table,Tabs} from "antd";
 import "./AffiliateDashboard.css"
 import AfiliateTopBar from "../../../../components/affilliate/shared/affiliateTopBar";
 const { TabPane } = Tabs;
 import affImg from "../../../../../assets/img/affiliateImg.png"
+import useAffiliateStore from "../../../../../store/affiliate/affiliate";
+import { getCurrentMonthYear } from "../../../../../helpers/helper";
 
 const AffiliateDashboard = () => {
   const [activeKey, setActiveKey] = useState("1"); // Store active tab key
+  const [payOutData,setPayOutData]=useState()
+  const {getPayOut,getDashData,getAffCustomers}=useAffiliateStore()
 
   const handleTabChange = (key) => {
     console.log("Active Tab Key:", key);
@@ -26,6 +30,35 @@ const AffiliateDashboard = () => {
         price: "$231.6",
         status: "Active",
       });
+
+      useEffect(() => {
+        fetchPayoutData()
+        fetchAffDashboardData()
+        fetchAffcust()
+      }, [])
+      
+      const fetchPayoutData = async()=>{
+        const res = await getPayOut()
+        if (res.status === 200) {
+          setPayOutData(res?.data?.data?.payouts || [])
+        }
+      }
+
+      const fetchAffDashboardData = async()=>{
+        const res = await getDashData()
+        if (res.status === 200) {
+          console.log(res?.data?.data)
+        }
+      }
+
+      const fetchAffcust = async()=>{
+        let data =getCurrentMonthYear()
+
+        const res = await getAffCustomers(data)
+        if (res.status === 200) {
+          console.log(res?.data?.data)
+        }
+      }
     
       return (
         <div className="p-6 bg-gray-100 h-screen overflow-auto">

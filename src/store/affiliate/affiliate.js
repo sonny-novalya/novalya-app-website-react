@@ -96,6 +96,68 @@ const useAffiliateStore = create((set) => ({
             error: error?.message || 'Something went wrong',
         });
     }
+  },
+
+  getPayOut:async ()=>{
+   
+
+    try {
+       
+        const res = await apiCall({
+            method: 'POST',
+            url: '/user/api/payout'
+        });
+    
+        return res
+
+       
+     
+    } catch (error) {
+        set({
+            error: error?.message || 'Something went wrong',
+        });
+    }
+  },
+  getDashData:async ()=>{
+   
+
+    try {
+       
+        const res = await apiCall({
+            method: 'POST',
+            url: '/user/api/dashboarddata'
+        });
+    
+        return res
+
+       
+     
+    } catch (error) {
+        set({
+            error: error?.message || 'Something went wrong',
+        });
+    }
+  },
+  getAffCustomers:async (data)=>{
+   
+
+    try {
+       
+        const res = await apiCall({
+            method: 'POST',
+            url: '/user/api/affiliate-customers',
+              data: data
+        });
+    
+        return res
+
+       
+     
+    } catch (error) {
+        set({
+            error: error?.message || 'Something went wrong',
+        });
+    }
   }
 
 
