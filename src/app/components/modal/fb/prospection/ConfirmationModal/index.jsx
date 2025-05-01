@@ -14,7 +14,7 @@ import { useLocation } from "react-router-dom";
 const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType }) => {
     const { prospection, fetchProspectionData, fetchCRMGroups, CRMList } = SettingStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
-    const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
+    const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action, post_target } = prospection;
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
@@ -57,7 +57,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
                     handleOpen={handleOpen}
                 />
                 {!isInstagram && (
-                    <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} postType={postType} />
+                    <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} postType={postType} postTarget={post_target} />
                 )}
                 <AdvOptions
                     prospect={prospect}
