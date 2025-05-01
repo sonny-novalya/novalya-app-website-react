@@ -163,7 +163,6 @@ const SidebarMenu = () => {
                                                     isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
                                                 />
                                             )}
-
                                         </div>
                                     );
                                 })}
@@ -247,6 +246,10 @@ const SidebarMenu = () => {
                                                     isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
                                                 />
                                             )}
+                                            {item.id === "instagram" && (
+                                                <div className="h-[1px] w-full rouned-md bg-[#0000001A] mt-5 mb-4" />
+                                            )}
+
                                         </div>
                                     );
                                 })}

@@ -47,7 +47,7 @@ const LocalizationOptionsIcons = () => {
                 value={activeLocale.locale}
                 onChange={handleChange}
                 suffixIcon={null} // Hides dropdown arrow
-                className="w-full border rounded overflow-hidden"
+                className="w-full border rounded overflow-hidden language-popup"
                 optionLabelProp="label"
                 dropdownStyle={{ minWidth: 60 }}
             >
