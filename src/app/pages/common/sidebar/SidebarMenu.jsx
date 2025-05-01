@@ -112,7 +112,7 @@ const SidebarMenu = () => {
 
     return (
         <div className={`relative `}>
-            <div className={`bg-white text-black ${collapsed ? 'w-20' : 'w-63'} h-screen flex flex-col transition-all duration-300 relative overflow-visible`}>
+            <div className={` bg-white text-black ${collapsed ? 'w-20' : 'w-63'} h-screen flex flex-col transition-all duration-300 relative overflow-visible`}>
                 {
                     collapsed
                         ? <>
@@ -131,7 +131,7 @@ const SidebarMenu = () => {
                                     const isActive = (currentPath === item.path || currentPath === `${item.path}/`) || isSubItemActive;
 
                                     return (
-                                        <div key={item.id} className="w-full mb-2 relative group">
+                                        <div key={item.id} className="w-full mb-2 relative group ">
                                             {item.subNav && collapsed ? (
                                                 <Dropdown
                                                     placement="rightTop"
@@ -149,7 +149,7 @@ const SidebarMenu = () => {
                                                     }
                                                 >
                                                     <button
-                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
+                                                        className={`w-full rounded-[8px] px-4 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
                                                         onClick={(e) => e.preventDefault()}
                                                     >
                                                         <span className="h-6 w-6">{item.icon}</span>
@@ -199,7 +199,7 @@ const SidebarMenu = () => {
                                     </div>
                                 </button>
                             </div>
-                            <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
+                            <div className="ctm-sidebarMain flex-1 overflow-y-auto hide_scrollbar px-4">
                                 {sidebarData.map((item) => {
                                     const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
                                     const isActive = ( currentPath === item.path ||  currentPath === `${item.path}/`) || isSubItemActive;
@@ -211,11 +211,11 @@ const SidebarMenu = () => {
                                                 <>
                                                     <button
 
-                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
+                                                        className={`w-full rounded-[8px] px-4 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
                                                         onClick={(e) => toggleSubNav(e, item.id)}
                                                     >
                                                         <div className="flex items-center space-x-5">
-                                                            <span className="h-6 w-6 flex items-enter justify-center">{item.icon}</span>
+                                                            <span className="sidebar-icons h-6 w-6 flex items-enter justify-center">{item.icon}</span>
                                                             {!collapsed && (
                                                                 <span className="capitalize text-black/55">{item.text}</span>
                                                             )}
@@ -251,16 +251,16 @@ const SidebarMenu = () => {
                                     );
                                 })}
                             </div>
-                            <div className="mt-auto flex flex-col items-center justify-center px-4  gap-[20px] mb-2 border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
-                                <div className="w-full mb-0 sidebar-lang">
+                            <div className="mt-auto flex flex-col items-center justify-center px-4 gap-[8px] mb-2 border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
+                                <div className="w-full mb-0 sidebar-lang px-1.5">
                                     <LocalizationOptions />
                                 </div>
-                                <div className="flex gap-5 items-center w-full px-2 mt-1 mb-2">
+                                <div className="flex gap-5 items-center w-full px-2 px-4 py-2.5 h-[48px]">
                                     <UpgradeProIcon />
                                     <span className="text-base text-[#00000073]">Upgrade To Pro</span>
                                 </div>
-                                <div className="flex space-x-3 items-center w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
-                                    <span className="h-10 w-10 rounded-lg bg-purple-200 flex items-center justify-center">
+                                <div className="flex space-x-3 items-center px-4 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
+                                    <span className="h-7.5 w-7.5 rounded-lg bg-purple-200 flex items-center justify-center">
                                         J
                                     </span>
                                     <div className="flex flex-col text-sm">
@@ -271,11 +271,11 @@ const SidebarMenu = () => {
 
                                 <button
                                     type="button"
-                                    className="flex items-center space-x-5 bg-[#FF000012] logout px-3 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FF000018] text-[#00000045] hover:text-[#00000085]"
+                                    className="flex items-center space-x-4 bg-white logout px-5 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FFEDED] text-[#00000073] hover:text-[##00000073]"
                                     onClick={onLogout}
                                 >
-                                    <LogoutIcon />
-                                    <span className="text-[16px] ">Logout</span>
+                                    <LogoutIcon className='ml-1'/>
+                                    <span className="text-[16px] font-[500]">Logout</span>
                                 </button>
                             </div>
                         </>

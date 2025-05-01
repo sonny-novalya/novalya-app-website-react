@@ -46,6 +46,9 @@ input:focus-visible {
 .message-main-wraper input.ant-input::placeholder {
     font-size: 16px;
 }
+.message-main-wraper button.ant-btn {
+    border-color: transparent;
+}
 .ctm-green-btn {
     color: #21BF7C !important;
 }
