@@ -4,6 +4,7 @@ import apiCall from '../../services/api';
 const SettingStore = create((set) => ({
     // States
     loading: false,
+    settingLoading: false,
     CRMList: [],
     prospection: {
         step: 1,
@@ -46,14 +47,17 @@ const SettingStore = create((set) => ({
         prospection: { ...newValues }
     })),
     fetchProspectionData: async (prospectionType, groupId) => {
+        set({ settingLoading: true });
         try {
             const response = await apiCall({
                 method: 'GET',
                 url: `/target/setting/api/all?prospection_type=${prospectionType}&grp_id=${groupId}`
             });
+
             if (response.statusText !== "OK") {
                 throw new Error("Failed to fetch prospection data");
             }
+
             const data = response.data;
 
             if (data.status === "success" && data.data.length > 0) {
@@ -61,7 +65,7 @@ const SettingStore = create((set) => ({
                 set({
                     prospection: {
                         group: responseData?.group || [],
-                        messageData: responseData?.messages || [] ,
+                        messageData: responseData?.messages || [],
                         keywordData: responseData?.keywords || [],
                         crmGroupData: responseData?.groups || [],
                         stratagy: responseData?.stratagy || 0,
@@ -73,18 +77,22 @@ const SettingStore = create((set) => ({
                         prospect: responseData?.prospect || "no",
                         pro_convo: responseData?.pro_convo || 0,
                         pro_stratagy: responseData?.pro_stratagy || 0,
-                        action: responseData?.action || "no" ,
+                        action: responseData?.action || "no",
                         datevalue: responseData?.datevalue || null,
                         group_id: responseData?.group_id || null,
                         message: responseData?.message || null,
                         post_target: responseData?.post_target || "Like",
                         newMessage: responseData?.newMessage || null,
                         keywords: responseData?.keywords || null,
-                    }
+                    },
+                    settingLoading: false
                 });
+            } else {
+                set({ settingLoading: false });
             }
         } catch (error) {
             console.error("Error fetching prospection data:", error);
+            set({ settingLoading: false });
         }
     },
     fetchKeywordsList: async (type = 'facebook') => {

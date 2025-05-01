@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { message, Modal } from "antd";
+import { message, Modal, Spin } from "antd";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { t } from "i18next";
@@ -15,7 +15,7 @@ import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 
 const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, postType }) => {
-    const { prospection, fetchProspectionData, createSocialTarget, loading, updateProspection, fetchCRMGroups, CRMList } = SettingStore();
+    const { prospection, fetchProspectionData, createSocialTarget, loading: createSocialLoading, updateProspection, fetchCRMGroups, CRMList, settingLoading } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
     const location = useLocation();
@@ -67,8 +67,8 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
     useEffect(() => {
         handleUpdateGroupId()
         const type = isInstagram ? 'instagram' : 'facebook'
-        fetchKeywords({ page: 1, limit: 100 });
         groupId && fetchProspectionData(type, groupId);
+        fetchKeywords({ page: 1, limit: 100 });
         fetchMessages({ page: 1, limit: 200 });
         fetchCRMGroups({ type });
     }, []);
@@ -76,8 +76,13 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
 
     return (
         <Modal open={visible} onCancel={onClose} footer={null} width={1100} centered>
-            <div className="flex h-[calc(100vh-200px)] p-0">
+            <div className="flex h-[calc(100vh-200px)] p-0 relative">
                 {/* Left panel - Tabs */}
+                {settingLoading && (
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-full">
+                        <Spin size="large" />
+                    </div>
+                )}
                 <div className="w-1/4 rounded px-2 mt-7 flex flex-col justify-between">
                     <ul className="flex flex-col">
                         {tabItems.map((tab, index) => {
@@ -119,7 +124,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                         disabled={activeKey !== tabItems.length}
                         onClick={handleSave}
                     >
-                        {loading ? t("prospecting.Saving") : t("prospecting.Save")}
+                        {createSocialLoading ? t("prospecting.Saving") : t("prospecting.Save")}
                     </button>
                 </div>
 
