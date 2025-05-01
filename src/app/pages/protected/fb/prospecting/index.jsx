@@ -691,7 +691,7 @@ const FbProspecting = () => {
 
                         <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
-                    <Button className="bg-blue-500 text-white px-4 py-2 rounded-md">{t("prospecting.Add new group")}</Button>
+                    <Button id="Novalya-Multi-group" className="bg-blue-500 text-white px-4 py-2 rounded-md">{t("prospecting.Add new group")}</Button>
                 </div>
                 <div className="flex items-center justify-between my-3 space-x-4">
                     <Input
