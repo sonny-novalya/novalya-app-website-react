@@ -14,7 +14,7 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 
-const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId }) => {
+const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, postType }) => {
     const { prospection, fetchProspectionData, createSocialTarget, loading, updateProspection, fetchCRMGroups, CRMList } = SettingStore();
     const { fetchKeywords, keyWordList } = useKeyWordStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
@@ -24,7 +24,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
     const tabItems = [
         { label: t("prospecting.Select Message"), key: 1, children: <SelectMessage tempMessageList={tempMessageList} /> },
         { label: t("prospecting.Settings"), key: 2, children: <Settings isInstagram={isInstagram} /> },
-        ...(isInstagram ? [] : [{ label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} /> }]),
+        ...(isInstagram ? [] : [{ label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} postType={postType} /> }]),
         { label: t("prospecting.Advanced Options"), key: isInstagram ? 3 : 4, children: <AdvOptions /> },
         { label: t("prospecting.Add Tags"), key: isInstagram ? 4 : 5, children: <AddTags CRMList={CRMList} groupId={groupId} /> },
     ];
@@ -159,6 +159,7 @@ SettingsModal.propTypes = {
     groupId: PropTypes.any,
     activeKey: PropTypes.number,
     setActiveKey: PropTypes.func,
+    postType: PropTypes.string,
 };
 
 export default SettingsModal;

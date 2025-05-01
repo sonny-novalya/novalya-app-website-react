@@ -4,11 +4,13 @@ import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const Filters = ({ keyWordList }) => {
+const Filters = ({ keyWordList, postType }) => {
     const { prospection, updateProspection } = SettingStore();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const { gender: propGender, keyword } = prospection;
+
+    console.log("postType", postType)
 
     const genders = [
         { label: t("prospecting.Male"), value: "male", icon: <MaleGenderIcon /> },
@@ -79,6 +81,8 @@ const Filters = ({ keyWordList }) => {
                 </div>
 
                 {/* Keywords Dropdown Filter */}
+                {
+                    postType && !["post", "Post"].includes(postType) &&
                 <div className="border border-gray-300 p-4 rounded-lg">
                     <p className="font-medium text-gray-800 mb-2 flex items-center">{t("prospecting.Keywords")}</p>
                     <div className="relative">
@@ -116,6 +120,8 @@ const Filters = ({ keyWordList }) => {
                         )}
                     </div>
                 </div>
+                }
+
             </div>
         </div>
     );
@@ -123,6 +129,7 @@ const Filters = ({ keyWordList }) => {
 
 Filters.propTypes = {
     keyWordList: PropTypes.object,
+    postType: PropTypes.string,
 };
 
 export default Filters;

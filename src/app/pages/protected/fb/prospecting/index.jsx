@@ -41,6 +41,7 @@ const FbProspecting = () => {
 
     const [openDropdownKey, setOpenDropdownKey] = useState(null);
     const [confirmModalKey, setConfirmModalKey] = useState(null);
+    const [postType, setPostType] = useState(null);
     const [selectedSortLabel, setSelectedSortLabel] = useState("Sort By");
 
     const dropdownRefs = useRef({});
@@ -50,19 +51,21 @@ const FbProspecting = () => {
         setModalOpen(true);
     };
 
-    const handleOpenSettings = (groupId) => {
+    const handleOpenSettings = (groupId, groupType) => {
         localStorage.setItem("selectedGroupId", groupId); 
+        setPostType(groupType)
         setActiveKey(1);
         setPrimaryGroupId(groupId);
         setModalOpen(true);
     };
-
+    
     
     const handleCloseModal = () => {
         setModalOpen(false);
     };
-
-    const handleOpenConfirmModal = (groupId) => {
+    
+    const handleOpenConfirmModal = (groupId, groupType) => {
+        setPostType(groupType)
         setPrimaryGroupId(groupId)
         setConfirmModalOpen(true);
     };
@@ -531,7 +534,7 @@ const FbProspecting = () => {
             render: (_, record) => (
                 <button
                     className="bg-blue-500 text-white px-3 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
-                    onClick={() => handleOpenSettings(record.id)}
+                    onClick={() => handleOpenSettings(record.id, record.group_type)}
                 >
                    <span>
                         <SettingsIconWhite />
@@ -545,7 +548,7 @@ const FbProspecting = () => {
         {
             title: t("prospecting.Send"),
             render: (_, record) => (
-                    <button onClick={() => handleOpenConfirmModal(record.id)}  className="cursor-pointer mt-1">
+                    <button onClick={() => handleOpenConfirmModal(record.id, record.group_id)}  className="cursor-pointer mt-1">
                     {
                         record.id?.toString() === primaryGroupId?.toString()
                             ? <SendIconBlue />
@@ -788,6 +791,7 @@ const FbProspecting = () => {
                         socialType={socialType}
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
+                        postType={postType}
                     />
                 )}
 
@@ -797,6 +801,7 @@ const FbProspecting = () => {
                         onClose={handleCloseConfirmModal}
                         groupId={primaryGroupId}
                         handleOpenSettingsTab={handleOpenSettingsTab}
+                        postType={postType}
                     />
                 )}
 

@@ -11,7 +11,7 @@ import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import { useLocation } from "react-router-dom";
 
-const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId }) => {
+const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType }) => {
     const { prospection, fetchProspectionData, fetchCRMGroups, CRMList } = SettingStore();
     const { tempMessageList, fetchMessages } = useMessageSteps();
     const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
@@ -57,7 +57,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId })
                     handleOpen={handleOpen}
                 />
                 {!isInstagram && (
-                    <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} />
+                    <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} postType={postType} />
                 )}
                 <AdvOptions
                     prospect={prospect}
@@ -91,6 +91,7 @@ ConfirmationModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     handleOpenSettingsTab: PropTypes.func,
     groupId: PropTypes.string,
+    postType: PropTypes.string,
 };
 
 export default ConfirmationModal;
