@@ -35,7 +35,7 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
             };
         });
 
-        updateFolder(newFolderName, folderId, socialType , selectedGroupsPayload);
+        updateFolder(newFolderName, folderId, socialType, selectedGroupsPayload);
         onClose();
     };
 
@@ -57,15 +57,17 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
             }
     };
     useEffect(() => {
-        if (folderId && socialType) {
-            fetchGroups(socialType, folderId);
-            fetchInitialGroups(socialType);
-        }
-
+        const type = prospectFolder === "ig" ? "instagram" : "facebook";
         if (prospectFolder) {
-            const type = prospectFolder === "ig" ? "instagram" : "facebook";
             fetchInitialGroups(type);
         }
+
+        if (folderId && socialType) {
+            fetchGroups(socialType, folderId);
+            fetchInitialGroups(type);
+        }
+
+        
     }, [folderId, prospectFolder]);
 
     useEffect(() => {

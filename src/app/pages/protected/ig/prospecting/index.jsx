@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, SendOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
+import { SearchOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
@@ -708,7 +708,7 @@ const IgProspecting = () => {
                                         </div>
                                     </button>
                                     <span className="ml-1 cursor-pointer" onClick={() => {
-                                        setFolderId(folder.id)
+                                        // setFolderId(folder.id)
                                         setFolderName(folder.folder_name)
                                         setOpenUpdateFolderModal(true)
                                     }}>
@@ -816,7 +816,6 @@ const IgProspecting = () => {
                         visible={modalOpen}
                         onClose={handleCloseModal}
                         groupId={primaryGroupId}
-                        socialType={socialType}
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
                     />
@@ -847,6 +846,7 @@ const IgProspecting = () => {
                         visible={openUpdateFolderModal}
                         onClose={handleCloseUpdateFolderModal}
                         socialType={socialType}
+                        prospectFolder={prospect_folder}
                     />
                 )}
             </div>
