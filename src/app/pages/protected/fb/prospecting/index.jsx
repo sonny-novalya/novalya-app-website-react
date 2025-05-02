@@ -548,7 +548,7 @@ const FbProspecting = () => {
         {
             title: t("prospecting.Send"),
             render: (_, record) => (
-                    <button onClick={() => handleOpenConfirmModal(record.id, record.group_id)}  className="cursor-pointer mt-1">
+                <button onClick={() => handleOpenConfirmModal(record.id, record.group_type)}  className="cursor-pointer mt-1">
                     {
                         record.id?.toString() === primaryGroupId?.toString()
                             ? <SendIconBlue />
