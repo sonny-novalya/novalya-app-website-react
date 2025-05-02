@@ -11,13 +11,9 @@ import AdvOptions from "./AdvOptions";
 import AddTags from "./AddTags";
 
 import SettingStore from "../../../../../../store/prospection/settings-store";
-import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
-import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 
-const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, postType }) => {
-    const { prospection, fetchProspectionData, createSocialTarget, loading: createSocialLoading, updateProspection, fetchCRMGroups, CRMList, settingLoading } = SettingStore();
-    const { fetchKeywords, keyWordList } = useKeyWordStore();
-    const { tempMessageList, fetchMessages } = useMessageSteps();
+const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, postType, tempMessageList, keyWordList, CRMList }) => {
+    const { prospection, fetchProspectionData, createSocialTarget, loading: createSocialLoading, updateProspection, settingLoading } = SettingStore();
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
@@ -68,11 +64,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         handleUpdateGroupId()
         const type = isInstagram ? 'instagram' : 'facebook'
         groupId && fetchProspectionData(type, groupId);
-        fetchKeywords({ page: 1, limit: 100 });
-        fetchMessages({ page: 1, limit: 200 });
-        fetchCRMGroups({ type });
     }, []);
-
 
     return (
         <Modal open={visible} onCancel={onClose} footer={null} width={1100} centered>
@@ -165,6 +157,9 @@ SettingsModal.propTypes = {
     activeKey: PropTypes.number,
     setActiveKey: PropTypes.func,
     postType: PropTypes.string,
+    tempMessageList: PropTypes.any,
+    keyWordList: PropTypes.any,
+    CRMList: PropTypes.any,
 };
 
 export default SettingsModal;

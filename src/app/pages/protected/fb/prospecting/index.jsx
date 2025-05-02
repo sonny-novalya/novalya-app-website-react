@@ -16,6 +16,9 @@ import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
 import { useRef } from "react";
+import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
+import useKeyWordStore from "../../../../../store/keyword/keywordStore";
+import SettingStore from "../../../../../store/prospection/settings-store";
 
 
 
@@ -36,13 +39,18 @@ const FbProspecting = () => {
     const socialType = "fb_groups";
     const prospect_folder = "fb";
 
-    const [activeKey, setActiveKey] = useState(1); 
-    const [primaryGroupId, setPrimaryGroupId] = useState(null); 
+    const [activeKey, setActiveKey] = useState(1);
+    const [primaryGroupId, setPrimaryGroupId] = useState(null);
 
     const [openDropdownKey, setOpenDropdownKey] = useState(null);
     const [confirmModalKey, setConfirmModalKey] = useState(null);
     const [postType, setPostType] = useState(null);
     const [selectedSortLabel, setSelectedSortLabel] = useState("Sort By");
+    const { keyWordList, fetchKeywords } = useKeyWordStore();
+    const { tempMessageList, fetchMessages } = useMessageSteps();
+
+    const { CRMList, fetchCRMGroups } = SettingStore();
+
 
     const dropdownRefs = useRef({});
 
@@ -52,24 +60,24 @@ const FbProspecting = () => {
     };
 
     const handleOpenSettings = (groupId, groupType) => {
-        localStorage.setItem("selectedGroupId", groupId); 
+        localStorage.setItem("selectedGroupId", groupId);
         setPostType(groupType)
         setActiveKey(1);
         setPrimaryGroupId(groupId);
         setModalOpen(true);
     };
-    
-    
+
+
     const handleCloseModal = () => {
         setModalOpen(false);
     };
-    
+
     const handleOpenConfirmModal = (groupId, groupType) => {
         setPostType(groupType)
         setPrimaryGroupId(groupId)
         setConfirmModalOpen(true);
     };
-    
+
     const handleCloseConfirmModal = () => {
         // setPrimaryGroupId(null)
         setConfirmModalOpen(false);
@@ -115,7 +123,7 @@ const FbProspecting = () => {
                 return folder ? folder.folder_name : null;
             })
             .filter(name => name !== null);
-        
+
         if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                 {t("prospecting.None")}
@@ -412,7 +420,7 @@ const FbProspecting = () => {
         updateFilters({
             ...storeFilters,
             page: obj.current,
-            limit:obj.pageSize,
+            limit: obj.pageSize,
         });
     };
 
@@ -421,7 +429,7 @@ const FbProspecting = () => {
             setOpenDropdownKey(openDropdownKey === key ? null : key);
         }
     };
-    
+
     const handleMenuClick = (key, action) => {
         if (action === 'Delete') {
             setOpenDropdownKey(null);
@@ -475,14 +483,14 @@ const FbProspecting = () => {
                 )}
 
                 {isConfirming && (
-                    <div className="absolute right-3 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg" 
+                    <div className="absolute right-3 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg"
                         onClick={async () => {
                             await deleteGroup({ id: record.id });
                             setConfirmModalKey(null);
                             setOpenDropdownKey(null);
-                            fetchGroups(storeFilters); 
+                            fetchGroups(storeFilters);
                         }}
-                        >
+                    >
                         <p className="px-4 py-1.5 text-red-500 cursor-pointer">{t("prospecting.Really")}??</p>
                     </div>
                 )}
@@ -536,25 +544,25 @@ const FbProspecting = () => {
                     className="bg-blue-500 text-white px-3 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
                     onClick={() => handleOpenSettings(record.id, record.group_type)}
                 >
-                   <span>
+                    <span>
                         <SettingsIconWhite />
-                   </span> 
-                   <span>
+                    </span>
+                    <span>
                         {t("prospecting.Settings")}
-                   </span>
+                    </span>
                 </button>
             ),
         },
         {
             title: t("prospecting.Send"),
             render: (_, record) => (
-                <button onClick={() => handleOpenConfirmModal(record.id, record.group_type)}  className="cursor-pointer mt-1">
+                <button onClick={() => handleOpenConfirmModal(record.id, record.group_type)} className="cursor-pointer mt-1">
                     {
                         record.id?.toString() === primaryGroupId?.toString()
                             ? <SendIconBlue />
                             : <SendIconGray />
                     }
-                    </button>
+                </button>
             )
         },
         {
@@ -642,6 +650,12 @@ const FbProspecting = () => {
     useEffect(() => {
         setFolders(prospect_folder);
     }, [setFolders, prospect_folder]);
+
+    useEffect(() => {
+        fetchKeywords({ page: 1, limit: 100 });
+        fetchMessages({ page: 1, limit: 200 });
+        fetchCRMGroups({ type: 'facebook' });
+    }, []);
 
     return (
         <Layout>
@@ -778,7 +792,7 @@ const FbProspecting = () => {
                     total={totalGrp}
                     pageSize={storeFilters.limit}
                     onChange={handlePageChange}
-                    showQuickJumper={false} 
+                    showQuickJumper={false}
                 />
 
 
@@ -792,6 +806,9 @@ const FbProspecting = () => {
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
                         postType={postType}
+                        keyWordList={keyWordList}
+                        CRMList={CRMList}
+                        tempMessageList={tempMessageList}
                     />
                 )}
 
@@ -802,6 +819,9 @@ const FbProspecting = () => {
                         groupId={primaryGroupId}
                         handleOpenSettingsTab={handleOpenSettingsTab}
                         postType={postType}
+                        keyWordList={keyWordList}
+                        CRMList={CRMList}
+                        tempMessageList={tempMessageList}
                     />
                 )}
 

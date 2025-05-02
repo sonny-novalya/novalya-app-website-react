@@ -7,15 +7,11 @@ import AddTags from "./AddTags";
 import { t } from "i18next";
 import { useEffect } from "react";
 import SettingStore from "../../../../../../store/prospection/settings-store";
-import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
-import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import { useLocation } from "react-router-dom";
 
-const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType }) => {
-    const { prospection, fetchProspectionData, fetchCRMGroups, CRMList } = SettingStore();
-    const { tempMessageList, fetchMessages } = useMessageSteps();
+const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType, tempMessageList, keyWordList, CRMList }) => {
+    const { prospection, fetchProspectionData } = SettingStore();
     const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action, post_target } = prospection;
-    const { fetchKeywords, keyWordList } = useKeyWordStore();
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
@@ -26,10 +22,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
 
     useEffect(() => {
         const type = isInstagram ? 'instagram' : 'facebook'
-        fetchKeywords({ page: 1, limit: 100 });
         groupId && fetchProspectionData(type, groupId);
-        fetchMessages({ page: 1, limit: 200 });
-        fetchCRMGroups({ type });
     }, []);
 
     const messageTitle = tempMessageList.find((item) => item.id == message)?.title || t("prospecting.Message");
@@ -92,6 +85,9 @@ ConfirmationModal.propTypes = {
     handleOpenSettingsTab: PropTypes.func,
     groupId: PropTypes.string,
     postType: PropTypes.string,
+    tempMessageList: PropTypes.any,
+    keyWordList: PropTypes.any,
+    CRMList: PropTypes.any,
 };
 
 export default ConfirmationModal;

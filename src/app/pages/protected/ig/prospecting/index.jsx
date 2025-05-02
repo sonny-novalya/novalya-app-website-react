@@ -15,6 +15,9 @@ import UpdateFolderModal from "../../../../components/modal/fb/prospection/Updat
 import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
+import SettingStore from "../../../../../store/prospection/settings-store";
+import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
+import useKeyWordStore from "../../../../../store/keyword/keywordStore";
 
 const IgProspecting = () => {
     const [searchParams] = useSearchParams();
@@ -39,6 +42,11 @@ const IgProspecting = () => {
     const [openDropdownKey, setOpenDropdownKey] = useState(null);
     const [confirmModalKey, setConfirmModalKey] = useState(null);
     const [selectedSortLabel, setSelectedSortLabel] = useState("Sort By");
+    const { keyWordList, fetchKeywords } = useKeyWordStore();
+    const { tempMessageList, fetchMessages } = useMessageSteps();
+
+    const { CRMList, fetchCRMGroups } = SettingStore();
+
     const dropdownRefs = useRef({});
 
     const handleOpenSettingsTab = (value) => {
@@ -674,6 +682,12 @@ const IgProspecting = () => {
         setFolders(prospect_folder);
     }, [setFolders, prospect_folder]);
 
+    useEffect(() => {
+        fetchKeywords({ page: 1, limit: 100 });
+        fetchMessages({ page: 1, limit: 200 });
+        fetchCRMGroups({ type: 'instagram' });
+    }, []);
+
     return (
         <Layout>
             <h2 className="text-xl font-semibold mb-4">{t("prospecting.Easily connect with new prospects")}</h2>
@@ -818,6 +832,9 @@ const IgProspecting = () => {
                         groupId={primaryGroupId}
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
+                        keyWordList={keyWordList}
+                        CRMList={CRMList}
+                        tempMessageList={tempMessageList}
                     />
                 )}
 
@@ -827,6 +844,9 @@ const IgProspecting = () => {
                         onClose={handleCloseConfirmModal}
                         groupId={primaryGroupId}
                         handleOpenSettingsTab={handleOpenSettingsTab}
+                        keyWordList={keyWordList}
+                        CRMList={CRMList}
+                        tempMessageList={tempMessageList}
                     />
                 )}
 
