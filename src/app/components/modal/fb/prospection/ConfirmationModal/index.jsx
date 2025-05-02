@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal, Spin } from "antd";
 import PropTypes from "prop-types";
 import Settings from "./Settings";
 import Filters from "./Filters";
@@ -10,7 +10,7 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import { useLocation } from "react-router-dom";
 
 const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType, tempMessageList, keyWordList, CRMList }) => {
-    const { prospection, fetchProspectionData } = SettingStore();
+    const { prospection, fetchProspectionData, settingLoading } = SettingStore();
     const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action, post_target } = prospection;
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
@@ -38,7 +38,12 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
             closeIcon={null}
             centered
         >
-            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto ">
+            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto relative">
+                {settingLoading && (
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-full">
+                        <Spin size="large" />
+                    </div>
+                )}
                 <h2 className="font-medium text-lg">{t("prospecting.Message Selected")}</h2>
                 <h3 className="border border-[#00000014] rounded-md p-4 text-[#0087FF] cursor-pointer" onClick={() => handleOpen(1)}>
                     {messageTitle}
