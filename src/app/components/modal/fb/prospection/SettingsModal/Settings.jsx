@@ -4,10 +4,10 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-const Settings = ({ isInstagram}) => {
-    const { prospection , updateProspection } = SettingStore();
+const Settings = ({ isInstagram, onComplete }) => {
+    const { prospection, updateProspection } = SettingStore();
 
-    const { pro_stratagy, norequest, interval } = prospection 
+    const { pro_stratagy, norequest, interval } = prospection;
     const [customRequest, setCustomRequest] = useState(interval);
 
     const strategies = [
@@ -21,11 +21,11 @@ const Settings = ({ isInstagram}) => {
     ];
 
     const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
-    
+
     const fbIntervalOptions = [
         { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
         { label: t("prospecting.Slow"), value: "3-5", time: t("prospecting.3 to 5 minutes") },
-        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes")},
+        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
     ];
 
     const igIntervalOptions = [
@@ -36,21 +36,25 @@ const Settings = ({ isInstagram}) => {
     ];
 
     const intervalList = isInstagram ? igIntervalOptions : fbIntervalOptions;
+    const newStratagies = isInstagram ? strategies : FbStrategies;
 
-    const findInterval = () => {
-        return !intervalList.some(option => option.value === interval);
-    };
-
-    const newStratagies = isInstagram ? strategies : FbStrategies
-
+    // Check if this section is complete
     useEffect(() => {
-        if (findInterval()) {
-            updateProspection({
-                ...prospection,
-                interval: intervalList[0].value,
-            });
+        // For this component to be complete, we need:
+        // 1. A selected strategy (pro_stratagy should be 0 or 1)
+        // 2. A valid number of requests (norequest should be a number between 1 and 50)
+        // 3. A selected interval
+        const isComplete = (
+            (pro_stratagy === 0 || pro_stratagy === 1) &&
+            (Number(norequest) >= 1 && Number(norequest) <= 50) &&
+            interval !== undefined && interval !== ""
+        );
+
+        // Notify parent about completion status
+        if (onComplete) {
+            onComplete(isComplete);
         }
-    }, []);
+    }, [pro_stratagy, norequest, interval, onComplete]);
 
     useEffect(() => {
         if (
@@ -61,7 +65,6 @@ const Settings = ({ isInstagram}) => {
             setCustomRequest(norequest);
         }
     }, [norequest]);
-
 
     const handleUpdate = (field, value) => {
         if (field === "norequest") {
@@ -74,7 +77,6 @@ const Settings = ({ isInstagram}) => {
             updateProspection({ ...prospection, [field]: value });
         }
     };
-
 
     return (
         <div className="">
@@ -91,7 +93,7 @@ const Settings = ({ isInstagram}) => {
                                 className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("pro_stratagy",option.value)}
+                                onClick={() => handleUpdate("pro_stratagy", option.value)}
                             >
                                 {option.label}
                                 {pro_stratagy === option.value && (
@@ -115,7 +117,6 @@ const Settings = ({ isInstagram}) => {
                                 Number(norequest) >= 1 &&
                                 Number(norequest) <= 50
                                 : Number(norequest) === Number(option);
-
 
                             return (
                                 <button
@@ -158,8 +159,6 @@ const Settings = ({ isInstagram}) => {
                                 />
                             </>
                         )}
-
-
                     </div>
                 </div>
             </div>
@@ -196,6 +195,7 @@ const Settings = ({ isInstagram}) => {
 
 Settings.propTypes = {
     isInstagram: PropTypes.bool,
-
+    onComplete: PropTypes.func,
 };
+
 export default Settings;

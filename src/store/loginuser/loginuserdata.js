@@ -17,7 +17,9 @@ const useLoginUserDataStore = create((set) => ({
             const result = response?.data?.data;
             const userData = {
                 name: `${result.firstname} ${result.lastname}`,
-                url: result.profilepictureurl,
+                url: result.profilepictureurl?.includes("https://stagingbackend.novalya.com")
+                    ? result.profilepictureurl.replace("https://stagingbackend.novalya.com", "https://api-v2.novalya.com")
+                    : result.profilepictureurl, 
                 plan: result.plan_pkg === "Unlimited_new" ? "Unlimited" : result?.plan_pkg === null ? "No Plan" : result?.plan_pkg
             };
 

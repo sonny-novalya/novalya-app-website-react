@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 
-const SelectMessage = ({ tempMessageList }) => {
+const SelectMessage = ({ tempMessageList, onComplete }) => {
     const {
         setIsMessage,
         setStep,
@@ -53,10 +53,17 @@ const SelectMessage = ({ tempMessageList }) => {
         );
     }, [searchText, tempMessageList]);
 
-    useEffect(()=>{
-        setSelectedRow(message ? message :  (tempMessageList.length > 0 ? tempMessageList[0].id : null))
-    }, [message])
+    // Check if this section is complete (a message is selected)
+    useEffect(() => {
+        // Notify parent about completion status
+        if (onComplete) {
+            onComplete(!!selectedRow);
+        }
+    }, [selectedRow, onComplete]);
 
+    useEffect(() => {
+        setSelectedRow(message ? message : (tempMessageList?.length > 0 ? tempMessageList[0].id : null));
+    }, [message, tempMessageList]);
 
     return (
         <div className="w-full h-full bg-white rounded-lg flex flex-col">
@@ -72,7 +79,7 @@ const SelectMessage = ({ tempMessageList }) => {
                 {filteredMessages?.map((record) => (
                     <div
                         key={record?.id}
-                        className={`cursor-pointer flex w-full items-center justify-between p-2 border ${selectedRow == record?.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white"}`}
+                        className={`cursor-pointer flex w-full items-center justify-between p-2 border ${selectedRow == record?.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white hover:border-gray-200"}`}
                         onClick={() => handleRowClick(record?.id)}
                     >
                         <h2>
@@ -80,11 +87,17 @@ const SelectMessage = ({ tempMessageList }) => {
                         </h2>
                         <div>
                             <div className="flex justify-end items-center gap-2">
-                                <button className="flex items-center bg-white px-3 py-2 rounded-full cursor-pointer" onClick={() => handleEdit(record)}>
+                                <button className="flex items-center bg-white px-3 py-2 rounded-full cursor-pointer" onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleEdit(record);
+                                }}>
                                     <span><EditIcon /></span>
                                     <span>{t("prospecting.Edit")}</span>
                                 </button>
-                                <button className="flex items-center bg-white px-3 py-2 rounded-full cursor-pointer" onClick={() => handlePreview(record)}>
+                                <button className="flex items-center bg-white px-3 py-2 rounded-full cursor-pointer" onClick={(e) => {
+                                    e.stopPropagation();
+                                    handlePreview(record);
+                                }}>
                                     <span><PreviewIcon /></span>
                                     <span>{t("prospecting.Preview")}</span>
                                 </button>
@@ -92,13 +105,20 @@ const SelectMessage = ({ tempMessageList }) => {
                         </div>
                     </div>
                 ))}
+
+                {(!filteredMessages || filteredMessages.length === 0) && (
+                    <div className="text-center py-8 text-gray-500">
+                        {t("prospecting.No messages available")}
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
 SelectMessage.propTypes = {
-    tempMessageList: PropTypes.object,
+    tempMessageList: PropTypes.array,
+    onComplete: PropTypes.func,
 };
 
 export default SelectMessage;

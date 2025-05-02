@@ -27,6 +27,7 @@ const useProfileStore = create((set) => ({
         }
     },
     updateUserProfile: async (data) => {
+
         try {
             set({ loading: true})
             const response = await apiCall({
@@ -48,30 +49,37 @@ const useProfileStore = create((set) => ({
         }
     },
     updateProfilePicture: async (data) => {
+        console.log("data", data);
+
         try {
             set({ loading: true });
+
+            const token = localStorage.getItem("token"); // or whatever key you use
+
             const response = await apiCall({
                 method: 'POST',
                 url: '/user/api/updateprofilepicture',
                 data,
                 headers: {
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
             });
 
             if (response.statusText === "OK") {
                 console.log("Updated successfully");
+                localStorage.removeItem("userData");
                 return response.data;
             } else {
                 throw new Error("Failed to update");
             }
         } catch (error) {
             console.error("Error updating:", error);
-            throw error; 
+            throw error;
         } finally {
             set({ loading: false });
         }
-    },
+    }
 
 }));
 

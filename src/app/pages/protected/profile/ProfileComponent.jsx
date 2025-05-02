@@ -119,13 +119,15 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
         const reader = new FileReader();
 
         reader.onloadend = async () => {
-            const base64Image = reader.result; 
+            const base64Image = reader.result;
 
             try {
-                const payload = new FormData();
-                payload.append("image", base64Image); 
+                const payload = {
+                    image: base64Image
+                };
 
-                await updateProfilePicture({ image: payload }); 
+                await updateProfilePicture(payload);
+
                 message.success("Profile picture updated successfully");
 
                 setShowPhotoDropdown(false);
@@ -254,6 +256,10 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
             });
     }, []);
 
+    const imgUrl = loginUserData?.profilepictureurl?.includes("https://stagingbackend.novalya.com")
+        ? loginUserData.profilepictureurl.replace("https://stagingbackend.novalya.com", "https://api-v2.novalya.com")
+        : loginUserData.profilepictureurl
+
     return (
         <div className="bg-white p-5 rounded-md rounded-tl-none shadow-md border border-[#0087FF33]">
             {/* Email */}
@@ -272,7 +278,7 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
                 <div className="flex items-center">
 
                     <div className="relative">
-                        <img src={loginUserData?.profilepictureurl} alt="" className='w-40 h-40 rounded-full'/>
+                        <img src={imgUrl} alt="" className='w-40 h-40 rounded-full'/>
                         <div className="absolute bottom-4 right-0 w-10 border-2 border-white rounded-full">
                             <div onClick={() => setShowPhotoDropdown(!showPhotoDropdown)} className="cursor-pointer">
                                 <CameraIcon />
@@ -285,7 +291,7 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
                                 >
                                     <div className="flex items-center space-x-4 mb-4">
                                         <img
-                                            src={loginUserData?.profilepictureurl}
+                                            src={imgUrl}
                                             alt="Preview"
                                             className="w-12 h-12 rounded-full object-cover"
                                         />

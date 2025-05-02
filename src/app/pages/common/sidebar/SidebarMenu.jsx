@@ -53,14 +53,20 @@ const SidebarMenu = () => {
             setUserData(JSON.parse(localUserData));
         } else {
             fetchLoginUserData().then(() => {
-                if (loginUserData) {
+                const storedLoginData = useLoginUserDataStore.getState().loginUserData;
+
+                if (storedLoginData) {
+                    const profilePicUrl = storedLoginData?.profilepictureurl?.includes("https://stagingbackend.novalya.com")
+                            ? storedLoginData.profilepictureurl.replace("https://stagingbackend.novalya.com", "https://api-v2.novalya.com")
+                            : storedLoginData.profilepictureurl;
+
                     const data = {
-                        name: `${loginUserData?.firstname} ${loginUserData?.lastname}`,
-                        url: loginUserData?.profilepictureurl,
+                        name: `${storedLoginData?.firstname} ${storedLoginData?.lastname}`,
+                        url: profilePicUrl,
                         plan:
-                            loginUserData?.plan_pkg === "Unlimited_new"
+                            storedLoginData?.plan_pkg === "Unlimited_new"
                                 ? "Unlimited"
-                                : loginUserData?.plan_pkg ?? "No Plan",
+                                : storedLoginData?.plan_pkg ?? "No Plan",
                     };
 
                     setUserData(data);
@@ -69,6 +75,7 @@ const SidebarMenu = () => {
             });
         }
     }, []);
+
 
     const sidebarData = [
         { text: "dashboard", id: "dashboard", path: "/", icon: <DashboardIcon /> },
