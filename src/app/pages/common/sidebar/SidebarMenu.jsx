@@ -25,23 +25,50 @@ import LocalizationOptionsIcons from "../../../../helpers/shared/LocalizationOpt
 import { Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { removeAllCookies } from "../../../../helpers/helper";
+import useLoginUserDataStore from "../../../../store/loginuser/loginuserdata";
 
 const SidebarMenu = () => {
     const [openSubNav, setOpenSubNav] = useState(null);
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
     const currentPath = location.pathname;
-
+    
     const navigate = useNavigate();
-
+    
     const toggleSidebar = () => setCollapsed(!collapsed);
-
+    
     const onLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('selectedLocale');
         removeAllCookies();
         navigate("/login");
     };
+    const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const localUserData = localStorage.getItem("userData");
+
+        if (localUserData) {
+            setUserData(JSON.parse(localUserData));
+        } else {
+            fetchLoginUserData().then(() => {
+                if (loginUserData) {
+                    const data = {
+                        name: `${loginUserData?.firstname} ${loginUserData?.lastname}`,
+                        url: loginUserData?.profilepictureurl,
+                        plan:
+                            loginUserData?.plan_pkg === "Unlimited_new"
+                                ? "Unlimited"
+                                : loginUserData?.plan_pkg ?? "No Plan",
+                    };
+
+                    setUserData(data);
+                    localStorage.setItem("userData", JSON.stringify(data));
+                }
+            });
+        }
+    }, []);
 
     const sidebarData = [
         { text: "dashboard", id: "dashboard", path: "/", icon: <DashboardIcon /> },
@@ -175,14 +202,18 @@ const SidebarMenu = () => {
                                     <UpgradeProIcon />
                                 </div>
                                 <div className="flex items-center justify-center mt-2 w-full">
-                                    <span className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
-                                        J
-                                    </span>
+                                    {userData?.url ? (
+                                        <img src={userData.url} className="h-10 w-10 rounded-sm" alt="user img" />
+                                    ) : (
+                                        <div className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
+                                            {userData?.name?.charAt(0)}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <button
                                     type="button"
-                                    className="flex items-center justify-center bg-[#FF000012] w-12 p-2 mt-2 rounded-lg cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
+                                    className="flex items-center justify-center hover:bg-[#FF000012] w-12 p-2 mt-2 rounded-lg cursor-pointer  text-[#00000055] hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />
@@ -260,18 +291,22 @@ const SidebarMenu = () => {
                                     <span className="text-base text-[#00000073]">Upgrade To Pro</span>
                                 </div>
                                 <div className="flex space-x-3 items-center w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
-                                    <span className="h-10 w-10 rounded-lg bg-purple-200 flex items-center justify-center">
-                                        J
-                                    </span>
+                                    {userData?.url ? (
+                                        <img src={userData.url} className="h-10 w-10 rounded-sm" alt="user img" />
+                                    ) : (
+                                        <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-sm">
+                                            {userData?.name?.charAt(0)}
+                                        </div>
+                                    )}
                                     <div className="flex flex-col text-sm">
-                                        <span className="text-[24px] font-[500]">Anima Ag.</span>
-                                        <span className="text-[13px] text-[#167AD3]">Basic Plan</span>
+                                        <span className="text-[24px] font-[500]">{userData?.name}</span>
+                                        <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
                                     </div>
                                 </div>
 
                                 <button
                                     type="button"
-                                    className="flex items-center space-x-5 bg-[#FF000012] logout px-3 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FF000018] text-[#00000045] hover:text-[#00000085]"
+                                    className="flex items-center space-x-5 hover:bg-[#FF000012] logout px-3 py-3 rounded-[8px] w-full cursor-pointer bg-white text-black/55 hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />
