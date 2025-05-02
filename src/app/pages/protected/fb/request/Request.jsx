@@ -596,7 +596,8 @@ const Request = () => {
             <h1 className="text-[20px] font-[500] mb-3 flex items-center gap-[10px] mb-6">
             {t("FB_request.do_you_delete_all")} 
             </h1>
-            <button className="flex items-center justify-center gap-[8px] bg-[#21BF7C] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 bg-[#FF0000] hover:bg-[#F40000] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250">
+                  
+            <button className="flex items-center justify-center gap-[8px]  bg-[#FF0000] hover:bg-[#F40000] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250" id="delete_pending_request">
               <svg
                 width="24"
                 height="24"

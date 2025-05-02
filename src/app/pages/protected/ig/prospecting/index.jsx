@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, SettingOutlined, SendOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
+import { SearchOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
@@ -10,11 +10,14 @@ import useFbProspectingStore from "../../../../../store/fb/prospecting";
 import { useSearchParams } from "react-router-dom";
 import useGroupStore from "../../../../../store/group/groupStore";
 import { formatNumber } from "../../../../../helpers/formatGroupMembers";
-import { DeleteFillRedIcon, EditIcon2, InstagramIcon, SyncBlueIcon } from "../../../common/icons/icons";
+import { DeleteFillRedIcon, EditIcon2, InstagramIcon, SendIconBlue, SendIconGray, SettingsIconWhite, SyncBlueIcon } from "../../../common/icons/icons";
 import UpdateFolderModal from "../../../../components/modal/fb/prospection/UpdateFolderModal";
 import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
+import SettingStore from "../../../../../store/prospection/settings-store";
+import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
+import useKeyWordStore from "../../../../../store/keyword/keywordStore";
 
 const IgProspecting = () => {
     const [searchParams] = useSearchParams();
@@ -34,11 +37,16 @@ const IgProspecting = () => {
     const prospect_folder = "ig";
 
     const [activeKey, setActiveKey] = useState(1);
-    const [primaryGroupId, setPrimaryGroupId] = useState(null); 
+    const [primaryGroupId, setPrimaryGroupId] = useState(null);
 
     const [openDropdownKey, setOpenDropdownKey] = useState(null);
     const [confirmModalKey, setConfirmModalKey] = useState(null);
     const [selectedSortLabel, setSelectedSortLabel] = useState("Sort By");
+    const { keyWordList, fetchKeywords } = useKeyWordStore();
+    const { tempMessageList, fetchMessages } = useMessageSteps();
+
+    const { CRMList, fetchCRMGroups } = SettingStore();
+
     const dropdownRefs = useRef({});
 
     const handleOpenSettingsTab = (value) => {
@@ -47,13 +55,13 @@ const IgProspecting = () => {
     };
 
     const handleOpenSettings = (groupId) => {
+        localStorage.setItem("selectedGroupId", groupId);
         setActiveKey(1)
         setPrimaryGroupId(groupId)
         setModalOpen(true);
     };
 
     const handleCloseModal = () => {
-        setPrimaryGroupId(null);
         setModalOpen(false);
     };
 
@@ -79,7 +87,7 @@ const IgProspecting = () => {
         if (![0, 33333333333, 44444444444, 55555555555].includes(Number(selectedFolder))) {
             const folder = folders?.find((item) => item.id == selectedFolder);
             return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
+                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folder ? folder.folder_name : t("prospecting.None")}
                     </span>
@@ -117,7 +125,7 @@ const IgProspecting = () => {
 
         if (folderNames.length === 1) {
             return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
+                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folderNames[0]}
                     </span>
@@ -126,7 +134,7 @@ const IgProspecting = () => {
         }
 
         return (
-            <div className="flex items-center justify-center space-x-2 bg-green-500 p-2 rounded-lg text-white hover:bg-green-600 cursor-pointer">
+            <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{folderNames[0]}</span>
                 <Dropdown overlay={<Menu>{folderNames.slice(1).map((name, index) => <Menu.Item key={index}>{name}</Menu.Item>)}</Menu>} trigger={['hover']}>
                     <span className="cursor-pointer">
@@ -419,87 +427,87 @@ const IgProspecting = () => {
         });
     };
 
-        const toggleDropdown = (key) => {
-            if (confirmModalKey === null) {
-                setOpenDropdownKey(openDropdownKey === key ? null : key);
-            }
-        };
-        
-        const handleMenuClick = (key, action) => {
-            if (action === 'Delete') {
-                setOpenDropdownKey(null);
-                setConfirmModalKey(key);
-    
-                setTimeout(() => {
-                    setConfirmModalKey(null);
-                    setOpenDropdownKey(key);
-                }, 3000);
-            } else {
-                setOpenDropdownKey(null);
-            }
-        };
-    
-        const setDropdownRef = (key, element) => {
-            dropdownRefs.current[key] = element;
-        };
-        const RowDropdown = ({ record }) => {
-            const isOpen = openDropdownKey === record.id;
-            const isConfirming = confirmModalKey === record.id;
-    
-            return (
-                <div className="relative" ref={(el) => setDropdownRef(record.id, el)}>
-                    {isOpen && !isConfirming && (
-                        <div className="absolute right-0 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg focus:outline-none">
-                            <div className="flex space-x-3 px-2 py-1 rounded-md">
-                                <button
-                                    onClick={() => window.open(record.url, "_blank")}
-                                    className="cursor-pointer"
-                                >
-                                    <InstagramIcon />
-                                </button>
-                                <button
-                                    className=" sync-members  cursor-pointer"
-                                    data-group={JSON.stringify({
-                                        id: record.id,
-                                        url: record.url,
-                                        type: record.group_type
-                                    })}
-                                >
-                                    <SyncBlueIcon />
-                                </button>
-                                <button
-                                    onClick={() => handleMenuClick(record.id, 'Delete')}
-                                    className="cursor-pointer"
-                                >
-                                    <DeleteFillRedIcon />
-                                </button>
-                            </div>
-                        </div>
-                    )}
-    
-                    {isConfirming && (
-                        <div className="absolute right-3 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg" 
-                            onClick={async () => {
-                                await deleteGroup({ id: record.id });
-                                setConfirmModalKey(null);
-                                setOpenDropdownKey(null);
-                                fetchGroups({ ...storeFilters, type: "instagram" }); 
-                            }}
+    const toggleDropdown = (key) => {
+        if (confirmModalKey === null) {
+            setOpenDropdownKey(openDropdownKey === key ? null : key);
+        }
+    };
+
+    const handleMenuClick = (key, action) => {
+        if (action === 'Delete') {
+            setOpenDropdownKey(null);
+            setConfirmModalKey(key);
+
+            setTimeout(() => {
+                setConfirmModalKey(null);
+                setOpenDropdownKey(key);
+            }, 3000);
+        } else {
+            setOpenDropdownKey(null);
+        }
+    };
+
+    const setDropdownRef = (key, element) => {
+        dropdownRefs.current[key] = element;
+    };
+    const RowDropdown = ({ record }) => {
+        const isOpen = openDropdownKey === record.id;
+        const isConfirming = confirmModalKey === record.id;
+
+        return (
+            <div className="relative" ref={(el) => setDropdownRef(record.id, el)}>
+                {isOpen && !isConfirming && (
+                    <div className="absolute right-0 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg focus:outline-none">
+                        <div className="flex space-x-3 px-2 py-1 rounded-md">
+                            <button
+                                onClick={() => window.open(record.url, "_blank")}
+                                className="cursor-pointer"
                             >
-                            <p className="px-4 py-1.5 text-red-500 cursor-pointer">Really??</p>
+                                <InstagramIcon />
+                            </button>
+                            <button
+                                className=" sync-members  cursor-pointer"
+                                data-group={JSON.stringify({
+                                    id: record.id,
+                                    url: record.url,
+                                    type: record.group_type
+                                })}
+                            >
+                                <SyncBlueIcon />
+                            </button>
+                            <button
+                                onClick={() => handleMenuClick(record.id, 'Delete')}
+                                className="cursor-pointer"
+                            >
+                                <DeleteFillRedIcon />
+                            </button>
                         </div>
-                    )}
-                </div>
-            );
-        };
+                    </div>
+                )}
+
+                {isConfirming && (
+                    <div className="absolute right-3 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg"
+                        onClick={async () => {
+                            await deleteGroup({ id: record.id });
+                            setConfirmModalKey(null);
+                            setOpenDropdownKey(null);
+                            fetchGroups({ ...storeFilters, type: "instagram" });
+                        }}
+                    >
+                        <p className="px-4 py-1.5 text-red-500 cursor-pointer">Really??</p>
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     const groupColumns = [
         {
             title: (GroupNameColumn),
             dataIndex: "name",
-            render: (text) => (
+            render: (text, record) => (
                 <div className="flex items-center space-x-2">
-                    <img src={GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
+                    <img src={record.post_image || GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{text}</span>
                 </div>
             ),
@@ -535,22 +543,29 @@ const IgProspecting = () => {
         {
             title: t("prospecting.Settings"),
             render: (_, record) => (
-                <Button
-                    icon={<SettingOutlined />}
-                    className="bg-blue-500 text-white px-3 py-1 rounded-md"
+                <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
                     onClick={() => handleOpenSettings(record.id)}
                 >
-                    {t("prospecting.Settings")}
-                </Button>
+                    <span>
+                        <SettingsIconWhite />
+                    </span>
+                    <span>
+                        {t("prospecting.Settings")}
+                    </span>
+                </button>
             ),
         },
         {
             title: t("prospecting.Send"),
             render: (_, record) => (
-                <Button
-                    icon={<SendOutlined />}
-                    className="bg-gray-200 px-3 py-1 rounded-md"
-                    onClick={() => handleOpenConfirmModal(record.id)} />
+                <button onClick={() => handleOpenConfirmModal(record.id)} className="cursor-pointer mt-1">
+                    {
+                        record.id?.toString() === primaryGroupId?.toString()
+                            ? <SendIconBlue />
+                            : <SendIconGray />
+                    }
+                </button>
             )
         },
         {
@@ -653,12 +668,25 @@ const IgProspecting = () => {
     }, [openDropdownKey]);
 
     useEffect(() => {
-        fetchGroups({ ...storeFilters, type: "instagram" } );
+        const savedGroupId = localStorage.getItem("selectedGroupId");
+        if (savedGroupId) {
+            setPrimaryGroupId(savedGroupId);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchGroups({ ...storeFilters, type: "instagram" });
     }, [storeFilters]);
 
     useEffect(() => {
         setFolders(prospect_folder);
     }, [setFolders, prospect_folder]);
+
+    useEffect(() => {
+        fetchKeywords({ page: 1, limit: 100 });
+        fetchMessages({ page: 1, limit: 200 });
+        fetchCRMGroups({ type: 'instagram' });
+    }, []);
 
     return (
         <Layout>
@@ -694,7 +722,7 @@ const IgProspecting = () => {
                                         </div>
                                     </button>
                                     <span className="ml-1 cursor-pointer" onClick={() => {
-                                        setFolderId(folder.id)
+                                        // setFolderId(folder.id)
                                         setFolderName(folder.folder_name)
                                         setOpenUpdateFolderModal(true)
                                     }}>
@@ -708,7 +736,7 @@ const IgProspecting = () => {
 
                         <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
-                    
+
                 </div>
                 <div className="flex items-center justify-between my-3 space-x-4">
                     <Input
@@ -782,6 +810,11 @@ const IgProspecting = () => {
                         onChange: handlePageChange,
                         showSizeChanger: false,
                     }}
+                    rowClassName={(record) =>
+                        record.id?.toString() === primaryGroupId?.toString()
+                            ? 'group-selected-row'
+                            : ''
+                    }
                     className="custom-table"
                     loading={loading}
                     current={storeFilters.page}
@@ -797,9 +830,11 @@ const IgProspecting = () => {
                         visible={modalOpen}
                         onClose={handleCloseModal}
                         groupId={primaryGroupId}
-                        socialType={socialType}
                         activeKey={activeKey}
                         setActiveKey={setActiveKey}
+                        keyWordList={keyWordList}
+                        CRMList={CRMList}
+                        tempMessageList={tempMessageList}
                     />
                 )}
 
@@ -809,6 +844,9 @@ const IgProspecting = () => {
                         onClose={handleCloseConfirmModal}
                         groupId={primaryGroupId}
                         handleOpenSettingsTab={handleOpenSettingsTab}
+                        keyWordList={keyWordList}
+                        CRMList={CRMList}
+                        tempMessageList={tempMessageList}
                     />
                 )}
 
@@ -828,6 +866,7 @@ const IgProspecting = () => {
                         visible={openUpdateFolderModal}
                         onClose={handleCloseUpdateFolderModal}
                         socialType={socialType}
+                        prospectFolder={prospect_folder}
                     />
                 )}
             </div>

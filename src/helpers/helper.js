@@ -120,3 +120,12 @@ export function formatDate(dateString) {
   
   return date.toLocaleDateString('en-US', options);
 }
+
+export function getCurrentMonthYear() {
+  const date = new Date();
+
+  return {
+    month: date.getMonth() + 1, // getMonth() returns 0-11, so add 1
+    year: date.getFullYear()
+  };
+}

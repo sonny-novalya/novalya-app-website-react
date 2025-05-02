@@ -20,8 +20,8 @@ const AdvOptions = ({ pro_convo, prospect, handleOpen }) => {
             <div className="flex justify-between border border-[#00000014] rounded-md p-4">
                 <div className="flex flex-col flex-1 space-y-2 pr-5">
                     <h3 className="font-medium">{t("prospecting.Retarget same user")}</h3>
-                    <p className="w-full text-center border border-[#00000014] rounded-md p-2">
-                        {t(`prospecting.${prospect.charAt(0).toUpperCase() + prospect.slice(1)}`)}
+                    <p className="w-full text-center border border-[#00000014] rounded-md p-2 capitalize">
+                        {prospect}
                     </p>
                 </div>
                 <div className="bg-[#00000014] w-[1px] mx-4"/>

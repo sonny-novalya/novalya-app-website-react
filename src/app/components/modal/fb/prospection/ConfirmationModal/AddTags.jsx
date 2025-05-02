@@ -41,8 +41,8 @@ const AddTags = ({ action = 'no', CRMList, handleOpen }) => {
       <div className="flex justify-between border border-[#00000014] rounded-md p-4">
         <div className="flex flex-col flex-1 pr-4 space-y-2">
           <h3 className="font-medium">{t("prospecting.Do you want to add a tag?")}</h3>
-          <p className="w-full text-center border border-[#00000014] rounded-md p-2">
-            {t(`prospecting.${actionType.charAt(0).toUpperCase() + actionType.slice(1)}`)}
+          <p className="w-full text-center border border-[#00000014] rounded-md p-2 capitalize">
+            {actionType}
           </p>
 
         </div>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { message, Modal } from "antd";
+import { message, Modal, Spin } from "antd";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { t } from "i18next";
@@ -11,20 +11,16 @@ import AdvOptions from "./AdvOptions";
 import AddTags from "./AddTags";
 
 import SettingStore from "../../../../../../store/prospection/settings-store";
-import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
-import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 
-const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId }) => {
-    const { prospection, fetchProspectionData, createSocialTarget, loading, updateProspection, fetchCRMGroups, CRMList } = SettingStore();
-    const { fetchKeywords, keyWordList } = useKeyWordStore();
-    const { tempMessageList, fetchMessages } = useMessageSteps();
+const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, postType, tempMessageList, keyWordList, CRMList }) => {
+    const { prospection, fetchProspectionData, createSocialTarget, loading: createSocialLoading, updateProspection, settingLoading } = SettingStore();
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
     const tabItems = [
         { label: t("prospecting.Select Message"), key: 1, children: <SelectMessage tempMessageList={tempMessageList} /> },
         { label: t("prospecting.Settings"), key: 2, children: <Settings isInstagram={isInstagram} /> },
-        ...(isInstagram ? [] : [{ label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} /> }]),
+        ...(isInstagram ? [] : [{ label: t("prospecting.Filters"), key: 3, children: <Filters keyWordList={keyWordList} postType={postType} /> }]),
         { label: t("prospecting.Advanced Options"), key: isInstagram ? 3 : 4, children: <AdvOptions /> },
         { label: t("prospecting.Add Tags"), key: isInstagram ? 4 : 5, children: <AddTags CRMList={CRMList} groupId={groupId} /> },
     ];
@@ -67,17 +63,18 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
     useEffect(() => {
         handleUpdateGroupId()
         const type = isInstagram ? 'instagram' : 'facebook'
-        fetchKeywords({ page: 1, limit: 100 });
         groupId && fetchProspectionData(type, groupId);
-        fetchMessages({ page: 1, limit: 200 });
-        fetchCRMGroups({ type });
     }, []);
-
 
     return (
         <Modal open={visible} onCancel={onClose} footer={null} width={1100} centered>
-            <div className="flex h-[calc(100vh-200px)] p-0">
+            <div className="flex h-[calc(100vh-200px)] p-0 relative">
                 {/* Left panel - Tabs */}
+                {settingLoading && (
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-full">
+                        <Spin size="large" />
+                    </div>
+                )}
                 <div className="w-1/4 rounded px-2 mt-7 flex flex-col justify-between">
                     <ul className="flex flex-col">
                         {tabItems.map((tab, index) => {
@@ -119,7 +116,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId 
                         disabled={activeKey !== tabItems.length}
                         onClick={handleSave}
                     >
-                        {loading ? t("prospecting.Saving") : t("prospecting.Save")}
+                        {createSocialLoading ? t("prospecting.Saving") : t("prospecting.Save")}
                     </button>
                 </div>
 
@@ -159,6 +156,10 @@ SettingsModal.propTypes = {
     groupId: PropTypes.any,
     activeKey: PropTypes.number,
     setActiveKey: PropTypes.func,
+    postType: PropTypes.string,
+    tempMessageList: PropTypes.any,
+    keyWordList: PropTypes.any,
+    CRMList: PropTypes.any,
 };
 
 export default SettingsModal;

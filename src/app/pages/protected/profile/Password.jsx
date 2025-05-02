@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import usePasswordStore from '../../../../store/profile/password-store';
 import { message } from 'antd';
-import { EyeFilled, EyeInvisibleFilled, EyeInvisibleTwoTone } from '@ant-design/icons';
+import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
+import useProfileStore from '../../../../store/profile/profile';
 
-const Password = () => {
+const Password = ({ userMail }) => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -11,7 +11,7 @@ const Password = () => {
     const [showNew, setShowNew] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
-    const { updatePassword, loading } = usePasswordStore();  
+    const { updatePassword, loading } = useProfileStore();  
 
     const handleSubmit = async () => {
         if (!oldPassword || !newPassword || !confirmPassword) {
@@ -31,7 +31,7 @@ const Password = () => {
     return (
         <div className="bg-white p-5 rounded-md rounded-tl-none shadow-md border border-[#0087FF33]">
             <p className="text-gray-600 text-[16px] mb-4">
-                <span className="font-semibold">Email :</span> Test.novalya.com
+                <span className="font-semibold">Email :</span> {userMail}
             </p>
 
             <div className="border border-[#DADADA] rounded-md p-6">

@@ -8,19 +8,16 @@ import useLoginUserDataStore from '../../../../store/loginuser/loginuserdata';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("Profile Page");
-  const { loginUserData,fetchLoginUserData } = useLoginUserDataStore();
-  console.log("loginUserData", loginUserData)
+  const { loginUserData, fetchLoginUserData, loading } = useLoginUserDataStore();
 
-  useEffect(()=>{
-    fetchLoginUserData({})
-  }, [])
-
+  if (!loginUserData) return 
+  
   const renderContent = () => {
     switch (activeTab) {
       case "Profile Page":
-        return <ProfileComponent />;
+        return <ProfileComponent loginUserData={loginUserData} userDataLoading={loading} />;
       case "Password":
-        return <Password />;
+        return <Password userMail={loginUserData?.email} />;
       case "Billing details":
         return <BillingDetails />;
       case "Invoice":
@@ -32,12 +29,16 @@ const Profile = () => {
 
   const tabs = ["Profile Page", "Password", "Billing details", "Invoice"];
 
+  useEffect(() => {
+    fetchLoginUserData({})
+  }, [])
+
   return (
     <Layout>
         <h3 className="text-[24px] font-[600] mb-5 pl-5 mt-1.5 tracking-[0.02em]">
           Profile
         </h3>
-        <div className='p-4 rounded-md bg-white h-full'>
+        <div className='p-4 rounded-md bg-white'>
 
           <div className="flex space-x-4 ">
             {tabs.map((tab, index) => {

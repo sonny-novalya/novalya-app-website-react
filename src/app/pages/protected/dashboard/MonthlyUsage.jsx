@@ -10,7 +10,7 @@ const MonthlyUsage = ({ data }) => {
                 <path d="M27.7578 2.50012L2.75781 10.8335L14.7369 15.521M27.7578 2.50012L19.4244 27.5001L14.7369 15.521M27.7578 2.50012L14.7369 15.521" stroke="#0087FF" stroke-width="2.91667" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>,
             label: t("dashboard.Messages"),
-            current: (data?.fbMessageLimit || 0) + (data?.igMessageLimit || 0),
+            current: (data?.fbMessageLimit || 0) + (data?.igMessageLimit || 0) > 2000 ? 2000 : (data?.fbMessageLimit || 0) + (data?.igMessageLimit || 0) ,
             total: 2000,
         },
         {
@@ -22,7 +22,7 @@ const MonthlyUsage = ({ data }) => {
             <path d="M10.8732 15.8465C10.8341 15.9836 10.6971 16.4924 10.5796 16.9818C10.1099 18.8216 9.20954 19.6828 7.2327 20.1721C6.64552 20.3287 6.17578 20.5636 6.17578 20.7006C6.17578 20.8376 6.70424 21.092 7.36971 21.2877C9.38569 21.8358 10.1099 22.6187 10.6775 24.7912C10.9711 25.946 11.2842 26.0048 11.5583 24.9674C12.2237 22.3642 12.7718 21.8554 16.0208 20.9746C16.5884 20.818 16.1578 20.5244 14.8465 20.1134C12.8305 19.5066 11.9693 18.5084 11.48 16.1401C11.343 15.5921 11.0298 15.4355 10.8732 15.8465Z" fill="#0087FF"/>
             </svg>,
             label: t("dashboard.AI Credits"),
-            current: data?.aiLimits || 0,
+            current: data?.aiLimits > 2000 ? 2000 : data?.aiLimits || 0,
             total: 2000,
         },
         {
@@ -31,7 +31,7 @@ const MonthlyUsage = ({ data }) => {
             </svg>
         ,
             label: t("dashboard.Tag + Pipeline"),
-            current: data?.tagsLimit || 0,
+            current: data?.tagsLimit > 2000 ? 2000 : data?.tagsLimit || 0,
             total: 2000,
         },
         {
@@ -50,7 +50,7 @@ const MonthlyUsage = ({ data }) => {
             </svg>
         ,
             label: t("dashboard.Contacts"),
-            current: data?.totalContactLimit || 0,
+            current: data?.totalContactLimit > 2000 ? 2000 : data?.totalContactLimit || 0,
             total: '∞',
         },
     ];

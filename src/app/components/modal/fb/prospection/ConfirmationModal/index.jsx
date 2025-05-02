@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal, Spin } from "antd";
 import PropTypes from "prop-types";
 import Settings from "./Settings";
 import Filters from "./Filters";
@@ -7,15 +7,11 @@ import AddTags from "./AddTags";
 import { t } from "i18next";
 import { useEffect } from "react";
 import SettingStore from "../../../../../../store/prospection/settings-store";
-import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
-import useKeyWordStore from "../../../../../../store/keyword/keywordStore";
 import { useLocation } from "react-router-dom";
 
-const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId }) => {
-    const { prospection, fetchProspectionData, fetchCRMGroups, CRMList } = SettingStore();
-    const { tempMessageList, fetchMessages } = useMessageSteps();
-    const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action } = prospection;
-    const { fetchKeywords, keyWordList } = useKeyWordStore();
+const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType, tempMessageList, keyWordList, CRMList }) => {
+    const { prospection, fetchProspectionData, settingLoading } = SettingStore();
+    const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action, post_target } = prospection;
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
@@ -26,10 +22,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId })
 
     useEffect(() => {
         const type = isInstagram ? 'instagram' : 'facebook'
-        fetchKeywords({ page: 1, limit: 100 });
         groupId && fetchProspectionData(type, groupId);
-        fetchMessages({ page: 1, limit: 200 });
-        fetchCRMGroups({ type });
     }, []);
 
     const messageTitle = tempMessageList.find((item) => item.id == message)?.title || t("prospecting.Message");
@@ -45,7 +38,12 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId })
             closeIcon={null}
             centered
         >
-            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto ">
+            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto relative">
+                {settingLoading && (
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-full">
+                        <Spin size="large" />
+                    </div>
+                )}
                 <h2 className="font-medium text-lg">{t("prospecting.Message Selected")}</h2>
                 <h3 className="border border-[#00000014] rounded-md p-4 text-[#0087FF] cursor-pointer" onClick={() => handleOpen(1)}>
                     {messageTitle}
@@ -57,7 +55,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId })
                     handleOpen={handleOpen}
                 />
                 {!isInstagram && (
-                    <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} />
+                    <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} postType={postType} postTarget={post_target} />
                 )}
                 <AdvOptions
                     prospect={prospect}
@@ -91,6 +89,10 @@ ConfirmationModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     handleOpenSettingsTab: PropTypes.func,
     groupId: PropTypes.string,
+    postType: PropTypes.string,
+    tempMessageList: PropTypes.any,
+    keyWordList: PropTypes.any,
+    CRMList: PropTypes.any,
 };
 
 export default ConfirmationModal;
