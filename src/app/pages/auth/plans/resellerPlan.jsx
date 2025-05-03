@@ -67,13 +67,6 @@ const PlansReseller = () => {
       setCurrency("$");
     }
 
- 
-   
-
- 
-
-
-
         const filteredPLans = allPlans.filter((plan)=>plan?.period_unit === isAnnual && plan?.currency_code === country)?.reverse()
         setPlan1(filteredPLans?.[0]);
         setPlan2(filteredPLans?.[1]);
