@@ -86,3 +86,20 @@ export function getCurrentMonthYear() {
     year: date.getFullYear()
   };
 }
+
+export function getSubdomain(url) {
+  const { hostname } = new URL(url.startsWith("http") ? url : "https://" + url);
+  const parts = hostname.split(".");
+
+  // Special case: localhost subdomains like nuskin.localhost
+  if (hostname.endsWith(".localhost") && parts.length > 1) {
+    return parts.slice(0, parts.length - 1).join(".");
+  }
+
+  // Regular domains (e.g., dev.novalya.com)
+  if (parts.length > 2) {
+    return parts.slice(0, parts.length - 2).join(".");
+  }
+
+  return null;
+}
