@@ -62,8 +62,8 @@ const SelectMessage = ({ tempMessageList, onComplete }) => {
     }, [selectedRow, onComplete]);
 
     useEffect(() => {
-        setSelectedRow(message ? message : (tempMessageList?.length > 0 ? tempMessageList[0].id : null));
-    }, [message, tempMessageList]);
+        setSelectedRow(message ? message  : null);
+    }, [message]);
 
     return (
         <div className="w-full h-full bg-white rounded-lg flex flex-col">
