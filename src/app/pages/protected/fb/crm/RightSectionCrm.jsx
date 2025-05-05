@@ -14,7 +14,7 @@ import TopbarRightSection from "./TopBarRightSection";
 import SendCampaignModal from "./SendCampaignModal";
 import MoveToStageModal from "./MoveToStageModal";
 import AddStageModal from "./AddStageModal";
-import NoteUserModal from "./NoteUserModal";
+import NoteUserModal from "./NoteUserModalNew";
 
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
