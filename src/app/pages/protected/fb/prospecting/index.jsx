@@ -659,17 +659,17 @@ const FbProspecting = () => {
 
     return (
         <Layout>
-            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Easily connect with new prospects")}</h2>
+            <h2 className="text-xl font-[500] mb-6">{t("prospecting.Easily connect with new prospects")}</h2>
             {/* <div class="nv-content-wrapper"></div> to display account syncing message */}
             <div className="nv-content-wrapper"></div> {/* to display account syncing message */}
-            <div className="bg-white p-2">
+            <div className="bg-white p-5 rounded-[16px]">
                 <div className="flex items-center justify-between ">
-                    <div className="space-x-2 overflow-x-auto max-w-full mb-2 flex">
+                    <div className="space-x-3 overflow-x-auto max-w-full flex">
                         {
                             buttonsData.map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
-                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#00519729] text-[#0087FF]"}`}
                                         onClick={() => {
                                             setFolderUpdateId(folder.id)
                                             handleFolderClick(folder.id)
@@ -686,7 +686,7 @@ const FbProspecting = () => {
                             [...(Array.isArray(folders) ? folders : [])].map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
-                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={` px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">
@@ -708,9 +708,9 @@ const FbProspecting = () => {
 
                         <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
-                    <Button id="Novalya-Multi-group" className="bg-blue-500 text-white px-4 py-2 rounded-md">{t("prospecting.Add new group")}</Button>
+                    <Button id="Novalya-Multi-group" className="bg-blue-500 !text-white rounded-md !bg-[#0087FF] text-white rounded-[10px] !px-8 !py-3 min-h-[45px]">{t("prospecting.Add new group")}</Button>
                 </div>
-                <div className="flex items-center justify-between my-3 space-x-4">
+                <div className="flex items-center justify-between my-5 space-x-4 ">
                     <Input
                         placeholder="Search groups"
                         prefix={<SearchOutlined />}
@@ -722,9 +722,9 @@ const FbProspecting = () => {
                                 search_grp: e.target.value
                             });
                         }}
-                        className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
+                        className="w-1/3 px-3 py-2 !rounded-[4px] border border-[#CCCDCD] min-h-[44px] ctm-search"
                     />
-                    <Dropdown
+                    <Dropdown className=""
                         trigger={['click']}
                         overlay={
                             <Menu>
@@ -766,7 +766,11 @@ const FbProspecting = () => {
                             </Menu>
                         }
                     >
-                        <Button icon={<FilterOutlined />}>
+                        <Button className="!text-[16px] !rounded-[4px] !p-2.5 min-h-[44px] min-w-[155px] !text-[#808183] !justify-start" 
+                            >
+                            <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.33333 10.8203H4.66667C5.125 10.8203 5.5 10.4453 5.5 9.98698C5.5 9.52865 5.125 9.15365 4.66667 9.15365H1.33333C0.875 9.15365 0.5 9.52865 0.5 9.98698C0.5 10.4453 0.875 10.8203 1.33333 10.8203ZM0.5 1.65365C0.5 2.11198 0.875 2.48698 1.33333 2.48698H14.6667C15.125 2.48698 15.5 2.11198 15.5 1.65365C15.5 1.19531 15.125 0.820312 14.6667 0.820312H1.33333C0.875 0.820312 0.5 1.19531 0.5 1.65365ZM1.33333 6.65365H9.66667C10.125 6.65365 10.5 6.27865 10.5 5.82031C10.5 5.36198 10.125 4.98698 9.66667 4.98698H1.33333C0.875 4.98698 0.5 5.36198 0.5 5.82031C0.5 6.27865 0.875 6.65365 1.33333 6.65365Z" fill="black"/>
+                            </svg>
                             {selectedSortLabel}
                         </Button>
                     </Dropdown>

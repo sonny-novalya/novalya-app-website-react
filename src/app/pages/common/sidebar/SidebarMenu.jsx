@@ -152,7 +152,7 @@ const SidebarMenu = () => {
                         ? <>
                             <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-4`}>
                                 <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-12`} />
-                                <button onClick={toggleSidebar} className="absolute top-12 -right-3 z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 rotate-180`}>
                                         <CollapsedLeftIcon />
                                     </div>
@@ -231,7 +231,7 @@ const SidebarMenu = () => {
                             <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-7 relative`}>
                                 <img src={NovalyaBlueLogo} alt="logo" className={`mx-auto w-full max-w-[186px] object-contain h-12`} />
                                 
-                                <button onClick={toggleSidebar} className="absolute top-16 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 `}>
                                         <CollapsedLeftIcon />
                                     </div>
@@ -244,18 +244,18 @@ const SidebarMenu = () => {
                                     const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
 
                                     return (
-                                        <div key={item.id} className="w-full mb-2">
+                                        <div key={item.id} className="w-full mb-2 ">
                                             {item.subNav ? (
                                                 <>
                                                     <button
 
-                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
+                                                        className={`w-full rounded-[8px] px-4 py-3 flex justify-between items-center  ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
                                                         onClick={(e) => toggleSubNav(e, item.id)}
                                                     >
                                                         <div className="flex items-center space-x-5">
-                                                            <span className="h-6 w-6 flex items-enter justify-center">{item.icon}</span>
+                                                            <span className="sidebar-icons h-6 w-6 flex items-enter justify-center">{item.icon}</span>
                                                             {!collapsed && (
-                                                                <span className="capitalize text-black/55">{item.text}</span>
+                                                                <span className="capitalize text-black/45">{item.text}</span>
                                                             )}
                                                         </div>
                                                         {!collapsed && (
@@ -265,7 +265,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                     {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-4 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
+                                                        <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-2 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
                                                             {item.subNav.map((subItem) => (
                                                                 <SidebarItem 
                                                                     key={subItem.id}
@@ -289,13 +289,13 @@ const SidebarMenu = () => {
                                     );
                                 })}
                             </div>
-                            <div className="mt-auto flex flex-col items-center justify-center px-4  gap-[20px] mb-2 border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
+                            <div className="mt-auto flex flex-col items-center justify-center px-4 gap-[8px] border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
                                 <div className="w-full mb-0 sidebar-lang">
-                                    <LocalizationOptions />
+                                    <span><LocalizationOptions /></span>
                                 </div>
-                                <div className="flex gap-5 items-center w-full px-2 mt-1 mb-2">
-                                    <UpgradeProIcon />
-                                    <span className="text-base text-[#00000073]">Upgrade To Pro</span>
+                                <div className="flex gap-5 items-center w-full px-3 mt-1 mb-2">
+                                <span className="sidebar-icons h-6 w-6 flex items-enter justify-center"><UpgradeProIcon /></span>
+                                    Upgrade To Pro
                                 </div>
                                 <div className="flex space-x-3 items-center w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
                                     {userData?.url ? (
@@ -306,7 +306,7 @@ const SidebarMenu = () => {
                                         </div>
                                     )}
                                     <div className="flex flex-col text-sm">
-                                        <span className="text-[24px] font-[500]">{userData?.name}</span>
+                                        <span className="text-[24px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
                                         <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
                                     </div>
                                 </div>
