@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom';
 import usefbCRM from '../../../../../../store/fb/fbCRM';
 import tagImg from '../../../../../../assets/img/visibitlityTag.png';
+import { rgbToHex } from '../../../../../../helpers/rgbToHex';
 
 const ListPanel = () => {
     const location = useLocation()
@@ -101,6 +102,7 @@ const ListPanel = () => {
         list.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+
     return (
         <div className="bg-white rounded-lg shadow-md p-6 w-full h-full flex flex-col">
             <div className="mb-6 flex items-center justify-center space-x-10 bg-[#F5F5F5] border border-[#DCDCDC] rounded-[10px] py-3">
@@ -113,18 +115,20 @@ const ListPanel = () => {
                 <div className="flex justify-between items-center">
                     <div className="w-full">
                         <select
-                            className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                            className="w-full border border-gray-300 rounded px-3 py-2 text-sm truncate max-w-[200px] overflow-hidden"
                             value={mainListSelection}
                             onChange={handleMainListSelection}
+                            title={CRMList.find(item => item.id === mainListSelection)?.name || ''}
                         >
                             <option value="">Select Tag</option>
                             {CRMList && CRMList.map(list => (
-                                <option key={list.id} value={list.id}>
+                                <option key={list.id} value={list.id} className='max-w-[200px] truncate'>
                                     {list.name}
                                 </option>
                             ))}
                         </select>
                     </div>
+
                 </div>
             </div>
 
@@ -150,30 +154,50 @@ const ListPanel = () => {
                 {fbCRMLoading ? (
                     <div className="text-center py-4">Loading lists...</div>
                 ) : (
-                    <div className="space-y-2 flex-grow h-[calc(100vh-290px)] overflow-y-auto border border-gray-200 rounded-b-md mt-2 px-3">
+                    <div className="space-y-2 flex-grow h-[calc(100vh-290px)] overflow-y-auto border border-gray-200 rounded-b-md mt-2 px-4">
                         {filteredLists && filteredLists.map((list) => {
-                            // Get current selected stage for this list
                             const selectedStageId = selectedStages[list.id];
                             const selectedStage = list.stage && list.stage.find(s => s.id === selectedStageId);
-
                             return (
-                                <div key={list.id} className="flex items-center border border-gray-200 h-8 rounded-sm">
+                                <div key={list.id} className={`flex items-center h-8 rounded-sm border-2 mt-3 $`}
+                                    style={{
+                                        borderColor: selectedLists.includes(list.id)
+                                            ? rgbToHex(list.custom_color)
+                                            : '#e5e7eb', 
+                                    }}>
                                     <div
                                         className="w-8 h-8 flex items-center justify-center z-10 rounded-l-sm"
                                         style={getColorStyle(list.custom_color)}
                                     >
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedLists.includes(list.id)}
-                                            onChange={() => toggleList(list.id)}
-                                            className="h-4 w-4 rounded"
-                                        />
+                                        <div
+                                            className="h-4 w-4 flex items-center justify-center border rounded-sm cursor-pointer"
+                                            style={{
+                                                backgroundColor: '#ffffff', 
+                                                borderColor: rgbToHex(list.custom_color),
+                                            }}
+                                            onClick={() => toggleList(list.id)}
+                                        >
+                                            {selectedLists.includes(list.id) && (
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="w-3 h-3"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke={rgbToHex(list.custom_color)}
+                                                    strokeWidth={3}
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            )}
+                                        </div>
+
+
                                     </div>
                                     <div className='w-4 h-4 rotate-45 transform relative right-2.5' style={getColorStyle(list.custom_color)}>
 
                                     </div>
                                     <div className="flex-grow flex items-center justify-between ml-2">
-                                        <div className="text-sm font-medium">
+                                        <div className="text-sm font-medium max-w-[200px] truncate">
                                             {list.name}
                                         </div>
                                         <div className="flex items-center justify-between">
@@ -199,18 +223,20 @@ const ListPanel = () => {
                                                         {list.stage.map((stage, index) => (
                                                             <div
                                                                 key={stage.id}
-                                                                className={`px-3 py-2 text-xs cursor-pointer flex items-center ${selectedStageId === stage.id
+                                                                className={`px-3 py-2 text-xs cursor-pointer flex items-center justify-between ${selectedStageId === stage.id
                                                                     ? 'bg-blue-500 text-white'
                                                                     : 'hover:bg-gray-100'
                                                                     }`}
                                                                 onClick={() => selectStage(list.id, stage.id, stage.name)}
                                                             >
-                                                                {selectedStageId === stage.id && (
+                                                                Stage {index + 1}
+                                                                <span>
+                                                                    {selectedStageId === stage.id && (
                                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                                                     </svg>
                                                                 )}
-                                                                Stage {index + 1}
+                                                                </span>
                                                             </div>
                                                         ))}
                                                     </div>
