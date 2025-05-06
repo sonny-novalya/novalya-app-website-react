@@ -29,6 +29,12 @@ const Plans = () => {
   const [plan3, setPlan3] = useState({amount_2:0,amount_1:0});
   const [allPlans] = useState(Terms)
   const [currency, setCurrency] = useState("");
+  const searchParams = new URLSearchParams(window.location.search);
+  const referralId = searchParams.get("ref") ||  searchParams.get("uname") 
+  if (referralId) {
+    localStorage.setItem("referralId",referralId)
+  }
+
  
  
   //  const searchParams = new URLSearchParams(window.location.search);
@@ -87,8 +93,8 @@ const Plans = () => {
 
   const handleBuyNow = (planId) => {
     localStorage.setItem("planId", planId);
-	localStorage.setItem("fromOffers", "false");
-	localStorage.setItem("backto", "/plans");
+	  localStorage.setItem("fromOffers", "false");
+	  localStorage.setItem("backto", "/plans");
 
     navigate("/signup");
     window.dataLayer.push({ event: "Abonnement" });
