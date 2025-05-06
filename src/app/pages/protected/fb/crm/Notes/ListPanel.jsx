@@ -115,18 +115,20 @@ const ListPanel = () => {
                 <div className="flex justify-between items-center">
                     <div className="w-full">
                         <select
-                            className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                            className="w-full border border-gray-300 rounded px-3 py-2 text-sm truncate max-w-[200px] overflow-hidden"
                             value={mainListSelection}
                             onChange={handleMainListSelection}
+                            title={CRMList.find(item => item.id === mainListSelection)?.name || ''}
                         >
                             <option value="">Select Tag</option>
                             {CRMList && CRMList.map(list => (
-                                <option key={list.id} value={list.id}>
+                                <option key={list.id} value={list.id} className='max-w-[200px] truncate'>
                                     {list.name}
                                 </option>
                             ))}
                         </select>
                     </div>
+
                 </div>
             </div>
 
@@ -154,18 +156,14 @@ const ListPanel = () => {
                 ) : (
                     <div className="space-y-2 flex-grow h-[calc(100vh-290px)] overflow-y-auto border border-gray-200 rounded-b-md mt-2 px-4">
                         {filteredLists && filteredLists.map((list) => {
-                            // Get current selected stage for this list
                             const selectedStageId = selectedStages[list.id];
                             const selectedStage = list.stage && list.stage.find(s => s.id === selectedStageId);
-
-                            console.log("list.custom_color", rgbToHex(list.custom_color))
-
                             return (
                                 <div key={list.id} className={`flex items-center h-8 rounded-sm border-2 mt-3 $`}
                                     style={{
                                         borderColor: selectedLists.includes(list.id)
                                             ? rgbToHex(list.custom_color)
-                                            : '#e5e7eb', // gray-200 hex
+                                            : '#e5e7eb', 
                                     }}>
                                     <div
                                         className="w-8 h-8 flex items-center justify-center z-10 rounded-l-sm"
@@ -174,7 +172,7 @@ const ListPanel = () => {
                                         <div
                                             className="h-4 w-4 flex items-center justify-center border rounded-sm cursor-pointer"
                                             style={{
-                                                backgroundColor: '#ffffff', // Always white background
+                                                backgroundColor: '#ffffff', 
                                                 borderColor: rgbToHex(list.custom_color),
                                             }}
                                             onClick={() => toggleList(list.id)}
@@ -199,7 +197,7 @@ const ListPanel = () => {
 
                                     </div>
                                     <div className="flex-grow flex items-center justify-between ml-2">
-                                        <div className="text-sm font-medium">
+                                        <div className="text-sm font-medium max-w-[200px] truncate">
                                             {list.name}
                                         </div>
                                         <div className="flex items-center justify-between">

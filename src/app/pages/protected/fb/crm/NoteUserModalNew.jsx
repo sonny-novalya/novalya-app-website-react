@@ -4,11 +4,13 @@ import { Modal, } from "antd";
 import NotesSection from './Notes/NotesSection';
 import ListPanel from './Notes/ListPanel';
 import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
+import { useLocation } from "react-router-dom";
 
-const NoteUserModal = ({ visible, onCancel }) => {
+const NoteUserModal = ({ visible, onCancel, lead }) => {
+
     const [userInfo, setUserInfo] = useState({
-        firstName: "John",
-        lastName: "Doe",
+        firstName: "",
+        lastName: "",
         email: "",
         phone: "",
         profession: "",
@@ -24,6 +26,14 @@ const NoteUserModal = ({ visible, onCancel }) => {
         note: ""
     });
 
+    const location = useLocation()
+    const [activeNoteEditDropdown, setActiveNoteEditDropdown] = useState(null);
+    const [notesData, setNotesData] = useState({ note: '' });
+    const isInstagram = location.pathname.split('/')[1] === 'ig'
+    const user_name = isInstagram ? lead.ig_name : lead.fb_name
+
+    const noteEditdropdownRefs = useRef([]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserInfo({ ...userInfo, [name]: value });
@@ -38,9 +48,6 @@ const NoteUserModal = ({ visible, onCancel }) => {
             }
         });
     };
-
-    const [activeNoteEditDropdown, setActiveNoteEditDropdown] = useState(null);
-    const noteEditdropdownRefs = useRef([]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -73,8 +80,6 @@ const NoteUserModal = ({ visible, onCancel }) => {
         }
     ]);
 
-    const [notesData, setNotesData] = useState({ note: '' });
-
 
     const handleAddNote = () => {
         if (!notesData.note.trim()) return;
@@ -105,7 +110,7 @@ const NoteUserModal = ({ visible, onCancel }) => {
                 <div className="bg-white rounded-lg shadow-md w-full px-6 flex flex-col overflow-y-auto">
                     <div className="flex justify-between items-center mb-6 relative">
                         <h2 className="text-lg font-medium">
-                            Note for {userInfo.firstName} {userInfo.lastName}
+                            Note for {user_name}
                         </h2>
 
                         <div className="relative flex items-center">
@@ -229,7 +234,7 @@ const NoteUserModal = ({ visible, onCancel }) => {
                                 />
                                 <button
                                     onClick={handleAddNote}
-                                    className="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center"
+                                    className="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer"
                                     title="Add Note"
                                 >
                                     <svg
