@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { Modal, } from "antd";
 import NotesSection from './Notes/NotesSection';
 import ListPanel from './Notes/ListPanel';
-import { DeleteFillIcon, DeleteGreyIcon, EditIcon, EditIconSquaredIcon, MessengerIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
-import { DeleteColumnOutlined, DeleteOutlined, DeleteTwoTone, SyncOutlined, UserDeleteOutlined } from '@ant-design/icons';
+import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
 
 const NoteUserModal = ({ visible, onCancel }) => {
     const [userInfo, setUserInfo] = useState({
@@ -92,10 +91,6 @@ const NoteUserModal = ({ visible, onCancel }) => {
         setNotesData({ note: '' }); // Clear input
     };
 
-    const handleNoteChange = (e) => {
-        setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
-    };
-
     return (
         <Modal
             open={visible}
@@ -139,7 +134,6 @@ const NoteUserModal = ({ visible, onCancel }) => {
                             )}
                         </div>
                     </div>
-
 
                     <div className="grid grid-cols-2 gap-4 mb-4">
                         <div>
@@ -249,9 +243,7 @@ const NoteUserModal = ({ visible, onCancel }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                                     </svg>
                                 </button>
-
                             </div>
-
                         </div>
 
                         <div className="">
@@ -287,8 +279,6 @@ const NoteUserModal = ({ visible, onCancel }) => {
                                                 </button>
                                             </div>
                                         )}
-
-
                                     </div>
                                 ))}
                             </div>
