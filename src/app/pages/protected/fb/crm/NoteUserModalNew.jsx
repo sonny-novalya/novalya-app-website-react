@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from "prop-types";
-import { Modal, } from "antd";
-import NotesSection from './Notes/NotesSection';
+import { message, Modal, } from "antd";
 import ListPanel from './Notes/ListPanel';
 import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
 import { useLocation } from "react-router-dom";
+import useFbNoteStore from '../../../../../store/notes/fbNoteStore';
+import { dateFormat } from '../../../../../helpers/dateFormat';
+import SocialsSection from './Notes/SocialsSection';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
+    const { createFbNote, noteResponse, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -28,6 +31,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
     const location = useLocation()
     const [activeNoteEditDropdown, setActiveNoteEditDropdown] = useState(null);
+    const [noteDeletedData, setNoteDeletedData] = useState({});
     const [notesData, setNotesData] = useState({ note: '' });
     const isInstagram = location.pathname.split('/')[1] === 'ig'
     const user_name = isInstagram ? lead.ig_name : lead.fb_name
@@ -40,14 +44,109 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     const handleSocialChange = (platform, value) => {
-        setUserInfo({
-            ...userInfo,
+        console.log("userInfo.socials", userInfo.socials)
+        setUserInfo(prev => ({
+            ...prev,
             socials: {
-                ...userInfo.socials,
+                ...prev.socials,
                 [platform]: value
             }
-        });
+        }));
     };
+
+    const handleDeleteNote = async (noteDeletedData) => {
+        const res = await deleteUserNote(noteDeletedData);
+        if (res) {
+            message.success("Note deleted successfully");
+            const { id } = noteDeletedData; 
+            setNotes(prev => prev.filter(note => note?.id !== id));
+        }
+    };
+
+
+    useEffect(()=>{
+        getFbNotes(lead?.fb_user_id)
+    }, [])
+
+    useEffect(() => {
+        if (fetchedNotes) {
+            setUserInfo({
+                firstName: fetchedNotes.first_name || '',
+                lastName: fetchedNotes.last_name || '',
+                email: fetchedNotes.email || '',
+                phone: fetchedNotes.phone || '',
+                profession: fetchedNotes.profession || '',
+                bio: fetchedNotes.short_description || '',
+                socials: fetchedNotes.Socials ? JSON.parse(fetchedNotes.Socials) : {
+                    website: '',
+                    facebook: '',
+                    instagram: '',
+                    twitter: '',
+                    linkedin: '',
+                    youtube: ''
+                },
+                note: ''
+            });
+
+            if (Array.isArray(fetchedNotes.noteHistories)) {
+                const historyNotes = fetchedNotes.noteHistories.map((item) => ({
+                    id: item.id,
+                    text: item.description || '',
+                    date: dateFormat(item.updatedAt) || '',
+                    notes_id: item.notes_id || '',
+                }));
+
+                setNotes(historyNotes);
+            }
+        }
+    }, [fetchedNotes]);
+
+    const handleAddNote = async () => {
+        if (!notesData.note.trim()){
+            setNotes([ ...notes]);
+        } else{
+            const newNote = {
+                id: 0,
+                text: notesData.note.trim(),
+            };
+            setNotes([newNote, ...notes])
+            setNotesData({ note: '' });
+        }
+
+
+        const payload = {
+            first_name: userInfo.firstName || lead.first_name || '',
+            last_name: userInfo.lastName || lead.last_name || '',
+            fb_name: lead.fb_name || '',
+            email: userInfo.email || '',
+            phone: userInfo.phone || '',
+            profession: userInfo.profession || '',
+            profile_pic: lead.profile_pic || '',
+            short_description: userInfo.bio || '',
+            Socials: JSON.stringify(userInfo.socials),
+            notes_history: [notesData.note],
+            is_primary: lead.tag_id || lead.is_primary || '',
+            selected_tag_stage_ids: [
+                {
+                    tag_id: lead.tag_id || lead.is_primary || '',
+                    stage_id: lead.stage_id || '',
+                }
+            ],
+            fb_user_id: lead.fb_user_id || '',
+            fb_alpha_numeric_id: lead.numeric_fb_id || '',
+            fb_e2ee_id: lead.fb_user_e2ee_id || null,
+            is_e2ee: lead.is_e2ee || 0
+        };
+
+        const msg = await createFbNote({ data: payload });
+ 
+        message.success("Note Update Successfully")
+        getFbNotes(lead?.fb_user_id)
+        if (!msg) {
+            console.error("Note creation failed");
+        }
+    };
+
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -64,37 +163,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [activeNoteEditDropdown]);
 
-
-    const [notes, setNotes] = useState([
-        {
-            id: 1,
-            text: "John needs to discuss the product purchase and pricing with other members.",
-            date: "01 May 2025",
-            time: "11:40"
-        },
-        {
-            id: 2,
-            text: "John joined the Group Import In revamp and tested manually.",
-            date: "04 May 2025",
-            time: "12:48"
-        }
-    ]);
-
-
-    const handleAddNote = () => {
-        if (!notesData.note.trim()) return;
-
-        const now = new Date();
-        const newNote = {
-            id: notes.length + 1,
-            text: notesData.note.trim(),
-            date: now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-            time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
-        };
-
-        setNotes([newNote, ...notes]);
-        setNotesData({ note: '' }); // Clear input
-    };
+    const [notes, setNotes] = useState([]);
 
     return (
         <Modal
@@ -216,7 +285,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                     </div>
 
                     <div className="mb-4">
-                        <NotesSection handleSocialChange={handleSocialChange} />
+                        <SocialsSection 
+                            socials={userInfo.socials}
+                            handleSocialChange={handleSocialChange} 
+                        />
                     </div>
 
                     <div className="px-4 py-3 border border-[#DADADA] rounded-md mb-4">
@@ -232,42 +304,31 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                     placeholder="Write your Note"
                                     className="w-full border border-gray-300 rounded px-3 py-2 h-8 text-sm"
                                 />
-                                <button
-                                    onClick={handleAddNote}
-                                    className="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                                    title="Add Note"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="2"
-                                        stroke="currentColor"
-                                        className="w-5 h-5"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
                             </div>
                         </div>
 
                         <div className="">
                             <label className="block text-sm font-medium mb-1">Notes History</label>
                             <div className="space-y-2 max-h-20 overflow-y-auto pr-1">
-                                {notes.map((note, index) => (
-                                    <div
-                                        key={note.id}
+                                {notes.map((note, index) => {
+                                    return <div
+                                        key={note?.id}
                                         className="bg-gray-100 p-3 rounded flex justify-between items-start relative"
                                     >
                                         <div className="text-xs text-[#00000099]">
                                             <div>{note.text}</div>
                                             <div className="text-[10px] text-[#00000066] mt-1 flex gap-3">
                                                 <span>{note.date}</span>
-                                                <span>{note.time}</span>
                                             </div>
                                         </div>
 
-                                        <div className="mt-1 cursor-pointer" onClick={() => setActiveNoteEditDropdown(activeNoteEditDropdown === index ? null : index)}>
+                                        <div className="mt-1 cursor-pointer" onClick={() => {
+                                            setNoteDeletedData({
+                                                id: note?.id,
+                                                notes_id: note?.notes_id
+                                            })
+                                            setActiveNoteEditDropdown(activeNoteEditDropdown === index ? null : index)
+                                        }}>
                                             <TripleDotIcon />
                                         </div>
 
@@ -279,13 +340,13 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                                 <button className="text-gray-600 hover:text-blue-500 text-sm">
                                                     <EditIcon />
                                                 </button>
-                                                <button className="text-gray-600 hover:text-red-500 text-sm">
+                                                <button className="text-gray-600 hover:text-red-500 text-sm" onClick={() => handleDeleteNote(noteDeletedData)}>
                                                     <DeleteGreyIcon />
                                                 </button>
                                             </div>
                                         )}
                                     </div>
-                                ))}
+                                })}
                             </div>
                         </div>
                     </div>
@@ -294,7 +355,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                         <button className="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium cursor-pointer">
                             Cancel
                         </button>
-                        <button className="px-6 py-2 rounded-lg bg-green-500 text-white font-medium cursor-pointer">
+                        <button className="px-6 py-2 rounded-lg bg-green-500 text-white font-medium cursor-pointer" onClick={handleAddNote}>
                             Update
                         </button>
                     </div>
