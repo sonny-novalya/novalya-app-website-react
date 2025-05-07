@@ -9,7 +9,7 @@ import { dateFormat } from '../../../../../helpers/dateFormat';
 import SocialsSection from './Notes/SocialsSection';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
-    const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
+    const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote, editUserNote } = useFbNoteStore();
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -33,6 +33,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     const [activeNoteEditDropdown, setActiveNoteEditDropdown] = useState(null);
     const [noteDeletedData, setNoteDeletedData] = useState({});
     const [notesData, setNotesData] = useState({ note: '' });
+    const [editingNote, setEditingNote] = useState(null);
     const isInstagram = location.pathname.split('/')[1] === 'ig'
     const user_name = isInstagram ? lead.ig_name : lead.fb_name
     const [selectedTag, setSelectedTag] = useState({
@@ -62,13 +63,23 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         const res = await deleteUserNote(noteDeletedData);
         if (res) {
             message.success("Note deleted successfully");
-            const { id } = noteDeletedData; 
+            const { id } = noteDeletedData;
             setNotes(prev => prev.filter(note => note?.id !== id));
         }
     };
 
+    const handleEditNote = (note) => {
+        setEditingNote(note);
+        setNotesData({ note: note.text });
+        setActiveNoteEditDropdown(null);
+    };
 
-    useEffect(()=>{
+    const cancelEditing = () => {
+        setEditingNote(null);
+        setNotesData({ note: '' });
+    };
+
+    useEffect(() => {
         getFbNotes(lead?.fb_user_id)
     }, [])
 
@@ -106,49 +117,85 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     }, [fetchedNotes]);
 
     const handleAddNote = async () => {
-        if (!notesData.note.trim()){
-            setNotes([ ...notes]);
-        } else{
+        if (!notesData.note.trim()) {
+            message.info("Please enter note text");
+            return;
+        }
+
+        if (editingNote) {
+            const updatedNotes = notes.map(note =>
+                note.id === editingNote.id
+                    ? { ...note, text: notesData.note.trim() }
+                    : note
+            );
+            setNotes(updatedNotes);
+
+            const payload = {
+                note_id: editingNote.notes_id,
+                description: notesData.note.trim(),
+                id: editingNote.id
+            };
+
+            const res = await editUserNote(payload);
+            if (res) {
+                message.success("Note updated successfully");
+                setEditingNote(null);
+                setNotesData({ note: '' });
+                getFbNotes(lead?.fb_user_id);
+            }
+        } else {
             const newNote = {
                 id: 0,
-                text: notesData.note.trim(),
+                discription: notesData.note.trim(),
             };
-            setNotes([newNote, ...notes])
-            setNotesData({ note: '' });
-        }
+            setNotes(prevNotes => [newNote, ...prevNotes]);
+            const notesList = notes.map((item) => ({
+                id: item.id,
+                discription: item.text,  // make sure `item.text` exists
+            }));
 
+            const notes_history = [newNote, ...notesList];
 
-        const payload = {
-            first_name: userInfo.firstName || lead.first_name || '',
-            last_name: userInfo.lastName || lead.last_name || '',
-            fb_name: lead.fb_name || '',
-            email: userInfo.email || '',
-            phone: userInfo.phone || '',
-            profession: userInfo.profession || '',
-            profile_pic: lead.profile_pic || '',
-            short_description: userInfo.bio || '',
-            Socials: JSON.stringify(userInfo.socials),
-            notes_history: [notesData.note],
-            is_primary: selectedTag.tag_id || '',
-            selected_tag_stage_ids: [
-                {
-                    tag_id: selectedTag.tag_id || '',
-                    stage_id: selectedTag.stage_id || '',
+            const payload = {
+                first_name: userInfo.firstName || lead.first_name || '',
+                last_name: userInfo.lastName || lead.last_name || '',
+                fb_name: lead.fb_name || '',
+                email: userInfo.email || '',
+                phone: userInfo.phone || '',
+                profession: userInfo.profession || '',
+                profile_pic: lead.profile_pic || '',
+                short_description: userInfo.bio || '',
+                Socials: JSON.stringify(userInfo.socials),
+                notes_history: notes_history,
+                is_primary: selectedTag.tag_id || '',
+                selected_tag_stage_ids: [
+                    {
+                        tag_id: selectedTag.tag_id || '',
+                        stage_id: selectedTag.stage_id || '',
+                    }
+                ],
+                fb_user_id: lead.fb_user_id || '',
+                fb_alpha_numeric_id: lead.numeric_fb_id || '',
+                fb_e2ee_id: lead.fb_user_e2ee_id || null,
+                is_e2ee: lead.is_e2ee || 0
+            };
+
+            try {
+                const msg = await createFbNote({ data: payload });
+
+                if (msg) {
+                    message.success("Note Added Successfully");
+                    getFbNotes(lead?.fb_user_id);
                 }
-            ],
-            fb_user_id: lead.fb_user_id || '',
-            fb_alpha_numeric_id: lead.numeric_fb_id || '',
-            fb_e2ee_id: lead.fb_user_e2ee_id || null,
-            is_e2ee: lead.is_e2ee || 0
-        };
-
-        const msg = await createFbNote({ data: payload });
- 
-        message.success("Note Update Successfully")
-        getFbNotes(lead?.fb_user_id)
-        if (!msg) {
-            console.error("Note creation failed");
+            } catch (error) {
+                message.error("Failed to add note");
+                console.error("Note creation failed:", error);
+                // Remove the optimistically added note if the API call fails
+                setNotes(prevNotes => prevNotes.filter(note => note.id !== 0 || note.text !== newNote.text));
+            }
         }
+
+        setNotesData({ note: '' });
     };
 
 
@@ -289,25 +336,34 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                     </div>
 
                     <div className="mb-4">
-                        <SocialsSection 
+                        <SocialsSection
                             socials={userInfo.socials}
-                            handleSocialChange={handleSocialChange} 
+                            handleSocialChange={handleSocialChange}
                         />
                     </div>
 
                     <div className="px-4 py-3 border border-[#DADADA] rounded-md mb-4">
                         <div className="flex-grow mb-3">
                             <label className="block text-sm font-medium mb-1">
-                                New Note <span className="text-gray-400">ⓘ</span>
+                                {editingNote ? "Edit Note" : "New Note"} <span className="text-gray-400">ⓘ</span>
                             </label>
-                            <div className="flex items-center gap-2 mb-3">
+                            <div className="relative w-full mb-3">
                                 <input
                                     name="note"
                                     value={notesData.note}
                                     onChange={(e) => setNotesData({ ...notesData, note: e.target.value })}
-                                    placeholder="Write your Note"
-                                    className="w-full border border-gray-300 rounded px-3 py-2 h-8 text-sm"
+                                    placeholder={editingNote ? "Edit your note" : "Write your Note"}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 h-8 text-sm pr-8" 
                                 />
+                                {editingNote && (
+                                    <button
+                                        type="button"
+                                        onClick={cancelEditing}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 cursor-pointer"
+                                    >
+                                        ✕
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -341,10 +397,16 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                                 ref={(el) => (noteEditdropdownRefs.current[index] = el)}
                                                 className="absolute top-6 right-0 bg-white border border-gray-300 px-2 py-1 rounded shadow flex space-x-2 z-20 h-8"
                                             >
-                                                <button className="text-gray-600 hover:text-blue-500 text-sm">
+                                                <button
+                                                    className="text-gray-600 hover:text-blue-500 text-sm"
+                                                    onClick={() => handleEditNote(note)}
+                                                >
                                                     <EditIcon />
                                                 </button>
-                                                <button className="text-gray-600 hover:text-red-500 text-sm" onClick={() => handleDeleteNote(noteDeletedData)}>
+                                                <button
+                                                    className="text-gray-600 hover:text-red-500 text-sm"
+                                                    onClick={() => handleDeleteNote(noteDeletedData)}
+                                                >
                                                     <DeleteGreyIcon />
                                                 </button>
                                             </div>
@@ -356,11 +418,17 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                     </div>
 
                     <div className="flex justify-center space-x-3 mb-4">
-                        <button className="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium cursor-pointer">
+                        <button
+                            className="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium cursor-pointer"
+                            onClick={onCancel}
+                        >
                             Cancel
                         </button>
-                        <button className="px-6 py-2 rounded-lg bg-green-500 text-white font-medium cursor-pointer" onClick={handleAddNote}>
-                            Update
+                        <button
+                            className="px-6 py-2 rounded-lg bg-green-500 text-white font-medium cursor-pointer"
+                            onClick={handleAddNote}
+                        >
+                            {editingNote ? "Update Note" : "Update"}
                         </button>
                     </div>
                 </div>
