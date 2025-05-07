@@ -132,7 +132,7 @@ const SortableItem = ({
         </div>
         <div className="flex flex-col items-center w-full">
           <div className="flex items-center justify-between w-full">
-            <span className="capitalize">{group.name}</span>
+            <span className="capitalize max-w-36 truncate">{group.name}</span>
           </div>
           <div className="flex items-center justify-between w-full">
             {/* <span className="text-sm text-gray-600">20 leads</span> */}
