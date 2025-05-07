@@ -317,7 +317,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         >
           <img
             src={lead?.profile_pic}
-            alt={lead?.name}
+            alt={lead?.fb_name}
             className="w-8 h-8 rounded-full"
           />
           <div>

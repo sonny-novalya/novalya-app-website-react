@@ -4,12 +4,14 @@ import { message, Modal, } from "antd";
 import ListPanel from './Notes/ListPanel';
 import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
 import { useLocation } from "react-router-dom";
-import useFbNoteStore from '../../../../../store/notes/fbNoteStore';
 import { dateFormat } from '../../../../../helpers/dateFormat';
 import SocialsSection from './Notes/SocialsSection';
+import useIgNoteStore from '../../../../../store/notes/igNoteStore';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
-    const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote, editUserNote } = useFbNoteStore();
+    const { createIgNote, getIgNotes, fetchedNotes, deleteUserNote, editUserNote } = useIgNoteStore();
+
+    console.log("lead", lead)
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -80,7 +82,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     useEffect(() => {
-        getFbNotes(lead?.fb_user_id)
+        getIgNotes({ insta_user_id : lead?.insta_user_id, type: "instagram" })
     }, [])
 
     useEffect(() => {
@@ -117,6 +119,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     }, [fetchedNotes]);
 
     const handleAddNote = async () => {
+        // if (!notesData.note.trim()) {
+        //     message.info("Please enter note text");
+        //     return;
+        // }
 
         if (editingNote) {
             const updatedNotes = notes.map(note =>
@@ -137,7 +143,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 message.success("Note updated successfully");
                 setEditingNote(null);
                 setNotesData({ note: '' });
-                getFbNotes(lead?.fb_user_id);
+                getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
             }
         } else {
             let notes_history = []
@@ -158,7 +164,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 setNotes(prevNotes => [newNote, ...prevNotes]);
                 const notesList = notes.map((item) => ({
                     id: item.id,
-                    discription: item.text, 
+                    discription: item.text,
                 }));
 
                 notes_history = [newNote, ...notesList];
@@ -167,7 +173,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             const payload = {
                 first_name: userInfo.firstName || lead.first_name || '',
                 last_name: userInfo.lastName || lead.last_name || '',
-                fb_name: lead.fb_name || '',
+                insta_name: lead.insta_name || '',
                 email: userInfo.email || '',
                 phone: userInfo.phone || '',
                 profession: userInfo.profession || '',
@@ -182,18 +188,17 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                         stage_id: selectedTag.stage_id || '',
                     }
                 ],
-                fb_user_id: lead.fb_user_id || '',
-                fb_alpha_numeric_id: lead.numeric_fb_id || '',
-                fb_e2ee_id: lead.fb_user_e2ee_id || null,
-                is_e2ee: lead.is_e2ee || 0
+                insta_user_id: lead.insta_user_id || '',
+                type: "instagram",
+                thread_id: lead.thread_id
             };
 
             try {
-                const msg = await createFbNote({ data: payload });
+                const msg = await createIgNote({ data: payload });
 
                 if (msg) {
                     message.success("Note Added Successfully");
-                    getFbNotes(lead?.fb_user_id);
+                    getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
                 }
             } catch (error) {
                 message.error("Failed to add note");

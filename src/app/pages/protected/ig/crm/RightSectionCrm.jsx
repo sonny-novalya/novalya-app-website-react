@@ -14,7 +14,7 @@ import TopbarRightSection from "./TopBarRightSection";
 import SendCampaignModal from "./SendCampaignModal";
 import MoveToStageModal from "./MoveToStageModal";
 import AddStageModal from "./AddStageModal";
-import NoteUserModal from "./NoteUserModal";
+import NoteUserModal from "./NoteUserModalNew";
 
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
@@ -377,9 +377,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
 
                     return (
-                        <DroppableStage stageId={stage.id}>
+                        <DroppableStage stageId={stage.id} key={stage.id}>
                             <div
-                                key={stage.id}
                                 className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
                             >
                                 <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
