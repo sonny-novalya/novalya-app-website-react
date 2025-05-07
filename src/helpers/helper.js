@@ -103,3 +103,10 @@ export function getSubdomain(url) {
 
   return null;
 }
+
+export  const getCurrentYear = ()=>{
+    let year= new Date()
+    year = year.getFullYear()
+
+    return {curr:year, prev:year-1}
+  }

@@ -15,6 +15,7 @@ import { countries } from "../../../../helpers/helperData";
 import TnCbox from "../../../components/signup/TnCbox";
 import { signupStore } from "../../../../store/signup/signupStore";
 import { useNavigate } from "react-router-dom";
+import { getCurrentYear } from "../../../../helpers/helper";
 
 const initialState = {
   username: null,
@@ -45,9 +46,17 @@ const SignUp = () => {
   const [showPass,setShowPass]=useState({confPass:false,pass:false})
   const [planPeriodStr,setPlanPeriodStr]=useState("")
   const searchParams = new URLSearchParams(window.location.search);
+  const coupon_code = searchParams.get("coupon_code") || "empty"
+  const isGoPlan = {
+    LTC:coupon_code?.includes("LTC"),
+    basic: !(coupon_code?.includes("LTC") && coupon_code?.includes("unlimited"))
+  }
+ 
   const checkPlanSelect = localStorage.getItem("planId");
   const backTo = localStorage.getItem("backto");
   const navigate = useNavigate()
+  const copyRightYears = getCurrentYear()
+  
 
   if (!checkPlanSelect) {
     navigate(backTo || "/plans")
@@ -138,8 +147,6 @@ const SignUp = () => {
     }
     const domainParts = window.location.hostname.split(".");
     const domain = domainParts.length > 1 ? domainParts[0] : "";
-    const searchParams = new URLSearchParams(window.location.search);
-    const coupon_code = searchParams?.get("coupon_code") || "empty";
 
     let params = {
       sponsorid: reffralData || "NOVALYA",
@@ -268,7 +275,8 @@ const SignUp = () => {
    
     let plans = localStorage.getItem("plans");
     plans = JSON.parse(plans);
-    let selectedPlan = plans?.find((plan) => plan.plan_id === checkPlanSelect);
+    console.log(checkPlanSelect,plans)
+    let selectedPlan = plans?.find((plan) => plan?.plan_id === checkPlanSelect);
     periodSelector(checkPlanSelect)
 
     setPlanDetails(selectedPlan);
@@ -353,7 +361,7 @@ const SignUp = () => {
               <span className="text-[20px] font-medium text-[#170f49] block leading-[1.25]">
                 100% NO-RISK FREE TRIAL
               </span>
-              <SignCheckList />
+              <SignCheckList isGoPlan={isGoPlan} />
               <SignPayDueBox planDetails={planDetails} planPeriodStr={planPeriodStr}/>
               <div className="flex flex-col mb-[36px]">
                 <span className="flex items-center gap-[12px] text-[#170f49]  leading-[1.25] text-[22px] font-semibold">
@@ -698,7 +706,7 @@ const SignUp = () => {
         <div className="text-center bg-[#E5E5E5] m-0 p-4 border-t border-[#CFCFCF]">
           <span>
             <pre className="m-0 text-[16px] font-medium font-['DM_Sans'] text-[rgba(0,0,0,0.7)]">
-              Copyright | Novalya © 2024-2025
+              Copyright | Novalya © {copyRightYears.prev}-{copyRightYears.curr}
             </pre>
           </span>
         </div>

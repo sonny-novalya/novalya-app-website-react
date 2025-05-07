@@ -17,6 +17,7 @@ import "./plans.css"
 import { useNavigate } from 'react-router-dom';
 import { Terms } from '../../../../helpers/helperData';
 import { useTranslation } from 'react-i18next';
+import { getCurrentYear } from '../../../../helpers/helper';
 
 const Plans = () => {
   const { t,i18n } = useTranslation();
@@ -34,7 +35,7 @@ const Plans = () => {
   if (referralId) {
     localStorage.setItem("referralId",referralId)
   }
-
+ const copyRightYears = getCurrentYear()
  
  
   //  const searchParams = new URLSearchParams(window.location.search);
@@ -722,7 +723,7 @@ const Plans = () => {
     <footer class="aug-plan-footer">
       <div class="container">
         <div class="aug-plan-footer-inn">
-          <p>Novalya © 2023-2024 &nbsp;&nbsp; | &nbsp;&nbsp; <a href="https://novalya.com/terms-and-conditions/" rel="noreferrer" target="_blank">Terms & Conditions</a></p>
+          <p>Novalya © {copyRightYears.prev}-{copyRightYears.curr} &nbsp;&nbsp; | &nbsp;&nbsp; <a href="https://novalya.com/terms-and-conditions/" rel="noreferrer" target="_blank">Terms & Conditions</a></p>
         </div>	
       </div>
     </footer>

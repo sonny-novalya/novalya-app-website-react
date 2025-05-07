@@ -5,6 +5,8 @@ import PlansIndex from "../pages/auth/plans/plansIndex";
 import SignUp from "../pages/auth/signup/signup";
 
 const AuthRoutes = () => {
+  const path = window.location.pathname
+  const commonRoutes = ['/go-offer']
   return (
     <>
       <Routes>
@@ -14,7 +16,7 @@ const AuthRoutes = () => {
         <Route path="/plans" element={<PlansIndex />} />
         <Route path="/signup" element={<SignUp />} />
       
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        { !commonRoutes.includes(path) ? <Route path="*" element={<Navigate to="/login" replace />} />:null}
       </Routes>
     </>
   );
