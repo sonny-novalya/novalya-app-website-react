@@ -4,6 +4,7 @@ import usefbCRM from '../../../../../../store/fb/fbCRM';
 import tagImg from '../../../../../../assets/img/visibitlityTag.png';
 import { rgbToHex } from '../../../../../../helpers/rgbToHex';
 import PropTypes from "prop-types";
+import { UserIcon } from '../../../../common/icons/icons';
 
 const ListPanel = ({ setSelectedTag }) => {
     const location = useLocation()
@@ -23,23 +24,20 @@ const ListPanel = ({ setSelectedTag }) => {
         fetchCRMGroups({ data: {}, type });
     }, [fetchCRMGroups, isInstagram]);
 
-    // Modified initial selection logic
     useEffect(() => {
         if (CRMList && CRMList.length > 0) {
-            // Select first list by default
             const initialSelected = CRMList[0].id;
             setSelectedList(initialSelected);
             setMainListSelection(initialSelected);
 
-            // Set initial stage if available
             const list = CRMList.find(item => item.id === initialSelected);
             if (list && list.stage && list.stage.length > 0) {
-                // Explicitly select the first stage
                 const firstStage = list.stage[0];
                 setSelectedStage({
                     listId: initialSelected,
                     stageId: firstStage.id,
-                    stageName: firstStage.name // Add the stage name to state
+                    stageName: firstStage.name,
+                    taggedUsersStageCount: firstStage.taggedUsersStageCount ?? 0
                 });
             } else {
                 setSelectedStage(null);
@@ -64,14 +62,14 @@ const ListPanel = ({ setSelectedTag }) => {
         setSelectedList(id);
         setMainListSelection(id);
 
-        // Reset stage selection with the first stage of the selected list
         const list = CRMList.find(item => item.id === id);
         if (list && list.stage && list.stage.length > 0) {
             const firstStage = list.stage[0];
             setSelectedStage({
                 listId: id,
                 stageId: firstStage.id,
-                stageName: firstStage.name // Store the stage name
+                stageName: firstStage.name,
+                taggedUsersStageCount: firstStage.taggedUsersStageCount ?? 0 
             });
         } else {
             setSelectedStage(null);
@@ -82,13 +80,17 @@ const ListPanel = ({ setSelectedTag }) => {
         setActiveDropdown(activeDropdown === id ? null : id);
     };
 
-    // Updated to also store the stage name
     const selectStage = (listId, stageId, stageName) => {
+        const list = CRMList.find(item => item.id === listId);
+        const stage = list?.stage.find(s => s.id === stageId);
+
         setSelectedStage({
             listId,
             stageId,
-            stageName // Store the stage name
+            stageName,
+            taggedUsersStageCount: stage?.taggedUsersStageCount ?? 0
         });
+
         setActiveDropdown(null);
         setSelectedTag({
             tag_id: listId,
@@ -97,7 +99,7 @@ const ListPanel = ({ setSelectedTag }) => {
     };
 
     const handleMainListSelection = (e) => {
-        const listId = e.target.value;
+        const listId = Number(e.target.value);
         setMainListSelection(listId);
         selectList(listId);
     };
@@ -114,7 +116,6 @@ const ListPanel = ({ setSelectedTag }) => {
         list.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Helper function to get current stage name
     const getCurrentStageName = () => {
         if (!selectedStage) return "Select Stage";
 
@@ -122,7 +123,6 @@ const ListPanel = ({ setSelectedTag }) => {
             return selectedStage.stageName;
         }
 
-        // Fallback to find the stage name if not stored in state
         const list = CRMList.find(item => item.id === selectedStage.listId);
         if (list && list.stage) {
             const stage = list.stage.find(s => s.id === selectedStage.stageId);
@@ -222,8 +222,12 @@ const ListPanel = ({ setSelectedTag }) => {
                                     <div className='w-4 h-4 rotate-45 transform relative right-2.5' style={getColorStyle(list.custom_color)}>
                                     </div>
                                     <div className="flex-grow flex items-center justify-between ml-2">
-                                        <div className="text-sm font-medium max-w-[200px] truncate">
+                                        <div className="text-sm font-medium max-w-[180px] truncate flex">
                                             {list.name}
+
+                                            <span className='flex items-center justify-between text-[#00000080] ml-2'>
+                                                ( <UserIcon /> <span className='text-[#000000B2] ml-[2px]'>{list.taggedUsersCount}</span> )
+                                            </span>
                                         </div>
 
                                         {
@@ -234,42 +238,42 @@ const ListPanel = ({ setSelectedTag }) => {
                                                             className="border border-gray-300 rounded px-3 py-1 text-xs flex justify-between items-center cursor-pointer"
                                                             onClick={() => toggleDropdown(list.id)}
                                                         >
-                                                            <span>
-                                                                {selectedStage && selectedStage.listId === list.id
-                                                                    ? getCurrentStageName()
-                                                                    : "Select Stage"}
+                                                            <span className='flex items-center justify-between'>
+                                                                <span>
+                                                                    {selectedStage && selectedStage.listId === list.id
+                                                                        ? getCurrentStageName()
+                                                                        : "Select Stage"}
+                                                                </span>
+
+                                                                <span className='flex items-center justify-between text-[#00000080] ml-2'>
+                                                                    ( <UserIcon /> 
+                                                                    <span className='text-[#000000B2] ml-[2px]'>{selectedStage?.taggedUsersStageCount }</span> )
+                                                                </span>
                                                             </span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-gray-500 absolute right-2">
                                                                 <path d="M7 10l5 5 5-5z" />
                                                             </svg>
                                                         </div>
 
-                                                        {/* Stage dropdown */}
                                                         {activeDropdown === list.id && (
                                                             <div
                                                                 ref={dropdownRef}
-                                                                className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md"
+                                                                className="absolute right-2 z-20  mt-1 bg-white border border-gray-200 rounded-md shadow-md w-32"
                                                             >
                                                                 {list.stage.map((stage, index) => (
                                                                     <div
                                                                         key={stage.id}
-                                                                        className={`px-3 py-2 text-xs cursor-pointer flex items-center justify-between ${selectedStage &&
+                                                                        className={`px-3 py-2 text-xs cursor-pointer flex items-center justify-between border-2 w-32 rounded-lg ${selectedStage &&
                                                                                 selectedStage.listId === list.id &&
                                                                                 selectedStage.stageId === stage.id
-                                                                                ? 'bg-blue-500 text-white'
-                                                                                : 'hover:bg-gray-100'
+                                                                                ? 'border-blue-500 '
+                                                                                : 'border-white hover:bg-gray-100'
                                                                             }`}
                                                                         onClick={() => selectStage(list.id, stage.id, stage.name)}
                                                                     >
-                                                                        {stage.name || `Stage ${index + 1}`}
-                                                                        <span>
-                                                                            {selectedStage &&
-                                                                                selectedStage.listId === list.id &&
-                                                                                selectedStage.stageId === stage.id && (
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                                                                    </svg>
-                                                                                )}
+                                                                            <span>{stage.name || `Stage ${index + 1}`}</span>
+                                                                        <span className='flex items-center justify-between text-[#00000080]'>
+                                                                            ( <UserIcon /> <span className='text-[#000000B2] ml-[2px]'>{stage.taggedUsersStageCount ?? 0}</span> )
                                                                         </span>
                                                                     </div>
                                                                 ))}
