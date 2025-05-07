@@ -9,7 +9,7 @@ import { dateFormat } from '../../../../../helpers/dateFormat';
 import SocialsSection from './Notes/SocialsSection';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
-    const { createFbNote, noteResponse, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
+    const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -35,6 +35,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     const [notesData, setNotesData] = useState({ note: '' });
     const isInstagram = location.pathname.split('/')[1] === 'ig'
     const user_name = isInstagram ? lead.ig_name : lead.fb_name
+    const [selectedTag, setSelectedTag] = useState({
+        tag_id: null,
+        stage_id: null
+    });
 
     const noteEditdropdownRefs = useRef([]);
 
@@ -125,11 +129,11 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             short_description: userInfo.bio || '',
             Socials: JSON.stringify(userInfo.socials),
             notes_history: [notesData.note],
-            is_primary: lead.tag_id || lead.is_primary || '',
+            is_primary: selectedTag.tag_id || '',
             selected_tag_stage_ids: [
                 {
-                    tag_id: lead.tag_id || lead.is_primary || '',
-                    stage_id: lead.stage_id || '',
+                    tag_id: selectedTag.tag_id || '',
+                    stage_id: selectedTag.stage_id || '',
                 }
             ],
             fb_user_id: lead.fb_user_id || '',
@@ -363,7 +367,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                 {/* List Panel */}
                 <div className="w-full h-full">
-                    <ListPanel />
+                    <ListPanel setSelectedTag={setSelectedTag} />
                 </div>
             </div>
         </Modal>
