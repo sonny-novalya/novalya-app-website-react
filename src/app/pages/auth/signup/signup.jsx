@@ -358,11 +358,9 @@ const SignUp = () => {
                 Join The Entrepreneurs Who Use Novalya To Easily Get Their Next
                 Customers on Social Media
               </span>
-              <span className="text-[20px] font-medium text-[#170f49] block leading-[1.25]">
-                100% NO-RISK FREE TRIAL
-              </span>
+           
               <SignCheckList isGoPlan={isGoPlan} />
-              <SignPayDueBox planDetails={planDetails} planPeriodStr={planPeriodStr}/>
+              <SignPayDueBox planDetails={planDetails} isGoPlan={isGoPlan}  planPeriodStr={planPeriodStr}/>
               <div className="flex flex-col mb-[36px]">
                 <span className="flex items-center gap-[12px] text-[#170f49]  leading-[1.25] text-[22px] font-semibold">
                   <svg
@@ -681,7 +679,7 @@ const SignUp = () => {
                   {errors.checked && (
                     <span className="sign_error">{errors.checked}</span>
                   )}
-                <TnCbox planDetails={planDetails} planPeriodStr={planPeriodStr}/>
+                <TnCbox planDetails={planDetails} planPeriodStr={planPeriodStr} isGoPlan={isGoPlan}/>
                 </div>
 
                 <div className="!mt-6 w-full">
