@@ -96,6 +96,8 @@ const SettingStore = create((set) => ({
 
             if (data.status === "success" && data.data.length > 0) {
                 const responseData = data.data[0];
+
+                console.log("responseData", responseData)
                 set({
                     prospection: {
                         group: responseData?.group || [],
@@ -109,8 +111,8 @@ const SettingStore = create((set) => ({
                         gender: responseData?.gender || null,
                         keyword: responseData?.keyword || null,
                         prospect: responseData?.prospect || null,
-                        pro_convo: responseData?.pro_convo || null,
-                        pro_stratagy: responseData?.pro_stratagy || null,
+                        pro_convo: responseData?.pro_convo ,
+                        pro_stratagy: responseData?.pro_stratagy ,
                         action: responseData?.action || null,
                         datevalue: responseData?.datevalue || null,
                         group_id: responseData?.group_id || null,
