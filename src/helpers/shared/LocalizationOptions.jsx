@@ -42,8 +42,8 @@ const LocalizationOptions = () => {
     };
 
     return (
-        <div className="custom-language-cs">
-            <Select
+        <div className="custom-language-cs px-1">
+            <Select className="h-[48px]"
                 value={activeLocale.locale}
                 onChange={handleChange}
                 style={{ width: "100%" }}

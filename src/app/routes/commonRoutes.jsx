@@ -5,7 +5,7 @@ const CommonRoutes = () => {
   return (
     <>
       <Routes>
-        <Route path="/go" element={<GoPage />} />
+        <Route path="/go-offer" element={<GoPage />} />
       </Routes>
     </>
   );
