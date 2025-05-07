@@ -255,7 +255,7 @@ const SidebarMenu = () => {
                                                         <div className="flex items-center space-x-5">
                                                             <span className="sidebar-icons h-6 w-6 flex items-enter justify-center">{item.icon}</span>
                                                             {!collapsed && (
-                                                                <span className="capitalize text-black/45">{item.text}</span>
+                                                                <span className="capitalize text-black/45 font-[500]">{item.text}</span>
                                                             )}
                                                         </div>
                                                         {!collapsed && (
@@ -291,29 +291,29 @@ const SidebarMenu = () => {
                             </div>
                             <div className="mt-auto flex flex-col items-center justify-center px-4 gap-[8px] border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
                                 <div className="w-full mb-0 sidebar-lang">
-                                    <span><LocalizationOptions /></span>
+                                    <span className="font-[500]"><LocalizationOptions /> </span>
                                 </div>
-                                <div className="flex gap-5 items-center w-full px-3 mt-1 mb-2">
-                                <span className="sidebar-icons h-6 w-6 flex items-enter justify-center"><UpgradeProIcon /></span>
+                                <div className="flex gap-5 items-center w-full px-3.5 py-3 text-black/45 font-[500]">
+                                    <span className="sidebar-icons h-6 w-6 flex items-enter justify-center"><UpgradeProIcon /></span>
                                     Upgrade To Pro
                                 </div>
-                                <div className="flex space-x-3 items-center w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
+                                <div className="flex space-x-3.5 items-center px-3 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
                                     {userData?.url ? (
-                                        <img src={userData.url} className="h-10 w-10 rounded-sm" alt="user img" />
+                                        <img src={userData.url} className="h-7.5 w-7.5 rounded-sm" alt="user img" />
                                     ) : (
                                         <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-sm">
                                             {userData?.name?.charAt(0)}
                                         </div>
                                     )}
                                     <div className="flex flex-col text-sm">
-                                        <span className="text-[24px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
+                                        <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
                                         <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
                                     </div>
                                 </div>
 
                                 <button
                                     type="button"
-                                    className="flex items-center space-x-5 hover:bg-[#FF000012] logout px-3 py-3 rounded-[8px] w-full cursor-pointer bg-white text-black/55 hover:text-[#00000085]"
+                                    className="flex items-center space-x-5 hover:bg-[#FF000012] logout px-4 py-3 rounded-[8px] w-full cursor-pointer bg-white text-black/55 hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />

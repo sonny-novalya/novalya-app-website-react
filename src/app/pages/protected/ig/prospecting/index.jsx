@@ -698,7 +698,7 @@ const IgProspecting = () => {
                     <div className="space-x-2 overflow-x-auto max-w-full mb-2 flex">
                         {
                             buttonsData.map((folder, index) => (
-                                <div className="flex items-center" key={index}>
+                                <div className="flex items-center " key={index}>
                                     <button
                                         className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
@@ -738,7 +738,7 @@ const IgProspecting = () => {
                     </div>
 
                 </div>
-                <div className="flex items-center justify-between my-3 space-x-4">
+                <div className="flex items-center justify-between my-3 space-x-4 asda">
                     <Input
                         placeholder="Search groups"
                         prefix={<SearchOutlined />}

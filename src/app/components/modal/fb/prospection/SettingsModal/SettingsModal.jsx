@@ -140,7 +140,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
     }, [groupId]);
 
     return (
-        <Modal open={visible} onCancel={onClose} footer={null} width={1100} centered>
+        <Modal open={visible} onCancel={onClose} footer={null} width={1225} centered>
             <div className="flex h-[calc(100vh-200px)] p-0 relative">
                 {/* Left panel - Tabs */}
                 {settingLoading && (
