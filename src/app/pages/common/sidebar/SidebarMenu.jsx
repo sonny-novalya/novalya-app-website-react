@@ -40,7 +40,6 @@ const SidebarMenu = () => {
     const onLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('selectedLocale');
-        localStorage.removeItem('userData');
         removeAllCookies();
         navigate("/login");
     };
