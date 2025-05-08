@@ -37,8 +37,8 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     const isInstagram = location.pathname.split('/')[1] === 'ig'
     const user_name = isInstagram ? lead.ig_name : lead.fb_name
     const [selectedTag, setSelectedTag] = useState({
-        tag_id: null,
-        stage_id: null
+        tag_id: 0,
+        stage_id: 0
     });
 
     const noteEditdropdownRefs = useRef([]);
@@ -102,7 +102,11 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 },
                 note: ''
             });
-
+            const stageData = fetchedNotes?.taggedUsers?.[0]
+            setSelectedTag({
+                tag_id: stageData?.tag_id,
+                stage_id: stageData?.stage_id
+            })
             if (Array.isArray(fetchedNotes.noteHistories)) {
                 const historyNotes = fetchedNotes.noteHistories.map((item) => ({
                     id: item.id,
@@ -199,7 +203,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 message.error("Failed to add note");
                 console.error("Note creation failed:", error);
                 // Remove the optimistically added note if the API call fails
-                setNotes(prevNotes => prevNotes.filter(note => note.id !== 0 || note.text !== newNote.text));
+                // setNotes(prevNotes => prevNotes.filter(note => note.id !== 0 || note.text !== newNote.text));
             }
         }
 
@@ -445,7 +449,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                 {/* List Panel */}
                 <div className="w-full h-full">
-                    <ListPanel setSelectedTag={setSelectedTag} />
+                    <ListPanel setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
                 </div>
             </div>
         </Modal>

@@ -4,9 +4,8 @@ import usefbCRM from '../../../../../../store/fb/fbCRM';
 import tagImg from '../../../../../../assets/img/visibitlityTag.png';
 import { rgbToHex } from '../../../../../../helpers/rgbToHex';
 import PropTypes from "prop-types";
-import { UserIcon } from '../../../../common/icons/icons';
 
-const ListPanel = ({ setSelectedTag }) => {
+const ListPanel = ({ setSelectedTag, selectedTag }) => {
     const location = useLocation()
     const isInstagram = location.pathname.split("/")[1] === "ig";
 
@@ -25,25 +24,30 @@ const ListPanel = ({ setSelectedTag }) => {
     }, [fetchCRMGroups, isInstagram]);
 
     useEffect(() => {
-        if (CRMList && CRMList.length > 0) {
-            const initialSelected = CRMList[0].id;
-            setSelectedList(initialSelected);
-            setMainListSelection(initialSelected);
+        if (
+            selectedTag?.tag_id &&
+            selectedTag?.stage_id &&
+            CRMList &&
+            CRMList.length > 0
+        ) {
+            const listId = Number(selectedTag.tag_id);
+            const stageId = Number(selectedTag.stage_id);
 
-            const list = CRMList.find(item => item.id === initialSelected);
-            if (list && list.stage && list.stage.length > 0) {
-                const firstStage = list.stage[0];
+            const list = CRMList.find(item => item.id === listId);
+            const stage = list?.stage.find(s => s.id === stageId);
+
+            if (list && stage) {
+                setSelectedList(listId);
+                setMainListSelection(listId);
                 setSelectedStage({
-                    listId: initialSelected,
-                    stageId: firstStage.id,
-                    stageName: firstStage.name,
-                    // taggedUsersStageCount: firstStage.taggedUsersStageCount ?? 0
+                    listId: listId,
+                    stageId: stageId,
+                    stageName: stage.name,
+                    taggedUsersStageCount: stage.taggedUsersStageCount ?? 0
                 });
-            } else {
-                setSelectedStage(null);
             }
         }
-    }, [CRMList]);
+    }, [selectedTag, CRMList]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -297,6 +301,7 @@ const ListPanel = ({ setSelectedTag }) => {
 
 ListPanel.propTypes = {
     setSelectedTag: PropTypes.func,
+    selectedTag: PropTypes.object,
     onCancel: PropTypes.func.isRequired,
     lead: PropTypes.object,
 };
