@@ -135,3 +135,19 @@ li.ant-pagination-total-text {
     background-color: #e6f1fb !important;
     transition: background-color 0.2s ease-in-out;
 }
+
+
+
+/* __________ Start CSS For Prospection Setting Poppup _________ */
+.pro-setting-modal .ant-modal-content {
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+}
+
+
+
+
+
+
+/* __________ End CSS For Prospection Setting Poppup _________ */

@@ -140,16 +140,16 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
     }, [groupId]);
 
     return (
-        <Modal open={visible} onCancel={onClose} footer={null} width={1225} centered>
-            <div className="flex h-[calc(100vh-200px)] p-0 relative">
+        <Modal className="pro-setting-modal" open={visible} onCancel={onClose} footer={null} width={1225} centered>
+            <div className="flex h-[calc(100vh-80px)] p-0 relative">
                 {/* Left panel - Tabs */}
                 {settingLoading && (
-                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-full">
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-10 z-50 rounded-lg h-full">
                         <Spin size="large" />
                     </div>
                 )}
-                <div className="w-1/4 rounded px-2 mt-7 flex flex-col justify-between">
-                    <ul className="flex flex-col">
+                <div className="w-1/4 rounded rounded-[10px] px-2 flex flex-col justify-between bg-white px-4 pt-10 pb-4 overflow-auto">
+                    <ul className="flex flex-col gap-4">
                         {tabItems.map((tab, index) => {
                             const isActive = activeKey === tab.key;
                             const isCompleted = sectionsCompleted[tab.key];
@@ -157,11 +157,11 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                             return (
                                 <li
                                     key={tab.key}
-                                    className={`cursor-pointer p-3 rounded-lg ${isActive ? "bg-[#E6F1FB]" : "hover:bg-gray-100"}`}
+                                    className={`flex items-center cursor-pointer p-3 rounded-lg ${isActive ? "bg-[#E6F1FB]" : "hover:[#E6F1FB]"}`}
                                     onClick={() => handleTabClick(tab.key)}
                                 >
                                     <span
-                                        className={`cursor-pointer text-white p-1 px-2 text-xs mr-2 rounded ${isActive
+                                        className={`w-6 h-6 flex items-center justify-center text-[16px] rounded rounded-[4px] cursor-pointer text-white mr-3  ${isActive
                                                 ? "bg-[#0087FF]"
                                                 : isCompleted
                                                     ? "bg-[#21BF7C]"
@@ -175,7 +175,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                                                 ? "text-[#0087FF]"
                                                 : isCompleted
                                                     ? "text-[#00C271]"
-                                                    : "text-black"
+                                                    : "text-[#8D8D8D]"
                                             }`}
                                     >
                                         {tab.label}
@@ -194,10 +194,10 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 </div>
 
                 {/* Divider */}
-                <div className="h-full w-[1px] bg-[#DADADA] mx-4" />
+                <div className="h-full w-[20px] bg-[#878787]" />
 
                 {/* Right panel - Content and Navigation */}
-                <div className="w-3/4 overflow-auto px-4 flex flex-col justify-between">
+                <div className="w-3/4 overflow-auto px-5 py-4 flex flex-col justify-between bg-white rounded rounded-[10px]">
                     <div className="h-[calc(100%-40px)]">
                         {tabItems.find((tab) => tab.key === activeKey)?.children}
                     </div>
