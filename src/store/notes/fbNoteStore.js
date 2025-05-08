@@ -86,7 +86,7 @@ const useFbNoteStore = create((set) => ({
 
             const response = await apiCall({
                 method: "POST",
-                url: `/user/api/delete-user-note?id=${id}&note_id=${notes_id}`,
+                url: `/user/api/delete-user-note-variants?id=${id}&note_id=${notes_id}`,
             });
 
             set({ loading: false });

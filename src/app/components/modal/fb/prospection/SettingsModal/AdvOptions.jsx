@@ -1,10 +1,9 @@
-import { useEffect } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import { t } from "i18next";
 import PropTypes from "prop-types";
 
-const AdvOptions = ({ onComplete }) => {
+const AdvOptions = () => {
     const { prospection, updateProspection } = SettingStore();
     const { prospect, pro_convo } = prospection;
 
@@ -29,22 +28,6 @@ const AdvOptions = ({ onComplete }) => {
             value: 0
         }
     ];
-
-    // Check if this section is complete
-    useEffect(() => {
-        // For this component to be complete, we need:
-        // 1. A selection for retargeting (prospect should be "yes" or "no")
-        // 2. A selection for existing conversations (pro_convo should be 0 or 1)
-        const isComplete = (
-            (prospect === "yes" || prospect === "no") &&
-            (pro_convo === 0 || pro_convo === 1)
-        );
-
-        // Notify parent about completion status
-        if (onComplete) {
-            onComplete(isComplete);
-        }
-    }, [prospect, pro_convo, onComplete]);
 
     const handleSave = (field, value) => {
         // Update the prospection state in the store based on which option is clicked

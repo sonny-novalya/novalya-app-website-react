@@ -4,7 +4,7 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-const Settings = ({ isInstagram, onComplete }) => {
+const Settings = ({ isInstagram }) => {
     const { prospection, updateProspection } = SettingStore();
 
     const { pro_stratagy, norequest, interval } = prospection;
@@ -38,24 +38,6 @@ const Settings = ({ isInstagram, onComplete }) => {
     const intervalList = isInstagram ? igIntervalOptions : fbIntervalOptions;
     const newStratagies = isInstagram ? strategies : FbStrategies;
 
-    // Check if this section is complete
-    useEffect(() => {
-        // For this component to be complete, we need:
-        // 1. A selected strategy (pro_stratagy should be 0 or 1)
-        // 2. A valid number of requests (norequest should be a number between 1 and 50)
-        // 3. A selected interval
-        const isComplete = (
-            (pro_stratagy === 0 || pro_stratagy === 1) &&
-            (Number(norequest) >= 1 && Number(norequest) <= 50) &&
-            interval !== undefined && interval !== ""
-        );
-
-        // Notify parent about completion status
-        if (onComplete) {
-            onComplete(isComplete);
-        }
-    }, [pro_stratagy, norequest, interval, onComplete]);
-
     useEffect(() => {
         if (
             !requestOptions.includes(String(norequest)) &&
@@ -88,9 +70,9 @@ const Settings = ({ isInstagram, onComplete }) => {
                     <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
                         {t("prospecting.Strategy")}
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
-                            <path d="M8 7.87524V11.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"/>
-                            <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
+                            <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" strokeOpacity="0.75" strokeWidth="0.9"/>
+                            <path d="M8 7.87524V11.2086" stroke="black" strokeOpacity="0.75" strokeLinecap="round"/>
+                            <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fillOpacity="0.75"/>
                         </svg>
                     </p>
                     <div className="grid grid-cols-1 gap-2">
@@ -118,9 +100,9 @@ const Settings = ({ isInstagram, onComplete }) => {
                     <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
                         {t("prospecting.How many Requests")}
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
-                            <path d="M8 7.87524V11.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"/>
-                            <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
+                            <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" strokeOpacity="0.75" strokeWidth="0.9"/>
+                            <path d="M8 7.87524V11.2086" stroke="black" strokeOpacity="0.75" strokeLinecap="round"/>
+                            <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fillOpacity="0.75"/>
                         </svg>
                         </p>
                     <div className="grid grid-cols-3 gap-2">
@@ -182,9 +164,9 @@ const Settings = ({ isInstagram, onComplete }) => {
                 <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
                     {t("prospecting.Interval")}
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
-                        <path d="M8 7.87524V11.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"/>
-                        <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
+                        <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" strokeOpacity="0.75" strokeWidth="0.9"/>
+                        <path d="M8 7.87524V11.2086" stroke="black" strokeOpacity="0.75" strokeLinecap="round"/>
+                        <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fillOpacity="0.75"/>
                     </svg>
                 </p>
                 <div className="grid grid-cols-4 gap-5">
@@ -216,7 +198,6 @@ const Settings = ({ isInstagram, onComplete }) => {
 
 Settings.propTypes = {
     isInstagram: PropTypes.bool,
-    onComplete: PropTypes.func,
 };
 
 export default Settings;
