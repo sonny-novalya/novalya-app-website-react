@@ -42,7 +42,7 @@ const useFbNoteStore = create((set) => ({
                 data: { fb_user_id },
             });
 
-            const notes = response.data?.message[0] || [];
+            const notes = response.data?.data[0] || [];
             set({ fetchedNotes: notes, loading: false });
             return notes;
         } catch (error) {
