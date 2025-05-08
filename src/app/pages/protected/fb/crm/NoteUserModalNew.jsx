@@ -150,19 +150,19 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 setNotes(prevNotes => [...prevNotes]);
                 const notesList = notes.map((item) => ({
                     id: item.id,
-                    discription: item.text,
+                    description: item.text,
                 }));
 
                 notes_history = [...notesList];
             } else {
                 const newNote = {
                     id: 0,
-                    discription: notesData.note.trim(),
+                    description: notesData.note.trim(),
                 };
                 setNotes(prevNotes => [newNote, ...prevNotes]);
                 const notesList = notes.map((item) => ({
                     id: item.id,
-                    discription: item.text, 
+                    description: item.text, 
                 }));
 
                 notes_history = [newNote, ...notesList];

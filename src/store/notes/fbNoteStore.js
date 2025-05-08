@@ -63,7 +63,7 @@ const useFbNoteStore = create((set) => ({
                 url: "/user/api/edit-user-note",
                 data: {
                     note_id,
-                    discription: description, // spelling is as per API
+                    description: description, // spelling is as per API
                     id,
                 },
             });
