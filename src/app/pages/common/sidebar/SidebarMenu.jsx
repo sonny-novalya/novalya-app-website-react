@@ -25,23 +25,57 @@ import LocalizationOptionsIcons from "../../../../helpers/shared/LocalizationOpt
 import { Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { removeAllCookies } from "../../../../helpers/helper";
+import useLoginUserDataStore from "../../../../store/loginuser/loginuserdata";
 
 const SidebarMenu = () => {
     const [openSubNav, setOpenSubNav] = useState(null);
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
     const currentPath = location.pathname;
-
+    
     const navigate = useNavigate();
-
+    
     const toggleSidebar = () => setCollapsed(!collapsed);
-
+    
     const onLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('selectedLocale');
         removeAllCookies();
         navigate("/login");
     };
+    const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const localUserData = localStorage.getItem("userData");
+
+        if (localUserData) {
+            setUserData(JSON.parse(localUserData));
+        } else {
+            fetchLoginUserData().then(() => {
+                const storedLoginData = useLoginUserDataStore.getState().loginUserData;
+
+                if (storedLoginData) {
+                    const profilePicUrl = storedLoginData?.profilepictureurl?.includes("https://stagingbackend.novalya.com")
+                            ? storedLoginData.profilepictureurl.replace("https://stagingbackend.novalya.com", "https://api-v2.novalya.com")
+                            : storedLoginData.profilepictureurl;
+
+                    const data = {
+                        name: `${storedLoginData?.firstname} ${storedLoginData?.lastname}`,
+                        url: profilePicUrl,
+                        plan:
+                            storedLoginData?.plan_pkg === "Unlimited_new"
+                                ? "Unlimited"
+                                : storedLoginData?.plan_pkg ?? "No Plan",
+                    };
+
+                    setUserData(data);
+                    localStorage.setItem("userData", JSON.stringify(data));
+                }
+            });
+        }
+    }, []);
+
 
     const sidebarData = [
         { text: "dashboard", id: "dashboard", path: "/", icon: <DashboardIcon /> },
@@ -118,7 +152,7 @@ const SidebarMenu = () => {
                         ? <>
                             <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-4`}>
                                 <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-12`} />
-                                <button onClick={toggleSidebar} className="absolute top-12 -right-3 z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 rotate-180`}>
                                         <CollapsedLeftIcon />
                                     </div>
@@ -175,14 +209,18 @@ const SidebarMenu = () => {
                                     <UpgradeProIcon />
                                 </div>
                                 <div className="flex items-center justify-center mt-2 w-full">
-                                    <span className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
-                                        J
-                                    </span>
+                                    {userData?.url ? (
+                                        <img src={userData.url} className="h-10 w-10 rounded-sm" alt="user img" />
+                                    ) : (
+                                        <div className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
+                                            {userData?.name?.charAt(0)}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <button
                                     type="button"
-                                    className="flex items-center justify-center bg-[#FF000012] w-12 p-2 mt-2 rounded-lg cursor-pointer hover:bg-[#FF000018] text-[#00000055] hover:text-[#00000085]"
+                                    className="flex items-center justify-center hover:bg-[#FF000012] w-12 p-2 mt-2 rounded-lg cursor-pointer  text-[#00000055] hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />
@@ -193,7 +231,7 @@ const SidebarMenu = () => {
                             <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-7 relative`}>
                                 <img src={NovalyaBlueLogo} alt="logo" className={`mx-auto w-full max-w-[186px] object-contain h-12`} />
                                 
-                                <button onClick={toggleSidebar} className="absolute top-16 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
                                     <div className={`transition-transform duration-300 `}>
                                         <CollapsedLeftIcon />
                                     </div>
@@ -206,18 +244,18 @@ const SidebarMenu = () => {
                                     const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
 
                                     return (
-                                        <div key={item.id} className="w-full mb-2">
+                                        <div key={item.id} className="w-full mb-2 ">
                                             {item.subNav ? (
                                                 <>
                                                     <button
 
-                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-between items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
+                                                        className={`w-full rounded-[8px] px-4 py-3 flex justify-between items-center  ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
                                                         onClick={(e) => toggleSubNav(e, item.id)}
                                                     >
                                                         <div className="flex items-center space-x-5">
-                                                            <span className="h-6 w-6 flex items-enter justify-center">{item.icon}</span>
+                                                            <span className="sidebar-icons h-6 w-6 flex items-enter justify-center">{item.icon}</span>
                                                             {!collapsed && (
-                                                                <span className="capitalize text-black/55">{item.text}</span>
+                                                                <span className="capitalize text-black/45 font-[500]">{item.text}</span>
                                                             )}
                                                         </div>
                                                         {!collapsed && (
@@ -227,7 +265,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                     {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-4 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
+                                                        <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-2 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
                                                             {item.subNav.map((subItem) => (
                                                                 <SidebarItem 
                                                                     key={subItem.id}
@@ -251,27 +289,31 @@ const SidebarMenu = () => {
                                     );
                                 })}
                             </div>
-                            <div className="mt-auto flex flex-col items-center justify-center px-4  gap-[20px] mb-2 border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
+                            <div className="mt-auto flex flex-col items-center justify-center px-4 gap-[8px] border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
                                 <div className="w-full mb-0 sidebar-lang">
-                                    <LocalizationOptions />
+                                    <span className="font-[500]"><LocalizationOptions /> </span>
                                 </div>
-                                <div className="flex gap-5 items-center w-full px-2 mt-1 mb-2">
-                                    <UpgradeProIcon />
-                                    <span className="text-base text-[#00000073]">Upgrade To Pro</span>
+                                <div className="flex gap-5 items-center w-full px-3.5 py-3 text-black/45 font-[500]">
+                                    <span className="sidebar-icons h-6 w-6 flex items-enter justify-center"><UpgradeProIcon /></span>
+                                    Upgrade To Pro
                                 </div>
-                                <div className="flex space-x-3 items-center w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
-                                    <span className="h-10 w-10 rounded-lg bg-purple-200 flex items-center justify-center">
-                                        J
-                                    </span>
+                                <div className="flex space-x-3.5 items-center px-3 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
+                                    {userData?.url ? (
+                                        <img src={userData.url} className="h-7.5 w-7.5 rounded-sm" alt="user img" />
+                                    ) : (
+                                        <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-sm">
+                                            {userData?.name?.charAt(0)}
+                                        </div>
+                                    )}
                                     <div className="flex flex-col text-sm">
-                                        <span className="text-[24px] font-[500]">Anima Ag.</span>
-                                        <span className="text-[13px] text-[#167AD3]">Basic Plan</span>
+                                        <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
+                                        <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
                                     </div>
                                 </div>
 
                                 <button
                                     type="button"
-                                    className="flex items-center space-x-5 bg-[#FF000012] logout px-3 py-3 rounded-[8px] w-full cursor-pointer hover:bg-[#FF000018] text-[#00000045] hover:text-[#00000085]"
+                                    className="flex items-center space-x-5 hover:bg-[#FF000012] logout px-4 py-3 rounded-[8px] w-full cursor-pointer bg-white text-black/55 hover:text-[#00000085]"
                                     onClick={onLogout}
                                 >
                                     <LogoutIcon />

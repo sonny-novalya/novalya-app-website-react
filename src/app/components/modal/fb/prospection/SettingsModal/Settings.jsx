@@ -4,10 +4,10 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-const Settings = ({ isInstagram}) => {
-    const { prospection , updateProspection } = SettingStore();
+const Settings = ({ isInstagram, onComplete }) => {
+    const { prospection, updateProspection } = SettingStore();
 
-    const { pro_stratagy, norequest, interval } = prospection 
+    const { pro_stratagy, norequest, interval } = prospection;
     const [customRequest, setCustomRequest] = useState(interval);
 
     const strategies = [
@@ -21,11 +21,11 @@ const Settings = ({ isInstagram}) => {
     ];
 
     const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
-    
+
     const fbIntervalOptions = [
         { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
         { label: t("prospecting.Slow"), value: "3-5", time: t("prospecting.3 to 5 minutes") },
-        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes")},
+        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
     ];
 
     const igIntervalOptions = [
@@ -36,21 +36,25 @@ const Settings = ({ isInstagram}) => {
     ];
 
     const intervalList = isInstagram ? igIntervalOptions : fbIntervalOptions;
+    const newStratagies = isInstagram ? strategies : FbStrategies;
 
-    const findInterval = () => {
-        return !intervalList.some(option => option.value === interval);
-    };
-
-    const newStratagies = isInstagram ? strategies : FbStrategies
-
+    // Check if this section is complete
     useEffect(() => {
-        if (findInterval()) {
-            updateProspection({
-                ...prospection,
-                interval: intervalList[0].value,
-            });
+        // For this component to be complete, we need:
+        // 1. A selected strategy (pro_stratagy should be 0 or 1)
+        // 2. A valid number of requests (norequest should be a number between 1 and 50)
+        // 3. A selected interval
+        const isComplete = (
+            (pro_stratagy === 0 || pro_stratagy === 1) &&
+            (Number(norequest) >= 1 && Number(norequest) <= 50) &&
+            interval !== undefined && interval !== ""
+        );
+
+        // Notify parent about completion status
+        if (onComplete) {
+            onComplete(isComplete);
         }
-    }, []);
+    }, [pro_stratagy, norequest, interval, onComplete]);
 
     useEffect(() => {
         if (
@@ -61,7 +65,6 @@ const Settings = ({ isInstagram}) => {
             setCustomRequest(norequest);
         }
     }, [norequest]);
-
 
     const handleUpdate = (field, value) => {
         if (field === "norequest") {
@@ -75,15 +78,21 @@ const Settings = ({ isInstagram}) => {
         }
     };
 
-
     return (
         <div className="">
-            <h2 className="text-2xl font-bold mb-4">Settings</h2>
+            <h2 className="text-2xl font-[500] mb-5">Settings</h2>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
                 {/* Strategy Section */}
-                <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800 flex items-center">{t("prospecting.Strategy")}</p>
+                <div className="border border-[#dadada] px-4 py-3 rounded-lg">
+                    <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
+                        {t("prospecting.Strategy")}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
+                            <path d="M8 7.87524V11.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"/>
+                            <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
+                        </svg>
+                    </p>
                     <div className="grid grid-cols-1 gap-2">
                         {newStratagies.map((option) => (
                             <button
@@ -91,7 +100,7 @@ const Settings = ({ isInstagram}) => {
                                 className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("pro_stratagy",option.value)}
+                                onClick={() => handleUpdate("pro_stratagy", option.value)}
                             >
                                 {option.label}
                                 {pro_stratagy === option.value && (
@@ -105,8 +114,15 @@ const Settings = ({ isInstagram}) => {
                 </div>
 
                 {/* How Many Requests Section */}
-                <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800">{t("prospecting.How many Requests")}</p>
+                <div className="border border-[#dadada] px-4 py-3 rounded-lg">
+                    <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
+                        {t("prospecting.How many Requests")}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
+                            <path d="M8 7.87524V11.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"/>
+                            <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
+                        </svg>
+                        </p>
                     <div className="grid grid-cols-3 gap-2">
                         {requestOptions.map((option) => {
                             const isCustom = option === "Custom";
@@ -115,7 +131,6 @@ const Settings = ({ isInstagram}) => {
                                 Number(norequest) >= 1 &&
                                 Number(norequest) <= 50
                                 : Number(norequest) === Number(option);
-
 
                             return (
                                 <button
@@ -158,26 +173,31 @@ const Settings = ({ isInstagram}) => {
                                 />
                             </>
                         )}
-
-
                     </div>
                 </div>
             </div>
 
             {/* Interval Section */}
-            <div className="border border-gray-300 p-4 rounded-lg mt-4">
-                <p className="font-medium mb-2 text-gray-800">{t("prospecting.Interval")}</p>
-                <div className="grid grid-cols-4 gap-3">
+            <div className="border border-[#dadada] px-4 py-3 rounded-lg mt-4">
+                <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
+                    {t("prospecting.Interval")}
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"/>
+                        <path d="M8 7.87524V11.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"/>
+                        <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fill-opacity="0.75"/>
+                    </svg>
+                </p>
+                <div className="grid grid-cols-4 gap-5">
                     {intervalList.map((option) => (
                         <button
                             key={option.value}
-                            className={`relative cursor-pointer`}
+                            className={`relative cursor-pointer text-left`}
                             onClick={() => handleUpdate("interval", option.value)}
                         >
-                            <span className="text-xs text-gray-500 text-left mr-12">{option.time}</span>
-                            <div className={` flex flex-col items-start p-4 rounded-lg border transition ${interval === option.value
+                            <span className="text-[14px] text-[#000407] opacity-50 mr-12">{option.time}</span>
+                            <div className={` flex flex-col items-start px-4 py-3 rounded-lg border transition ${interval === option.value
                                 ? "bg-[#CCE7FF] border-[#CCE7FF] text-[#0087FF] shadow-sm"
-                                : "bg-white border-gray-300 text-gray-700"
+                                : "bg-white border-[#dadada] text-gray-700"
                                 }`}>
                                 <span className="text-sm font-medium">{option.label}</span>
                             </div>
@@ -196,6 +216,7 @@ const Settings = ({ isInstagram}) => {
 
 Settings.propTypes = {
     isInstagram: PropTypes.bool,
-
+    onComplete: PropTypes.func,
 };
+
 export default Settings;

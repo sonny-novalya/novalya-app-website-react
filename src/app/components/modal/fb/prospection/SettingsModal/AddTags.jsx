@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const AddTags = ({ CRMList, groupId }) => {
+const AddTags = ({ CRMList, groupId, onComplete }) => {
     const { prospection, updateProspection } = SettingStore();
     let { action } = prospection;
 
@@ -29,6 +29,25 @@ const AddTags = ({ CRMList, groupId }) => {
     const [selectedStageId, setSelectedStageId] = useState(parsedAction?.moveStageId || null);
     const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
 
+    // Check if this section is complete
+    useEffect(() => {
+        // For this component to be complete, we need:
+        // 1. A selection for adding tags (actionType should be "yes" or "no")
+        // 2. If actionType is "yes", we need both a group and stage selected
+        const isComplete =
+            actionType === "no" ||
+            (actionType === "yes" &&
+                selectedGroupId !== null &&
+                selectedGroupId !== "" &&
+                selectedStageId !== null &&
+                selectedStageId !== "");
+
+        // Notify parent about completion status
+        if (onComplete) {
+            onComplete(isComplete);
+        }
+    }, [actionType, selectedGroupId, selectedStageId, onComplete]);
+
     const handleSave = (moveGroupId, moveStageId, stage_num) => {
         updateProspection({
             ...prospection,
@@ -41,13 +60,12 @@ const AddTags = ({ CRMList, groupId }) => {
         });
     };
 
-
     const addTagsOptions = [
         { label: t("prospecting.No"), value: "no" },
         { label: t("prospecting.Yes"), value: "yes" }
     ];
 
-    const selectedGroupData = CRMList.find((item) => item.id == selectedGroupId);
+    const selectedGroupData = CRMList?.find((item) => item.id == selectedGroupId);
     const sortedStages = selectedGroupData?.stage?.sort((a, b) => a.stage_num - b.stage_num) || [];
 
     return (
@@ -91,17 +109,18 @@ const AddTags = ({ CRMList, groupId }) => {
                     <div className="border border-gray-300 p-4 rounded-lg relative">
                         <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Group")}</p>
                         <select
-                            className="w-full p-3 border rounded-lg"
+                            className={`w-full p-3 border rounded-lg ${!selectedGroupId ? "text-gray-500" : "text-gray-800"}`}
                             value={selectedGroupId || ""}
                             onChange={(e) => {
                                 setSelectedGroupId(e.target.value);
-                                handleSave(e.target.value, selectedStageId, selectedStageNum);
+                                setSelectedStageId(null);
+                                setSelectedStageNum(null);
+                                handleSave(e.target.value, null, null);
                             }}
-
                         >
                             <option value="">{t("prospecting.Select Group")}</option>
                             {CRMList?.map((group) => (
-                                <option key={group.value} value={group.id}>
+                                <option key={group.id} value={group.id}>
                                     {group.name}
                                 </option>
                             ))}
@@ -113,7 +132,7 @@ const AddTags = ({ CRMList, groupId }) => {
                         <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Stage")}</p>
                         <select
                             key={selectedStageId}
-                            className="w-full p-3 border rounded-lg"
+                            className={`w-full p-3 border rounded-lg ${!selectedStageId ? "text-gray-500" : "text-gray-800"}`}
                             value={selectedStageId || ""}
                             onChange={(e) => {
                                 const selectedStage = sortedStages.find((stage) => stage.id === parseInt(e.target.value));
@@ -123,7 +142,7 @@ const AddTags = ({ CRMList, groupId }) => {
                                     handleSave(selectedGroupId, selectedStage.id, selectedStage.stage_num);
                                 }
                             }}
-
+                            disabled={!selectedGroupId}
                         >
                             <option value="">{t("prospecting.Select Stage")}</option>
                             {sortedStages.map((stage) => (
@@ -140,8 +159,9 @@ const AddTags = ({ CRMList, groupId }) => {
 };
 
 AddTags.propTypes = {
-    CRMList: PropTypes.object,
-    groupId: PropTypes.string,
+    CRMList: PropTypes.array,
+    groupId: PropTypes.any,
+    onComplete: PropTypes.func,
 };
 
 export default AddTags;

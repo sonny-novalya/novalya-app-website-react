@@ -39,3 +39,108 @@
     stroke: #fff;
     fill: transparent;
 }
+
+
+.ctm-search .anticon-search svg {
+    color: #8C8E8F;
+    width: 20px;
+    height: 20px;
+}
+.ctm-search input.ant-input {
+    font-family: 'Outfit';
+    letter-spacing: .25px;
+    font-size: 16px;
+    color: #8C8E8F;
+}
+.ant-table-content {
+    overflow-x: auto;
+}
+.ant-table-content th.ant-table-cell span {
+    line-height: 1.1;
+}
+.custom-table .ant-table-thead th.ant-table-cell {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    color: #000407;
+    font-weight: 400;
+    text-align: center;
+}
+.custom-table .ant-table-thead th.ant-table-cell svg {
+    width: 14px;
+}
+.custom-table .ant-table-thead th.ant-table-cell::before {
+    opacity: 0;
+}
+
+.custom-table .ant-table-thead th.ant-table-cell svg path {
+    stroke: rgb(0 4 7 / 50%);
+}
+.custom-table .ant-table-tbody td.ant-table-cell {
+    border: none !important;
+}
+.custom-table tbody.ant-table-tbody tr.ant-table-row td.ant-table-cell  {
+    background: #f5f5f5 !important;
+    text-align: center;
+}
+.custom-table tbody.ant-table-tbody tr.ant-table-row td.ant-table-cell:first-child {
+    border-radius: 8px 0 0 8px !important;
+}
+.custom-table tbody.ant-table-tbody tr.ant-table-row td.ant-table-cell:last-child {
+    border-radius: 0 8px 8px 0 !important;
+}
+.custom-table .ant-table-tbody .ant-table-row >.ant-table-cell-row-hover {
+    background: #f5f5f5 !important;
+}
+.ctm-dot-btn {
+    border: none !important;
+}
+.custom-table table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.custom-table tbody.ant-table-tbody tr.ant-table-row td.ant-table-cell span {
+    font-weight: 400;
+    color: #000407;
+}
+ul.pros-dropdown li {
+    height: 44px;
+    font-size: 16px !important;
+    border-radius: 6px !important;
+}
+
+ul.pros-dropdown {
+    box-shadow: -5px 6px 6px rgb(0 0 0 / 19%) !important;
+    padding: 8px !important;
+}
+
+ul.pros-dropdown li span {
+    color: rgb(0 0 0 / 75%);
+}
+
+ul.pros-dropdown li:hover {
+    background: #0087ff !important;
+}
+
+ul.pros-dropdown li:hover span {
+    color: #fff;
+}
+
+.ctm-search .anticon-search svg {
+    color: #8C8E8F;
+    width: 20px;
+    height: 20px;
+}
+.ctm-search input.ant-input {
+    font-family: 'Outfit';
+    letter-spacing: .25px;
+    font-size: 16px;
+    color: #8C8E8F;
+    font-weight: 400;
+}
+.ctm-search input.ant-input::placeholder {
+    color: #8C8E8F;
+    font-weight: 300;
+}

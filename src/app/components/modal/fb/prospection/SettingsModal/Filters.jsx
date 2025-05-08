@@ -4,13 +4,11 @@ import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const Filters = ({ keyWordList, postType }) => {
+const Filters = ({ keyWordList, postType, onComplete }) => {
     const { prospection, updateProspection } = SettingStore();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const { gender: propGender, keyword, post_target } = prospection;
-
-    console.log("postType", postType)
 
     const genders = [
         { label: t("prospecting.Male"), value: "male", icon: <MaleGenderIcon /> },
@@ -28,6 +26,30 @@ const Filters = ({ keyWordList, postType }) => {
             value: "Like"
         }
     ];
+
+    // Check if this section is complete
+    useEffect(() => {
+        const isPostOrPostLike = postType && ["post", "post-like"].includes(postType.toString().toLowerCase());
+
+        // For this component to be complete, we need:
+        // 1. A selected gender
+        // 2. If postType is not post or post-like, a selected keyword (can be null/"none")
+        // 3. If postType is post or post-like, a selected post_target
+        const isComplete = (
+            // Gender is always required
+            propGender !== null && propGender !== "" &&
+            // For post or post-like, post_target is required
+            (isPostOrPostLike ? (post_target !== null && post_target !== null) : true) &&
+            // For other post types, keyword validation (null/none is a valid selection)
+            (!isPostOrPostLike ? true : true)
+        );
+
+        // Notify parent about completion status
+        if (onComplete) {
+            onComplete(isComplete);
+        }
+    }, [propGender, keyword, post_target, postType, onComplete]);
+
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
@@ -40,7 +62,6 @@ const Filters = ({ keyWordList, postType }) => {
 
         setDropdownOpen(false);
     };
-
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -62,7 +83,6 @@ const Filters = ({ keyWordList, postType }) => {
         { id: "none", name: "None" },
         ...(Array.isArray(keyWordList) ? keyWordList : [])
     ];
-
 
     return (
         <div>
@@ -104,7 +124,6 @@ const Filters = ({ keyWordList, postType }) => {
                                     {keyword && updatedKeywordList.find(k => k.id == keyword)?.name || "Select Keyword"}
                                     <UpperArrowIcon className={`transform transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                                 </button>
-
 
                                 {dropdownOpen && (
                                     <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA] mt-2 rounded-md shadow-md z-10">
@@ -160,15 +179,15 @@ const Filters = ({ keyWordList, postType }) => {
                             </div>
                         </div>
                 }
-
             </div>
         </div>
     );
 };
 
 Filters.propTypes = {
-    keyWordList: PropTypes.object,
+    keyWordList: PropTypes.array,
     postType: PropTypes.string,
+    onComplete: PropTypes.func,
 };
 
 export default Filters;

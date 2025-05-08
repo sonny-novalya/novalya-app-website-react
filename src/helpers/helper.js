@@ -13,68 +13,25 @@ export const loginSenerios = (response)=>{
     const authToken = response.token;
     const url = checkDoamin(response?.user?.website)
      window.location.href = `${url}?token=${authToken}&userId=${userId}`
-    // if(response?.user?.website === "nuskin"){
-     
-    //   if((window.location.href).includes("localhost") && !(window.location.href).includes("wcy-nuskin")) {
-    //     let  CurrURL = window.location.href.replace(/\blocalhost\b/g, "wcy-nuskin.localhost")
-    //     CurrURL= CurrURL.replace(/\/login\b/g, "")
-    //     window.location.href =CurrURL + `?token=${authToken}&userId=${userId}`
-    //   }else if((window.location.href).includes("wcy-nuskin") && !(window.location.href).includes("localhost")){
-    //     localStorage.setItem('token', authToken)
-    //     const expirationYears = 10; // 10 years
-    //     const expirationDate = new Date();
-    //     expirationDate.setFullYear(
-    //       expirationDate.getFullYear() + expirationYears
-    //     );
 
-    //     document.cookie = `authToken=${authToken}; expires=${expirationDate.toUTCString()}; path=/`;
-    //     document.cookie = `user_id=${userId}; expires=${expirationDate.toUTCString()}; path=/`;
-
-        
-    //   }else{
-    //     window.location.href = `https://wcy-nuskin.novalya.com?token=${authToken}&userId=${userId}`
-    //   }     
-    // }
-    // else{
-    //   if((window.location.href).includes("localhost") &&(window.location.href).includes("wcy-nuskin")) {
-    //     let curr =window.location.href.split(":")
-    //     window.location.href = `http://localhost:${curr?.[2] || 5173}?token=${authToken}&userId=${userId}`
-    //   } else if((window.location.href).includes("app.novalya.com")){
-    //     localStorage.setItem('token', authToken)
-    //     const expirationYears = 10; // 10 years
-    //     const expirationDate = new Date();
-    //     expirationDate.setFullYear(
-    //       expirationDate.getFullYear() + expirationYears
-    //     );
-
-    //     document.cookie = `authToken=${authToken}; expires=${expirationDate.toUTCString()}; path=/`;
-    //     document.cookie = `user_id=${userId}; expires=${expirationDate.toUTCString()}; path=/`;
-
-    //   }else if((window.location.href).includes("localhost")){
-    //     let curr = window.location.href.split(":")
-    //     window.location.href = `http://localhost:${curr?.[2] || 5173}?token=${authToken}&userId=${userId}`
-    //   }else if((window.location.href).includes("dev.novalya.com")){
-    //          window.location.href = `https://dev.novalya.com?token=${authToken}&userId=${userId}`
-    //   }else{
-    //     window.location.href = `https://app.novalya.com?token=${authToken}&userId=${userId}`
-    //   }
-
-    // }
 }
 
 const checkDoamin = (web)=>{
   const domains =[{url:"https://wcy-nuskin.novalya.com", website:"nuskin"}]
   const testDomains =["dev.novalya.com"]
   const hostname = window.location.hostname;
-  if(hostname?.includes("localhost") || testDomains?.includes(hostname)){
-    return window.location.href
-  }
   const selectedDomain = domains.find(d => d.website === web) 
-  if (selectedDomain) {
-   return selectedDomain?.url
+  if (selectedDomain?.url) {
+    return selectedDomain?.url
   }else{
-    return "https://app.novalya.com/"
+    if(hostname?.includes("localhost") || testDomains?.includes(hostname)){
+      return window.location.href
+    }
+    else{
+      return "https://app.novalya.com/"
+    }
   }
+ 
 
 }
 
@@ -129,3 +86,27 @@ export function getCurrentMonthYear() {
     year: date.getFullYear()
   };
 }
+
+export function getSubdomain(url) {
+  const { hostname } = new URL(url.startsWith("http") ? url : "https://" + url);
+  const parts = hostname.split(".");
+
+  // Special case: localhost subdomains like nuskin.localhost
+  if (hostname.endsWith(".localhost") && parts.length > 1) {
+    return parts.slice(0, parts.length - 1).join(".");
+  }
+
+  // Regular domains (e.g., dev.novalya.com)
+  if (parts.length > 2) {
+    return parts.slice(0, parts.length - 2).join(".");
+  }
+
+  return null;
+}
+
+export  const getCurrentYear = ()=>{
+    let year= new Date()
+    year = year.getFullYear()
+
+    return {curr:year, prev:year-1}
+  }

@@ -6,26 +6,60 @@ const SettingStore = create((set) => ({
     loading: false,
     settingLoading: false,
     CRMList: [],
+    // prospection: {
+    //     step: 1,
+    //     group: [],
+    //     messageData: [],
+    //     keywordData: [],
+    //     crmGroupData: [],
+    //     stratagy: 0, // 0 set for Follow + message
+    //     norequest: 10, // How many Requests
+    //     interval: "2-4", // make different interval for fb and ig
+    //     selectedinterval: "1", // selected interval custom goes here
+    //     gender: "female",
+    //     keyword: null,
+    //     prospect: "no", // retarget same user
+    //     pro_convo: 0, // Existing conversation
+    //     pro_stratagy: 0, // Request + Message
+    //     action: "no", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
+    //     datevalue: null,
+    //     group_id: null,
+    //     message: null,
+    //     post_target: "Like",
+    //     newMessage: null, // New message data
+    //     keywords: null, // Keywords data
+
+    //     prospect_type: "facebook", // Default platform type (can be "facebook" or "instagram") || comes from api
+    //     user_id: null, // User ID associated with the message || comes from api
+
+    //     // Bottom values
+    //     negative_keyword: null, // Negative keyword data
+    //     resume: null, // Resume data
+    //     search_index: 1, // Search index value
+    //     status: null, // Status of the operation
+    //     stratragy: false, // Strategy flag
+    //     created_at: null, // Timestamp of creation
+    // }, 
     prospection: {
         step: 1,
         group: [],
         messageData: [],
         keywordData: [],
         crmGroupData: [],
-        stratagy: 0, // 0 set for Follow + message
-        norequest: 10, // How many Requests
-        interval: "2-4", // make different interval for fb and ig
-        selectedinterval: "1", // selected interval custom goes here
-        gender: "female",
+        stratagy: null, // 0 set for Follow + message
+        norequest: null, // How many Requests
+        interval: null, // make different interval for fb and ig
+        selectedinterval: null, // selected interval custom goes here
+        gender: null,
         keyword: null,
-        prospect: "no", // retarget same user
-        pro_convo: 0, // Existing conversation
-        pro_stratagy: 0, // Request + Message
-        action: "no", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
+        prospect: null, // retarget same user
+        pro_convo: null, // Existing conversation
+        pro_stratagy: null, // Request + Message
+        action: null, // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
         datevalue: null,
         group_id: null,
         message: null,
-        post_target: "Like",
+        post_target: null,
         newMessage: null, // New message data
         keywords: null, // Keywords data
 
@@ -62,26 +96,28 @@ const SettingStore = create((set) => ({
 
             if (data.status === "success" && data.data.length > 0) {
                 const responseData = data.data[0];
+
+                console.log("responseData", responseData)
                 set({
                     prospection: {
                         group: responseData?.group || [],
                         messageData: responseData?.messages || [],
                         keywordData: responseData?.keywords || [],
                         crmGroupData: responseData?.groups || [],
-                        stratagy: responseData?.stratagy || 0,
-                        norequest: responseData?.norequest || 10,
-                        interval: responseData?.interval || "10-15",
-                        selectedinterval: responseData?.selectedinterval || "1",
-                        gender: responseData?.gender || "male",
+                        stratagy: responseData?.stratagy || null,
+                        norequest: responseData?.norequest || null,
+                        interval: responseData?.interval || null,
+                        selectedinterval: responseData?.selectedinterval || null,
+                        gender: responseData?.gender || null,
                         keyword: responseData?.keyword || null,
-                        prospect: responseData?.prospect || "no",
-                        pro_convo: responseData?.pro_convo || 0,
-                        pro_stratagy: responseData?.pro_stratagy || 0,
-                        action: responseData?.action || "no",
+                        prospect: responseData?.prospect || null,
+                        pro_convo: responseData?.pro_convo ,
+                        pro_stratagy: responseData?.pro_stratagy ,
+                        action: responseData?.action || null,
                         datevalue: responseData?.datevalue || null,
                         group_id: responseData?.group_id || null,
                         message: responseData?.message || null,
-                        post_target: responseData?.post_target || "Like",
+                        post_target: responseData?.post_target || null,
                         newMessage: responseData?.newMessage || null,
                         keywords: responseData?.keywords || null,
                     },

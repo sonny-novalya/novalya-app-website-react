@@ -68,7 +68,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                     }
                     <a 
                         className="rounded border border-[#0087FF7D] p-3 scale-90" target="_blank"
-                        href={`https://www.facebook.com/messages/${lead.is_e2ee === 1 ? "e2ee/" : ""}t/${lead?.fb_user_e2ee_id || lead?.fb_user_id}`}>
+                        href={`https://www.facebook.com/messages/${lead?.is_e2ee === 1 ? "e2ee/" : ""}t/${lead?.fb_user_e2ee_id || lead?.fb_user_id}`}>
                             <MessengerIcon />
                     </a>
                     <button className="rounded border border-[#0087FF7D] p-2">

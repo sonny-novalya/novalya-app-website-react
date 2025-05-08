@@ -17,6 +17,7 @@ import "./plans.css"
 import { useNavigate } from 'react-router-dom';
 import { Terms } from '../../../../helpers/helperData';
 import { useTranslation } from 'react-i18next';
+import { getCurrentYear } from '../../../../helpers/helper';
 
 const Plans = () => {
   const { t,i18n } = useTranslation();
@@ -29,6 +30,12 @@ const Plans = () => {
   const [plan3, setPlan3] = useState({amount_2:0,amount_1:0});
   const [allPlans] = useState(Terms)
   const [currency, setCurrency] = useState("");
+  const searchParams = new URLSearchParams(window.location.search);
+  const referralId = searchParams.get("ref") ||  searchParams.get("uname") 
+  if (referralId) {
+    localStorage.setItem("referralId",referralId)
+  }
+ const copyRightYears = getCurrentYear()
  
  
   //  const searchParams = new URLSearchParams(window.location.search);
@@ -87,8 +94,8 @@ const Plans = () => {
 
   const handleBuyNow = (planId) => {
     localStorage.setItem("planId", planId);
-	localStorage.setItem("fromOffers", "false");
-	localStorage.setItem("backto", "/plans");
+	  localStorage.setItem("fromOffers", "false");
+	  localStorage.setItem("backto", "/plans");
 
     navigate("/signup");
     window.dataLayer.push({ event: "Abonnement" });
@@ -716,7 +723,7 @@ const Plans = () => {
     <footer class="aug-plan-footer">
       <div class="container">
         <div class="aug-plan-footer-inn">
-          <p>Novalya © 2023-2024 &nbsp;&nbsp; | &nbsp;&nbsp; <a href="https://novalya.com/terms-and-conditions/" rel="noreferrer" target="_blank">Terms & Conditions</a></p>
+          <p>Novalya © {copyRightYears.prev}-{copyRightYears.curr} &nbsp;&nbsp; | &nbsp;&nbsp; <a href="https://novalya.com/terms-and-conditions/" rel="noreferrer" target="_blank">Terms & Conditions</a></p>
         </div>	
       </div>
     </footer>

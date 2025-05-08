@@ -1,0 +1,29 @@
+.signup  .nw_form_input::-webkit-input-placeholder{
+    color:transparent;
+}
+.signup   .nw_form_input::-moz-placeholder{
+    color:transparent;
+}
+.signup  .nw_form_input:focus~label, .nw_form_input:not(:placeholder-shown)~label {
+    color: #6b6781;
+    top: -14px;
+    left: 12px;
+    z-index: 1;
+    background: linear-gradient(0deg, #fafafa, #fff);
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.signup  .nw_form_input:focus {
+    outline: none;
+}
+
+.signup .sign_error {
+    color: #ff0909 !important;
+    font-family: DM Sans;
+    letter-spacing: 0;
+    line-height: 1.2;
+    margin: 5px 0 0 !important;
+    text-transform: capitalize;
+    font-size: 0.8rem;
+}

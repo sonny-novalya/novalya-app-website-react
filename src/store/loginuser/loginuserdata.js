@@ -1,14 +1,11 @@
 import { create } from "zustand";
-import { updateAuthorizationHeader } from "../../services/ApiCalls";
 import apiCall from "../../services/api";
-
 
 const useLoginUserDataStore = create((set) => ({
     loading: false,
     loginUserData: {},
     fetchLoginUserData: async (data) => {
         try {
-            updateAuthorizationHeader();
             set({ loading: true });
 
             const response = await apiCall({
@@ -16,10 +13,19 @@ const useLoginUserDataStore = create((set) => ({
                 url: '/user/api/userdata',
                 data,
             });
-            console.log("resss", response?.data);
 
-            if (response.status === 200) {  // check status code, not statusText
-                set({ loading: false, loginUserData: response?.data?.data });
+            const result = response?.data?.data;
+            const userData = {
+                name: `${result.firstname} ${result.lastname}`,
+                url: result.profilepictureurl?.includes("https://stagingbackend.novalya.com")
+                    ? result.profilepictureurl.replace("https://stagingbackend.novalya.com", "https://api-v2.novalya.com")
+                    : result.profilepictureurl, 
+                plan: result.plan_pkg === "Unlimited_new" ? "Unlimited" : result?.plan_pkg === null ? "No Plan" : result?.plan_pkg
+            };
+
+            if (response.status === 200) {
+                set({ loading: false, loginUserData: result });
+                localStorage.setItem("loginUserData", JSON.stringify(userData));
             } else {
                 throw new Error("Failed to fetch user data");
             }
