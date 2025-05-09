@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const TabNavigation = ({ activeTab, setActiveTab }) => {
+const TabNavigation = ({ activeTab, setActiveTab, isPro = true }) => {
     const tabs = [
         { id: 'new-trials', label: 'New Trials (30 days)' },
         { id: 'active-customers', label: 'Active Customers' },
@@ -8,10 +8,12 @@ const TabNavigation = ({ activeTab, setActiveTab }) => {
         { id: 'cancelled-customers', label: 'Cancelled Customers' },
         { id: 'all-customers', label: 'All Customers' },
     ];
+    const activeLogsTab = { id: 'active-logs', label: 'Active Logs' }
+    const newTabs = isPro ? [activeLogsTab, ...tabs] : tabs;
 
     return (
         <div className="flex space-x-2 ">
-            {tabs.map((tab) => (
+            {newTabs.map((tab) => (
                 <div key={tab.id} className="flex flex-col items-center w-full">
                     <button
                         className={`w-full px-4 py-2 rounded-md font-medium cursor-pointer ${activeTab === tab.id
@@ -34,8 +36,9 @@ const TabNavigation = ({ activeTab, setActiveTab }) => {
 
 TabNavigation.propTypes = {
     activeTab: PropTypes.string.isRequired,
-    setActiveTab: PropTypes.func.isRequired
-};
+    setActiveTab: PropTypes.func.isRequired,
+    isPro: PropTypes.bool
+}
 
 TabNavigation.defaultProps = {
     activeTab: 'new-trials'

@@ -7,6 +7,9 @@ import PaymentTableSection from './tablesComponents/PaymentTableSection';
 
 
 const AffiliateDashboard = () => {
+
+    const isPro = true
+
     return (
         <Layout>
             <div className="">
@@ -20,9 +23,9 @@ const AffiliateDashboard = () => {
 
                 <TopBanner />
                 <EarningAndPromotion />
-                <AffiliateLinkSection />
-                <AffiliateTableSection />
-                <PaymentTableSection />
+                <AffiliateLinkSection isPro={isPro} />
+                <AffiliateTableSection isPro={isPro} />
+                <PaymentTableSection isPro={isPro} />
 
             </div>
         </Layout>

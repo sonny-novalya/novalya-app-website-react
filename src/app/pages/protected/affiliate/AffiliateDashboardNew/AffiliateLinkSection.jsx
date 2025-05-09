@@ -3,8 +3,9 @@ import link2 from "../../../../../assets/img/linkImg2.png";
 import link3 from "../../../../../assets/img/linkImg3.png";
 import { CopyAffiliateIcon } from '../../../common/icons/icons';
 import { message } from 'antd';
+import PropTypes from 'prop-types';
 
-const AffiliateLinkSection = () => {
+const AffiliateLinkSection = ({isPro }) => {
     const affiliateLinks = [
         {
             id: 1,
@@ -42,7 +43,14 @@ const AffiliateLinkSection = () => {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div className="bg-white p-6 rounded-lg shadow-md mb-6 relative">
+            {isPro && (
+                <div className="absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/30 z-50 rounded-lg h-full">
+                    <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium">
+                        Unlock to Pro
+                    </button>
+                </div>
+            )}
             <div className="flex items-center mb-6">
                 <h1 className="text-2xl font-medium mr-3 text-[#000407]">My Affiliate links</h1>
                 <span className="bg-blue-500 text-white px-2 py-0.5 rounded-md text-sm font-semibold">PRO</span>
@@ -82,5 +90,7 @@ const AffiliateLinkSection = () => {
         </div>
     );
 };
-
+AffiliateLinkSection.propTypes = {
+    isPro: PropTypes.bool,
+};
 export default AffiliateLinkSection;
