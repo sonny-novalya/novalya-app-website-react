@@ -4,8 +4,12 @@ import link3 from "../../../../../assets/img/linkImg3.png";
 import { CopyAffiliateIcon } from '../../../common/icons/icons';
 import { message } from 'antd';
 import PropTypes from 'prop-types';
+import PromotionModal from "./PromotionModal";
+import { useState } from "react";
 
-const AffiliateLinkSection = ({isPro }) => {
+const AffiliateLinkSection = ({ isPro }) => {
+    const [showPromoModal, setShowPromoModal] = useState(false)
+
     const affiliateLinks = [
         {
             id: 1,
@@ -73,7 +77,7 @@ const AffiliateLinkSection = ({isPro }) => {
                                     onClick={() => handleCopy(link.url)}
                                     className="cursor-pointer"
                                 >
-                                    <CopyAffiliateIcon /> 
+                                    <CopyAffiliateIcon />
                                 </button>
                             </div>
                         </div>
@@ -83,10 +87,19 @@ const AffiliateLinkSection = ({isPro }) => {
             </div>
 
             <div className="flex justify-end mt-6">
-                <button className="bg-[#0087FF] hover:bg-blue-600 text-white py-2 px-4 rounded-md cursor-pointer">
+                <button className="bg-[#0087FF] hover:bg-blue-600 text-white py-2 px-4 rounded-md cursor-pointer" onClick={() => setShowPromoModal(true)}>
                     View all affiliate links
                 </button>
             </div>
+
+            {
+                showPromoModal &&
+                <PromotionModal
+                    visible={showPromoModal}
+                    onCancel={() => setShowPromoModal(false)}
+                />
+            }
+
         </div>
     );
 };

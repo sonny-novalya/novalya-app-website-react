@@ -8,7 +8,7 @@ import PaymentTableSection from './tablesComponents/PaymentTableSection';
 
 const AffiliateDashboard = () => {
 
-    const isPro = true
+    const isPro = false
 
     return (
         <Layout>
