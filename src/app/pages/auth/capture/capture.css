@@ -1,0 +1,154 @@
+.SignUpStepOne  .fullContainer {
+    background: rgb(249, 246, 243);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+.SignUpStepOne .fullContainerIn img {
+    max-width: 115px;
+    margin: 0 auto;
+    display: block;
+    padding: 30px 0;
+}
+.SignUpStepOne .fullContainerBox {
+    background: #ffffff;
+    width: 90%;
+    max-width: 580px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 35px 0px #dfdcd980;
+    padding: 40px 60px;
+}
+.SignUpStepOne .fullContainerBox>span {
+    color: #170f49;
+    font-size: clamp(24px, 3.25vw, 48px);
+    font-weight: 700;
+    line-height: 1;
+    display: block;
+    text-align: center;
+}
+.SignUpStepOne .progressWrap>span {
+    color: #170f49;
+    font-size: 12px;
+    text-align: center;
+    display: block;
+    margin: 12px 0 30px;
+    font-weight: 500;
+}
+.SignUpStepOne .fullContainerIn {
+    padding-bottom: 36px;
+}
+.SignUpStepOne .progressBar {
+    width: 100%;
+    max-width: 345px;
+    overflow: hidden;
+    background: #FCFCFC;
+    height: 6px;
+    margin: 30px auto 0;
+    box-shadow: inset 0 0px 3px rgb(0 0 0 / 12%);
+    border-radius: 10px;
+}
+.SignUpStepOne .progressFill {
+    display: block;
+    width: 50%;
+    background: #2C73FF;
+    height: 100%;
+}
+.SignUpStepOne .full-form-group {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    margin-bottom: 12px;
+    margin-top: 16px;
+    position: relative;
+}
+.SignUpStepOne .full-form-group input {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: 1px solid #dfdcd9;
+    border-radius: 8px;
+    background-color: #f9f6f3;
+    margin: 0px auto;
+    padding: 14px 20px;
+    height: 48px;
+    outline: none !important;
+    color: rgba(0,0,0,0.85);
+    transition: all .2s ease-in-out;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+}
+.SignUpStepOne .full-form-group label {
+    position: absolute;
+    top: 17px;
+    left: 20px;
+    text-align: left;
+    display: inline-block;
+    padding: 0 4px;
+    line-height: 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.5);
+    margin: 0px auto;
+    cursor: text;
+    transition: all .15s ease-in-out;
+    font-family: 'DM Sans';
+}
+/*.full-form-group input:hover, 
+.full-form-group input:focus { border: 1px solid #000; }
+*/
+.SignUpStepOne .full-form-group input:valid + label,  .SignUpStepOne .full-form-group input:focus + label {
+    top: -6px;
+    color: rgba(0,0,0,0.5);
+    font-size: 12px;
+    background: linear-gradient(0deg, #f9f6f3, #f9f9f9, #ffffff);
+}
+.SignUpStepOne .full-form-btn {
+    color: #fff;
+    background: #2C73FF;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans';
+    letter-spacing: .24px;
+    gap: 8px;
+    cursor: pointer;
+
+}
+ .SignUpStepOne .full-form-btn svg {
+    width: 10px;
+    margin-top: 2px;
+    transform: rotate(0);
+    transition: .15s;
+}
+ .SignUpStepOne .full-form-btn:hover svg {
+    transform: rotate(-45deg);
+}
+ .SignUpStepOne .full-form-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: #170f49;
+}
+ .SignUpStepOne .full-form-anchor {
+    text-decoration: underline;
+    cursor: pointer;
+}
+ .SignUpStepOne .full-form-text svg {
+    width: 10px;
+    transform: translateY(5px);
+    margin-right: 3px;
+}
+
+
+@media (max-width: 767px) {
+    .SignUpStepOne .fullContainerBox {
+        padding: 20px 30px;
+    }
+}

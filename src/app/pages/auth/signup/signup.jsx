@@ -36,12 +36,12 @@ const initialState = {
 };
 
 const SignUp = () => {
-  const [form, setForm] = useState(initialState);
+  const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [isChecked, setIsChecked] = useState(false);
   const [reffralData, setReffralData] = useState("NOVALYA");
   const addressRef = useRef(null);
-  const {getUserByRef,registerUser}=signupStore()
+  const {getUserByRef,registerUser,saveUTM}=signupStore()
   const [planDetails, setPlanDetails] = useState(null);
   const [showPass,setShowPass]=useState({confPass:false,pass:false})
   const [planPeriodStr,setPlanPeriodStr]=useState("")
@@ -66,6 +66,16 @@ const SignUp = () => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleInistials = ()=>{
+    let sign_details = localStorage.getItem("sign_details");
+    if (sign_details) {
+      sign_details= sign_details? JSON.parse(sign_details):{}
+    }else{
+      navigate("/capture")
+    }
+     setForm({...initialState,firstname:sign_details?.firstname || "",lastname:sign_details?.lastname || "",email:sign_details?.email })
+  }
 
   const validate = () => {
     const newErrors = {};
@@ -147,6 +157,8 @@ const SignUp = () => {
     }
     const domainParts = window.location.hostname.split(".");
     const domain = domainParts.length > 1 ? domainParts[0] : "";
+    let utm_data = localStorage.getItem("UTM_DATA")
+    utm_data= utm_data ? JSON.parse(utm_data) :{}
 
     let params = {
       sponsorid: reffralData || "NOVALYA",
@@ -165,10 +177,16 @@ const SignUp = () => {
       item_price_id: checkPlanSelect,
       coupon_code: coupon_code || "empty",
       domain,
+      cf_utm_medium:utm_data?.utm_medium || "",
+      cf_utm_source: utm_data?.utm_source || '',
+      cf_utm_content:utm_data?.utm_content || "",
+      cf_utm_term:utm_data?.utm_term || "",
+      cf_utm_campaign:utm_data?.utm_campaign || ""
     };
 
   const res = await registerUser(params)
   if (res.status === 200) {
+    addUtm(params.email,utm_data)
     window.location.replace(res?.data?.redirect_url);
   }
   };
@@ -187,6 +205,26 @@ const SignUp = () => {
         .catch((error) => {
           console.error("Error fetching IP address:", error);
         });
+  }
+
+  const addUtm = (email,utm_data)=>{
+ 
+  
+    if(utm_data?.utm_medium){
+      let params = {
+        cf_utm_email: email,
+        cf_utm_medium:utm_data?.utm_medium || "",
+        cf_utm_source: utm_data?.utm_source || '',
+        cf_utm_content:utm_data?.utm_content || "",
+        cf_utm_term:utm_data?.utm_term || "",
+        cf_utm_campaign:utm_data?.utm_campaign || ""
+      }
+      saveUTM(params)
+    
+    }
+  
+  
+  
   }
 
   const contOptions = countries.map((data) => {
@@ -262,6 +300,7 @@ const SignUp = () => {
 
     fetchPlanDetail()
     loadInitialCountry()
+    handleInistials()
    
   },[])
 

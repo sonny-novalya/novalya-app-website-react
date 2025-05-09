@@ -150,7 +150,7 @@ import logo from "../../../../assets/img/pricing-logo.png";
   const handleBuy = (plan,isBasic)=>{
 	localStorage.setItem("planId",plan)
 	localStorage.setItem("backto","/go-offer")
-	navigate(`/signup?coupon_code=${isBasic?"Course-LTC":"Course-LTC-unlimited-yearly"}`)
+	navigate(`/capture?coupon_code=${isBasic?"Course-LTC":"Course-LTC-unlimited-yearly"}`)
   }
 
   return (

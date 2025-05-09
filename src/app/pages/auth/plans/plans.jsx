@@ -97,8 +97,8 @@ const Plans = () => {
 	  localStorage.setItem("fromOffers", "false");
 	  localStorage.setItem("backto", "/plans");
 
-    navigate("/signup");
-    window.dataLayer.push({ event: "Abonnement" });
+    navigate("/capture");
+    // window.dataLayer.push({ event: "Abonnement" });
   };
 
  
