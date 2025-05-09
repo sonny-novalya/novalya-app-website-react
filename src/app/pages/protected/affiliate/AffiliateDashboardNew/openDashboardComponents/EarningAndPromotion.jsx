@@ -13,10 +13,10 @@ const earnings = [
 
 const EarningAndPromotion = () => {
     return (
-        <div className="flex flex-col md:flex-row gap-6  bg-gray-100">
+        <div className="flex flex-col md:flex-row gap-6  bg-gray-100 mb-6">
             {/* Earnings Section */}
             <div className="w-full md:w-1/2 bg-white shadow-md rounded-lg p-6 space-y-4">
-                <h2 className="text-lg font-semibold text-gray-700">Earnings</h2>
+                <h2 className="text-2xl font-medium mr-3 text-[#000407]">Earnings</h2>
                 {earnings.map((item, index) => (
                     <div
                         key={index}
