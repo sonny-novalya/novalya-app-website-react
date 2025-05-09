@@ -2,6 +2,7 @@ import withSidebarLayout from "../common/sidebar/withSidebarLayout";
 import Dashboard from "./dashboard/dashboard";
 import ConnectionDashboard from "./dashboard/ConnectionDashboard";
 import AffiliateDashboard from "./affiliate/affiliateDashboard/AffiliateDashboard";
+import NewAffiliate from "./affiliate/AffiliateDashboardNew/Dashboard.jsx";
 import AffiliateLinks from "./affiliate/affiliateLinks/affiliateLinks";
 import AffiliateSettings from "./affiliate/settings/affiliateSettings";
 import LevelCommission from "./affiliate/level-commissions/levelCommission";
@@ -23,6 +24,7 @@ import Profile from "./profile/index";
 const DashboardPage = withSidebarLayout(Dashboard);
 const ConnectionDashboardPage = withSidebarLayout(ConnectionDashboard);
 const AffiliatePage = withSidebarLayout(AffiliateDashboard);
+const NewAffiliatePage = withSidebarLayout(NewAffiliate);
 const AffiliateLinksPage= withSidebarLayout(AffiliateLinks);
 const LevelCommissionPage = withSidebarLayout(LevelCommission);
 const AffiliateSettingsPage = withSidebarLayout(AffiliateSettings);
@@ -41,4 +43,4 @@ const AiCommentsPage = withSidebarLayout(AiComments);
 const KeywordsPage = withSidebarLayout(Keywords);
 const ProfilePage = withSidebarLayout(Profile);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, IgCrmPage, AiCommentsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, IgCrmPage, AiCommentsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage }

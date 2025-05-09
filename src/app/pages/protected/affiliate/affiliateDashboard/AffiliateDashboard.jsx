@@ -6,6 +6,7 @@ const { TabPane } = Tabs;
 import affImg from "../../../../../assets/img/affiliateImg.png"
 import useAffiliateStore from "../../../../../store/affiliate/affiliate";
 import { getCurrentMonthYear } from "../../../../../helpers/helper";
+import OpenDashboard from '../AffiliateDashboardNew/OpenDashboard'
 
 const AffiliateDashboard = () => {
   const [activeKey, setActiveKey] = useState("1"); // Store active tab key
@@ -59,13 +60,18 @@ const AffiliateDashboard = () => {
           console.log(res?.data?.data)
         }
       }
-    
+
+      const [ memberdashboard, setMemberDashboard] = useState(true)
+
+      if (!memberdashboard) return <OpenDashboard />
+      
       return (
         <div className="p-6 bg-gray-100 h-screen overflow-auto">
           {/* Header Section */}
+          <button onClick={(()=> setMemberDashboard(!memberdashboard))}>
+            Switch dashboard
+          </button>
         <AfiliateTopBar/>
-    
-       
 
           {/* Affiliate earning section */} 
           <div className="bg-white rounded-[10px] p-[30px_20px] mb-6">

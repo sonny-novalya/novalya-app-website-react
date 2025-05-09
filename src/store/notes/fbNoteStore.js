@@ -42,7 +42,7 @@ const useFbNoteStore = create((set) => ({
                 data: { fb_user_id },
             });
 
-            const notes = response.data?.message[0] || [];
+            const notes = response.data?.data[0] || [];
             set({ fetchedNotes: notes, loading: false });
             return notes;
         } catch (error) {
@@ -63,7 +63,7 @@ const useFbNoteStore = create((set) => ({
                 url: "/user/api/edit-user-note",
                 data: {
                     note_id,
-                    discription: description, // spelling is as per API
+                    description: description, // spelling is as per API
                     id,
                 },
             });
@@ -86,7 +86,7 @@ const useFbNoteStore = create((set) => ({
 
             const response = await apiCall({
                 method: "POST",
-                url: `/user/api/delete-user-note?id=${id}&note_id=${notes_id}`,
+                url: `/user/api/delete-user-note-variants?id=${id}&note_id=${notes_id}`,
             });
 
             set({ loading: false });

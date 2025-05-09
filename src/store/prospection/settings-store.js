@@ -74,6 +74,40 @@ const SettingStore = create((set) => ({
         stratragy: false, // Strategy flag
         created_at: null, // Timestamp of creation
     }, 
+    initialProspectionStates: {
+        step: 1,
+        group: [],
+        messageData: [],
+        keywordData: [],
+        crmGroupData: [],
+        stratagy: null, // 0 set for Follow + message
+        norequest: null, // How many Requests
+        interval: null, // make different interval for fb and ig
+        selectedinterval: null, // selected interval custom goes here
+        gender: null,
+        keyword: null,
+        prospect: null, // retarget same user
+        pro_convo: null, // Existing conversation
+        pro_stratagy: null, // Request + Message
+        action: null, // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
+        datevalue: null,
+        group_id: null,
+        message: null,
+        post_target: null,
+        newMessage: null, // New message data
+        keywords: null, // Keywords data
+
+        prospect_type: "facebook", // Default platform type (can be "facebook" or "instagram") || comes from api
+        user_id: null, // User ID associated with the message || comes from api
+
+        // Bottom values
+        negative_keyword: null, // Negative keyword data
+        resume: null, // Resume data
+        search_index: 1, // Search index value
+        status: null, // Status of the operation
+        stratragy: false, // Strategy flag
+        created_at: null, // Timestamp of creation
+    }, 
     setStep: (value) => set(() => ({
         step: value
     })),
@@ -92,10 +126,10 @@ const SettingStore = create((set) => ({
                 throw new Error("Failed to fetch prospection data");
             }
 
-            const data = response.data;
+            const data = response?.data;
 
-            if (data.status === "success" && data.data.length > 0) {
-                const responseData = data.data[0];
+            if (data.status === "success" && data?.data?.length > 0) {
+                const responseData = data?.data[0];
 
                 console.log("responseData", responseData)
                 set({

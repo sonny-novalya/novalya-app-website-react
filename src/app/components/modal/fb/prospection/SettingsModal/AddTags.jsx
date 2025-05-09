@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const AddTags = ({ CRMList, groupId, onComplete }) => {
+const AddTags = ({ CRMList, groupId }) => {
     const { prospection, updateProspection } = SettingStore();
     let { action } = prospection;
 
@@ -28,25 +28,6 @@ const AddTags = ({ CRMList, groupId, onComplete }) => {
     const [selectedGroupId, setSelectedGroupId] = useState(parsedAction?.moveGroupId || null);
     const [selectedStageId, setSelectedStageId] = useState(parsedAction?.moveStageId || null);
     const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
-
-    // Check if this section is complete
-    useEffect(() => {
-        // For this component to be complete, we need:
-        // 1. A selection for adding tags (actionType should be "yes" or "no")
-        // 2. If actionType is "yes", we need both a group and stage selected
-        const isComplete =
-            actionType === "no" ||
-            (actionType === "yes" &&
-                selectedGroupId !== null &&
-                selectedGroupId !== "" &&
-                selectedStageId !== null &&
-                selectedStageId !== "");
-
-        // Notify parent about completion status
-        if (onComplete) {
-            onComplete(isComplete);
-        }
-    }, [actionType, selectedGroupId, selectedStageId, onComplete]);
 
     const handleSave = (moveGroupId, moveStageId, stage_num) => {
         updateProspection({

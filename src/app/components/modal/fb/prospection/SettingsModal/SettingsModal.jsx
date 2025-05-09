@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { message, Modal, Spin } from "antd";
+import { Modal, Spin, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { t } from "i18next";
@@ -13,9 +13,27 @@ import AddTags from "./AddTags";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 
 const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, postType, tempMessageList, keyWordList, CRMList }) => {
-    const { prospection, fetchProspectionData, createSocialTarget, loading: createSocialLoading, updateProspection, settingLoading } = SettingStore();
+    const { prospection, initialProspectionStates, fetchProspectionData, createSocialTarget, loading: createSocialLoading, updateProspection, settingLoading } = SettingStore();
     const location = useLocation();
     const isInstagram = location.pathname.split("/")[1] === "ig";
+
+    const {
+        message,  // using in SelectMessage component
+
+        pro_stratagy, // using in Settings component
+        norequest, // using in Settings component
+        interval, // using in Settings component
+
+        gender, // using in Filter component
+        keyword, // using in Filter component
+        post_target, // using in Filter component
+
+        prospect, // using in AdvOptions component
+        pro_convo, // using in AdvOptions component
+
+        action, // using in AddTags component
+
+    } = prospection
 
     // Track completion status for each section
     const [sectionsCompleted, setSectionsCompleted] = useState({
@@ -26,8 +44,10 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         [isInstagram ? 4 : 5]: false, // Add Tags
     });
 
-    // Check if all sections are completed
-    const allSectionsCompleted = Object.values(sectionsCompleted).every(value => value === true);
+    // We don't need to track validation errors as state since we'll use message.error
+
+    // Compute allSectionsCompleted from sectionsCompleted state
+    const allSectionsCompleted = Object.values(sectionsCompleted).every(isComplete => isComplete);
 
     const tabItems = [
         {
@@ -35,7 +55,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             key: 1,
             children: <SelectMessage
                 tempMessageList={tempMessageList}
-                onComplete={(isComplete) => handleSectionComplete(1, isComplete)}
+                message={message}
             />
         },
         {
@@ -43,7 +63,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             key: 2,
             children: <Settings
                 isInstagram={isInstagram}
-                onComplete={(isComplete) => handleSectionComplete(2, isComplete)}
             />
         },
         ...(isInstagram ? [] : [{
@@ -52,14 +71,12 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             children: <Filters
                 keyWordList={keyWordList}
                 postType={postType}
-                onComplete={(isComplete) => handleSectionComplete(3, isComplete)}
             />
         }]),
         {
             label: t("prospecting.Advanced Options"),
             key: isInstagram ? 3 : 4,
             children: <AdvOptions
-                onComplete={(isComplete) => handleSectionComplete(isInstagram ? 3 : 4, isComplete)}
             />
         },
         {
@@ -68,18 +85,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             children: <AddTags
                 CRMList={CRMList}
                 groupId={groupId}
-                onComplete={(isComplete) => handleSectionComplete(isInstagram ? 4 : 5, isComplete)}
             />
         },
     ];
-
-    // Function to handle section completion status
-    const handleSectionComplete = (sectionKey, isComplete) => {
-        setSectionsCompleted(prev => ({
-            ...prev,
-            [sectionKey]: isComplete
-        }));
-    };
 
     const handleUpdateGroupId = () => {
         updateProspection({
@@ -103,6 +111,62 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         setActiveKey(key);
     };
 
+    // Validate each section and update errors
+    const validateSections = () => {
+        const newValidationErrors = {};
+
+        // Section 1: Select Message
+        if (!message) {
+            newValidationErrors[1] = "Please select a message";
+        } else {
+            newValidationErrors[1] = "";
+        }
+
+        // Section 2: Settings
+        if (pro_stratagy !== 0 && pro_stratagy !== 1) {
+            newValidationErrors[2] = "Please select a strategy";
+        } else if (!(Number(norequest) >= 1 && Number(norequest) <= 50)) {
+            newValidationErrors[2] = "Please enter a valid number of requests (1-50)";
+        } else if (!interval) {
+            newValidationErrors[2] = "Please select an interval";
+        } else {
+            newValidationErrors[2] = "";
+        }
+
+        // Section 3: Filters (Only for Facebook)
+        if (!isInstagram) {
+            if (!gender) {
+                newValidationErrors[3] = "Please select a gender";
+            } else if (postType && !["post", "post-like"].includes(postType.toString().toLowerCase()) && keyword === undefined) {
+                newValidationErrors[3] = "Please enter keywords";
+            } else if (!post_target && ["post", "post-like"].includes(postType?.toString().toLowerCase())) {
+                newValidationErrors[3] = "Please select a post target";
+            } else {
+                newValidationErrors[3] = "";
+            }
+        }
+
+        // Section 4: Advanced Options
+        const advOptionsKey = isInstagram ? 3 : 4;
+        if (prospect === null) {
+            newValidationErrors[advOptionsKey] = "Please select a prospect option";
+        } else if (pro_convo !== 0 && pro_convo !== 1) {
+            newValidationErrors[advOptionsKey] = "Please select a conversation option";
+        } else {
+            newValidationErrors[advOptionsKey] = "";
+        }
+
+        // Section 5: Add Tags
+        const tagsKey = isInstagram ? 4 : 5;
+        if (!action) {
+            newValidationErrors[tagsKey] = "Please select an action";
+        } else {
+            newValidationErrors[tagsKey] = "";
+        }
+
+        return newValidationErrors;
+    };
+
     const handleSave = async () => {
         if (allSectionsCompleted) {
             const type = isInstagram ? "instagram" : "facebook";
@@ -119,6 +183,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 message.error("Failed to create settings");
             }
         } else {
+            // Validate all sections and update error messages
+            const errors = validateSections();
+
             // Find the first incomplete section
             const incompleteSection = Object.entries(sectionsCompleted)
                 .find(([_, isComplete]) => !isComplete);
@@ -126,11 +193,40 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             if (incompleteSection) {
                 const [incompleteKey] = incompleteSection;
                 setActiveKey(Number(incompleteKey));
+
+                // Show specific error message for the incomplete section
+                if (errors[incompleteKey]) {
+                    message.error(errors[incompleteKey]);
+                } else {
+                    message.warning("Please complete all sections before saving");
+                }
+            }
+        }
+    };
+
+    // Handler for clicking disabled save button
+    const handleDisabledSaveClick = () => {
+        // Validate all sections and update error messages
+        const errors = validateSections();
+
+        // Find the first incomplete section and navigate to it
+        const incompleteSection = Object.entries(sectionsCompleted)
+            .find(([_, isComplete]) => !isComplete);
+
+        if (incompleteSection) {
+            const [incompleteKey] = incompleteSection;
+            setActiveKey(Number(incompleteKey));
+
+            // Show specific error message for the incomplete section
+            if (errors[incompleteKey]) {
+                message.error(errors[incompleteKey]);
+            } else {
                 message.warning("Please complete all sections before saving");
             }
         }
     };
 
+    // First useEffect for initialization and data fetching
     useEffect(() => {
         handleUpdateGroupId();
         const type = isInstagram ? 'instagram' : 'facebook';
@@ -139,8 +235,71 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         }
     }, [groupId]);
 
+    // Second useEffect for checking completion status, with careful comparison to prevent loops
+    useEffect(() => {
+        // Skip updates if still loading to prevent premature completion checks
+        if (settingLoading) return;
+
+        // Create new completion state based on current prospection values
+        const newSectionsCompleted = {
+            1: !!message,
+
+            2: (pro_stratagy === 0 || pro_stratagy === 1) &&
+                (Number(norequest) >= 1 && Number(norequest) <= 50) &&
+                !!interval,
+
+            3: isInstagram ? true : (
+                !!gender &&
+                (postType && !["post", "post-like"].includes(postType.toString().toLowerCase()) ? keyword !== undefined : !!post_target)
+            ),
+
+            [isInstagram ? 3 : 4]: prospect !== null && (pro_convo === 0 || pro_convo === 1),
+
+            [isInstagram ? 4 : 5]: !!action && (() => {
+                // Check if action meets all criteria when type is "yes"
+                try {
+                    if (!action) return false;
+
+                    let actionObj = typeof action === 'string' ? JSON.parse(action) : action;
+                    let actionType = actionObj?.moveGroupId ? "yes" : "no";
+
+                    // If action type is "no", it's complete
+                    if (actionType === "no") return true;
+
+                    // If action type is "yes", check for required fields
+                    return !!actionObj.moveGroupId &&
+                        !!actionObj.moveStageId &&
+                        (actionObj.stage_num !== null && actionObj.stage_num !== undefined);
+                } catch (error) {
+                    console.error("Error parsing action in completion check:", error);
+                    return false;
+                }
+            })(),
+        };
+
+        // Only update state if the completion status has actually changed
+        const currentJSON = JSON.stringify(sectionsCompleted);
+        const newJSON = JSON.stringify(newSectionsCompleted);
+
+        if (currentJSON !== newJSON) {
+            setSectionsCompleted(newSectionsCompleted);
+        }
+    }, [
+        message, pro_stratagy, norequest, interval,
+        gender, keyword, post_target,
+        prospect, pro_convo, action,
+        isInstagram, settingLoading
+    ]);
+
+    const handleCloseSettings = () => {
+        updateProspection({
+            ...initialProspectionStates
+        });
+        onClose()
+    }
+
     return (
-        <Modal className="pro-setting-modal" open={visible} onCancel={onClose} footer={null} width={1225} centered>
+        <Modal className="pro-setting-modal" open={visible} onCancel={handleCloseSettings} footer={null} width={1225} centered>
             <div className="flex h-[calc(100vh-80px)] p-0 relative">
                 {/* Left panel - Tabs */}
                 {settingLoading && (
@@ -184,13 +343,17 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                             );
                         })}
                     </ul>
-                    <button
-                        className={`w-full py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${!allSectionsCompleted ? "opacity-50" : ""}`}
-                        disabled={!allSectionsCompleted}
-                        onClick={handleSave}
+                    <Tooltip
+                        title={!allSectionsCompleted ? "Please complete all required fields before saving" : ""}
+                        placement="top"
                     >
-                        {createSocialLoading ? t("prospecting.Saving") : t("prospecting.Save")}
-                    </button>
+                        <button
+                            className={`w-full py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${!allSectionsCompleted ? "opacity-50" : ""}`}
+                            onClick={allSectionsCompleted ? handleSave : handleDisabledSaveClick}
+                        >
+                            {createSocialLoading ? t("prospecting.Saving") : t("prospecting.Save")}
+                        </button>
+                    </Tooltip>
                 </div>
 
                 {/* Divider */}

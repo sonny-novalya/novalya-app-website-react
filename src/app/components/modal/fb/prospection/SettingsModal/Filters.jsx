@@ -4,7 +4,7 @@ import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const Filters = ({ keyWordList, postType, onComplete }) => {
+const Filters = ({ keyWordList, postType }) => {
     const { prospection, updateProspection } = SettingStore();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -26,29 +26,6 @@ const Filters = ({ keyWordList, postType, onComplete }) => {
             value: "Like"
         }
     ];
-
-    // Check if this section is complete
-    useEffect(() => {
-        const isPostOrPostLike = postType && ["post", "post-like"].includes(postType.toString().toLowerCase());
-
-        // For this component to be complete, we need:
-        // 1. A selected gender
-        // 2. If postType is not post or post-like, a selected keyword (can be null/"none")
-        // 3. If postType is post or post-like, a selected post_target
-        const isComplete = (
-            // Gender is always required
-            propGender !== null && propGender !== "" &&
-            // For post or post-like, post_target is required
-            (isPostOrPostLike ? (post_target !== null && post_target !== null) : true) &&
-            // For other post types, keyword validation (null/none is a valid selection)
-            (!isPostOrPostLike ? true : true)
-        );
-
-        // Notify parent about completion status
-        if (onComplete) {
-            onComplete(isComplete);
-        }
-    }, [propGender, keyword, post_target, postType, onComplete]);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
