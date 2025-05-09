@@ -42,7 +42,7 @@ const AffiliateLinkSection = () => {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <div className="flex items-center mb-6">
                 <h1 className="text-2xl font-medium mr-3 text-[#000407]">My Affiliate links</h1>
                 <span className="bg-blue-500 text-white px-2 py-0.5 rounded-md text-sm font-semibold">PRO</span>

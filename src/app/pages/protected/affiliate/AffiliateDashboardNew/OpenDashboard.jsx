@@ -1,7 +1,9 @@
 import Layout from '../../Layout';
 import AffiliateLinkSection from './AffiliateLinkSection';
+import AffiliateTableSection from './AffiliateTableSection';
 import EarningAndPromotion from './openDashboardComponents/EarningAndPromotion';
 import TopBanner from './openDashboardComponents/TopBanner';
+import PaymentTableSection from './tablesComponents/PaymentTableSection';
 
 
 const AffiliateDashboard = () => {
@@ -19,6 +21,8 @@ const AffiliateDashboard = () => {
                 <TopBanner />
                 <EarningAndPromotion />
                 <AffiliateLinkSection />
+                <AffiliateTableSection />
+                <PaymentTableSection />
 
             </div>
         </Layout>
