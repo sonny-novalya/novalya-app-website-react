@@ -11,7 +11,6 @@ import useLoginUserDataStore from '../../../../../store/loginuser/loginuserdata'
 const AffiliateDashboard = () => {
     const [isPro, setIsPro] = useState(false)
     const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
-    console.log("isPro", isPro)
 
     useEffect(() => {
         fetchLoginUserData({})
