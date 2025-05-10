@@ -148,7 +148,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
             if (!notesData.note.trim()) {
                 setNotes(prevNotes => [...prevNotes]);
-                const notesList = notes.map((item) => ({
+                const notesList = notes?.map((item) => ({
                     id: item.id,
                     description: item.text,
                 }));

@@ -6,10 +6,11 @@ import { message } from 'antd';
 import PropTypes from 'prop-types';
 import PromotionModal from "./PromotionModal";
 import { useState } from "react";
+import useUpgradeModalStore from "../../../../../store/modals/UpgradeToPro";
 
 const AffiliateLinkSection = ({ isPro }) => {
     const [showPromoModal, setShowPromoModal] = useState(false)
-
+    const { showModal } = useUpgradeModalStore();
     const affiliateLinks = [
         {
             id: 1,
@@ -50,7 +51,7 @@ const AffiliateLinkSection = ({ isPro }) => {
         <div className="bg-white p-6 rounded-lg shadow-md mb-6 relative">
             {isPro && (
                 <div className="absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/30 z-50 rounded-lg h-full">
-                    <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium">
+                    <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium" onClick={showModal}>
                         Unlock to Pro
                     </button>
                 </div>

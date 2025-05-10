@@ -1,14 +1,14 @@
+import { useState } from 'react';
 import Layout from '../../Layout';
 import AffiliateLinkSection from './AffiliateLinkSection';
 import AffiliateTableSection from './AffiliateTableSection';
 import EarningAndPromotion from './openDashboardComponents/EarningAndPromotion';
 import TopBanner from './openDashboardComponents/TopBanner';
 import PaymentTableSection from './tablesComponents/PaymentTableSection';
-
+import UpgradeToProModal from './UpgradeToProModal';
 
 const AffiliateDashboard = () => {
-
-    const isPro = false
+    const isPro = true
 
     return (
         <Layout>
@@ -26,7 +26,7 @@ const AffiliateDashboard = () => {
                 <AffiliateLinkSection isPro={isPro} />
                 <AffiliateTableSection isPro={isPro} />
                 <PaymentTableSection isPro={isPro} />
-
+                <UpgradeToProModal  />
             </div>
         </Layout>
     );
