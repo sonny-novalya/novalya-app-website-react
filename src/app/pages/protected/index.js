@@ -20,6 +20,7 @@ import Whitelist from "./fb/friends-list/Whitelist";
 import AiComments from "./ai-comments/AiComments";
 import Keywords from "./library/keyword/keyword";
 import Profile from "./profile/index";
+import Upgrade from "./upgade/upgarde";
 
 const DashboardPage = withSidebarLayout(Dashboard);
 const ConnectionDashboardPage = withSidebarLayout(ConnectionDashboard);
@@ -42,5 +43,6 @@ const IgCrmPage = withSidebarLayout(IgCrm);
 const AiCommentsPage = withSidebarLayout(AiComments);
 const KeywordsPage = withSidebarLayout(Keywords);
 const ProfilePage = withSidebarLayout(Profile);
+const UpgradePage = withSidebarLayout(Upgrade);
 
-export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, IgCrmPage, AiCommentsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage }
+export { DashboardPage, AffiliatePage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, IgCrmPage, AiCommentsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage,UpgradePage }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './capture.css'
 import logo from '../../../../assets/img/pricing-logo.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'

@@ -1,9 +1,10 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
 
-import { DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage } from "../pages/protected";
+import { DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage, UpgradePage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
+
 
 
 
@@ -35,6 +36,7 @@ const AuthentictedRoutes = () => {
         <Route path="/friendlist/deactivated" element={<DeactivatedPage />} />
         <Route path="/friendlist/whitelist" element={<WhitelistPage />} /> 
         <Route path="/profile" element={<ProfilePage />} /> 
+        <Route path="/upgrade" element={<UpgradePage />} /> 
       </Routes>
     {isMessage ? <MessageTempIndex step={step} selectedPlatform={selectedPlatform} setIsMessage={setIsMessage}/>:""}
 

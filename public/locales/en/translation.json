@@ -378,7 +378,9 @@
   "I agree to a subscription of offer": "I agree to a first payment of {{currency}}{{amount}} (6 months access) today, following by a subscription of",
   "Apply 50% Off Coupon":"Apply 50% Off Coupon",
   "No Thanks":"No Thanks",
-  "Support": "Support"
+  "Support": "Support",
+  "Upgrade Your Plan Today.":"Upgrade Your Plan Today.",
+  "Upgrade Now":"Upgrade Now"
 
 },
 "pricing_tooltips": {
