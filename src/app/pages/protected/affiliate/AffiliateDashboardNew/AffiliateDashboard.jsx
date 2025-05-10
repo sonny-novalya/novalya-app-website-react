@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../../Layout';
 import AffiliateLinkSection from './AffiliateLinkSection';
 import AffiliateTableSection from './AffiliateTableSection';
@@ -6,10 +6,18 @@ import EarningAndPromotion from './openDashboardComponents/EarningAndPromotion';
 import TopBanner from './openDashboardComponents/TopBanner';
 import PaymentTableSection from './tablesComponents/PaymentTableSection';
 import UpgradeToProModal from './UpgradeToProModal';
+import useLoginUserDataStore from '../../../../../store/loginuser/loginuserdata';
 
 const AffiliateDashboard = () => {
-    const isPro = true
+    const [isPro, setIsPro] = useState(false)
+    const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
 
+    useEffect(() => {
+        fetchLoginUserData({})
+        loginUserData && setIsPro(loginUserData?.user_type !== "Distributor" ? true: false)
+    }, [])
+    
+    if (!loginUserData) return 
     return (
         <Layout>
             <div className="">
@@ -22,8 +30,8 @@ const AffiliateDashboard = () => {
                 </div>
 
                 <TopBanner />
-                <EarningAndPromotion />
-                <AffiliateLinkSection isPro={isPro} />
+                <EarningAndPromotion randomCode={loginUserData?.randomcode}/>
+                <AffiliateLinkSection isPro={isPro} randomCode={loginUserData?.randomcode} />
                 <AffiliateTableSection isPro={isPro} />
                 <PaymentTableSection isPro={isPro} />
                 <UpgradeToProModal  />

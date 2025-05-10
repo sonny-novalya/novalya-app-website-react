@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import icon1 from "../../../../../../assets/img/earningIcon1.png"
 import icon2 from "../../../../../../assets/img/earningIcon2.png"
 import icon3 from "../../../../../../assets/img/earningIcon3.png"
 import icon4 from "../../../../../../assets/img/earningIcon4.png"
 import { CopyAffiliateIcon } from "../../../../common/icons/icons";
+import PropTypes from 'prop-types';
 
 const earnings = [
     { label: "Pending", amount: "$350,321.00", icon: icon1 },
@@ -11,7 +13,14 @@ const earnings = [
     { label: "Lifetime", amount: "$350,321.00", icon: icon4 },
 ];
 
-const EarningAndPromotion = () => {
+const EarningAndPromotion = ({ randomCode }) => {   
+    const [affId, setAffId] = useState("")
+
+    useEffect(()=>{
+        if (randomCode !== undefined)
+            setAffId(randomCode)
+    }, [])
+
     return (
         <div className="flex flex-col md:flex-row gap-6  bg-gray-100 mb-6">
             {/* Earnings Section */}
@@ -43,7 +52,7 @@ const EarningAndPromotion = () => {
                     <div className="relative w-full ">
                         <input
                             type="text"
-                            value="https://app.novalya.com/affiliate-link"
+                            value={`https://dev.novalya.com/signup/${randomCode}`}
                             readOnly
                             className="w-full p-3 border border-gray-300 rounded-md text-sm"
                         />
@@ -61,8 +70,8 @@ const EarningAndPromotion = () => {
                     <div className="flex gap-2">
                         <input
                             type="text"
-                            value="CDKCDCDCDC"
-                            readOnly
+                            value={affId}
+                            onChange={(e)=> setAffId(e.target.value)}
                             className="flex-grow p-3 border border-gray-300 rounded-md text-sm"
                         />
                         <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">
@@ -73,6 +82,10 @@ const EarningAndPromotion = () => {
             </div>
         </div>
     );
+};
+
+EarningAndPromotion.propTypes = {
+    randomCode: PropTypes.string,
 };
 
 export default EarningAndPromotion;

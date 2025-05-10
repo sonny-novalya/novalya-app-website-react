@@ -4,11 +4,12 @@ import { Table,  Input, Select, Button } from "antd";
 import useAffiliateStore from '../../../../../store/affiliate/affiliate';
 import useUpgradeModalStore from '../../../../../store/modals/UpgradeToPro';
 import UpgradeToProModal from '../AffiliateDashboardNew/UpgradeToProModal';
+import useLoginUserDataStore from '../../../../../store/loginuser/loginuserdata';
 
 
 const { Option } = Select;
 
-const LevelCommission = ({ isPro = true }) => {
+const LevelCommission = () => {
   const {fetchCommissionData,affiliateComList,affiliateComLoader}=useAffiliateStore()
   const currentMonth = new Date().getMonth() + 1;
   const currentYear = new Date().getFullYear();
@@ -18,6 +19,8 @@ const LevelCommission = ({ isPro = true }) => {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [years, setYears] = useState([]);
   const [search,setSearch]=useState("")
+  const [isPro, setIsPro] = useState(false)
+  const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
 
   const data = affiliateComList?.filter(item => item?.sender?.toLowerCase().includes(search.toLowerCase()))
   const { showModal } = useUpgradeModalStore();
@@ -42,6 +45,11 @@ const LevelCommission = ({ isPro = true }) => {
   }
 
   useEffect(() => {
+    fetchLoginUserData({})
+    loginUserData && setIsPro(loginUserData?.user_type !== "Distributor" ? true : false)
+  }, [])
+
+  useEffect(() => {
     const PayLoad = {month:selectedMonth,year:selectedYear}
     fetchCommissionData(PayLoad)
     handleAllYears()
@@ -52,7 +60,7 @@ const LevelCommission = ({ isPro = true }) => {
     fetchCommissionData(PayLoad)
   }
   
-
+  if (!loginUserData) return 
 
   return (
   <>
