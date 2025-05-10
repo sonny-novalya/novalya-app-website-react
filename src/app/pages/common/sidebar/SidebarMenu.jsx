@@ -286,6 +286,7 @@ const SidebarMenu = () => {
                                                             ))}
                                                         </div>
                                                     )}
+                                                    {item.id === 'instagram' && <div className="h-[1px] bg-[#0000001A] w-full mt-3 scale-125" />}
                                                 </>
                                             ) : (
                                                 <SidebarItem

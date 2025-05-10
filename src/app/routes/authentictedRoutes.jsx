@@ -21,7 +21,7 @@ const AuthentictedRoutes = () => {
         <Route path="/fb/crm" element={<CrmPage />} />
         <Route path="/fb/request" element={<RequestPage />} />
         <Route path="/ig/crm" element={<IgCrmPage />} />
-        <Route path="descriptionments" element={<AiCommentsPage />} />
+        <Route path="/ai-comments" element={<AiCommentsPage />} />
         {/* <Route path="/affiliate" element={<AffiliatePage />} /> */}
         <Route path="/affiliate/dashboard" element={<NewAffiliatePage />} />
         <Route path="/library/messages" element={<MessageIndexPage />} />
