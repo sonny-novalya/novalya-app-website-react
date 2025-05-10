@@ -11,10 +11,11 @@ import useLoginUserDataStore from '../../../../../store/loginuser/loginuserdata'
 const AffiliateDashboard = () => {
     const [isPro, setIsPro] = useState(false)
     const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
+    console.log("isPro", isPro)
 
     useEffect(() => {
         fetchLoginUserData({})
-        loginUserData && setIsPro(loginUserData?.user_type !== "Distributor" ? true: false)
+        loginUserData && setIsPro(loginUserData?.user_type?.toLowerCase() === "distributor" ? true: false)
     }, [])
     
     if (!loginUserData) return 
@@ -30,7 +31,7 @@ const AffiliateDashboard = () => {
                 </div>
 
                 <TopBanner />
-                <EarningAndPromotion randomCode={loginUserData?.randomcode}/>
+                <EarningAndPromotion />
                 <AffiliateLinkSection isPro={isPro} randomCode={loginUserData?.randomcode} />
                 <AffiliateTableSection isPro={isPro} />
                 <PaymentTableSection isPro={isPro} />
