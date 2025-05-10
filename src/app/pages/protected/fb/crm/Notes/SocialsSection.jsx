@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import GlobeIcon from '../../../../../../assets/img/note-globe.svg';
 import FbIcon from '../../../../../../assets/img/note-fb.svg';
@@ -19,11 +18,7 @@ const platforms = [
 ];
 
 const SocialsSection = ({ socials, handleSocialChange }) => {
-    
-    const handleCopy = (text) => {
-        navigator.clipboard.writeText(text || '');
-    };
-    
+
     return (
         <div className="w-full flex flex-col gap-1.5">
             <label className="text-sm font-medium flex items-center gap-[6px]">
@@ -49,10 +44,16 @@ const SocialsSection = ({ socials, handleSocialChange }) => {
                         />
                         <button
                             className="bg-transparent p-1 flex items-center justify-center border-none"
-                            onClick={() => handleCopy(socials[key] || '')}
+                            onClick={() => {
+                                const url = socials[key] || '';
+                                if (url) {
+                                    navigator.clipboard.writeText(url);
+                                    window.open(url, '_blank');
+                                }
+                            }}
                             title="Copy"
                         >
-                            <img src={CopyIcon} alt="copy icon" />
+                            <img src={CopyIcon} alt="link icon" />
                         </button>
                     </div>
                 ))}

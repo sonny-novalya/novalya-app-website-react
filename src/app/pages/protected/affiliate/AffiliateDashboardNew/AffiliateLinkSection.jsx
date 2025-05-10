@@ -5,34 +5,37 @@ import { CopyAffiliateIcon } from '../../../common/icons/icons';
 import { message } from 'antd';
 import PropTypes from 'prop-types';
 import PromotionModal from "./PromotionModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useUpgradeModalStore from "../../../../../store/modals/UpgradeToPro";
 
-const AffiliateLinkSection = ({ isPro }) => {
+const AffiliateLinkSection = ({ isPro, randomCode }) => {
     const [showPromoModal, setShowPromoModal] = useState(false)
-
+    const { showModal } = useUpgradeModalStore();
+    const [affCode, setAffCode] = useState("")
+    
     const affiliateLinks = [
         {
             id: 1,
             type: "Official Website",
-            url: "https://app.novalya.com/signup",
+            url: `https://dev.novalya.com/signup/${affCode}`,
             image: link1
         },
         {
             id: 2,
             type: "Sales Funnel",
-            url: "https://www.novalya.ai/en/go",
+            url: `https://www.novalya.ai/en/go?uname=${affCode}&lang=en`,
             image: link2
         },
         {
             id: 3,
             type: "Pricing Page",
-            url: "https://app.novalya.com/redirect",
+            url: `https://dev.novalya.com/redirect?page=plans&uname=${affCode}`,
             image: link3
         },
         {
             id: 4,
             type: "Official Website",
-            url: "https://app.novalya.com/signup",
+            url: `https://dev.novalya.com/signup/${affCode}`,
             image: link1
         }
     ];
@@ -46,11 +49,16 @@ const AffiliateLinkSection = ({ isPro }) => {
         });
     };
 
+        useEffect(()=>{
+            if (randomCode !== undefined)
+                setAffCode(randomCode)
+        }, [])
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-md mb-6 relative">
             {isPro && (
                 <div className="absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/30 z-50 rounded-lg h-full">
-                    <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium">
+                    <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium" onClick={showModal}>
                         Unlock to Pro
                     </button>
                 </div>
@@ -97,6 +105,8 @@ const AffiliateLinkSection = ({ isPro }) => {
                 <PromotionModal
                     visible={showPromoModal}
                     onCancel={() => setShowPromoModal(false)}
+                    affiliateLinks={affiliateLinks}
+                    affCode={randomCode}
                 />
             }
 
@@ -105,5 +115,6 @@ const AffiliateLinkSection = ({ isPro }) => {
 };
 AffiliateLinkSection.propTypes = {
     isPro: PropTypes.bool,
+    randomCode: PropTypes.string,
 };
 export default AffiliateLinkSection;

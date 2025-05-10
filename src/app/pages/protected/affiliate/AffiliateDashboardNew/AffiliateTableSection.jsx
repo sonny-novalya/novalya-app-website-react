@@ -5,6 +5,7 @@ import CustomersTable from "./tablesComponents/CustomersTable";
 import PaginationTable from "./tablesComponents/PaginationTable";
 import PropTypes from 'prop-types';
 import ActivityLogsTable from "./tablesComponents/ActiveLogsTable";
+import useUpgradeModalStore from "../../../../../store/modals/UpgradeToPro";
 
 export const mockCustomers = [
     {
@@ -102,6 +103,7 @@ export const mockCustomers = [
 
 const AffiliateTableSection = ({ isPro }) => {
     const [activeTab, setActiveTab] = useState(isPro ? 'active-logs' : 'new-trials');
+    const { showModal } = useUpgradeModalStore();
 
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -154,7 +156,7 @@ const AffiliateTableSection = ({ isPro }) => {
                     : <div className="border border-[#21BF7C] p-4 relative">
                         {isPro &&  (
                             <div className="absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/30 z-50 rounded-lg h-full">
-                                <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium">
+                                <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium" onClick={showModal}>
                                     Unlock to Pro
                                 </button>
                             </div>

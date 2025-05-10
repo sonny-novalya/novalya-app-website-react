@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import "./levelCommission.css"
-import AfiliateTopBar from '../../../../components/affilliate/shared/affiliateTopBar'
 import { Table,  Input, Select, Button } from "antd";
 import useAffiliateStore from '../../../../../store/affiliate/affiliate';
+import useUpgradeModalStore from '../../../../../store/modals/UpgradeToPro';
+import UpgradeToProModal from '../AffiliateDashboardNew/UpgradeToProModal';
+import useLoginUserDataStore from '../../../../../store/loginuser/loginuserdata';
 
 
 const { Option } = Select;
@@ -17,8 +19,11 @@ const LevelCommission = () => {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [years, setYears] = useState([]);
   const [search,setSearch]=useState("")
+  const [isPro, setIsPro] = useState(false)
+  const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
 
   const data = affiliateComList?.filter(item => item?.sender?.toLowerCase().includes(search.toLowerCase()))
+  const { showModal } = useUpgradeModalStore();
 
   const columns = [
     { title: "#", dataIndex: "indx", key: "key" },
@@ -40,6 +45,11 @@ const LevelCommission = () => {
   }
 
   useEffect(() => {
+    fetchLoginUserData({})
+    loginUserData && setIsPro(loginUserData?.user_type !== "Distributor" ? true : false)
+  }, [])
+
+  useEffect(() => {
     const PayLoad = {month:selectedMonth,year:selectedYear}
     fetchCommissionData(PayLoad)
     handleAllYears()
@@ -50,13 +60,21 @@ const LevelCommission = () => {
     fetchCommissionData(PayLoad)
   }
   
-
+  if (!loginUserData) return 
 
   return (
   <>
       <div className="p-6 bg-gray-100 min-h-screen">
+       
         <h2 className="font-medium text-2xl mb-5">Level Commission</h2>
-      <div className="bg-white p-6 shadow rounded-md">
+      <div className="bg-white p-6 shadow rounded-md relative">
+          {isPro && (
+            <div className="absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/30 z-50 rounded-lg h-full">
+              <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium" onClick={showModal}>
+                Unlock to Pro
+              </button>
+            </div>
+          )}
         <h2 className="text-lg font-semibold mb-4">Commission</h2>
     
 
@@ -77,6 +95,7 @@ const LevelCommission = () => {
 
         <Table columns={columns} dataSource={data} pagination={false}  loading={affiliateComLoader}/>
       </div>
+        <UpgradeToProModal />
     </div>
   </>
   );
