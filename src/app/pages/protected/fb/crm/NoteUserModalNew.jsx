@@ -80,7 +80,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     useEffect(() => {
-        getFbNotes(lead?.fb_user_id)
+        getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
     }, [])
 
     useEffect(() => {
@@ -119,9 +119,9 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             }
         }
     }, [fetchedNotes]);
+    console.log("lead", lead)
 
     const handleAddNote = async () => {
-
         if (editingNote) {
             const updatedNotes = notes.map(note =>
                 note.id === editingNote.id
@@ -141,7 +141,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 message.success("Note updated successfully");
                 setEditingNote(null);
                 setNotesData({ note: '' });
-                getFbNotes(lead?.fb_user_id);
+                getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
             }
         } else {
             let notes_history = []
@@ -157,10 +157,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             } else {
                 const newNote = {
                     id: 0,
-                    description: notesData.note.trim(),
+                    description: notesData?.note?.trim(),
                 };
                 setNotes(prevNotes => [newNote, ...prevNotes]);
-                const notesList = notes.map((item) => ({
+                const notesList = notes?.map((item) => ({
                     id: item.id,
                     description: item.text, 
                 }));
@@ -178,7 +178,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 profile_pic: lead.profile_pic || '',
                 short_description: userInfo.bio || '',
                 Socials: JSON.stringify(userInfo.socials),
-                notes_history: notes_history,
+                description: notes_history?.map((item) => item?.description),
                 is_primary: selectedTag.tag_id || '',
                 selected_tag_stage_ids: [
                     {
@@ -197,7 +197,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                 if (msg) {
                     message.success("Note Added Successfully");
-                    getFbNotes(lead?.fb_user_id);
+                    getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
                 }
             } catch (error) {
                 message.error("Failed to add note");

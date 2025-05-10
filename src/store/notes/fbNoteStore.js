@@ -32,14 +32,14 @@ const useFbNoteStore = create((set) => ({
         }
     },
 
-    getFbNotes: async (fb_user_id) => {
+    getFbNotes: async (data) => {
         try {
             set({ loading: true, error: null });
 
             const response = await apiCall({
                 method: "POST",
                 url: "/user/api/get-user-note",
-                data: { fb_user_id },
+                data: data,
             });
 
             const notes = response.data?.data[0] || [];

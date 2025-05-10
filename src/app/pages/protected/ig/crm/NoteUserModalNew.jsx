@@ -157,7 +157,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
             if (!notesData.note.trim()) {
                 setNotes(prevNotes => [...prevNotes]);
-                const notesList = notes.map((item) => ({
+                const notesList = notes?.map((item) => ({
                     id: item.id,
                     description: item.text,
                 }));
@@ -166,10 +166,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             } else {
                 const newNote = {
                     id: 0,
-                    description: notesData.note.trim(),
+                    description: notesData?.note.trim(),
                 };
                 setNotes(prevNotes => [newNote, ...prevNotes]);
-                const notesList = notes.map((item) => ({
+                const notesList = notes?.map((item) => ({
                     id: item.id,
                     description: item.text,
                 }));
@@ -187,7 +187,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 profile_pic: lead.profile_pic || '',
                 short_description: userInfo.bio || '',
                 Socials: JSON.stringify(userInfo.socials),
-                notes_history: notes_history,
+                description: notes_history?.map((item) => item?.description),
                 is_primary: selectedTag.tag_id || '',
                 selected_tag_stage_ids: [
                     {
