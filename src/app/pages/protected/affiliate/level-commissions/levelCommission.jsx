@@ -55,12 +55,9 @@ const LevelCommission = () => {
   return (
   <>
       <div className="p-6 bg-gray-100 min-h-screen">
-  
-      <AfiliateTopBar/>
-
-      {/* Level Commission Section */}
+        <h2 className="font-medium text-2xl mb-5">Level Commission</h2>
       <div className="bg-white p-6 shadow rounded-md">
-        <h2 className="text-lg font-semibold mb-4">Level Commission</h2>
+        <h2 className="text-lg font-semibold mb-4">Commission</h2>
     
 
         <div className="flex justify-between items-center my-4 gap-1">

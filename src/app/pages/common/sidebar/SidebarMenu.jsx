@@ -110,7 +110,17 @@ const SidebarMenu = () => {
             ]
         },
         // { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
-        { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon /> },
+        {
+            text: "Affiliate",
+            id: "affiliate",
+            path: "/affiliate",
+            icon: <AffiliateIcon />,
+            subNav: [
+                { text: "Dashboard", id: "af-Dashboard", path: "/affiliate/dashboard" },
+                { text: "Level Commission", id: "af-commission", path: "/affiliate/level-commission" },
+                { text: "Settings", id: "af-settings", path: "/affiliate/settings" },
+            ]
+        },
         {
             text: "FB Friendlist",
             id: "fb_friendlist",

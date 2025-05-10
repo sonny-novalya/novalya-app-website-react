@@ -1,7 +1,7 @@
 import { Route, Routes,Navigate } from "react-router-dom";
 // import { AffiliatePage, DashboardPage ,AffiliateLinksPage,LevelCommissionPage,AffiliateSettingsPage} from "../pages/protected";
 
-import { AffiliatePage, DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage } from "../pages/protected";
+import { DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
 
@@ -21,9 +21,9 @@ const AuthentictedRoutes = () => {
         <Route path="/fb/crm" element={<CrmPage />} />
         <Route path="/fb/request" element={<RequestPage />} />
         <Route path="/ig/crm" element={<IgCrmPage />} />
-        <Route path="/ai-comments" element={<AiCommentsPage />} />
-        <Route path="/affiliate" element={<AffiliatePage />} />
-        {/* <Route path="/affiliate" element={<NewAffiliatePage />} /> */}
+        <Route path="descriptionments" element={<AiCommentsPage />} />
+        {/* <Route path="/affiliate" element={<AffiliatePage />} /> */}
+        <Route path="/affiliate/dashboard" element={<NewAffiliatePage />} />
         <Route path="/library/messages" element={<MessageIndexPage />} />
         <Route path="/library/keywords" element={<KeywordsPage />} />
         <Route path="/affiliate/links" element={<AffiliateLinksPage />} />
