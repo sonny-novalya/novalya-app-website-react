@@ -121,7 +121,6 @@ import logo from "../../../../assets/img/pricing-logo.png";
 
     script.onload = () => {
       window.wj_sales = { webinar_id: "roolri9" };
-      console.log("WebinarJam sales tracking data set:", window.wj_sales);
     };
 
     script.onerror = (error) => {
@@ -133,7 +132,6 @@ import logo from "../../../../assets/img/pricing-logo.png";
     return () => {
       if (script.parentNode) {
         script.parentNode.removeChild(script);
-        console.log("Script removed on unmount.");
       }
     };
   }, []);

@@ -110,3 +110,46 @@ export  const getCurrentYear = ()=>{
 
     return {curr:year, prev:year-1}
   }
+
+export async function decryptKey(encryptedBase64, ivBase64, secretHex) {
+  const sec_str = "b7d43a2f5f816a47e8b0c9da376e41bd235ace0b31f6dfc75b4a";
+
+  // Convert hex to Uint8Array
+  function hexToBytes(hex) {
+    const bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+    }
+    return bytes;
+  }
+
+  // Convert base64 to Uint8Array
+  function base64ToBytes(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  const keyData = hexToBytes(sec_str + secretHex);
+  const iv = base64ToBytes(ivBase64);
+  const encryptedData = base64ToBytes(encryptedBase64);
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyData,
+    { name: "AES-CBC" },
+    false,
+    ["decrypt"]
+  );
+
+  const decrypted = await crypto.subtle.decrypt(
+    { name: "AES-CBC", iv: iv },
+    cryptoKey,
+    encryptedData
+  );
+
+  return new TextDecoder().decode(decrypted);
+}

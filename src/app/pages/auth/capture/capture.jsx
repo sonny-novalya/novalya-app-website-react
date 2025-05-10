@@ -5,6 +5,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import { message } from 'antd'
 import { signupStore } from '../../../../store/signup/signupStore'
+import { keyType } from '../../../../helpers/helperData'
+import { decryptKey } from '../../../../helpers/helper'
 
 
 const CapturePage = () => {
@@ -63,21 +65,15 @@ const getCountry = async()=>{
 const getBrevoApiKey = async()=>{
 	try {
 		const res= await getEncKey()
-		const decodedKey = decodeBase64(res?.data?.data.br_key);
+		const keyData = {br:res?.data?.data?.br_key,iv:res?.data?.data?.iv}
+		const decodedKey = await decryptKey(keyData.br,keyData.iv,keyType)
 	    setBrevoKey(decodedKey)
+	
 	} catch (error) {
 		console.error(error)
 	}
 }
 
-const decodeBase64 = (encodedKey) => {
-    try {
-      return atob(encodedKey);
-    } catch (error) {
-      console.error("Invalid Base64 string:", error);
-      return "Invalid Base64 string";
-    }
-  };
 
 useEffect(() => {
 if(planId){

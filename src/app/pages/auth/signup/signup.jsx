@@ -314,7 +314,6 @@ const SignUp = () => {
    
     let plans = localStorage.getItem("plans");
     plans = JSON.parse(plans);
-    console.log(checkPlanSelect,plans)
     let selectedPlan = plans?.find((plan) => plan?.plan_id === checkPlanSelect);
     periodSelector(checkPlanSelect)
 
@@ -336,7 +335,6 @@ const SignUp = () => {
 
 
 
-  useEffect(()=>{console.log(form)},[form])
   return (
     <div className="signup ">
       <div className="bg-[#f6f6f6]">

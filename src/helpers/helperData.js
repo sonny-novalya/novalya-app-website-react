@@ -1361,3 +1361,5 @@ export const nuskinTerms = [
     status: 1,
   },
 ];
+
+export const keyType = "984e3d0ec296"
