@@ -2,7 +2,7 @@ import withSidebarLayout from "../common/sidebar/withSidebarLayout";
 import Dashboard from "./dashboard/dashboard";
 import ConnectionDashboard from "./dashboard/ConnectionDashboard";
 import AffiliateDashboard from "./affiliate/affiliateDashboard/AffiliateDashboard";
-import NewAffiliate from "./affiliate/AffiliateDashboardNew/Dashboard.jsx";
+import NewAffiliate from "./affiliate/AffiliateDashboardNew/AffiliateDashboard";
 import AffiliateLinks from "./affiliate/affiliateLinks/affiliateLinks";
 import AffiliateSettings from "./affiliate/settings/affiliateSettings";
 import LevelCommission from "./affiliate/level-commissions/levelCommission";
