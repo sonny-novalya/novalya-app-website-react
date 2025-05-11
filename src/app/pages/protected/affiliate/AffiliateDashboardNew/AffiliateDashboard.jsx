@@ -29,7 +29,9 @@ const AffiliateDashboard = () => {
                     </button>
                 </div>
 
-                <TopBanner />
+                {
+                    isPro && <TopBanner />
+                }
                 <EarningAndPromotion />
                 <AffiliateLinkSection isPro={isPro} randomCode={loginUserData?.randomcode} />
                 <AffiliateTableSection isPro={isPro} />
