@@ -39,6 +39,25 @@ const useLoginUserDataStore = create((set) => ({
             set({ loading: false });
         }
     },
+     upgardeApiCall: async (data) => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: '/user/api/updatesubscription',
+                data,
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
+
 
 }));
 

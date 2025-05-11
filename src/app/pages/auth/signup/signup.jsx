@@ -67,89 +67,72 @@ const SignUp = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleInistials = ()=>{
-    let sign_details = localStorage.getItem("sign_details");
-    if (sign_details) {
-      sign_details= sign_details? JSON.parse(sign_details):{}
-    }else{
-      navigate("/capture")
-    }
-     setForm({...initialState,firstname:sign_details?.firstname || "",lastname:sign_details?.lastname || "",email:sign_details?.email })
+
+ const validate = () => {
+  const newErrors = {};
+
+  // Name fields
+  if (!form?.firstname?.trim()) {
+    newErrors.firstname = "First name is required";
+  }
+  if (!form?.lastname?.trim()) {
+    newErrors.lastname = "Last name is required";
   }
 
-  const validate = () => {
-    const newErrors = {};
+  // Mobile
+  if (!form?.mobile?.trim()) {
+    newErrors.mobile = "Phone number is required";
+  }
 
-    if (!form.firstname.trim()) {
-      newErrors.firstname = "First name is required";
-    } else {
-      newErrors.firstname = "";
-    }
-    if (!form.lastname.trim()) {
-      newErrors.firstname = "First name is required";
-    } else {
-      newErrors.firstname = "";
-    }
-    // if (!form.username.trim()) newErrors.username = "Username is required";
-    if (!form.mobile.trim()) {
-      newErrors.mobile = "Phone number is required";
-    } else {
-      newErrors.mobile = "";
-    }
+  // Email
+  if (!form?.email?.trim()) {
+    newErrors.email = "Email is required";
+  } else if (!form.email.includes("@")) {
+    newErrors.email = "Invalid email";
+  }
 
-    if (form.email !== form.confirm_email)
-      newErrors.confirm_email = "Emails do not match";
+  if (!form?.confirm_email?.trim()) {
+    newErrors.confirm_email = "Confirm Email is required";
+  } else if (form.email !== form.confirm_email) {
+    newErrors.confirm_email = "Emails do not match";
+  }
 
-    if (!form.confirm_email)
-      newErrors.confirm_email = "Confirm Email is required";
-    if (!form.email.includes("@")) newErrors.email = "Invalid email";
-    if (!form.email) newErrors.email = "Email is required";
+  // Password
+  if (!form?.password) {
+    newErrors.password = "Password is required";
+  } else if (form.password.length < 8) {
+    newErrors.password = "Password must be at least 8 characters";
+  }
 
-    if (!!form.email && !!form.email.includes("@")) {
-      newErrors.email = "";
-    }
+  if (!form?.confirmpassword) {
+    newErrors.confirmpassword = "Confirm Password is required";
+  } else if (form.password !== form.confirmpassword) {
+    newErrors.confirmpassword = "Passwords do not match";
+  }
 
-    if (!!form.confirm_email && !(form.email !== form.confirm_email)) {
-      newErrors.confirm_email = "";
-    }
+  // Address fields
+  if (!form?.address?.trim()) {
+    newErrors.address = "Address is required";
+  }
+  if (!form?.city?.trim()) {
+    newErrors.city = "City is required";
+  }
+  if (!form?.zipCode?.trim()) {
+    newErrors.zipCode = "Zip code is required";
+  }
+  if (!form?.country?.trim()) {
+    newErrors.country = "Country is required";
+  }
 
-    if (form.password !== form.confirmpassword)
-      newErrors.confirmpassword = "Passwords do not match";
-    if (form?.password?.length < 8)
-      newErrors.password = "Password must be at least 8 characters";
-    if (!form?.password) newErrors.password = "Password is required";
-    if (!form.confirmpassword)
-      newErrors.confirmpassword = "Confirm Password is required";
+  // Terms checkbox
+  if (!isChecked) {
+    newErrors.checked = "You must accept the terms";
+  }
 
-    if (!form.address?.trim()) {
-      newErrors.address = "Address is required";
-    } else {
-      newErrors.address = "";
-    }
-    if (!form.city?.trim()) {
-      newErrors.city = "City is required";
-    } else {
-      newErrors.city = "";
-    }
-    if (!form.zipCode?.trim()) {
-      newErrors.zipCode = "Zip code is required";
-    } else {
-      newErrors.zipCode = "";
-    }
-    if (!form.country?.trim()) {
-      newErrors.country = "Country is required";
-    } else {
-      newErrors.country = "";
-    }
+  setErrors(newErrors);
+  return Object.keys(newErrors).length !== 0;
+};
 
-    if (!isChecked) {
-      newErrors.checked = "Required";
-    } else {
-      newErrors.checked = "";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
   const handleSubmit = async() => {
     if (validate()) {
       message.error("please fill all required fields");
@@ -192,6 +175,12 @@ const SignUp = () => {
   };
 
   const loadInitialCountry = ()=>{
+      let sign_details = localStorage.getItem("sign_details");
+    if (sign_details) {
+      sign_details= sign_details? JSON.parse(sign_details):{}
+    }else{
+      navigate("/capture")
+    }
     fetch("https://ipapi.co/json/")
         .then((response) => response.json())
         .then((data) => {
@@ -199,7 +188,10 @@ const SignUp = () => {
             const newValue = countries.find(
               (country) => country.code === data.country_code
             );
-           setForm({...form,mobile:newValue?.phone,country:newValue?.code})
+           setForm({...form,mobile:newValue?.phone,country:newValue?.code,firstname:sign_details?.firstname || "",
+            lastname:sign_details?.lastname || "",
+            email:sign_details?.email})
+          
           }
         })
         .catch((error) => {
@@ -281,7 +273,7 @@ const SignUp = () => {
             (country) =>
               country.code.toLowerCase() === countrie?.short_name.toLowerCase()
           );
-          setForm({...form,address:address,city:(city?.long_name || ""),zipCode:(zipCode?.long_name || ""),country:selectedCountry?.label}); // handle via props
+          setForm((prev)=>( {...prev,address:address,city:(city?.long_name || ""),zipCode:(zipCode?.long_name || ""),country:selectedCountry?.code})); // handle via props
         });
       }
     };
@@ -300,7 +292,7 @@ const SignUp = () => {
 
     fetchPlanDetail()
     loadInitialCountry()
-    handleInistials()
+   
    
   },[])
 
@@ -332,6 +324,11 @@ const SignUp = () => {
     }
     setPlanPeriodStr(result);
   };
+
+  useEffect(() => {
+   console.log(form)
+  }, [form])
+  
 
 
 

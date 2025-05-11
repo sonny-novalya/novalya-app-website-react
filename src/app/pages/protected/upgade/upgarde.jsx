@@ -12,7 +12,7 @@ import useLoginUserDataStore from "../../../../store/loginuser/loginuserdata";
 import { useTranslation } from "react-i18next";
 
 const Upgrade = () => {
-    const {loginUserData}= useLoginUserDataStore()
+    const {loginUserData,upgardeApiCall}= useLoginUserDataStore()
   const [isAnnual, setIsAnnual] = useState("year");
   const [monthDivision, setMonthDivision] = useState(12);
   const [loader, setLoader] = useState(false);
@@ -86,13 +86,18 @@ const Upgrade = () => {
   }, [isAnnual]);
 
 
-  const handleBuyNow = (planId) => {
+  const handleBuyNow = async(planId) => {
     localStorage.setItem("planId", planId);
 	let params={
 		item_price_id:planId,
         subscription_id:loginUserData?.subscriptionId
 	}
+ 
+    const res = await upgardeApiCall(params)
 
+    if (res.status === 200) {
+        
+    }
 
 
   
@@ -176,7 +181,7 @@ const checkPlanRender =(item)=>{
  }
 
   return <>
-<div className="TermPlan" style={{paddingBottom:"40px",width:"100%",borderRadius:"12px"}}>
+<div className="TermPlan" style={{paddingBottom:"40px",width:"100%",borderRadius:"12px",height:"100vh"}}>
 
 <section class="aug-card-main">
 	<div class="container">
