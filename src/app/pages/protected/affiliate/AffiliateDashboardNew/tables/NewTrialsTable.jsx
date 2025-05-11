@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react';
-import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Chip, CircularProgress, InputAdornment, IconButton, OutlinedInput, InputLabel, FormControl, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { CustomProvider } from 'app/layouts/vertical-default/VerticalDefault';
 import { BsSearch } from 'react-icons/bs';
@@ -7,7 +6,6 @@ import { BsSearch } from 'react-icons/bs';
 export default function NewTrialsTable(props) {
     const { t } = useTranslation();
     const { loginUserData } = useContext(CustomProvider);
-    // const [refRevenue, setRefRevenue] = useState({ per1: 0, per2: 0 });
     const { refUsers, isAffiliateLoading } = props || {};
 
     const { new_trails, totalUsersCount } = refUsers || {}
@@ -53,18 +51,20 @@ export default function NewTrialsTable(props) {
         : Math.ceil((filteredData?.length ? filteredData?.length : 1) / itemsPerPage);
 
 
-    const indexOfLastUser = itemsPerPage === 0 ? new_trails.length : currentPage * itemsPerPage;
+    const indexOfLastUser = itemsPerPage === 0 ? new_trails?.length || 0 : currentPage * itemsPerPage;
     const indexOfFirstUser = itemsPerPage === 0 ? 0 : indexOfLastUser - itemsPerPage;
 
-    const color = {
-        "Active": "#2c73ff",
-        "payment_failed": "#FF4500",
-        "subscription_cancelled": "#ff4d4f",
-        "subscription_reactivated": "#22C55E",
+    // Map status to Tailwind color classes
+    const statusClasses = {
+        "Active": "bg-blue-500",
+        "payment_failed": "bg-orange-500",
+        "subscription_cancelled": "bg-red-500",
+        "subscription_reactivated": "bg-green-500",
     };
 
     const memoizedFormatDate = useMemo(() => {
         return (dateInput, isUnix = false) => {
+            if (!dateInput) return '';
             const date = isUnix ? new Date(dateInput * 1000) : new Date(dateInput);
             const day = date.getDate();
             const year = date.getFullYear();
@@ -135,183 +135,123 @@ export default function NewTrialsTable(props) {
 
     if (isAffiliateLoading) {
         return (
-            <div className="table-outer-box" style={{
-                height: "400px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-            }}>
-                <CircularProgress />
+            <div className="table-outer-box h-96 flex items-center justify-center">
+                <div className="loading-spinner w-9 h-9 rounded-full border-4 border-gray-100 border-t-blue-500 animate-spin"></div>
+                <style>{`
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `}</style>
             </div>
         );
     }
 
     return (
         <>
-            <div className="oct-affiliate-strip" style={{
-                height: "90px",
-                backgroundColor: "white",
-                fontSize: "18px",
-                lineHeight: "24px",
-                fontWeight: "600",
-                color: "rgb(23, 15, 73)",
-            }}>
-                <div className="oct-affiliate-stripInner" >
+            <div className="oct-affiliate-strip h-20 bg-white text-lg leading-6 font-semibold text-[rgb(23,15,73)] px-5 flex items-center justify-between">
+                <div className="oct-affiliate-stripInner">
                     {t("pages.title.new-trials")}
-
-                    <div style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "0 20px",
-                        marginLeft: "20px",
-
-                    }}>
-                        {/* <Button
-							variant={activeButtons.Level1 ? 'contained' : 'outlined'}
-							onClick={() => handleButtonClick('Level1')}
-						>
-							{t("pages.title.Level1")}
-						</Button>
-						<Button
-							variant={activeButtons.Level2 ? 'contained' : 'outlined'}
-							onClick={() => handleButtonClick('Level2')}
-						>
-							{t("pages.title.Level2")}
-						</Button> */}
-                    </div>
-
-
                 </div>
-                <div className="title-area-left" style={{
-                    // boxShadow: "0px 0 5px 0 rgba(0, 0, 0, .5)", borderRadius: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
-                }}>
-                    <FormControl sx={{ width: "25ch" }} variant="outlined">
-                        <InputLabel htmlFor="search">{t("pages.title.Search")}</InputLabel>
-                        <OutlinedInput
-                            id="search"
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            startAdornment={
-                                <InputAdornment position="center">
-                                    <IconButton edge="end">
-                                        <BsSearch />
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            label="Search"
-                        />
-                    </FormControl>
+                <div className="title-area-left flex items-center justify-center">
+                    <div className="search-container relative w-64">
+                        <label htmlFor="search" className="absolute -top-2.5 left-2.5 bg-white px-1 text-xs text-gray-500">
+                            {t("pages.title.Search")}
+                        </label>
+                        <div className="flex items-center border border-gray-300 rounded p-2">
+                            <span className="mr-2">
+                                <BsSearch />
+                            </span>
+                            <input
+                                id="search"
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="border-none outline-none w-full text-sm"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div className="table-outer-box">
-                <TableContainer className='sep-AffiliateTable-div' component={Paper} elevation={3}>
-                    <Table className='sep-AffiliateTable-main' aria-label="customer table">
-                        <TableHead>
-                            <TableRow sx={{ backgroundColor: '#f4f6f8' }}>
-                                <TableCell align="center"><Typography variant="subtitle2">#</Typography></TableCell>
-                                <TableCell><Typography variant="subtitle2">{t("pages.title.Name")}</Typography></TableCell>
-                                <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Plan")}</Typography></TableCell>
-                                <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Period")}</Typography></TableCell>
-                                <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Price")}</Typography></TableCell>
-                                <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Estimated Revenue")}</Typography></TableCell>
-                                <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Joining Date")}</Typography></TableCell>
-                                <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Activation on")}</Typography></TableCell>
-                                {/* <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Sponsor By")}</Typography></TableCell> */}
-                                <TableCell align="center"><Typography variant="subtitle2">{t("pages.title.Status")}</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {!currentUsers?.length ? (
-                                <TableRow>
-                                    <TableCell colSpan={10} align="center" sx={{ padding: '16px' }}>
-                                        <Typography variant="body1" color="textSecondary">{t("pages.title.Noanynewsaleincurrentmonth")}</Typography>
-                                    </TableCell>
-                                </TableRow>
-                            ) : (
-                                currentUsers.map((userData, index) => (
-                                    <TableRow
-                                        key={`${userData?.customerid}-${index}`}
-                                        sx={{
-                                            backgroundColor: index % 2 === 0 ? '#f6f6f6' : 'inherit',
-                                            '&:hover': { backgroundColor: '#f1f3f5' },
-                                            transition: 'background-color 0.3s ease',
-                                        }}
-                                    >
-                                        <TableCell align="center">{indexOfFirstUser + index + 1}</TableCell>
-                                        <TableCell align="left">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <Avatar alt="Avatar" sx={{ width: 40, height: 40 }} />
-                                                <div>
-                                                    <Typography variant="body2" sx={{ fontWeight: '500' }}>{`${userData?.firstname} ${userData?.lastname}`}</Typography>
-                                                    <Typography variant="body2" sx={{ color: '#888', fontSize: '0.65rem' }}>
-                                                        {Number(userData?.sponsorid) === loginUserData?.user_id ? userData?.email || ' ' : ' '}
-                                                    </Typography>
+                <div className="table-container shadow-md rounded-lg overflow-hidden bg-white">
+                    {/* Table Header */}
+                    <div className="table-header bg-gray-100 flex px-4 py-3 font-semibold text-sm">
+                        <div className="flex-shrink-0 flex-grow-0 basis-8 text-center">#</div>
+                        <div className="flex-shrink-0 flex-grow-0 basis-1/4">{t("pages.title.Name")}</div>
+                        <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">{t("pages.title.Plan")}</div>
+                        <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">{t("pages.title.Period")}</div>
+                        <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">{t("pages.title.Price")}</div>
+                        <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">{t("pages.title.Estimated Revenue")}</div>
+                        <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">{t("pages.title.Joining Date")}</div>
+                        <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">{t("pages.title.Activation on")}</div>
+                        {showStatus && <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">{t("pages.title.Status")}</div>}
+                    </div>
+
+                    {/* Table Body */}
+                    <div className="table-body">
+                        {!currentUsers?.length ? (
+                            <div className="table-row p-4 text-center text-gray-500">
+                                {t("pages.title.Noanynewsaleincurrentmonth")}
+                            </div>
+                        ) : (
+                            currentUsers.map((userData, index) => (
+                                <div
+                                    key={`${userData?.customerid}-${index}`}
+                                    className={`table-row flex px-4 py-3 border-b border-gray-200 items-center transition-colors duration-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}
+                                >
+                                    <div className="flex-shrink-0 flex-grow-0 basis-8 text-center">{indexOfFirstUser + index + 1}</div>
+                                    <div className="flex-shrink-0 flex-grow-0 basis-1/4">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-base font-medium">
+                                                {(userData?.firstname?.[0] || '') + (userData?.lastname?.[0] || '')}
+                                            </div>
+                                            <div>
+                                                <div className="font-medium">{`${userData?.firstname} ${userData?.lastname}`}</div>
+                                                <div className="text-gray-500 text-xs">
+                                                    {Number(userData?.sponsorid) === loginUserData?.user_id ? userData?.email || ' ' : ' '}
                                                 </div>
                                             </div>
-                                        </TableCell>
-                                        <TableCell align="center">{userData?.plan_pkg === "Unlimited_new" ? "Unlimited" : userData?.plan_pkg}</TableCell>
-                                        <TableCell align="center">
-                                            {(userData?.sub_type === "year" ? 12 : userData?.plan_period)}{" "}
-                                            {(userData?.plan_period === 0 || userData?.plan_period === 1) && userData?.sub_type === "month"
-                                                ? t("pages.title.Month")
-                                                : t("pages.title.Months")}
-                                        </TableCell>
-                                        <TableCell align="center">{`${userData?.plan_price} ${userData?.currency === "USD" ? "$" : "€"}`}</TableCell>
-                                        <TableCell align="center">
-                                            {`${calEstRevenue(userData).toFixed(2)} ${userData?.currency === "USD" ? "$" : "€"}`}
-                                        </TableCell>
-                                        <TableCell align="center">{memoizedFormatDate(userData?.createdat)}</TableCell>
-                                        <TableCell align="center">
-                                            {userData?.trial_end === 0
-                                                ? memoizedFormatDate(userData?.createdat)
-                                                : memoizedFormatDate(userData?.trial_end, true)}
-                                        </TableCell>
-                                        {/* <TableCell align="center">
-											{Number(userData?.sponsorid) === loginUserData?.user_id ? t("pages.title.You") : userData?.sponsor_name}
-										</TableCell> */}
-                                        {/* <TableCell align="center">
-											{userData?.trial_status === 'Active' &&
-												<Chip label={
-												userData.trial_status === "Active" && userData.subscription_status !== "payment_failed"
-													? getLabel(userData.trial_status) 
-													: getLabel(userData.subscription_status) 
-												}
-													sx={{
-														backgroundColor: userData.subscription_status === "payment_failed"
-															? color["payment_failed"]
-															: color[userData.trial_status] || color["Unknown"],
-														color: '#fff',
-														width: '80px',
-														textAlign: 'center',
-													}} />
-												
-											}
-											
-										</TableCell> */}
-                                        <TableCell>
-                                            {userData?.subscription_status && (
-                                                <Chip
-                                                    label={getLabel(userData.subscription_status)}
-                                                    sx={{
-                                                        backgroundColor: color[userData.subscription_status] || '#ccc',
-                                                        color: '#fff',
-                                                        width: '120px',
-                                                        textAlign: 'center',
-                                                    }}
-                                                />
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                        </div>
+                                    </div>
+                                    <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">
+                                        {userData?.plan_pkg === "Unlimited_new" ? "Unlimited" : userData?.plan_pkg}
+                                    </div>
+                                    <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">
+                                        {(userData?.sub_type === "year" ? 12 : userData?.plan_period)}{" "}
+                                        {(userData?.plan_period === 0 || userData?.plan_period === 1) && userData?.sub_type === "month"
+                                            ? t("pages.title.Month")
+                                            : t("pages.title.Months")}
+                                    </div>
+                                    <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">
+                                        {`${userData?.plan_price} ${userData?.currency === "USD" ? "$" : "€"}`}
+                                    </div>
+                                    <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">
+                                        {`${calEstRevenue(userData).toFixed(2)} ${userData?.currency === "USD" ? "$" : "€"}`}
+                                    </div>
+                                    <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">
+                                        {memoizedFormatDate(userData?.createdat)}
+                                    </div>
+                                    <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">
+                                        {userData?.trial_end === 0
+                                            ? memoizedFormatDate(userData?.createdat)
+                                            : memoizedFormatDate(userData?.trial_end, true)}
+                                    </div>
+                                    {showStatus && <div className="flex-shrink-0 flex-grow-0 basis-24 text-center">
+                                        {userData?.subscription_status && (
+                                            <span className={`${statusClasses[userData.subscription_status] || 'bg-gray-400'} text-white py-0.5 px-2.5 rounded-full text-xs inline-block w-28 text-center`}>
+                                                {getLabel(userData.subscription_status)}
+                                            </span>
+                                        )}
+                                    </div>}
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+
+                {/* Pagination */}
                 <NewTrialsTablePagination
                     t={t}
                     skip={indexOfFirstUser}
@@ -323,7 +263,6 @@ export default function NewTrialsTable(props) {
                     onPageChange={paginate}
                 />
             </div>
-
         </>
     );
 }
@@ -349,7 +288,6 @@ const NewTrialsTablePagination = ({ t, page, totalPages, onPageChange, setItemsP
             for (let i = 1; i <= totalPages; i++) {
                 pages.push(i);
             }
-            console.log("in 10")
         } else {
             pages.push(1, 2);
             if (page > 4) pages.push('...');
@@ -361,7 +299,6 @@ const NewTrialsTablePagination = ({ t, page, totalPages, onPageChange, setItemsP
             if (page < totalPages - 3) pages.push('...');
             pages.push(totalPages - 1, totalPages);
         }
-        console.log(pages)
         return pages;
     };
 
@@ -371,35 +308,17 @@ const NewTrialsTablePagination = ({ t, page, totalPages, onPageChange, setItemsP
         onPageChange(1); // Reset to first page
     };
 
-    const btnStyle = {
-        backgroundColor: "#fff",
-        color: "grey",
-        padding: "5px 15px",
-        margin: "0 5px",
-        borderRadius: "5px",
-    };
-
     return (
-        <div style={{ padding: '10px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                width: "290px"
-            }}>
-                <label htmlFor="items-per-page" style={{
-                    width: "110px"
-                }}>{t("pages.title.Items per page")}:</label>
+        <div className="py-5 flex justify-between items-center">
+            <div className="flex items-center gap-2 w-72">
+                <label htmlFor="items-per-page" className="w-28">
+                    {t("pages.title.Items per page")}:
+                </label>
                 <select
                     id="items-per-page"
                     value={itemsPerPage}
                     onChange={handleItemsPerPageChange}
-                    style={{
-                        padding: '5px 10px',
-                        borderRadius: '5px',
-                        width: 'auto',
-                        minWidth: "80px"
-                    }}
+                    className="py-1 px-2.5 rounded border border-gray-300 w-auto min-w-20"
                 >
                     <option value="10">10</option>
                     <option value="20">20</option>
@@ -408,14 +327,13 @@ const NewTrialsTablePagination = ({ t, page, totalPages, onPageChange, setItemsP
                 </select>
             </div>
 
-
             <div>
-                {
-                    itemsPerPage !== 0 && <div>
+                {itemsPerPage !== 0 && (
+                    <div>
                         <button
                             onClick={handlePrev}
                             disabled={page === 1}
-                            style={btnStyle}
+                            className={`bg-white text-gray-500 py-1 px-4 mx-1 rounded border border-gray-300 ${page === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         >
                             {'<'}
                         </button>
@@ -425,12 +343,10 @@ const NewTrialsTablePagination = ({ t, page, totalPages, onPageChange, setItemsP
                                 key={index}
                                 onClick={() => pageNumber !== '...' && handlePageClick(pageNumber)}
                                 disabled={pageNumber === page || pageNumber === '...'}
-                                style={{
-                                    ...btnStyle,
-                                    backgroundColor: pageNumber === page ? '#2c73ff' : '#f4f5f5',
-                                    color: pageNumber === page ? 'white' : 'black',
-                                    cursor: pageNumber === '...' ? 'default' : 'pointer',
-                                }}
+                                className={`py-1 px-4 mx-1 rounded border border-gray-300 ${pageNumber === page
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 text-black'
+                                    } ${pageNumber === '...' ? 'cursor-default' : 'cursor-pointer'}`}
                             >
                                 {pageNumber}
                             </button>
@@ -439,14 +355,13 @@ const NewTrialsTablePagination = ({ t, page, totalPages, onPageChange, setItemsP
                         <button
                             onClick={handleNext}
                             disabled={page === totalPages}
-                            style={btnStyle}
+                            className={`bg-white text-gray-500 py-1 px-4 mx-1 rounded border border-gray-300 ${page === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         >
                             {'>'}
                         </button>
                     </div>
-                }
+                )}
             </div>
         </div>
     );
 };
-
