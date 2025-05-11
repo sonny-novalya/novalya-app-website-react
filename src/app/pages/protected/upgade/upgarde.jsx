@@ -95,8 +95,8 @@ const Upgrade = () => {
  
     const res = await upgardeApiCall(params)
 
-    if (res.status === 200) {
-       window.location.href = res.data.data.hosted_page.url
+    if (res?.status === 200) {
+       window.location.href = res?.data?.data?.hosted_page?.url
 
     }
 
