@@ -37,6 +37,7 @@ const initialState = {
 
 const SignUp = () => {
   const [form, setForm] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [isChecked, setIsChecked] = useState(false);
   const [reffralData, setReffralData] = useState("NOVALYA");
@@ -138,6 +139,8 @@ const SignUp = () => {
       message.error("please fill all required fields");
       return;
     }
+    setIsLoading(true)
+
     const domainParts = window.location.hostname.split(".");
     const domain = domainParts.length > 1 ? domainParts[0] : "";
     let utm_data = localStorage.getItem("UTM_DATA")
@@ -169,9 +172,11 @@ const SignUp = () => {
 
   const res = await registerUser(params)
   if (res.status === 200) {
-    addUtm(params.email,utm_data)
-    window.location.replace(res?.data?.redirect_url);
+   await addUtm(params.email,utm_data)
+    window.location.replace(res?.data?.data?.redirect_url);
+   
   }
+  setIsLoading(false)
   };
 
   const loadInitialCountry = ()=>{
@@ -199,7 +204,7 @@ const SignUp = () => {
         });
   }
 
-  const addUtm = (email,utm_data)=>{
+  const addUtm = async(email,utm_data)=>{
  
   
     if(utm_data?.utm_medium){
@@ -211,7 +216,7 @@ const SignUp = () => {
         cf_utm_term:utm_data?.utm_term || "",
         cf_utm_campaign:utm_data?.utm_campaign || ""
       }
-      saveUTM(params)
+       await  saveUTM(params)
     
     }
   
@@ -324,10 +329,7 @@ const SignUp = () => {
     }
     setPlanPeriodStr(result);
   };
-
-  useEffect(() => {
-   console.log(form)
-  }, [form])
+ 
   
 
 
@@ -591,7 +593,7 @@ const SignUp = () => {
                     <PhoneInput
                       placeholder="Enter phone number"
                       value={form?.mobile}
-                      onChange={(val) => setForm({ ...form, mobile: val })}
+                      onChange={(val) => setForm((prev)=>({ ...prev, mobile: val }))}
                     />
                     {/* <div className="relative bg-[#FAFAFA] border border-[#E0E1E3] rounded-md grid grid-cols-[1fr] w-full min-h-[46px]">
                       <input
@@ -719,9 +721,10 @@ const SignUp = () => {
                 <div className="!mt-6 w-full">
                   <button
                     onClick={() => handleSubmit()}
+                    disabled={isLoading}
                     className="bg-[#2c73ff] cursor-pointer  outline-[3px] outline-[#2c73ff4d] w-full text-white py-3 rounded-xl font-[500] text-[16px] transition duration-200"
                   >
-                    START MY FREE TRIAL
+                {isLoading ? "Loading...":isGoPlan.LTC ? "Proceed to payment" :"START MY FREE TRIAL"}    
                   </button>
                 </div>
               </div>
