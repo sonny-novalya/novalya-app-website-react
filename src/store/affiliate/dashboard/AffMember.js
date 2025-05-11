@@ -20,7 +20,7 @@ const useAffMemberStore = create((set, get) => ({
             });
 
             const result = res?.data?.data;
-            set({ payoutData: result });
+            set({ payoutData: result?.payouts });
 
         } catch (error) {
             console.log("error", error);
@@ -81,6 +81,29 @@ const useAffMemberStore = create((set, get) => ({
             return { success: false, message: 'Something went wrong. Please try again.' };
         } finally {
             set({ updateLoading: false }); 
+        }
+    }, fetchActivityLogs: async () => {
+        try {
+            const res = await apiCall({
+                method: 'GET',
+                url: '/affiliate-activity-logs',
+                data: {
+                    search: "",
+                    page: 1
+                }
+            });
+
+            const result = res?.data;
+            if (!result) {
+                console.log("Cant fetch Logs");
+                return;
+            }
+
+            console.log("acct", result)
+
+
+        } catch (error) {
+            console.log("error", error);
         }
     },
 }));
