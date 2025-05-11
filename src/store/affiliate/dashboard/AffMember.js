@@ -9,7 +9,7 @@ const useAffMemberStore = create((set, get) => ({
         lifeTime: 0,
         cSymbol: "$"
     },
-    payoutData: {},
+    payoutData: [], 
     updateLoading: false,
 
     fetchPayout: async () => {

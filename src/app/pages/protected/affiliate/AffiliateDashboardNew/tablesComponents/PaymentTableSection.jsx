@@ -58,7 +58,7 @@ const PaymentTableSection = ({ isPro }) => {
                 <Table
                     rowKey={(row) => row.id}
                     columns={columns}
-                    dataSource={payoutData}
+                    dataSource={Array.isArray(payoutData) ? payoutData : []}
                     pagination={{
                         current: pagination.current,
                         pageSize: pagination.pageSize,
