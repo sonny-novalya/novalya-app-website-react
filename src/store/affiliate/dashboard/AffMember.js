@@ -82,6 +82,29 @@ const useAffMemberStore = create((set, get) => ({
         } finally {
             set({ updateLoading: false }); 
         }
+    }, fetchActivityLogs: async () => {
+        try {
+            const res = await apiCall({
+                method: 'GET',
+                url: '/affiliate-activity-logs',
+                data: {
+                    search: "",
+                    page: 1
+                }
+            });
+
+            const result = res?.data;
+            if (!result) {
+                console.log("Cant fetch Logs");
+                return;
+            }
+
+            console.log("acct", result)
+
+
+        } catch (error) {
+            console.log("error", error);
+        }
     },
 }));
 

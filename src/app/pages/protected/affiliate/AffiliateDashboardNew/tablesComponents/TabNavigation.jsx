@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 
 const TabNavigation = ({ activeTab, setActiveTab, isPro = true }) => {
     const tabs = [
-        { id: 'new-trials', label: 'New Trials (30 days)' },
-        { id: 'active-customers', label: 'Active Customers' },
-        { id: 'cancelled-trials', label: 'Cancelled Trials' },
-        { id: 'cancelled-customers', label: 'Cancelled Customers' },
-        { id: 'all-customers', label: 'All Customers' },
+        { id: 'new_trials', label: 'New Trials (30 days)' },
+        { id: 'active_customers', label: 'Active Customers' },
+        { id: 'trial_cancelled', label: 'Cancelled Trials' },
+        { id: 'customer_cancelled', label: 'Cancelled Customers' },
+        { id: 'all_customers', label: 'All Customers' },
     ];
     const activeLogsTab = { id: 'active-logs', label: 'Active Logs' }
     const newTabs = isPro ? [activeLogsTab, ...tabs] : tabs;

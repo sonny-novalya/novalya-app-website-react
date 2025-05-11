@@ -1,8 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { CustomProvider } from 'app/layouts/vertical-default/VerticalDefault';
+import { useState, useEffect } from 'react';
 
 export default function AllCustomersTable(props) {
-    const { loginUserData } = useContext(CustomProvider);
+    const { loginUserData } = props;
     const { refUsers, isAffiliateLoading } = props || {};
 
     const all_customers = refUsers?.all_customers || [];

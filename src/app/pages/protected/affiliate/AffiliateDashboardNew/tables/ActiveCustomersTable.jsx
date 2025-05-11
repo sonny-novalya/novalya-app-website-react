@@ -1,11 +1,9 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CustomProvider } from 'app/layouts/vertical-default/VerticalDefault';
-import { BsSearch } from 'react-icons/bs';
 
 export default function ActiveCustomersTable(props) {
     const { t } = useTranslation();
-    const { loginUserData } = useContext(CustomProvider);
+    const { loginUserData } = props
     const { refUsers, isAffiliateLoading } = props || {};
     const { active_customers, totalUsersCount } = refUsers || {};
 
@@ -195,7 +193,7 @@ export default function ActiveCustomersTable(props) {
                         </label>
                         <div className="flex items-center border border-gray-300 rounded p-2">
                             <span className="mr-2">
-                                <BsSearch />
+                               s
                             </span>
                             <input
                                 id="search"

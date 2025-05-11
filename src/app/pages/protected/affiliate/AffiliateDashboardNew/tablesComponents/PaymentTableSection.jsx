@@ -1,7 +1,99 @@
 import useUpgradeModalStore from '../../../../../../store/modals/UpgradeToPro';
-import { mockCustomers } from '../AffiliateTableSection'
 import CustomersTable from './CustomersTable'
 import PropTypes from 'prop-types';
+const mockCustomers = [
+    {
+        id: 1,
+        name: 'vikki new',
+        email: 'vikkinew@email.com',
+        plan: 'Unlimited',
+        period: '12 Months',
+        price: '231.6 $',
+        revenue: '579.00 $',
+        joiningDate: 'Nov 29, 2024',
+        activationDate: 'Nov 29, 2024',
+        sponsor: 'You',
+        status: 'Active'
+    },
+    {
+        id: 2,
+        name: 'vikki new',
+        email: 'vikkinew@email.com',
+        plan: 'Unlimited',
+        period: '12 Months',
+        price: '231.6 $',
+        revenue: '579.00 $',
+        joiningDate: 'Nov 29, 2024',
+        activationDate: 'Nov 29, 2024',
+        sponsor: 'You',
+        status: 'Active'
+    },
+    {
+        id: 3,
+        name: 'vikki new',
+        email: 'vikkinew@email.com',
+        plan: 'Unlimited',
+        period: '12 Months',
+        price: '231.6 $',
+        revenue: '579.00 $',
+        joiningDate: 'Nov 29, 2024',
+        activationDate: 'Nov 29, 2024',
+        sponsor: 'You',
+        status: 'Active'
+    },
+    {
+        id: 4,
+        name: 'vikki new',
+        email: 'vikkinew@email.com',
+        plan: 'Unlimited',
+        period: '12 Months',
+        price: '231.6 $',
+        revenue: '579.00 $',
+        joiningDate: 'Nov 29, 2024',
+        activationDate: 'Nov 29, 2024',
+        sponsor: 'You',
+        status: 'Active'
+    },
+    {
+        id: 5,
+        name: 'vikki new',
+        email: 'vikkinew@email.com',
+        plan: 'Unlimited',
+        period: '12 Months',
+        price: '231.6 $',
+        revenue: '579.00 $',
+        joiningDate: 'Nov 29, 2024',
+        activationDate: 'Nov 29, 2024',
+        sponsor: 'You',
+        status: 'Active'
+    },
+    {
+        id: 6,
+        name: 'vikki new',
+        email: 'vikkinew@email.com',
+        plan: 'Unlimited',
+        period: '12 Months',
+        price: '231.6 $',
+        revenue: '579.00 $',
+        joiningDate: 'Nov 29, 2024',
+        activationDate: 'Nov 29, 2024',
+        sponsor: 'You',
+        status: 'Active'
+    },
+    {
+        id: 7,
+        name: 'vikki new',
+        email: 'vikkinew@email.com',
+        plan: 'Unlimited',
+        period: '12 Months',
+        price: '231.6 $',
+        revenue: '579.00 $',
+        joiningDate: 'Nov 29, 2024',
+        activationDate: 'Nov 29, 2024',
+        sponsor: 'You',
+        status: 'Active'
+    },
+];
 
 const PaymentTableSection = ({isPro}) => {
     const { showModal } = useUpgradeModalStore();
