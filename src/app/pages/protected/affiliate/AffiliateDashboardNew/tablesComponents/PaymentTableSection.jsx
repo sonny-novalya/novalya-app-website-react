@@ -32,14 +32,14 @@ const PaymentTableSection = ({ isPro }) => {
             dataIndex: 'final_amount',
         },
         {
+            title: 'Withdrawal Amount',
+            dataIndex: 'createdat',
+            render: (date) => new Date(date).toLocaleDateString(),
+        }, 
+        {
             title: 'Status',
             dataIndex: 'status',
             render: (status) => <Tag color={status === 'Pending' ? 'orange' : 'green'}>{status}</Tag>,
-        },
-        {
-            title: 'Created At',
-            dataIndex: 'createdat',
-            render: (date) => new Date(date).toLocaleDateString(),
         },
     ];
 
