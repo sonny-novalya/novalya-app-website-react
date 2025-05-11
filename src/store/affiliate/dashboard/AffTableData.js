@@ -68,7 +68,7 @@ const useAffTableDataStore = create((set, get) => ({
             });
 
             const result = res?.data;
-            set({ affiliateCustomersData: result });
+            set({ affiliateCustomersData: result?.data });
 
         } catch (error) {
             console.log("Error fetching affiliate customers:", error);

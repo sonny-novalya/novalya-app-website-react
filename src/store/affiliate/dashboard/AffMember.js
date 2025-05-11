@@ -20,7 +20,7 @@ const useAffMemberStore = create((set, get) => ({
             });
 
             const result = res?.data?.data;
-            set({ payoutData: result });
+            set({ payoutData: result?.payouts });
 
         } catch (error) {
             console.log("error", error);
