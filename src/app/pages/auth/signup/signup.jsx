@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import logo from "../../../../assets/img/pricing-logo.png";
 import visaCard from "../../../../assets/img/visa-card.png";
 import masterCard from "../../../../assets/img/master-card.png";
@@ -17,23 +17,23 @@ import { signupStore } from "../../../../store/signup/signupStore";
 import { useNavigate } from "react-router-dom";
 import { getCurrentYear } from "../../../../helpers/helper";
 
-const initialState = {
-  username: null,
-  firstname: "",
-  lastname: "",
-  email: "",
-  confirm_email: "",
-  mobile: "+33",
-  company: "",
-  address: "",
-  zipCode: "",
-  city: "",
-  country: "FR",
-  language: "",
-  password: "",
-  confirmpassword: "",
-  domain: "",
-};
+// const initialState = {
+//   username: null,
+//   firstname: "",
+//   lastname: "",
+//   email: "",
+//   confirm_email: "",
+//   mobile: "+33",
+//   company: "",
+//   address: "",
+//   zipCode: "",
+//   city: "",
+//   country: "FR",
+//   language: "",
+//   password: "",
+//   confirmpassword: "",
+//   domain: "",
+// };
 
 const SignUp = () => {
   const [form, setForm] = useState({});
