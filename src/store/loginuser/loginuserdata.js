@@ -25,7 +25,8 @@ const useLoginUserDataStore = create((set) => ({
                 currency:result?.currency || "USD",
                 sub_type:result?.sub_type || "month",
                 plan_period:result?.plan_period || 1,
-                plan_pkg:result.plan_pkg || "Basic"
+                plan_pkg:result.plan_pkg || "Basic",
+                customerid:result?.customerid || "",
             };
 
             if (response.status === 200) {

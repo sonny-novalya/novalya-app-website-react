@@ -2,8 +2,15 @@ import { useState } from 'react';
 import { LockAffiliateIcon, TickIconLargeIcon } from '../../../../common/icons/icons';
 import { message } from 'antd';
 import UnlockAgreementModal from '../UnlockAgreementModal';
+import useLoginUserDataStore from '../../../../../../store/loginuser/loginuserdata';
+import useAffiliateStore from '../../../../../../store/affiliate/affiliate';
+
 
 const TopBanner = () => {
+
+    const {becomeAffiliate,openAgreementModal,setOpenAgreementModal}=useAffiliateStore()
+    const {loginUserData}=useLoginUserDataStore()
+
     const features = [
         "Custom Funnels & Email Campaigns",
         "Private Bonuses & Advanced Trainings",
@@ -11,15 +18,26 @@ const TopBanner = () => {
         "Customized Affiliate Code"
     ];
 
-    const [openAgreementModal, setOpenAgreementModal] = useState(false);
+  
 
     const handleUnlock = () => {
         setOpenAgreementModal(true);
     };
 
-    const handleProceed = () => {
-        message.success('Processing Affiliate PRO subscription');
-        setOpenAgreementModal(false);
+    const handleProceed = async () => {
+        const data = {
+                customerid: loginUserData?.customerid,
+                item_price_id: 'Affiliate-Fee-EUR-Yearly',
+              }
+        const res = await becomeAffiliate(data)
+     
+        if (res.status === 200) {
+            message.success('Processing Affiliate PRO subscription');
+            window.location.href = res?.data?.data?.hosted_page?.url
+            setOpenAgreementModal(false);
+        }
+
+      
     };
 
     return (
