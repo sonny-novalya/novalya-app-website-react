@@ -9,12 +9,15 @@ import useAffMemberStore from "../../../../../../store/affiliate/dashboard/AffMe
 import { message } from "antd";
 import useLoginUserDataStore from "../../../../../../store/loginuser/loginuserdata";
 import UpdateAffIdModal from "./UpdateAffIdModal"; 
+import UpgradeToProModal from "../UpgradeToProModal";
+import useUpgradeModalStore from "../../../../../../store/modals/UpgradeToPro";
 
-const EarningAndPromotion = () => {
+const EarningAndPromotion = ({ isPro }) => {
     const [affId, setAffId] = useState("")
     const { earningsData, fetchDashboardData, updateAffiliateId, updateLoading } = useAffMemberStore()
     const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
     const [openUpdateIdModal, setOpenUpdateIdModal] = useState(false)
+    const { showModal } = useUpgradeModalStore();
 
     const earnings = [
         { label: "Pending", amount: earningsData.cSymbol + earningsData.pending.toLocaleString(), icon: icon1 },
@@ -53,7 +56,11 @@ const EarningAndPromotion = () => {
     };
 
     const handleUpdateCode = () => {
-        setOpenUpdateIdModal(true);
+        if(isPro){
+            showModal()
+        } else{
+            setOpenUpdateIdModal(true);
+        }
     };
 
     useEffect(() => {
@@ -114,6 +121,7 @@ const EarningAndPromotion = () => {
                         <input
                             type="text"
                             value={affId}
+                            readOnly
                             onChange={(e) => setAffId(e.target.value)}
                             className="flex-grow p-3 border border-gray-300 rounded-md text-sm"
                         />
@@ -134,6 +142,7 @@ const EarningAndPromotion = () => {
                 currentAffId={affId}
                 updateLoading={updateLoading}
             />
+            <UpgradeToProModal />
         </div>
     );
 };

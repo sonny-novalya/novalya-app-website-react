@@ -32,7 +32,7 @@ const AffiliateDashboard = () => {
                 {
                     isPro && <TopBanner />
                 }
-                <EarningAndPromotion />
+                <EarningAndPromotion isPro={isPro} />
                 <AffiliateLinkSection isPro={isPro} randomCode={loginUserData?.randomcode} />
                 <AffiliateTableSection isPro={isPro} />
                 <PaymentTableSection isPro={isPro} />
