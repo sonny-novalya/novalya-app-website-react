@@ -271,7 +271,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     }, [activeNoteEditDropdown]);
 
     const [notes, setNotes] = useState([]);
-
+    console.log("leadss", lead)
     return (
         <Modal
             open={visible}
@@ -290,7 +290,16 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                         </h2>
 
                         <div className="relative flex items-center">
-                            <MessengerSmallIcon />
+                            <button
+                                onClick={() => {
+                                    if (lead?.fb_user_id) {
+                                        window.open(`https://www.facebook.com/messages/t/${lead.fb_user_id}`, '_blank');
+                                    }
+                                }}
+                                className="cursor-pointer bg-transparent border-none p-0 m-0"
+                                >
+                                <MessengerSmallIcon />
+                            </button>
 
                             <div className="relative cursor-pointer">
                                 <button onClick={() => setActiveNoteEditDropdown('header')} className='pt-2 ml-2'>
@@ -305,7 +314,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                     ref={(el) => (noteEditdropdownRefs.current['header'] = el)}
                                     className="absolute top-6 right-0 bg-white border border-gray-300 px-2 py-1 rounded shadow flex space-x-2 z-20 h-8"
                                 >
-                                    <button className="text-gray-600 hover:text-blue-500 text-sm">
+                                    <button className="text-gray-600 hover:text-blue-500 text-sm" value={lead?.fb_user_id} id="sync-facebook-user">
                                         <SyncTripleArrowIcon />
                                     </button>
                                     <button className="text-gray-600 hover:text-red-500 text-sm">
