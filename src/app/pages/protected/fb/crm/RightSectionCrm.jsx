@@ -15,7 +15,7 @@ import SendCampaignModal from "./SendCampaignModal";
 import MoveToStageModal from "./MoveToStageModal";
 import AddStageModal from "./AddStageModal";
 import NoteUserModal from "./NoteUserModalNew";
-
+import groupPhoto from "../../../../../assets/img/groupImg.png"
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
 import EditstageModal from "./editStageModal";
@@ -71,10 +71,12 @@ const RightSectionCrm = ({ selectedGroup }) => {
         return { ...element, leads: fakeLeads(element.id) };
       });
 
-
       setSortedStages(newStages);
+    } else {
+      setSortedStages([]);
     }
-  }, [selectedGrpData])
+  }, [selectedGrpData]);
+    
 
   const handleUserDelete = async()=>{
 

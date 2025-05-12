@@ -70,8 +70,9 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 return { ...element, leads: fakeLeads(element.id) };
             });
 
-
             setSortedStages(newStages);
+        } else {
+            setSortedStages([]);
         }
     }, [selectedGrpData])
 
