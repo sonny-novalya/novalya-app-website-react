@@ -18,7 +18,7 @@ const AuthRoutes = () => {
         <Route path="/plans" element={<PlansIndex />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/capture" element={<CapturePage/>}/>
-        <Route path="/reset-password" element={<ResetPassword/>}/>
+        <Route path="/reset-password/:token/:email" element={<ResetPassword/>}/>
 
       
         { !commonRoutes.includes(path) ? <Route path="*" element={<Navigate to="/login" replace />} />:null}
