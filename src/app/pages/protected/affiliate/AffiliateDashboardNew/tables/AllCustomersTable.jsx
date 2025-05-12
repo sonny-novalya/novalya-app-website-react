@@ -110,7 +110,6 @@ const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
 
     return (
         <div>
-
             {isAffiliateLoading ? (
                 <div className="flex justify-center items-center h-64">
                     <Spin size="large" />

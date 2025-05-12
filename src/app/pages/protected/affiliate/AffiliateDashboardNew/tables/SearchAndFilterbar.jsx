@@ -1,5 +1,5 @@
 
-const months = [
+export const months = [
     { label: 'January', value: 1 },
     { label: 'February', value: 2 },
     { label: 'March', value: 3 },
