@@ -295,7 +295,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                         </h2>
 
                         <div className="relative flex items-center">
-                            <MessengerSmallIcon />
+                            {/* <MessengerSmallIcon /> */}
 
                             <div className="relative cursor-pointer">
                                 <button onClick={() => setActiveNoteEditDropdown('header')} className='pt-2 ml-2'>

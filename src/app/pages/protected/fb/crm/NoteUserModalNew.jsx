@@ -290,16 +290,14 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                         </h2>
 
                         <div className="relative flex items-center">
-                            <button
-                                onClick={() => {
-                                    if (lead?.fb_user_id) {
-                                        window.open(`https://www.facebook.com/messages/t/${lead.fb_user_id}`, '_blank');
-                                    }
-                                }}
-                                className="cursor-pointer bg-transparent border-none p-0 m-0"
-                                >
+                            <a
+                                href={`https://www.facebook.com/messages/t/${lead?.fb_user_id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cursor-pointer"
+                            >
                                 <MessengerSmallIcon />
-                            </button>
+                            </a>
 
                             <div className="relative cursor-pointer">
                                 <button onClick={() => setActiveNoteEditDropdown('header')} className='pt-2 ml-2'>
