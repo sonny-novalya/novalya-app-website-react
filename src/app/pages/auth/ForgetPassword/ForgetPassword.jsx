@@ -1,9 +1,21 @@
 import { useState } from "react";
 import NovalyaFullWhiteLogo from "../../../../../src/assets/img/NovalyaFullWhiteLogo.png";
 import lockImg from "../../../../../src/assets/img/securityLock.png";
-import { Input } from "antd";
+import { Input, message } from "antd";
+import useAuthStore from "../../../../store/auth/auth-store";
+import { useNavigate } from "react-router-dom";
 const ForgetPassword = () => {
+    const {forgetPass}=useAuthStore()
     const [email, setEmail] = useState("");
+    const navigate = useNavigate()
+
+    const submit = async (e)=>{
+          e.preventDefault(); 
+     const res = await forgetPass({email:email})
+       if (res.status === 200) {
+        message.success("Check you Inbox")
+       }
+    }
     return (
         <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] px-4">
             <div className="flex w-full max-w-4xl rounded-lg shadow-lg overflow-hidden bg-white">
@@ -31,7 +43,7 @@ const ForgetPassword = () => {
 
                         <div className="flex items-center justify-center">
                             <button
-                                type="submit"
+                               onClick={(e)=>submit(e)}
                                 className="mt-4 py-2 px-6 rounded text-sm !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit"
                             >
                                 SUBMIT
@@ -41,9 +53,9 @@ const ForgetPassword = () => {
 
                     <p className="text-center text-gray-600 text-sm mt-4">
                         Don&apos;t want to reset?{' '}
-                        <a href="/login" className="text-blue-600 hover:underline">
+                        <span onClick={()=>navigate("/login")} className="text-blue-600 hover:underline">
                             Login
-                        </a>
+                        </span>
                     </p>
                 </div>
             </div>
