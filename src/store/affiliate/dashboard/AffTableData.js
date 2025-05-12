@@ -14,6 +14,12 @@ const useAffTableDataStore = create((set, get) => ({
         limit: 100
     },
 
+    tableFilters: {
+        search: "",
+        month: null,
+        year: new Date().getFullYear()
+    },
+
     // Method to update logsFilter object
     updateLogsFilter: (newFilter) =>
         set((state) => ({
@@ -22,7 +28,13 @@ const useAffTableDataStore = create((set, get) => ({
                 ...newFilter
             }
         })),
-
+    updateTableFilters: (newFilters) =>
+        set((state) => ({
+            tableFilters: {
+                ...state.tableFilters,
+                ...newFilters
+            }
+            })),
     // Updated fetchActivityLogs to use logsFilter from state
     fetchActivityLogs: async () => {
         set({ logsLoading: true });
@@ -57,13 +69,14 @@ const useAffTableDataStore = create((set, get) => ({
 
     fetchAffiliateCustomers: async () => {
         set({ isAffiliateLoading: true });
+        const { tableFilters } = get();
         try {
             const res = await apiCall({
                 method: 'POST',
                 url: '/user/api/affiliate-customers',
                 data: {
-                    month: null,
-                    year: 2025
+                    month: tableFilters.month,
+                    year: tableFilters.year
                 }
             });
 

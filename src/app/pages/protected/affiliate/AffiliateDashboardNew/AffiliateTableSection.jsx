@@ -10,6 +10,7 @@ import TrialCancelledTable from "./tables/TrialCancelledTable";
 import CustomerCancelledTable from "./tables/CustomerCancelledTable";
 import AllCustomersTable from "./tables/AllCustomersTable";
 import useLoginUserDataStore from "../../../../../store/loginuser/loginuserdata";
+import SearchAndFilterBar from "./tables/SearchAndFilterbar";
 
 const AffiliateTableSection = ({ isPro }) => {
 
@@ -17,16 +18,36 @@ const AffiliateTableSection = ({ isPro }) => {
     const { showModal } = useUpgradeModalStore();
     const { fetchAffiliateCustomers, isAffiliateLoading, affiliateCustomersData } = useAffTableDataStore()
     const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
+    const { tableFilters, updateTableFilters } = useAffTableDataStore();
 
     useEffect(() => {
         fetchLoginUserData()
         fetchAffiliateCustomers()
-    }, []);
+    }, [tableFilters]);
+
+    useEffect(()=>{
+        if(activeTab === 'new_trials'){
+            updateTableFilters({
+                search: "",
+                month: null,
+                year: new Date().getFullYear()
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        updateTableFilters({
+            search: "",
+            month: null,
+            year: new Date().getFullYear()
+        });
+    }, [activeTab]);
+    
 
     const TableComponent = (currentTab) => {
         switch (currentTab) {
             case 'new_trials':
-                return <NewTrialsTable refUsers={affiliateCustomersData} isAffiliateLoading={isAffiliateLoading} loginUserData={loginUserData} />;
+                return <NewTrialsTable refUsers={affiliateCustomersData} isAffiliateLoading={isAffiliateLoading} loginUserData={loginUserData}  />;
             case 'active_customers':
                 return <ActiveCustomersTable refUsers={affiliateCustomersData} isAffiliateLoading={isAffiliateLoading} loginUserData={loginUserData} />;
             case 'trial_cancelled':
@@ -55,7 +76,7 @@ const AffiliateTableSection = ({ isPro }) => {
                                 </button>
                             </div>
                         )}
-
+                        <SearchAndFilterBar tableFilters={tableFilters} updateTableFilters={updateTableFilters} isNewTrials={activeTab === 'new_trials'} />
                         {TableComponent(activeTab)}
                     </div>
             }

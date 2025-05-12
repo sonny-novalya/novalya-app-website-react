@@ -124,17 +124,7 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
     ];
 
     return (
-        <div className="p-4 bg-white rounded shadow">
-            <div className="mb-4 flex justify-between items-center">
-                <h2 className="text-lg font-semibold">Active Customers</h2>
-                <Input.Search
-                    placeholder="Search by name"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    allowClear
-                    style={{ width: 250 }}
-                />
-            </div>
+        <div className="">
 
             <Table
                 rowKey={(record) => `${record.customerid}`}

@@ -91,18 +91,7 @@ export default function TrialCancelledTable({ loginUserData, refUsers, isAffilia
     }
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow-sm">
-            <div className="mb-4 flex justify-between items-center">
-                <h2 className="text-lg font-semibold">Cancelled Trials</h2>
-                <Input.Search
-                    placeholder="Search by name"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{ maxWidth: 300 }}
-                    allowClear
-                />
-            </div>
-
+        <div className="">
             <Table
                 rowKey={(row) => row.customerid}
                 columns={columns}

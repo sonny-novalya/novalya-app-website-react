@@ -142,18 +142,7 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
     }
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow-sm">
-            {/* Search */}
-            <div className="mb-4 flex justify-between items-center">
-                <h2 className="text-lg font-semibold">Active Customers</h2>
-                <Input.Search
-                    placeholder="Search by name"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{ maxWidth: 300 }}
-                    allowClear
-                />
-            </div>
+        <div className="">
 
             {/* Ant Design Table with built-in pagination */}
             <Table

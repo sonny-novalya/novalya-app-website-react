@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Table, Input, Tag, Pagination, Spin } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import SearchAndFilterBar from './SearchAndFilterbar';
 
 const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
     const all_customers = refUsers?.all_customers || [];
@@ -110,14 +110,6 @@ const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
 
     return (
         <div>
-            <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
-                <Input
-                    prefix={<SearchOutlined />}
-                    placeholder="Search by name or email"
-                    onChange={(e) => handleSearch(e.target.value)}
-                    style={{ maxWidth: 300 }}
-                />
-            </div>
 
             {isAffiliateLoading ? (
                 <div className="flex justify-center items-center h-64">
