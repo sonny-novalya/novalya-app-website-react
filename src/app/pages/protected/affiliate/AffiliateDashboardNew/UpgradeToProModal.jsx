@@ -1,8 +1,11 @@
 import { Modal } from "antd";
 import useUpgradeModalStore from "../../../../../store/modals/UpgradeToPro";
+import useAffiliateStore from "../../../../../store/affiliate/affiliate";
 
 const UpgradeToProModal = () => {
     const { isVisible, hideModal } = useUpgradeModalStore();
+    const {setOpenAgreementModal}=useAffiliateStore()
+
 
     return (
         <Modal
@@ -31,6 +34,10 @@ const UpgradeToProModal = () => {
                     <div className="flex w-full gap-4 px-10">
                         <button
                         className="flex-1 bg-gradient-to-r from-[#005199] to-[#0087FF] textOWhite py-3 px-4 rounded-md text-white font-medium"
+                        onClick={()=>{
+                            setOpenAgreementModal(true)
+                            hideModal()
+                            }}
                         >
                             Upgrade
                         </button>

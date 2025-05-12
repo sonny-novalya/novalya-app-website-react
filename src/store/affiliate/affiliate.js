@@ -9,9 +9,14 @@ const useAffiliateStore = create((set) => ({
     affiliateComList:[],
     affiliateComLoader:false,
     error:null,
+    openAgreementModal:false,
 
 
-   fetchCommissionData: async (data) => {
+
+
+  setOpenAgreementModal: (val) => (set({ openAgreementModal: val})),
+
+  fetchCommissionData: async (data) => {
     set({ affiliateComLoader: true});
       try {
        
@@ -158,7 +163,24 @@ const useAffiliateStore = create((set) => ({
             error: error?.message || 'Something went wrong',
         });
     }
-  }
+  },
+  becomeAffiliate:async (data)=>{
+    try {
+       
+        const res = await apiCall({
+            method: 'POST',
+            url: '/user/api/createaffiliateuser',
+              data: data
+        });
+    
+        return res 
+    } catch (error) {
+        set({
+            error: error?.message || 'Something went wrong',
+        });
+    }
+  },
+
 
 
 

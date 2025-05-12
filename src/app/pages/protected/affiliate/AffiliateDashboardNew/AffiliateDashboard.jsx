@@ -14,7 +14,7 @@ const AffiliateDashboard = () => {
 
     useEffect(() => {
         fetchLoginUserData({})
-        loginUserData && setIsPro(loginUserData?.user_type?.toLowerCase() === "distributor" ? true: false)
+        loginUserData && setIsPro(loginUserData?.user_type?.toLowerCase() !== "distributor" ? true: false)
     }, [])
     
     if (!loginUserData) return 
