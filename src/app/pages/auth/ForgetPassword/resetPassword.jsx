@@ -18,7 +18,9 @@ const ResetPassword = () => {
     const payload ={
       token, email
     }
-    const  res = validateEmailToken(payload)
+    const  res = await validateEmailToken(payload)
+
+    console.log(res)
 
     if (res.status === 200) {
          setValidToken(true);
@@ -35,6 +37,11 @@ const ResetPassword = () => {
     }
       const res = await resetPass({email,password:newPassword})
 
+       if(res.status === 200){
+        message.success("Password has been changed")
+         navigate("/login")
+       }
+
    }
  useEffect(() => {
     checkToken();
@@ -50,7 +57,7 @@ const ResetPassword = () => {
           <Text type="secondary">Enter your New Password</Text>
         </div>
 
-        <form  className="space-y-4">
+        <form onSubmit={(e)=>e.preventDefault()}  className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
             <Input.Password
@@ -74,7 +81,6 @@ const ResetPassword = () => {
           <div className="flex gap-4 pt-2">
             <Button
               type="primary"
-              htmlType="submit"
               className="bg-[#3B82F6] hover:bg-[#2563EB] px-8"
               onClick={()=>submitPass()}
               disabled={!validToken}
