@@ -23,6 +23,28 @@ const useAuthStore = create((set) => ({
       return res;
     } catch (error) {}
   },
+ validateEmailToken: async (payload) => {
+    try {
+      const res = apiCall({
+        method: "POST",
+        url: "/user/api/validateemailtoken",
+        data: payload,
+      });
+
+      return res;
+    } catch (error) {}
+  },
+  resetPass: async (payload) => {
+    try {
+      const res = apiCall({
+        method: "POST",
+        url: "/user/api/resetpassword",
+        data: payload,
+      });
+
+      return res;
+    } catch (error) {}
+  },
 
   logout: () => {
     removeAllCookies();
