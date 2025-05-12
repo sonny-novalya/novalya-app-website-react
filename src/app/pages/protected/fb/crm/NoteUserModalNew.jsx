@@ -271,7 +271,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     }, [activeNoteEditDropdown]);
 
     const [notes, setNotes] = useState([]);
-    console.log("leadss", lead)
+    
     return (
         <Modal
             open={visible}

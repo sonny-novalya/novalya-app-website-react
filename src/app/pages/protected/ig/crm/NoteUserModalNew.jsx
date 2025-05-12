@@ -4,14 +4,11 @@ import { message, Modal, } from "antd";
 import ListPanel from './Notes/ListPanel';
 import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
 import { useLocation } from "react-router-dom";
-import { dateFormat } from '../../../../../helpers/dateFormat';
 import SocialsSection from './Notes/SocialsSection';
 import useIgNoteStore from '../../../../../store/notes/igNoteStore';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
     const { createIgNote, getIgNotes, fetchedNotes } = useIgNoteStore();
-
-    console.log("lead", lead)
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -51,7 +48,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     const handleSocialChange = (platform, value) => {
-        console.log("userInfo.socials", userInfo.socials)
         setUserInfo(prev => ({
             ...prev,
             socials: {
@@ -75,7 +71,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             profile_pic: lead.profile_pic || '',
             short_description: userInfo.bio || '',
             Socials: JSON.stringify(userInfo.socials),
-            description: updatedNotes?.map((item) => item?.description),
+            description: updatedNotes?.map((item) => item?.text),
             is_primary: selectedTag.tag_id || '',
             selected_tag_stage_ids: [
                 {
@@ -118,8 +114,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         getIgNotes({ insta_user_id : lead?.insta_user_id, type: "instagram" })
     }, [])
 
-    console.log("fetchedNotes", fetchedNotes)
-
     useEffect(() => {
         if (fetchedNotes) {
             setUserInfo({
@@ -145,12 +139,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 stage_id: stageData?.stage_id
                 })
 
-            if (Array.isArray(fetchedNotes.noteHistories)) {
-                const historyNotes = fetchedNotes.noteHistories.map((item) => ({
-                    id: item.id,
-                    text: item.description || '',
-                    date: dateFormat(item.updatedAt) || '',
-                    notes_id: item.notes_id || '',
+            if (Array.isArray(fetchedNotes?.description)) {
+                const historyNotes = fetchedNotes.description.map((desc, index) => ({
+                    id: index + 1,
+                    text: desc
                 }));
 
                 setNotes(historyNotes);
