@@ -16,8 +16,10 @@ export const loginSenerios = (response)=>{
 
 }
 
+ export const domains =[{url:"https://wcy-nuskin.novalya.com", website:"nuskin",subdomain:"wcy-nuskin"}]
+
 const checkDoamin = (web)=>{
-  const domains =[{url:"https://wcy-nuskin.novalya.com", website:"nuskin"}]
+ const domains =[{url:"https://wcy-nuskin.novalya.com", website:"nuskin", subdomain:"wcy-nuskin"}]
   const testDomains =["dev.novalya.com"]
   const hostname = window.location.hostname;
   const selectedDomain = domains.find(d => d.website === web) 
@@ -54,21 +56,6 @@ export const detectExtension = (callback) => {
   };
 }
 
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
 
 export function formatDate(dateString) {
   const date = new Date(dateString);
@@ -111,48 +98,7 @@ export  const getCurrentYear = ()=>{
     return {curr:year, prev:year-1}
   }
 
-export async function decryptKey(encryptedBase64, ivBase64, secretHex) {
-  const sec_str = "b7d43a2f5f816a47e8b0c9da376e41bd235ace0b31f6dfc75b4a";
 
-  
-  function hexToBytes(hex) {
-    const bytes = new Uint8Array(hex.length / 2);
-    for (let i = 0; i < bytes.length; i++) {
-      bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
-    }
-    return bytes;
-  }
-
-
-  function base64ToBytes(base64) {
-    const binary = atob(base64);
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) {
-      bytes[i] = binary.charCodeAt(i);
-    }
-    return bytes;
-  }
-
-  const keyData = hexToBytes(sec_str + secretHex);
-  const iv = base64ToBytes(ivBase64);
-  const encryptedData = base64ToBytes(encryptedBase64);
-
-  const cryptoKey = await crypto.subtle.importKey(
-    "raw",
-    keyData,
-    { name: "AES-CBC" },
-    false,
-    ["decrypt"]
-  );
-
-  const decrypted = await crypto.subtle.decrypt(
-    { name: "AES-CBC", iv: iv },
-    cryptoKey,
-    encryptedData
-  );
-
-  return new TextDecoder().decode(decrypted);
-}
 
 
 
