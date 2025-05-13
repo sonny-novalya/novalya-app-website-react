@@ -110,3 +110,310 @@ export  const getCurrentYear = ()=>{
 
     return {curr:year, prev:year-1}
   }
+
+export async function decryptKey(encryptedBase64, ivBase64, secretHex) {
+  const sec_str = "b7d43a2f5f816a47e8b0c9da376e41bd235ace0b31f6dfc75b4a";
+
+  
+  function hexToBytes(hex) {
+    const bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+    }
+    return bytes;
+  }
+
+
+  function base64ToBytes(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  const keyData = hexToBytes(sec_str + secretHex);
+  const iv = base64ToBytes(ivBase64);
+  const encryptedData = base64ToBytes(encryptedBase64);
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyData,
+    { name: "AES-CBC" },
+    false,
+    ["decrypt"]
+  );
+
+  const decrypted = await crypto.subtle.decrypt(
+    { name: "AES-CBC", iv: iv },
+    cryptoKey,
+    encryptedData
+  );
+
+  return new TextDecoder().decode(decrypted);
+}
+
+
+
+
+export  function upgardeHelper(plan,period){
+    let result ={
+        basic_1:true,
+        basic_3:true,
+        basic_12:true,
+        buissness_1:true,
+        buissness_3:true,
+        buissness_12:true,
+        unlimited_1:true,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:true,
+        month_3:true,
+        month_12:true,
+        deafultTF:"quater",
+      }
+      
+if (plan === "Basic" && period === "1_month") {
+    result.basic_1=false;
+}else if (plan === "Basic" && period === "3_month"){
+    result.basic_3=false;
+    result.unlimited_1=false;
+    result.buissness_1=false;
+    result.month_1=false;
+    result.deafultTF="year";
+   
+}
+else if (plan === "Basic" && period === "1_year"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:true,
+        unlimited_1:false,
+        unlimited_3:false,
+        unlimited_12:true,
+        month_1:false,
+        month_3:false,
+        month_12:true,
+        deafultTF:"year",
+      }
+}
+
+else if (plan === "Business" && period === "1_month"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:true,
+        buissness_12:true,
+        unlimited_1:true,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:false,
+        month_3:true,
+        month_12:true,
+        deafultTF:"quater"
+      }
+}
+
+else if (plan === "Business" && period === "3_month"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:true,
+        unlimited_1:false,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:false,
+        month_3:true,
+        month_12:true,
+        deafultTF:"year"
+      }
+}
+
+else if (plan === "Business" && period === "1_year"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:false,
+        unlimited_1:false,
+        unlimited_3:false,
+        unlimited_12:true,
+        month_1:false,
+        month_3:false,
+        month_12:true,
+        deafultTF:"year"
+      }
+}
+
+else if (plan === "Unlimited_new" && period === "1_month"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:false,
+        unlimited_1:false,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:false,
+        month_3:true,
+        month_12:true,
+        deafultTF:"quater"
+      }
+}
+
+else if (plan === "Unlimited_new" && period === "3_month"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:false,
+        unlimited_1:false,
+        unlimited_3:false,
+        unlimited_12:true,
+        month_1:false,
+        month_3:false,
+        month_12:true,
+        deafultTF:"year"
+      }
+}
+
+else if (plan === "Unlimited_new" && period === "1_year"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:false,
+        unlimited_1:false,
+        unlimited_3:false,
+        unlimited_12:false,
+        month_1:false,
+        month_3:false,
+        month_12:false,
+        deafultTF:"year"
+      }
+}
+
+else if (plan === "Starter" && period === "1_month"){
+    result ={
+        basic_1:true,
+        basic_3:true,
+        basic_12:true,
+        buissness_1:true,
+        buissness_3:true,
+        buissness_12:true,
+        unlimited_1:true,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:true,
+        month_3:true,
+        month_12:true,
+        deafultTF:"quater"
+      }
+}
+
+else if (plan === "Starter" && period === "1_year"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:true,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:true,
+        unlimited_1:false,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:false,
+        month_3:true,
+        month_12:true,
+        deafultTF:"year"
+      }
+}
+
+else if (plan === "Pro" && period === "1_month"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:true,
+        buissness_1:false,
+        buissness_3:true,
+        buissness_12:true,
+        unlimited_1:true,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:true,
+        month_3:true,
+        month_12:true,
+        deafultTF:"quater"
+      }
+}
+else if (plan === "Pro" && period === "1_year"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:true,
+        unlimited_1:false,
+        unlimited_3:false,
+        unlimited_12:true,
+        month_1:false,
+        month_3:false,
+        month_12:true,
+        deafultTF:"year"
+      }
+}
+else if (plan === "Unlimited" && period === "1_month"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:true,
+        buissness_3:true,
+        buissness_12:true,
+        unlimited_1:true,
+        unlimited_3:true,
+        unlimited_12:true,
+        month_1:true,
+        month_3:true,
+        month_12:true,
+        deafultTF:"quater"
+      }
+}
+else if (plan === "Unlimited" && period === "1_year"){
+    result ={
+        basic_1:false,
+        basic_3:false,
+        basic_12:false,
+        buissness_1:false,
+        buissness_3:false,
+        buissness_12:true,
+        unlimited_1:false,
+        unlimited_3:false,
+        unlimited_12:true,
+        month_1:false,
+        month_3:false,
+        month_12:true,
+        deafultTF:"year"
+      }
+}
+return {...result};
+
+}

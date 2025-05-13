@@ -15,7 +15,7 @@ import SendCampaignModal from "./SendCampaignModal";
 import MoveToStageModal from "./MoveToStageModal";
 import AddStageModal from "./AddStageModal";
 import NoteUserModal from "./NoteUserModalNew";
-
+import groupPhoto from "../../../../../assets/img/groupImg.png"
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
 import EditstageModal from "./editStageModal";
@@ -38,6 +38,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const [openMoveToStageModal, setOpenMoveToStageModal] = useState(false);
   const [openAddStageModal, setOpenAddStageModal] = useState(false);
   const [openEditStageModal, setOpenEditStageModal] = useState(false);
+  const [totalUsersCount, setTotalUsersCount] = useState(0);
   
   const [openNoteModal, setOpenNoteModal] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
@@ -61,20 +62,30 @@ const RightSectionCrm = ({ selectedGroup }) => {
       let newStages = [...selectedGrpData.stage].sort(
         (a, b) => a.stage_num - b.stage_num
       );
+
       const fakeLeads = (id) => {
-        const leads = selectedGrpData?.taggedUsers?.filter(
+        return selectedGrpData?.taggedUsers?.filter(
           (data) => data?.stage_id === id
         );
-        return leads;
       };
-      newStages = newStages?.map((element) => {
+
+      newStages = newStages.map((element) => {
         return { ...element, leads: fakeLeads(element.id) };
       });
 
+      const totalUsers = newStages.reduce(
+        (acc, stage) => acc + (stage.leads?.length || 0),
+        0
+      );
+      setTotalUsersCount(totalUsers);
 
       setSortedStages(newStages);
+    } else {
+      setSortedStages([]);
+      setTotalUsersCount(0);
     }
-  }, [selectedGrpData])
+  }, [selectedGrpData]);
+    
 
   const handleUserDelete = async()=>{
 
@@ -344,7 +355,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     <div  className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
       <TopbarRightSection
         companyName={selectedGroup.name}
-        leadsCount={selectedGrpData?.taggedUsers?.length || 0}
+        leadsCount={totalUsersCount || 0}
         setSortedStages={setSortedStages}
         onAddStage={handleAddStage}
         selectedGrpData={selectedGrpData}

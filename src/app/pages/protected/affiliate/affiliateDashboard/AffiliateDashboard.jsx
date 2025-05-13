@@ -6,7 +6,7 @@ const { TabPane } = Tabs;
 import affImg from "../../../../../assets/img/affiliateImg.png"
 import useAffiliateStore from "../../../../../store/affiliate/affiliate";
 import { getCurrentMonthYear } from "../../../../../helpers/helper";
-import OpenDashboard from '../AffiliateDashboardNew/OpenDashboard'
+import OpenDashboard from '../AffiliateDashboardNew/AffiliateDashboard'
 
 const AffiliateDashboard = () => {
   const [activeKey, setActiveKey] = useState("1"); // Store active tab key

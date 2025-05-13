@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Novalogo from "../../../../assets/img/novalya-blue.png"
 import checkedCard from "../../../../assets/img/checked-card.png"
 import checkedCardDark from "../../../../assets/img/checked-card-dark.png"
@@ -97,8 +97,8 @@ const Plans = () => {
 	  localStorage.setItem("fromOffers", "false");
 	  localStorage.setItem("backto", "/plans");
 
-    navigate("/signup");
-    window.dataLayer.push({ event: "Abonnement" });
+    navigate("/capture");
+    // window.dataLayer.push({ event: "Abonnement" });
   };
 
  

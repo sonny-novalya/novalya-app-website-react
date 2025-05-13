@@ -12,7 +12,7 @@ const useIgNoteStore = create((set) => ({
 
             const response = await apiCall({
                 method: "POST",
-                url: "/user/api/create-note",
+                url: "/user/api/create-insta-note",
                 data,
             });
 

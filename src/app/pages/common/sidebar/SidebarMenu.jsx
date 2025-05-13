@@ -110,7 +110,17 @@ const SidebarMenu = () => {
             ]
         },
         // { text: "Training Videos", id: "training-videos", path: "/training-videos", icon: <TrainingVideosIcon /> },
-        { text: "Affiliate", id: "affiliate", path: "/affiliate", icon: <AffiliateIcon /> },
+        {
+            text: "Affiliate",
+            id: "affiliate",
+            path: "/affiliate",
+            icon: <AffiliateIcon />,
+            subNav: [
+                { text: "Dashboard", id: "af-Dashboard", path: "/affiliate/dashboard" },
+                { text: "Level Commission", id: "af-commission", path: "/affiliate/level-commission" },
+                { text: "Settings", id: "af-settings", path: "/affiliate/settings" },
+            ]
+        },
         {
             text: "FB Friendlist",
             id: "fb_friendlist",
@@ -205,7 +215,7 @@ const SidebarMenu = () => {
 
                             <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-1">
                                 <LocalizationOptionsIcons />
-                                <div className="flex items-center justify-center mt-1 w-full ">
+                                <div className="flex items-center justify-center mt-1 w-full cursor-pointer">
                                     <UpgradeProIcon />
                                 </div>
                                 <div className="flex items-center justify-center mt-2 w-full">
@@ -276,6 +286,7 @@ const SidebarMenu = () => {
                                                             ))}
                                                         </div>
                                                     )}
+                                                    {item.id === 'instagram' && <div className="h-[1px] bg-[#0000001A] w-full mt-3 scale-125" />}
                                                 </>
                                             ) : (
                                                 <SidebarItem
@@ -293,7 +304,7 @@ const SidebarMenu = () => {
                                 <div className="w-full mb-0 sidebar-lang">
                                     <span className="font-[500]"><LocalizationOptions /> </span>
                                 </div>
-                                <div className="flex gap-5 items-center w-full px-3.5 py-3 text-black/45 font-[500]">
+                                <div className="flex gap-5 items-center w-full px-3.5 py-3 text-black/45 font-[500] cursor-pointer" onClick={()=>navigate("/upgrade")}>
                                     <span className="sidebar-icons h-6 w-6 flex items-enter justify-center"><UpgradeProIcon /></span>
                                     Upgrade To Pro
                                 </div>

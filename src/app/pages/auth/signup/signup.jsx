@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import logo from "../../../../assets/img/pricing-logo.png";
 import visaCard from "../../../../assets/img/visa-card.png";
 import masterCard from "../../../../assets/img/master-card.png";
@@ -14,34 +14,20 @@ import 'react-phone-input-2/lib/style.css'
 import { countries } from "../../../../helpers/helperData";
 import TnCbox from "../../../components/signup/TnCbox";
 import { signupStore } from "../../../../store/signup/signupStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { getCurrentYear } from "../../../../helpers/helper";
 
-const initialState = {
-  username: null,
-  firstname: "",
-  lastname: "",
-  email: "",
-  confirm_email: "",
-  mobile: "+33",
-  company: "",
-  address: "",
-  zipCode: "",
-  city: "",
-  country: "FR",
-  language: "",
-  password: "",
-  confirmpassword: "",
-  domain: "",
-};
+
 
 const SignUp = () => {
-  const [form, setForm] = useState(initialState);
+  const [form, setForm] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const {referralId}  =useParams();
   const [errors, setErrors] = useState({});
   const [isChecked, setIsChecked] = useState(false);
   const [reffralData, setReffralData] = useState("NOVALYA");
   const addressRef = useRef(null);
-  const {getUserByRef,registerUser}=signupStore()
+  const {getUserByRef,registerUser,saveUTM}=signupStore()
   const [planDetails, setPlanDetails] = useState(null);
   const [showPass,setShowPass]=useState({confPass:false,pass:false})
   const [planPeriodStr,setPlanPeriodStr]=useState("")
@@ -57,6 +43,9 @@ const SignUp = () => {
   const navigate = useNavigate()
   const copyRightYears = getCurrentYear()
   
+if (referralId) {
+  localStorage.setItem("referralId",referralId)
+}
 
   if (!checkPlanSelect) {
     navigate(backTo || "/plans")
@@ -67,86 +56,83 @@ const SignUp = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validate = () => {
-    const newErrors = {};
 
-    if (!form.firstname.trim()) {
-      newErrors.firstname = "First name is required";
-    } else {
-      newErrors.firstname = "";
-    }
-    if (!form.lastname.trim()) {
-      newErrors.firstname = "First name is required";
-    } else {
-      newErrors.firstname = "";
-    }
-    // if (!form.username.trim()) newErrors.username = "Username is required";
-    if (!form.mobile.trim()) {
-      newErrors.mobile = "Phone number is required";
-    } else {
-      newErrors.mobile = "";
-    }
+ const validate = () => {
+  const newErrors = {};
 
-    if (form.email !== form.confirm_email)
-      newErrors.confirm_email = "Emails do not match";
+  // Name fields
+  if (!form?.firstname?.trim()) {
+    newErrors.firstname = "First name is required";
+  }
+  if (!form?.lastname?.trim()) {
+    newErrors.lastname = "Last name is required";
+  }
 
-    if (!form.confirm_email)
-      newErrors.confirm_email = "Confirm Email is required";
-    if (!form.email.includes("@")) newErrors.email = "Invalid email";
-    if (!form.email) newErrors.email = "Email is required";
+  // Mobile
+  if (!form?.mobile?.trim()) {
+    newErrors.mobile = "Phone number is required";
+  }
 
-    if (!!form.email && !!form.email.includes("@")) {
-      newErrors.email = "";
-    }
+  // Email
+  if (!form?.email?.trim()) {
+    newErrors.email = "Email is required";
+  } else if (!form.email.includes("@")) {
+    newErrors.email = "Invalid email";
+  }
 
-    if (!!form.confirm_email && !(form.email !== form.confirm_email)) {
-      newErrors.confirm_email = "";
-    }
+  if (!form?.confirm_email?.trim()) {
+    newErrors.confirm_email = "Confirm Email is required";
+  } else if (form.email !== form.confirm_email) {
+    newErrors.confirm_email = "Emails do not match";
+  }
 
-    if (form.password !== form.confirmpassword)
-      newErrors.confirmpassword = "Passwords do not match";
-    if (form?.password?.length < 8)
-      newErrors.password = "Password must be at least 8 characters";
-    if (!form?.password) newErrors.password = "Password is required";
-    if (!form.confirmpassword)
-      newErrors.confirmpassword = "Confirm Password is required";
+  // Password
+  if (!form?.password) {
+    newErrors.password = "Password is required";
+  } else if (form.password.length < 8) {
+    newErrors.password = "Password must be at least 8 characters";
+  }
 
-    if (!form.address?.trim()) {
-      newErrors.address = "Address is required";
-    } else {
-      newErrors.address = "";
-    }
-    if (!form.city?.trim()) {
-      newErrors.city = "City is required";
-    } else {
-      newErrors.city = "";
-    }
-    if (!form.zipCode?.trim()) {
-      newErrors.zipCode = "Zip code is required";
-    } else {
-      newErrors.zipCode = "";
-    }
-    if (!form.country?.trim()) {
-      newErrors.country = "Country is required";
-    } else {
-      newErrors.country = "";
-    }
+  if (!form?.confirmpassword) {
+    newErrors.confirmpassword = "Confirm Password is required";
+  } else if (form.password !== form.confirmpassword) {
+    newErrors.confirmpassword = "Passwords do not match";
+  }
 
-    if (!isChecked) {
-      newErrors.checked = "Required";
-    } else {
-      newErrors.checked = "";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  // Address fields
+  if (!form?.address?.trim()) {
+    newErrors.address = "Address is required";
+  }
+  if (!form?.city?.trim()) {
+    newErrors.city = "City is required";
+  }
+  if (!form?.zipCode?.trim()) {
+    newErrors.zipCode = "Zip code is required";
+  }
+  if (!form?.country?.trim()) {
+    newErrors.country = "Country is required";
+  }
+
+  // Terms checkbox
+  if (!isChecked) {
+    newErrors.checked = "You must accept the terms";
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length !== 0;
+};
+
   const handleSubmit = async() => {
     if (validate()) {
       message.error("please fill all required fields");
       return;
     }
+    setIsLoading(true)
+
     const domainParts = window.location.hostname.split(".");
     const domain = domainParts.length > 1 ? domainParts[0] : "";
+    let utm_data = localStorage.getItem("UTM_DATA")
+    utm_data= utm_data ? JSON.parse(utm_data) :{}
 
     let params = {
       sponsorid: reffralData || "NOVALYA",
@@ -165,15 +151,29 @@ const SignUp = () => {
       item_price_id: checkPlanSelect,
       coupon_code: coupon_code || "empty",
       domain,
+      cf_utm_medium:utm_data?.utm_medium || "",
+      cf_utm_source: utm_data?.utm_source || '',
+      cf_utm_content:utm_data?.utm_content || "",
+      cf_utm_term:utm_data?.utm_term || "",
+      cf_utm_campaign:utm_data?.utm_campaign || ""
     };
 
   const res = await registerUser(params)
   if (res.status === 200) {
-    window.location.replace(res?.data?.redirect_url);
+   await addUtm(params.email,utm_data)
+    window.location.replace(res?.data?.data?.redirect_url);
+   
   }
+  setIsLoading(false)
   };
 
   const loadInitialCountry = ()=>{
+      let sign_details = localStorage.getItem("sign_details");
+    if (sign_details) {
+      sign_details= sign_details? JSON.parse(sign_details):{}
+    }else{
+      navigate("/capture")
+    }
     fetch("https://ipapi.co/json/")
         .then((response) => response.json())
         .then((data) => {
@@ -181,12 +181,35 @@ const SignUp = () => {
             const newValue = countries.find(
               (country) => country.code === data.country_code
             );
-           setForm({...form,mobile:newValue?.phone,country:newValue?.code})
+           setForm({...form,mobile:newValue?.phone,country:newValue?.code,firstname:sign_details?.firstname || "",
+            lastname:sign_details?.lastname || "",
+            email:sign_details?.email})
+          
           }
         })
         .catch((error) => {
           console.error("Error fetching IP address:", error);
         });
+  }
+
+  const addUtm = async(email,utm_data)=>{
+ 
+  
+    if(utm_data?.utm_medium){
+      let params = {
+        cf_utm_email: email,
+        cf_utm_medium:utm_data?.utm_medium || "",
+        cf_utm_source: utm_data?.utm_source || '',
+        cf_utm_content:utm_data?.utm_content || "",
+        cf_utm_term:utm_data?.utm_term || "",
+        cf_utm_campaign:utm_data?.utm_campaign || ""
+      }
+       await  saveUTM(params)
+    
+    }
+  
+  
+  
   }
 
   const contOptions = countries.map((data) => {
@@ -243,7 +266,7 @@ const SignUp = () => {
             (country) =>
               country.code.toLowerCase() === countrie?.short_name.toLowerCase()
           );
-          setForm({...form,address:address,city:(city?.long_name || ""),zipCode:(zipCode?.long_name || ""),country:selectedCountry?.label}); // handle via props
+          setForm((prev)=>( {...prev,address:address,city:(city?.long_name || ""),zipCode:(zipCode?.long_name || ""),country:selectedCountry?.code})); // handle via props
         });
       }
     };
@@ -263,6 +286,7 @@ const SignUp = () => {
     fetchPlanDetail()
     loadInitialCountry()
    
+   
   },[])
 
   const fetchSingleUserdata = async(data)=>{
@@ -275,7 +299,6 @@ const SignUp = () => {
    
     let plans = localStorage.getItem("plans");
     plans = JSON.parse(plans);
-    console.log(checkPlanSelect,plans)
     let selectedPlan = plans?.find((plan) => plan?.plan_id === checkPlanSelect);
     periodSelector(checkPlanSelect)
 
@@ -294,10 +317,11 @@ const SignUp = () => {
     }
     setPlanPeriodStr(result);
   };
+ 
+  
 
 
 
-  useEffect(()=>{console.log(form)},[form])
   return (
     <div className="signup ">
       <div className="bg-[#f6f6f6]">
@@ -557,7 +581,7 @@ const SignUp = () => {
                     <PhoneInput
                       placeholder="Enter phone number"
                       value={form?.mobile}
-                      onChange={(val) => setForm({ ...form, mobile: val })}
+                      onChange={(val) => setForm((prev)=>({ ...prev, mobile: val }))}
                     />
                     {/* <div className="relative bg-[#FAFAFA] border border-[#E0E1E3] rounded-md grid grid-cols-[1fr] w-full min-h-[46px]">
                       <input
@@ -685,9 +709,10 @@ const SignUp = () => {
                 <div className="!mt-6 w-full">
                   <button
                     onClick={() => handleSubmit()}
+                    disabled={isLoading}
                     className="bg-[#2c73ff] cursor-pointer  outline-[3px] outline-[#2c73ff4d] w-full text-white py-3 rounded-xl font-[500] text-[16px] transition duration-200"
                   >
-                    START MY FREE TRIAL
+                {isLoading ? "Loading...":isGoPlan.LTC ? "Proceed to payment" :"START MY FREE TRIAL"}    
                   </button>
                 </div>
               </div>

@@ -3,7 +3,7 @@ import { Modal, Spin, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { t } from "i18next";
-
+import { message as MessagePopup } from "antd"
 import SelectMessage from "./SelectMessage";
 import Settings from "./Settings";
 import Filters from "./Filters";
@@ -175,12 +175,12 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 prospection_type: type,
             };
             try {
-                await createSocialTarget({ ...prospectionData });
-                message.success("Settings created successfully");
+               await createSocialTarget({ ...prospectionData });
+                MessagePopup.success("Settings created successfully");
                 onClose();
             } catch (error) {
                 console.error("Error creating social target:", error);
-                message.error("Failed to create settings");
+                MessagePopup.error("Failed to create settings");
             }
         } else {
             // Validate all sections and update error messages
@@ -196,9 +196,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
 
                 // Show specific error message for the incomplete section
                 if (errors[incompleteKey]) {
-                    message.error(errors[incompleteKey]);
+                    MessagePopup.error(errors[incompleteKey]);
                 } else {
-                    message.warning("Please complete all sections before saving");
+                    MessagePopup.warning("Please complete all sections before saving");
                 }
             }
         }

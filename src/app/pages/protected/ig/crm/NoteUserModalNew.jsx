@@ -4,14 +4,11 @@ import { message, Modal, } from "antd";
 import ListPanel from './Notes/ListPanel';
 import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
 import { useLocation } from "react-router-dom";
-import { dateFormat } from '../../../../../helpers/dateFormat';
 import SocialsSection from './Notes/SocialsSection';
 import useIgNoteStore from '../../../../../store/notes/igNoteStore';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
-    const { createIgNote, getIgNotes, fetchedNotes, deleteUserNote, editUserNote } = useIgNoteStore();
-
-    console.log("lead", lead)
+    const { createIgNote, getIgNotes, fetchedNotes } = useIgNoteStore();
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -51,7 +48,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     const handleSocialChange = (platform, value) => {
-        console.log("userInfo.socials", userInfo.socials)
         setUserInfo(prev => ({
             ...prev,
             socials: {
@@ -61,13 +57,46 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         }));
     };
 
-    const handleDeleteNote = async (noteDeletedData) => {
-        const res = await deleteUserNote(noteDeletedData);
-        if (res) {
-            message.success("Note deleted successfully");
-            const { id } = noteDeletedData;
-            setNotes(prev => prev.filter(note => note?.id !== id));
+    const handleDeleteNote = async (noteToDelete) => {
+        const updatedNotes = notes.filter(note => note.id !== noteToDelete.id);
+        setNotes(updatedNotes);
+
+        const payload = {
+            first_name: userInfo.firstName || lead.first_name || '',
+            last_name: userInfo.lastName || lead.last_name || '',
+            insta_name: lead.insta_name || '',
+            email: userInfo.email || '',
+            phone: userInfo.phone || '',
+            profession: userInfo.profession || '',
+            profile_pic: lead.profile_pic || '',
+            short_description: userInfo.bio || '',
+            Socials: JSON.stringify(userInfo.socials),
+            description: updatedNotes?.map((item) => item?.text),
+            is_primary: selectedTag.tag_id || '',
+            selected_tag_stage_ids: [
+                {
+                    tag_id: selectedTag.tag_id || '',
+                    stage_id: selectedTag.stage_id || '',
+                }
+            ],
+            insta_user_id: lead.insta_user_id || '',
+            type: "instagram",
+            thread_id: lead.thread_id
+        };
+
+        try {
+            const msg = await createIgNote({ data: payload });
+
+            if (msg) {
+                message.success("Note Added Successfully");
+                getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
+            }
+        } catch (error) {
+            message.error("Failed to add note");
+            console.error("Note creation failed:", error);
         }
+
+        setActiveNoteEditDropdown(null);
     };
 
     const handleEditNote = (note) => {
@@ -84,8 +113,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     useEffect(() => {
         getIgNotes({ insta_user_id : lead?.insta_user_id, type: "instagram" })
     }, [])
-
-    console.log("fetchedNotes", fetchedNotes)
 
     useEffect(() => {
         if (fetchedNotes) {
@@ -112,12 +139,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 stage_id: stageData?.stage_id
                 })
 
-            if (Array.isArray(fetchedNotes.noteHistories)) {
-                const historyNotes = fetchedNotes.noteHistories.map((item) => ({
-                    id: item.id,
-                    text: item.description || '',
-                    date: dateFormat(item.updatedAt) || '',
-                    notes_id: item.notes_id || '',
+            if (Array.isArray(fetchedNotes?.description)) {
+                const historyNotes = fetchedNotes.description.map((desc, index) => ({
+                    id: index + 1,
+                    text: desc
                 }));
 
                 setNotes(historyNotes);
@@ -126,10 +151,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     }, [fetchedNotes]);
 
     const handleAddNote = async () => {
-        // if (!notesData.note.trim()) {
-        //     message.info("Please enter note text");
-        //     return;
-        // }
+        let notes_history = []
 
         if (editingNote) {
             const updatedNotes = notes.map(note =>
@@ -138,26 +160,50 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                     : note
             );
             setNotes(updatedNotes);
+            notes_history = updatedNotes;
 
             const payload = {
-                note_id: editingNote.notes_id,
-                description: notesData.note.trim(),
-                id: editingNote.id
+                first_name: userInfo.firstName || lead.first_name || '',
+                last_name: userInfo.lastName || lead.last_name || '',
+                insta_name: lead.insta_name || '',
+                email: userInfo.email || '',
+                phone: userInfo.phone || '',
+                profession: userInfo.profession || '',
+                profile_pic: lead.profile_pic || '',
+                short_description: userInfo.bio || '',
+                Socials: JSON.stringify(userInfo.socials),
+                description: notes_history?.map((item) => item?.description),
+                is_primary: selectedTag.tag_id || '',
+                selected_tag_stage_ids: [
+                    {
+                        tag_id: selectedTag.tag_id || '',
+                        stage_id: selectedTag.stage_id || '',
+                    }
+                ],
+                insta_user_id: lead.insta_user_id || '',
+                type: "instagram",
+                thread_id: lead.thread_id
             };
 
-            const res = await editUserNote(payload);
-            if (res) {
-                message.success("Note updated successfully");
-                setEditingNote(null);
-                setNotesData({ note: '' });
-                getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
-            }
-        } else {
-            let notes_history = []
+            try {
+                const msg = await createIgNote({ data: payload });
 
+                if (msg) {
+                    message.success("Note Added Successfully");
+                    getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
+                }
+            } catch (error) {
+                message.error("Failed to add note");
+                console.error("Note creation failed:", error);
+            }
+
+            setEditingNote(null);
+            setNotesData({ note: '' });
+            return; 
+        } else {
             if (!notesData.note.trim()) {
                 setNotes(prevNotes => [...prevNotes]);
-                const notesList = notes.map((item) => ({
+                const notesList = notes?.map((item) => ({
                     id: item.id,
                     description: item.text,
                 }));
@@ -165,16 +211,11 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 notes_history = [...notesList];
             } else {
                 const newNote = {
-                    id: 0,
-                    description: notesData.note.trim(),
+                    id: Date.now(),
+                    text: notesData?.note?.trim()
                 };
                 setNotes(prevNotes => [newNote, ...prevNotes]);
-                const notesList = notes.map((item) => ({
-                    id: item.id,
-                    description: item.text,
-                }));
-
-                notes_history = [newNote, ...notesList];
+                notes_history = [newNote, ...notes];
             }
 
             const payload = {
@@ -187,7 +228,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 profile_pic: lead.profile_pic || '',
                 short_description: userInfo.bio || '',
                 Socials: JSON.stringify(userInfo.socials),
-                notes_history: notes_history,
+                description: notes_history?.map((item) => item?.text),
                 is_primary: selectedTag.tag_id || '',
                 selected_tag_stage_ids: [
                     {
@@ -254,7 +295,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                         </h2>
 
                         <div className="relative flex items-center">
-                            <MessengerSmallIcon />
+                            {/* <MessengerSmallIcon /> */}
 
                             <div className="relative cursor-pointer">
                                 <button onClick={() => setActiveNoteEditDropdown('header')} className='pt-2 ml-2'>
@@ -392,23 +433,17 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                         <div className="">
                             <label className="block text-sm font-medium mb-1">Notes History</label>
                             <div className="space-y-2 max-h-20 overflow-y-auto pr-1">
-                                {notes.map((note, index) => {
+                                {notes?.map((note, index) => {
                                     return <div
-                                        key={note?.id}
+                                        key={index}
                                         className="bg-gray-100 p-3 rounded flex justify-between items-start relative"
                                     >
                                         <div className="text-xs text-[#00000099]">
                                             <div>{note.text}</div>
-                                            <div className="text-[10px] text-[#00000066] mt-1 flex gap-3">
-                                                <span>{note.date}</span>
-                                            </div>
                                         </div>
 
                                         <div className="mt-1 cursor-pointer" onClick={() => {
-                                            setNoteDeletedData({
-                                                id: note?.id,
-                                                notes_id: note?.notes_id
-                                            })
+                                            setNoteDeletedData(note)
                                             setActiveNoteEditDropdown(activeNoteEditDropdown === index ? null : index)
                                         }}>
                                             <TripleDotIcon />

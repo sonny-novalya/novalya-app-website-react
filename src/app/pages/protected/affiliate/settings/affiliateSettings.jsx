@@ -177,7 +177,7 @@ const AffiliateSettings = () => {
   return (
     <>
       <div className="p-6 bg-gray-100 h-screen overflow-auto">
-        <AfiliateTopBar />
+      <h2 className="font-medium text-2xl mb-5">Affiliate Settings</h2>
         <div className="flex gap-4">
           <div className="flex-1">
             {/* KYC Section */}
