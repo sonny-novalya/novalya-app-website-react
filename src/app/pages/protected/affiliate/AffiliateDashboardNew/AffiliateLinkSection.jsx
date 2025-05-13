@@ -1,6 +1,7 @@
 import link1 from "../../../../../assets/img/linkImg1.png";
 import link2 from "../../../../../assets/img/linkImg2.png";
 import link3 from "../../../../../assets/img/linkImg3.png";
+import link4 from "../../../../../assets/img/french_go.png";
 import { CopyAffiliateIcon } from '../../../common/icons/icons';
 import { message } from 'antd';
 import PropTypes from 'prop-types';
@@ -12,6 +13,7 @@ const AffiliateLinkSection = ({ isPro, randomCode }) => {
     const [showPromoModal, setShowPromoModal] = useState(false)
     const { showModal } = useUpgradeModalStore();
     const [affCode, setAffCode] = useState("")
+    const selectedLang = localStorage.getItem("selectedLocale")
     
     const affiliateLinks = [
         {
@@ -29,14 +31,14 @@ const AffiliateLinkSection = ({ isPro, randomCode }) => {
         {
             id: 3,
             type: "Pricing Page",
-            url: `https://dev.novalya.com/redirect?page=plans&uname=${affCode}`,
+            url: `https://dev.novalya.com/plans?uname=${affCode}`,
             image: link3
         },
         {
             id: 4,
-            type: "Official Website",
-            url: `https://dev.novalya.com/signup/${affCode}`,
-            image: link1
+            type: "Formation | Convertissez Vos Leads en Clients",
+            url: `https://dev.novalya.com/go-offer?uname=${affCode}&lang=fr`,
+            image: link4
         }
     ];
 
@@ -50,9 +52,8 @@ const AffiliateLinkSection = ({ isPro, randomCode }) => {
     };
 
         useEffect(()=>{
-            if (randomCode !== undefined)
-                setAffCode(randomCode)
-        }, [])
+             setAffCode(randomCode)
+        }, [randomCode])
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md mb-6 relative">
@@ -69,8 +70,9 @@ const AffiliateLinkSection = ({ isPro, randomCode }) => {
             </div>
 
             <div className="grid grid-cols-2 xl:grid-cols-4 gap-6">
-                {affiliateLinks.map((link) => (
-                    <div key={link.id} className="bg-white rounded-lg border border-gray-200">
+                {affiliateLinks.map((link) => {
+                    if(link.id === 4 &&  selectedLang !== "fr-FR") return null
+                    return   <div key={link.id} className="bg-white rounded-lg border border-gray-200">
                         <div className='p-2 rounded'>
                             <img src={link.image} alt={link.type} className="w-full h-40 object-cover rounded" />
                         </div>
@@ -90,7 +92,7 @@ const AffiliateLinkSection = ({ isPro, randomCode }) => {
                             </div>
                         </div>
                     </div>
-                ))}
+                })}
 
             </div>
 

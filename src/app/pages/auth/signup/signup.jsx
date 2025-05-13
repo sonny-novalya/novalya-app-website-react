@@ -14,30 +14,15 @@ import 'react-phone-input-2/lib/style.css'
 import { countries } from "../../../../helpers/helperData";
 import TnCbox from "../../../components/signup/TnCbox";
 import { signupStore } from "../../../../store/signup/signupStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { getCurrentYear } from "../../../../helpers/helper";
 
-// const initialState = {
-//   username: null,
-//   firstname: "",
-//   lastname: "",
-//   email: "",
-//   confirm_email: "",
-//   mobile: "+33",
-//   company: "",
-//   address: "",
-//   zipCode: "",
-//   city: "",
-//   country: "FR",
-//   language: "",
-//   password: "",
-//   confirmpassword: "",
-//   domain: "",
-// };
+
 
 const SignUp = () => {
   const [form, setForm] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const {referralId}  =useParams();
   const [errors, setErrors] = useState({});
   const [isChecked, setIsChecked] = useState(false);
   const [reffralData, setReffralData] = useState("NOVALYA");
@@ -58,6 +43,9 @@ const SignUp = () => {
   const navigate = useNavigate()
   const copyRightYears = getCurrentYear()
   
+if (referralId) {
+  localStorage.setItem("referralId",referralId)
+}
 
   if (!checkPlanSelect) {
     navigate(backTo || "/plans")

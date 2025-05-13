@@ -18,6 +18,7 @@ const AffiliateDashboard = () => {
     }, []);
 
     useEffect(() => {
+        console.log(loginUserData?.randomcode)
         if (loginUserData?.user_type?.toLowerCase() !== "distributor") {
             setIsPro(true);
         } else {

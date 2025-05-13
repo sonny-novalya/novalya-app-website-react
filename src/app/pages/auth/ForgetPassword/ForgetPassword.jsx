@@ -1,23 +1,37 @@
 import { useState } from "react";
 import NovalyaFullWhiteLogo from "../../../../../src/assets/img/NovalyaFullWhiteLogo.png";
 import lockImg from "../../../../../src/assets/img/securityLock.png";
-import { Input, message } from "antd";
+import { Input, message, Spin } from "antd";
 import useAuthStore from "../../../../store/auth/auth-store";
 import { useNavigate } from "react-router-dom";
+import EmailSent from "../../../components/forgetPass/emailSent";
 const ForgetPassword = () => {
     const {forgetPass}=useAuthStore()
     const [email, setEmail] = useState("");
+    const [emailSent, setEmailSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
     const navigate = useNavigate()
 
     const submit = async (e)=>{
           e.preventDefault(); 
+          if (!email) {
+            message.error("Email is required!")
+            return
+          }
+           setIsLoading(true)
      const res = await forgetPass({email:email})
        if (res.status === 200) {
         message.success("Check you Inbox")
+        setEmailSent(true)
        }
+    setIsLoading(false)
+
     }
     return (
-        <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] px-4">
+        <>
+            {
+                emailSent ? <EmailSent/>: <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] px-4">
             <div className="flex w-full max-w-4xl rounded-lg shadow-lg overflow-hidden bg-white">
                 <div className="w-1/2 bg-gradient-to-r from-[#005199] to-[#0087FF] px-10 py-20 flex flex-col justify-center items-center text-white">
                     <img src={NovalyaFullWhiteLogo} alt="Novalya Logo" />
@@ -44,9 +58,10 @@ const ForgetPassword = () => {
                         <div className="flex items-center justify-center">
                             <button
                                onClick={(e)=>submit(e)}
-                                className="mt-4 py-2 px-6 rounded text-sm !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit"
+                               disabled={isLoading}
+                                className="mt-4 py-2 px-6 rounded text-sm !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit w-spinner"
                             >
-                                SUBMIT
+                               {isLoading? <Spin size="small" style={{color:"white"}}/> : "SUBMIT"}
                             </button>
                         </div>
                     </form>
@@ -60,6 +75,9 @@ const ForgetPassword = () => {
                 </div>
             </div>
         </div>
+            }
+        </>
+       
     )
 }
 

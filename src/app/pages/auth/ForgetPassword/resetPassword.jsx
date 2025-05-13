@@ -1,15 +1,18 @@
 import  { useEffect, useState } from 'react';
-import { Input, Button, Card, Typography, message } from 'antd';
+import { Input, Button, Card, Typography, message,Spin } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useNavigate,useParams } from 'react-router-dom';
 import useAuthStore from '../../../../store/auth/auth-store';
+import PassChanged from '../../../components/forgetPass/passChanged';
+
 
 const { Title, Text } = Typography;
 const ResetPassword = () => {
       const {validateEmailToken,resetPass}=useAuthStore()
       const { token, email } = useParams();
   const [validToken, setValidToken] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChanged,setChanged]=useState(false)
     const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
    const navigate = useNavigate();
@@ -20,7 +23,7 @@ const ResetPassword = () => {
     }
     const  res = await validateEmailToken(payload)
 
-    console.log(res)
+ 
 
     if (res.status === 200) {
          setValidToken(true);
@@ -30,17 +33,21 @@ const ResetPassword = () => {
    }
 
 
-   const  submitPass = async ()=>{
+   const submitPass = async ()=>{
     if (newPassword !== confirmPassword) {
+        
         message.error("Passwords do not match!")
         return
     }
+    setIsLoading(true)
+
       const res = await resetPass({email,password:newPassword})
 
        if(res.status === 200){
         message.success("Password has been changed")
-         navigate("/login")
+        setChanged(true)
        }
+    setIsLoading(false)
 
    }
  useEffect(() => {
@@ -50,7 +57,8 @@ const ResetPassword = () => {
 
     
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
+<>
+       {isChanged ? <PassChanged /> : <div className="flex items-center justify-center min-h-screen bg-white">
       <Card className="w-full max-w-md rounded-xl shadow-md p-8">
         <div className="mb-4">
           <Title level={4} className="!mb-0">Change Password</Title>
@@ -81,16 +89,17 @@ const ResetPassword = () => {
           <div className="flex gap-4 pt-2">
             <Button
               type="primary"
-              className="bg-[#3B82F6] hover:bg-[#2563EB] px-8"
+              className="bg-[#3B82F6] hover:bg-[#2563EB] px-8 w-spinner"
               onClick={()=>submitPass()}
-              disabled={!validToken}
+              disabled={!validToken || isLoading}
             >
-              SUBMIT
+             { isLoading ? <Spin size='small'/> :"SUBMIT"}
             </Button>
           </div>
         </form>
       </Card>
-    </div>
+    </div>}
+</>
   );
 }
 

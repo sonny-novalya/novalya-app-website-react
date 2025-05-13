@@ -136,6 +136,9 @@ li.ant-pagination-total-text {
     transition: background-color 0.2s ease-in-out;
 }
 
+ .w-spinner :where(.css-dev-only-do-not-override-240cud).ant-spin .ant-spin-dot-item {
+    background: white !important;
+}
 
 
 /* __________ Start CSS For Prospection Setting Poppup _________ */
