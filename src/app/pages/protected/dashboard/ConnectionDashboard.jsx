@@ -10,14 +10,15 @@ const ConnectionDashboard = ({
     isIgConnected,
     isLoading,
     isExtConnected,
-    handleHideConnection
+    handleHideConnection,
+    loginUserData
 }) => {
     // Button is enabled when either Facebook or Instagram is connected
     const shouldEnableButton = isExtConnected && (isFbConnected || isIgConnected);
     
     return (
         <div>
-            <h3 className="text-[24px] font-[600] mb-5 pl-5 mt-1.5 tracking-[0.02em]">{`${t("dashboard.Hello")} Anima`}</h3>
+            <h3 className="text-[24px] font-[600] mb-5 pl-5 mt-1.5 tracking-[0.02em]">Hello {loginUserData?.firstname}</h3>
             <div className="bg-white p-5 rounded-[10px]">
                 <div className="flex flex-col gap-6">
                     <h2 className="font-medium text-[24px]">{t("dashboard.Setup Your Account")}</h2>
@@ -59,6 +60,7 @@ ConnectionDashboard.propTypes = {
     isLoading: PropTypes.bool,
     isExtConnected: PropTypes.bool,
     handleHideConnection: PropTypes.func,
+    loginUserData: PropTypes.obj,
 };
 
 export default ConnectionDashboard;

@@ -10,7 +10,7 @@ import useRequestStore from "../../../../../store/fb/request";
 
 const Request = () => {
   const {
-    fetchMessages,
+    fetchMessagesNew,
     tempMessageList,
     tempMessageLoader,
   } = useMessageSteps();
@@ -122,7 +122,7 @@ const Request = () => {
 
   useEffect(() => {
     fetchCRMGroups({data: {}, type: "fb"});
-    fetchMessages({limit:200,page:1});
+    fetchMessagesNew({limit:200,page:1});
     preSelectedSettings();
   }, []);
 

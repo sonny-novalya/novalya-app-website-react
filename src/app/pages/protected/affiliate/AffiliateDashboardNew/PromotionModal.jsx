@@ -1,35 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { message, Modal } from 'antd'; 
 import link1 from "../../../../../assets/img/linkImg1.png";
 import link2 from "../../../../../assets/img/linkImg2.png";
 import link3 from "../../../../../assets/img/linkImg3.png";
-import { message, Modal } from 'antd';
+import PropTypes from 'prop-types';
 
-const PromotionModal = ({ visible, onCancel }) => {
-    const [affiliateCode, setAffiliateCode] = useState('CDKCDCDCDC');
+const PromotionModal = ({ visible, onCancel, affCode }) => {
+    const [affiliateCode, setAffiliateCode] = useState('');
+
 
     const affiliateLinks = [
         {
             id: 1,
             type: "Official Website",
-            url: "https://app.novalya.com/signup",
+            url: `https://dev.novalya.com/signup/${affiliateCode}`,
             image: link1
         },
         {
             id: 2,
             type: "Sales Funnel",
-            url: "https://www.novalya.ai/en/go",
+            url: `https://www.novalya.ai/en/go?uname=${affiliateCode}&lang=en`,
             image: link2
         },
         {
             id: 3,
             type: "Pricing Page",
-            url: "https://app.novalya.com/redirect",
+            url: `https://dev.novalya.com/redirect?page=plans&uname=${affiliateCode}`,
             image: link3
         },
         {
             id: 4,
             type: "Official Website",
-            url: "https://app.novalya.com/signup",
+            url: `https://dev.novalya.com/signup/${affiliateCode}`,
             image: link1
         }
     ];
@@ -48,6 +50,11 @@ const PromotionModal = ({ visible, onCancel }) => {
     const handleUpdateCode = () => {
         message.success("Affiliate code updated: " + affiliateCode);
     };
+
+    useEffect(()=>{
+        if (affCode !== undefined)
+            setAffiliateCode(affCode)
+    }, [])
 
     return (
         <Modal
@@ -117,6 +124,12 @@ const PromotionModal = ({ visible, onCancel }) => {
                 </div>
            </Modal>
     );
+};
+PromotionModal.propTypes = {
+    visible: PropTypes.bool,
+    onCancel: PropTypes.func,
+    affiliateLinks: PropTypes.any,
+    affCode: PropTypes.string
 };
 
 export default PromotionModal;

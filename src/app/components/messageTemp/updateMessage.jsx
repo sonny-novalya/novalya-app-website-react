@@ -28,8 +28,8 @@ import { message, Spin } from "antd";
 import Upload from "./upload";
 
 const UpdateMessage = ({containerRef}) => {
-  const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessages, attachment,
-    setAttachment} = useMessageSteps();
+  const { setStep, setIsMessage,setPreviewMessage ,setSelecetdMessage,selecetdMessage,setBackStep,fetchMessagesNew, attachment,
+    setAttachment, getMessageVariants} = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState({});
@@ -43,7 +43,7 @@ const UpdateMessage = ({containerRef}) => {
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
-  
+  const [variantsLoading, setVariantsLoading] = useState(false);
 
 
   const handleVisibilityChange = (val) => {
@@ -107,10 +107,17 @@ const UpdateMessage = ({containerRef}) => {
     }
    
     setVisibility(visibilityOptions.find((v) => v.id === vis) || null);
-    setVariants([...selecetdMessage?.variants])
     setName(selecetdMessage?.title || '')
     setAttachment(selecetdMessage?.attachment)
 
+    if (!selecetdMessage.variants) {
+      setVariantsLoading(true);
+      setVariants([]); 
+      getMessageVariants(selecetdMessage)
+    }else{
+      setVariants([...selecetdMessage.variants])
+      setVariantsLoading(false);
+    }   
   }, [selecetdMessage]);
 
   const addVariants = () => {
@@ -158,15 +165,20 @@ const UpdateMessage = ({containerRef}) => {
     }
   }, [variants]);
 
-  const hnadlePreview = ()=>{
-    const message = {
+  const handlePreview = ()=>{
+
+    if(!visibility){
+      message.error(`Visibility is required.`);
+      return false;
+    }
+    const updatedMmessage = {
         variants: variants,
         title: name,
         visibility_type: [visibility.id],
         attachment: attachment
     }
-    setPreviewMessage(message);
-    setSelecetdMessage(message)
+    setPreviewMessage(updatedMmessage);
+    setSelecetdMessage(updatedMmessage)
     setStep(5);
     setBackStep(7)
   }
@@ -192,6 +204,8 @@ const UpdateMessage = ({containerRef}) => {
    }
 
 const handleSubmit =async ()=>{
+
+  // console.log(selecetdMessage, "selecetdMessage")
       if (!name.trim()) {
         message.error("Message Title is Required")
         return
@@ -200,8 +214,8 @@ const handleSubmit =async ()=>{
         message.error("Atleast 3 Variants are Required")
         return
       }
-      if (!visibility.id) {
-        message.error("visibility is Required")
+      if (!visibility) {
+        message.error("Visibility is required")
         return
       }
 
@@ -235,7 +249,7 @@ const handleSubmit =async ()=>{
     if (res?.status === 200) {
       message.success("Message Successfully Updated")
       setIsMessage(false)
-      fetchMessages({})
+      fetchMessagesNew({})
     }else{
       message.error("Oops Something Went Wrong")
     }
@@ -333,7 +347,11 @@ const handleSubmit =async ()=>{
                 </div>
               </div>
             </div>
-            <div className="flex gap-4 mt-4">
+            {variantsLoading && <div className="min-h-[400px] w-full flex flex-col items-center pt-[170px]">
+              <Spin size="large" /> 
+              <span className='mt-[20px]'>Loading Variants...</span>
+            </div>}
+            {!variantsLoading && <div className="flex gap-4 mt-4">
               <div className="w-[200px] bg-[#F5F5F5] rounded p-3">
                 <div className="flex items-center gap-[10px] text-[20px] font-[500]">
                    {t("message.Your variants")}
@@ -370,7 +388,7 @@ const handleSubmit =async ()=>{
                     <CreateMessageIcon index={5} />
                   </div>
                   {/* <button
-                    onClick={() => hnadlePreview()}
+                    onClick={() => handlePreview()}
                     className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
                   >
                       {t("message.Preview")}
@@ -521,23 +539,24 @@ const handleSubmit =async ()=>{
                    {t("message.Revert changes")}
                 </button>
               </div>
-            </div>
+            </div>}
             <div className="flex gap-4 justify-between mt-6">
               <button
-                onClick={() => hnadlePreview()}
-                className="flex justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-full max-w-[200px] rounded-md"
+                disabled={variantsLoading}
+                onClick={() => handlePreview()}
+                className={`flex justify-center gap-2 font-regular text-[21px] cursor-pointer text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-full max-w-[200px] rounded-md ${variantsLoading ? 'opacity-40' : ''}`}
               >
                  {t("message.Preview")}
               </button>
               <div className="flex gap-4">
                 <button
                   className="font-regular text-[21px] leading-[36px] bg-[#E8E8E8] 
-                     px-4 py-1.5 w-[200px] rounded-md flex justify-center"
+                     px-4 py-1.5 w-[200px] rounded-md flex justify-center cursor-pointer"
                   onClick={() => setIsMessage(false)}
                 >
                    {t("message.Cancel")}
                 </button>
-                <button onClick={()=>handleSubmit()} className="flex white-spin  items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
+                <button onClick={()=>handleSubmit()} className="cursor-pointer flex white-spin  items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
                  
                   {
                 isLoading ? <Spin size="small" style={{color:"white"}}/>  :<>  {t("message.Update")}

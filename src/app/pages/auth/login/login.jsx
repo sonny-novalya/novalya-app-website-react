@@ -155,9 +155,9 @@ const LoginPage = () => {
 
             <p className="text-center text-[#333333] text-[12px] mt-4">
               {t("login.Not registered?")}{" "}
-              <a href="#" className="text-blue-600 font-semibold underline">
+              <span onClick={()=>navigate("/plans")} className="text-blue-600 font-semibold underline">
                 {t("login.Create an account")}
-              </a>
+              </span>
             </p>
           </div>
         </div>

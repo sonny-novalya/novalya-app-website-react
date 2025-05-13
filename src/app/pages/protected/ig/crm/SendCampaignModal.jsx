@@ -15,7 +15,7 @@ const actionOptions = [
 ];
 
 const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, groupId }) => {
-    const { tempMessageList, fetchMessages } = useMessageSteps();
+    const { tempMessageList, fetchMessagesNew } = useMessageSteps();
     const { CRMList, fetchCRMGroups } = usefbCRM()
     const [selectedAction, setSelectedAction] = useState("no_action");
     const [selectedGroupId, setSelectedGroupId] = useState(null);
@@ -40,7 +40,7 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
     });
 
     useEffect(() => {
-        fetchMessages({ page: 1, limit: 200 });
+        fetchMessagesNew({ page: 1, limit: 200 });
         fetchCRMGroups({ type: 'ig' })
     }, []);
 

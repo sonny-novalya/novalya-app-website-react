@@ -34,7 +34,7 @@ const FacebookCard = ({ data }) => {
     };
     return (
         <>
-        <div className="flex-1 bg-white rounded-[16px] overflow-hidden relative dashboard-fb-card">
+        <div className="bg-white rounded-[16px] overflow-hidden relative dashboard-fb-card shadow-lg">
             <div className="relative">
                 <div className="flex items-center h-15 justify-end items-center h-15 px-4 py-2 bg-[linear-gradient(90deg,_#089BED_0%,_#2861B9_100%)]">
                     <img src={FbImg} alt="Cover" className="w-full max-w-[120px]" />

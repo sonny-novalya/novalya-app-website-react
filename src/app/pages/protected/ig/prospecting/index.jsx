@@ -43,7 +43,7 @@ const IgProspecting = () => {
     const [confirmModalKey, setConfirmModalKey] = useState(null);
     const [selectedSortLabel, setSelectedSortLabel] = useState("Sort By");
     const { keyWordList, fetchKeywords } = useKeyWordStore();
-    const { tempMessageList, fetchMessages } = useMessageSteps();
+    const { tempMessageList, fetchMessagesNew } = useMessageSteps();
 
     const { CRMList, fetchCRMGroups } = SettingStore();
 
@@ -684,7 +684,7 @@ const IgProspecting = () => {
 
     useEffect(() => {
         fetchKeywords({ page: 1, limit: 100 });
-        fetchMessages({ page: 1, limit: 200 });
+        fetchMessagesNew({ page: 1, limit: 200 });
         fetchCRMGroups({ type: 'instagram' });
     }, []);
 

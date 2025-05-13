@@ -25,7 +25,9 @@ const useLoginUserDataStore = create((set) => ({
                 currency:result?.currency || "USD",
                 sub_type:result?.sub_type || "month",
                 plan_period:result?.plan_period || 1,
-                plan_pkg:result.plan_pkg || "Basic"
+                plan_pkg:result.plan_pkg || "Basic",
+                customerid:result?.customerid || "",
+                randomcode: result?.randomcode || ""
             };
 
             if (response.status === 200) {
@@ -39,6 +41,25 @@ const useLoginUserDataStore = create((set) => ({
             set({ loading: false });
         }
     },
+     upgardeApiCall: async (data) => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: '/user/api/updatesubscription',
+                data,
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
+
 
 }));
 

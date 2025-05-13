@@ -60,20 +60,22 @@ const RightSectionCrm = ({ selectedGroup }) => {
             let newStages = [...selectedGrpData.stage].sort(
                 (a, b) => a.stage_num - b.stage_num
             );
+
             const fakeLeads = (id) => {
-                const leads = selectedGrpData?.taggedUsers?.filter(
+                return selectedGrpData?.taggedUsers?.filter(
                     (data) => data?.stage_id === id
                 );
-                return leads;
             };
-            newStages = newStages?.map((element) => {
+
+            newStages = newStages.map((element) => {
                 return { ...element, leads: fakeLeads(element.id) };
             });
 
-
             setSortedStages(newStages);
+        } else {
+            setSortedStages([]);
         }
-    }, [selectedGrpData])
+    }, [selectedGrpData]);
 
     const handleUserDelete = async () => {
 
@@ -238,6 +240,19 @@ const RightSectionCrm = ({ selectedGroup }) => {
         const [isDel, setIsDel] = useState(false)
 
         const handleDelete = async (id) => {
+
+            const stageToDelete = sortedStages.find((s) => s.id === id);
+            
+            if (sortedStages.length === 1) {
+                message.error("At least one stage must remain. Cannot delete the only stage.");
+                return;
+            }
+            
+            if (stageToDelete?.leads?.length > 0) {
+                message.error("Please delete all users in this stage before deleting it.");
+                return;
+            }
+
             if (isDel) {
                 const res = await deleteStage({ id, type: 'ig'})
                 if (res.status === 200) {

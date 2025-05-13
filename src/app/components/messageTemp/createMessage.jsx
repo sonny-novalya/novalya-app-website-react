@@ -37,11 +37,13 @@ const CreateMessage = ({containerRef}) => {
     setPreviewMessage,
     setSelecetdMessage,
     selecetdMessage,
-    fetchMessages,
+    fetchMessagesNew,
     setBackStep,
     searchKeyword,
     attachment,
-    setAttachment
+    setAttachment,
+    getTemplateVariants,
+    getMessageVariants
   } = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
@@ -111,13 +113,27 @@ const CreateMessage = ({containerRef}) => {
     setVisibility(selecetdMessage?.visibility);
     }
 
-    setVariants(
-      selecetdMessage
-        ? [...selecetdMessage?.variants]
-        : getDefaultVariants()
-    );
+    if(selecetdMessage){
+      if(!selecetdMessage.variants){
+        if(selecetdMessage.msgType && selecetdMessage.msgType === "predefinedTemplate"){
+          getTemplateVariants(selecetdMessage);
+        }else{
+          getMessageVariants(selecetdMessage);
+        }
+      }
+    }else{
+      setVariants(getDefaultVariants());
+    }
+
     setName(selecetdMessage?.title || "");
   }, []);
+
+  // once getTemplateVariants gets the variants data then update variants in the state
+  useEffect(() => {
+    if(selecetdMessage?.variants){
+      setVariants(selecetdMessage.variants);
+    }
+  }, [selecetdMessage])
 
   const addVariants = () => {
     if (variants.length >= 10) {
@@ -249,9 +265,9 @@ const CreateMessage = ({containerRef}) => {
       if (res?.status === 200) {
         message.success("Message Successfully Created")
         if (location.pathname === "/library/messages") {
-          fetchMessages(null, searchKeyword, null)
+          fetchMessagesNew(null, searchKeyword, null)
         }else{
-          fetchMessages({limit:200,page:1})
+          fetchMessagesNew({limit:200,page:1})
         }
         setIsMessage(false)
       }else{
@@ -547,19 +563,19 @@ const CreateMessage = ({containerRef}) => {
         <div className="flex gap-4 justify-between mt-6">
           <button
             onClick={() => handlePreview()}
-            className="flex justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-full max-w-[200px] rounded-md"
+            className="cursor-pointer flex justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-full max-w-[200px] rounded-md"
           >
              {t("message.Preview")}
           </button>
           <div className="flex gap-4">
             <button
-              className="font-regular text-[21px] leading-[36px] bg-[#E8E8E8] 
+              className="cursor-pointer font-regular text-[21px] leading-[36px] bg-[#E8E8E8] 
                  px-4 py-1.5 w-[200px] rounded-md flex justify-center"
               onClick={() => setIsMessage(false)}
             >
                {t("message.Cancel")}
             </button>
-            <button onClick={()=>handleSubmit()} className="flex white-spin  items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
+            <button onClick={()=>handleSubmit()} className="cursor-pointer flex white-spin  items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
               
 
               {

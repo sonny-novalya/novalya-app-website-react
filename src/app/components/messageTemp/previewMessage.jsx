@@ -1,12 +1,14 @@
-import React,{ useState } from 'react'
+import React,{ useState, useEffect } from 'react'
 import mobileImg from "../../../assets/img/mobile-preview.png"
 import messageImg from "../../../assets/img/messenger-icon.svg"
 import useMessageSteps from '../../../store/messageTemp/MessageTemp'
 import { PreviewMessageIcon } from '../../pages/common/icons/messageIcons/MessageIcons'
 import { useTranslation } from 'react-i18next'
+import { Spin } from "antd";
 
 const PreviewMessage = () => {
-  const {setStep,MessagePreview,backStep,setIsMessage,setSelecetdMessage} = useMessageSteps()
+  const {setStep,MessagePreview,backStep,setIsMessage,setSelecetdMessage, getMessageVariants, getTemplateVariants} = useMessageSteps()
+  const [variantsLoading, setVariantsLoading] = useState(false);
     const { t } = useTranslation();
 
     const handleCancel = ()=>{
@@ -22,6 +24,21 @@ const PreviewMessage = () => {
   setSelecetdMessage(MessagePreview)
   setStep(4)
 }
+
+useEffect(() => {
+
+  if (!MessagePreview.variants) {
+    setVariantsLoading(true);
+    // this code is required because we are using same component for predefined templates and messages
+    if(MessagePreview.msgType && MessagePreview.msgType === "predefinedTemplate"){
+      getTemplateVariants(MessagePreview)
+    }else{
+      getMessageVariants(MessagePreview)
+    }
+  } else {
+    setVariantsLoading(false);
+  }
+}, [MessagePreview]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen previeMessage z-[99999]">
@@ -81,23 +98,35 @@ const PreviewMessage = () => {
                 </div>
             </div>
         </div> */}
-        <CarouselComponent MessagePreview={MessagePreview}/>
+        <CarouselComponent MessagePreview={MessagePreview} variantsLoading={variantsLoading} />
         <div className="flex gap-4 justify-end mt-6">
             <button className="font-regular text-[21px] leading-[36px] bg-[#E8E8E8] 
-             px-4 py-1.5 w-[200px] rounded-md flex justify-center" onClick={()=>handleCancel()}>{t("message.Cancel")}</button>
-            { backStep === 6 && <button onClick={()=>handleSelect()} className="flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md"> {t("message.Select")}</button>}
+             px-4 py-1.5 w-[200px] rounded-md flex justify-center cursor-pointer" onClick={()=>handleCancel()}>{t("message.Cancel")}</button>
+            { backStep === 6 && <button onClick={()=>handleSelect()} className="cursor-pointer flex items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md"> {t("message.Select")}</button>}
         </div>
     </div>
 </div>
   )
 }
 
-const CarouselComponent = ({ MessagePreview = { variants: [] } }) => {
+const CarouselComponent = ({MessagePreview, variantsLoading}) => {
+
+    if(variantsLoading){
+        return (
+          <div className="min-h-[400px] w-full flex flex-col items-center pt-[170px]">
+            <Spin size="large" /> 
+            <span className='mt-[20px]'>Loading Preview...</span>
+          </div>
+        )
+    }
+
+    const variants = MessagePreview.variants || [];
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const visibleCount = 3;
   
     const nextSlide = () => {
-      if (currentIndex < MessagePreview.variants.length - visibleCount) {
+      if (currentIndex < variants.length - visibleCount) {
         setCurrentIndex(currentIndex + 1);
       }
     };
@@ -127,10 +156,10 @@ const CarouselComponent = ({ MessagePreview = { variants: [] } }) => {
               className="flex transition-transform duration-300 ease-in-out"
               style={{
             transform: `translateX(-${currentIndex * 305}px)`,
-            width: `${MessagePreview.variants.length * 305}px`,
+            width: `${variants.length * 305}px`,
           }}
             >
-              {MessagePreview.variants.map((variant, index) => (
+              {variants.map((variant, index) => (
                 <div key={index} className="w-[300px] flex-shrink-0 px-2">
                   <div className="relative max-w-[285px] mx-auto">
                     <img src={mobileImg} className="w-full" />

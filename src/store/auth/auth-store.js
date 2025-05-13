@@ -1,20 +1,53 @@
 import { create } from "zustand";
-import { loginSenerios, removeAllCookies } from "../../helpers/helper";
+import { removeAllCookies } from "../../helpers/helper";
+import apiCall from "../../services/api";
 
 const useAuthStore = create((set) => ({
   isAuthenticated: !!localStorage.getItem("token"),
   token: localStorage.getItem("token") || null,
 
-  login: (token,resp) => {
-  
-  
+  login: (token, resp) => {
     localStorage.setItem("token", token);
-   
+
     set({ isAuthenticated: true, token });
   },
 
+  forgetPass: async (payload) => {
+    try {
+      const res = apiCall({
+        method: "POST",
+        url: "/user/api/forgetpassword",
+        data: payload,
+      });
+
+      return res;
+    } catch (error) {}
+  },
+ validateEmailToken: async (payload) => {
+    try {
+      const res = apiCall({
+        method: "POST",
+        url: "/user/api/validateemailtoken",
+        data: payload,
+      });
+
+      return res;
+    } catch (error) {}
+  },
+  resetPass: async (payload) => {
+    try {
+      const res = apiCall({
+        method: "POST",
+        url: "/user/api/resetpassword",
+        data: payload,
+      });
+
+      return res;
+    } catch (error) {}
+  },
+
   logout: () => {
-    removeAllCookies()
+    removeAllCookies();
     localStorage.removeItem("token");
     set({ isAuthenticated: false, token: null });
   },

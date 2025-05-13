@@ -15,7 +15,7 @@ import { TickFillIcon } from "../../../common/icons/icons";
 
 const Birthday = () => {
   const {
-    fetchMessages,
+    fetchMessagesNew,
     tempMessageList,
     tempMessageLoader,
   } = useMessageSteps();
@@ -47,7 +47,7 @@ const Birthday = () => {
 
   useEffect(()=>{
     if (!tempMessageList?.length) {
-    fetchMessages({limit:200,page:1})
+    fetchMessagesNew({limit:200,page:1})
     }
     fetchCRMGroups({data: {}, type: "fb"})
     preSelectedData()

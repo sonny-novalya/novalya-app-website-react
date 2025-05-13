@@ -114,7 +114,7 @@ export  const getCurrentYear = ()=>{
 export async function decryptKey(encryptedBase64, ivBase64, secretHex) {
   const sec_str = "b7d43a2f5f816a47e8b0c9da376e41bd235ace0b31f6dfc75b4a";
 
-  // Convert hex to Uint8Array
+  
   function hexToBytes(hex) {
     const bytes = new Uint8Array(hex.length / 2);
     for (let i = 0; i < bytes.length; i++) {
@@ -123,7 +123,7 @@ export async function decryptKey(encryptedBase64, ivBase64, secretHex) {
     return bytes;
   }
 
-  // Convert base64 to Uint8Array
+
   function base64ToBytes(base64) {
     const binary = atob(base64);
     const bytes = new Uint8Array(binary.length);
@@ -153,6 +153,10 @@ export async function decryptKey(encryptedBase64, ivBase64, secretHex) {
 
   return new TextDecoder().decode(decrypted);
 }
+
+
+
+
 export  function upgardeHelper(plan,period){
     let result ={
         basic_1:true,
