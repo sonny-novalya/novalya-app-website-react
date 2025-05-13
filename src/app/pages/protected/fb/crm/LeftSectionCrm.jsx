@@ -27,7 +27,8 @@ const SortableItem = ({
   setSelectedGrp,
   setOpenEditGroupModal,
   fetchCRMGroups,
-  deleteGroupById
+  deleteGroupById,
+  isCollapse
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: group.id });
@@ -130,7 +131,7 @@ const SortableItem = ({
             .join("")
             .slice(0, 2)}
         </div>
-        <div className="flex flex-col items-center w-full">
+       {!isCollapse && <div className="flex flex-col items-center w-full">
           <div className="flex items-center justify-between w-full">
             <span className="capitalize max-w-36 truncate">{group.name}</span>
           </div>
@@ -140,9 +141,9 @@ const SortableItem = ({
               {formatDate(group.createdAt)}
             </span>
           </div>
-        </div>
+        </div>}
       </div>
-      <div className="absolute right-[10px] top-[10px]">
+     { !isCollapse &&<div className="absolute right-[10px] top-[10px]">
         <Dropdown
           overlay={<DropdownMenu item={group}/>}
           trigger={["click"]}
@@ -154,7 +155,7 @@ const SortableItem = ({
             className="!text-[#808183] !h-9 btn-hover"
           />
         </Dropdown>
-      </div>
+      </div>}
     </div>
   );
 };
@@ -168,7 +169,8 @@ const LeftSectionCrm = ({
   error,
   isLoading,
   reorderCRMGroups,
-  setOpenEditGroupModal
+  setOpenEditGroupModal,
+  isCollapse
 }) => {
   const [localGroups, setLocalGroups] = useState(groups);
   const startIndexRef = useRef(null);
@@ -250,6 +252,7 @@ const LeftSectionCrm = ({
                 setOpenEditGroupModal={setOpenEditGroupModal}
                 fetchCRMGroups={fetchCRMGroups}
                 deleteGroupById={deleteGroupById}
+                isCollapse={isCollapse}
               />
             ))}
         </div>
