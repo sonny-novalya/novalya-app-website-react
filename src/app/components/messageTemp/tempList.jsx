@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { message, Spin } from 'antd'
 import { HeartFilled } from '@ant-design/icons'
 const TempList = ({containerRef}) => {
-  const {setStep,tempList,tempMessageList,setPreviewMessage,setBackStep,setSelecetdMessage,fetchTemps,fetchMessages,tempMessageLoader,tempLoader,setFavourite} = useMessageSteps()
+  const {setStep,tempList,tempMessageList,setPreviewMessage,setBackStep,setSelecetdMessage,fetchTemps,fetchMessages,tempMessageLoader,tempLoader,setFavourite, fetchTempsNew, fetchMessagesNew} = useMessageSteps()
   const [temps,setTemp]=useState([])
   const [selecetdCat,setSelecetdCat]=useState(null)
   const lang = localStorage.getItem("selectedLocale") || "en-US"
@@ -28,10 +28,10 @@ const TempList = ({containerRef}) => {
 
   useEffect(() => {
     if(!tempList.length){
-        fetchTemps()
+      fetchTempsNew()
     }
    
-    fetchMessages(pagination)
+    fetchMessagesNew(pagination)
   }, [])
   
   // 2️⃣ Once temps is available, select the initial category
@@ -61,12 +61,20 @@ const TempList = ({containerRef}) => {
  }
 
  const handlePreview = (data)=>{
-    setPreviewMessage(data)
+
+    // in case of templates we have to use different api to get variants so below key is to differentiate b/w template and messages 
+    if(selecetdCat?.category != "My Message"){
+      data.msgType = 'predefinedTemplate';
+    }
+    setPreviewMessage({ ...data });
     setStep(5)
- }
+ }  
 
  const handleCreate = (data)=>{
-    setSelecetdMessage(data)
+    if(selecetdCat?.category != "My Message"){
+      data.msgType = 'predefinedTemplate';
+    }
+    setSelecetdMessage({ ...data })
     setStep(4)
  }
 
@@ -219,10 +227,10 @@ const TempList = ({containerRef}) => {
                                     
                                 </div>
                             </div>
-                            <h3 className="font-medium text-sm leading-6 mt-2 mb-3">{data.title}</h3>
+                            <h3 className="font-medium text-sm leading-6 mt-2 mb-3 min-h-[48px] flex items-center">{data.title}</h3>
                             <div className="flex gap-2">
-                                <button className="flex-1 font-medium text-sm bg-white px-3 py-1.5 rounded-full" onClick={()=>handlePreview(data)}>{t("message.Preview")}</button>
-                                <button className="flex-1 font-medium text-sm bg-[#0087FF] text-white px-3 py-1.5 rounded-full" onClick={()=>handleCreate(data)} >{t("message.Select")}</button>
+                                <button className="cursor-pointer flex-1 font-medium text-sm bg-white px-3 py-1.5 rounded-full" onClick={()=>handlePreview(data)}>{t("message.Preview")}</button>
+                                <button className="cursor-pointer flex-1 font-medium text-sm bg-[#0087FF] text-white px-3 py-1.5 rounded-full" onClick={()=>handleCreate(data)} >{t("message.Select")}</button>
                             </div>
                         </div>
                            )
