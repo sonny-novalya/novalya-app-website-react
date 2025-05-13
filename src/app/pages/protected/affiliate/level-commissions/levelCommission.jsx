@@ -44,9 +44,10 @@ const LevelCommission = () => {
 
   }
 
+
   useEffect(() => {
     fetchLoginUserData({})
-    loginUserData && setIsPro(loginUserData?.user_type !== "Distributor" ? true : false)
+    loginUserData && setIsPro(loginUserData?.user_type?.toLowerCase() === "distributor" ? true : false)
   }, [])
 
   useEffect(() => {
@@ -68,14 +69,10 @@ const LevelCommission = () => {
       <div className="p-6 bg-gray-100 min-h-screen">
 
         <h2 className="font-medium text-2xl mb-5">Level Commission</h2>
-        <div className="bg-white p-6 shadow rounded-md relative">
-          {isPro && (
-            <div className="absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/30 z-50 rounded-lg h-full">
-              <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium" onClick={showModal}>
-                Unlock to Pro
-              </button>
-            </div>
-          )}
+        <div className=' bg-white p-6 shadow rounded-md relative'>
+
+        <div className="">
+
           <h2 className="text-lg font-semibold mb-4">Commission</h2>
 
 
@@ -123,8 +120,15 @@ const LevelCommission = () => {
             <button onClick={onGo} className="px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring focus:border-blue-300">Go</button>
           </div>
         </div>
-
+                  {isPro && (
+                    <div className="absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/30 z-50 rounded-lg h-full">
+                      <button className="bg-gradient-to-r from-[#005199] to-[#0087FF] rounded px-10 py-2 text-white shadow-md font-medium" onClick={showModal}>
+                        Unlock to Pro
+                      </button>
+                    </div>
+                  )}
         <Table columns={columns} dataSource={data} pagination={false} loading={affiliateComLoader} />
+                </div>
         <UpgradeToProModal />
       </div>
     </>
