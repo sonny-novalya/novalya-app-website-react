@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const AffiliateCard = () => {
     const navigate = useNavigate()
     return (
-        <div className="relative flex-1 rounded-[16px] overflow-hidden text-white">
+        <div className="relative rounded-[16px] overflow-hidden text-white shadow-lg">
             <img src={AffiliateCardImg} alt="" className="w-full object-cover max-h-[215px] flex" />
             <img src={userPortrate} alt="" className="object-cover absolute right-[10px] top-[30px] w-[75px] h-[105px]" />
             <div className="absolute inset-0 p-5 flex flex-col justify-start gap-3">
