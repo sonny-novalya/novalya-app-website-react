@@ -5,6 +5,7 @@ import SocialDashboard from "./SocialDashboard";
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { useExtensionStore } from "../../../../store/extension/extension-store";
 import { useNavigate } from "react-router-dom";
+import useLoginUserDataStore from "../../../../store/loginuser/loginuserdata";
 
 const Dashboard = () => {
   const [connectionStep, setConnectionStep] = useState(false);
@@ -18,8 +19,11 @@ const Dashboard = () => {
 
   const hasFetched = useRef(false);
   const  islogged =localStorage.getItem("loggedin")
- 
+  const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
   
+  useEffect(()=>{
+    fetchLoginUserData()
+  },[])
 
   const navigate = useNavigate()
 
@@ -81,6 +85,7 @@ const Dashboard = () => {
     // document.documentElement.scrollTop = 0;
     // document.body.scrollTop = 0;
   }
+  if (!loginUserData) return
   if (error) return "Alert";
 
   return (
@@ -94,6 +99,7 @@ const Dashboard = () => {
           facebookButtonDisabled={facebookButtonDisabled}
           instaButtonDisabled={instaButtonDisabled}
           handleHideConnection={confirmNextScreen}
+          loginUserData={loginUserData}
         />
       ) : (
         <SocialDashboard
@@ -102,6 +108,7 @@ const Dashboard = () => {
           limit_data={limit_data}
           isLoading={loading}
           handleShowConnection={handleShowConnection}
+          loginUserData={loginUserData}
         />
       )}
     </Layout>
