@@ -27,7 +27,7 @@ const MessageIndex = () => {
   const {
     setIsMessage,
     setStep,
-    fetchMessages,
+    fetchMessagesNew,
     messageList,
     setSelecetdMessage,
     loading,
@@ -58,7 +58,7 @@ const MessageIndex = () => {
     }
 
     visibility = JSON.parse(visibility);
-    console.log(visibility[0])
+    // console.log(visibility[0])
 
     const matchedOption = visibilityOptions.find(option => option.id === visibility[0]);
     return matchedOption;
@@ -88,7 +88,7 @@ const MessageIndex = () => {
   }, []);
 
   useEffect(() => {
-    fetchMessages(pagination,debouncedQuery,sort,(visFilter?.id || ""));
+    fetchMessagesNew(pagination,debouncedQuery,sort,(visFilter?.id || ""));
     setBackStep(null);
     setSelecetdMessage(null);
     setPreviewMessage(null);
@@ -118,7 +118,7 @@ const MessageIndex = () => {
     const res = await duplicateMessage(payload)
     if (res.status === 200) {
       message.success(res?.data?.message)
-      fetchMessages(pagination,debouncedQuery,sort,(visFilter?.id || ""));
+      fetchMessagesNew(pagination,debouncedQuery,sort,(visFilter?.id || ""));
     }else{
       message.error("Oops Something went wrong!")
     }
@@ -139,7 +139,7 @@ const MessageIndex = () => {
       const res = await deleteMessages(id);
       if (res?.status === 200) {
         message.success("message Deleted");
-        fetchMessages(pagination,debouncedQuery,sort,(visFilter?.id || ""));
+        fetchMessagesNew(pagination,debouncedQuery,sort,(visFilter?.id || ""));
       } else {
         message.success("Oops Something went wrong");
       }

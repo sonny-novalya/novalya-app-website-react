@@ -29,10 +29,10 @@ const MessageSelector = ({containerRef}) => {
           
           <div className='grid grid-cols-3 gap-12'>
             {data.map((item, index) => (
-              <div key={index} className="border border-[#0087FF33] rounded-[6px] text-center px-5 py-[16px] ${item.color}" onClick={()=>handleSelector(index)}>
+              <div key={index} className="cursor-pointer border border-[#0087FF33] rounded-[6px] text-center px-5 py-[16px] ${item.color}" onClick={()=>handleSelector(index)}>
                 <img className='mx-auto flex mt-[36px] mb-[36px]' src={item.img} alt={item.title} />
                 <span className={`font-semibold text-[24px] leading-[36px] max-w-[220px] text-center block mx-auto ${item.color}`}>{t(`message.${item.title}`)}</span>
-                <button className={`font-medium text-[14px] leading-[20px] px-5 py-[10px] text-white rounded-[24px] w-full max-w-[200px] mt-2 ${item.bgColor}`}>{item.buttonText}</button>
+                <button className={`cursor-pointer font-medium text-[14px] leading-[20px] px-5 py-[10px] text-white rounded-[24px] w-full max-w-[200px] mt-2 ${item.bgColor}`}>{item.buttonText}</button>
               </div>
             ))}
           </div>

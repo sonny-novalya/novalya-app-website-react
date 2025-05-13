@@ -80,6 +80,44 @@ const useMessageSteps = create((set) => ({
       }
   },
 
+  fetchMessagesNew: async (pagination,search,sort,vis) => {
+    if (pagination?.limit === 200) {
+        set({ tempMessageLoader: true, error: null });
+    }else{
+        set({ loading: true, error: null });
+    }
+      try {
+         const paylaod = {
+            page: pagination?.page || 1,
+            limit:pagination?.limit || 10,
+            sort_order:sort?"DESC":"ASC",
+            sort_by:"title",
+            visibility_type:vis
+
+         }
+          const res = await apiCall({
+              method: 'POST',
+              url: '/all/messages/api/get-all-messages',
+              data:{...paylaod,search}
+          });
+          const total = res?.data?.data?.total || 1
+
+
+         if (pagination?.limit === 200) {
+          set({ tempMessageList: res?.data?.data?.messages || [], tempMessageLoader: false});
+         }else{
+            set({ messageList: res?.data?.data?.messages || [], loading: false, totalPages:total });
+         }
+      } catch (error) {
+          set({
+              loading: false,
+              tempMessageLoader: false,
+              error: error?.message || 'Something went wrong',
+          });
+      }
+  },
+  
+
   fetchTemps: async () => {
     set({ tempLoader: true, error: null });
 
@@ -157,6 +195,57 @@ const useMessageSteps = create((set) => ({
         });
     }
  },
+
+    getMessageVariants: async (message) => {
+        try {
+            const res = await apiCall({
+                method: 'POST',
+                url: '/all/messages/api/get-message-variants',
+                data:{"message_id": message?.id}
+            });
+            const variants = res?.data?.data || [];
+            const newMessage = { ...message, variants };
+            set({ MessagePreview: newMessage}); // for preview 
+            set({ selecetdMessage: newMessage}); // for edit
+        } catch (error) {
+            return [];
+        }
+    },
+
+    fetchTempsNew: async () => {
+        set({ tempLoader: true, error: null });
+        try {
+            
+            const res = await apiCall({
+                method: 'POST',
+                url: '/all/messages/api/get-predefined-templates',
+            });
+
+            set({ tempList: res?.data?.message || [],tempLoader:false });
+        } catch (error) {
+            set({
+                loading: false,
+                tempLoader:false ,
+                error: error?.message || 'Something went wrong',
+            });
+        }
+    },
+
+    getTemplateVariants: async (message) => {
+        try {
+            const res = await apiCall({
+                method: 'POST',
+                url: '/all/messages/api/get-template-variants',
+                data:{"template_id": message?.id}
+            });
+            const variants = res?.data?.data || [];
+            const newMessage = { ...message, variants };
+            set({ MessagePreview: newMessage}); // for preview 
+            set({ selecetdMessage: newMessage}); // for edit
+        } catch (error) {
+            return [];
+        }
+    },
 }));
 
 
