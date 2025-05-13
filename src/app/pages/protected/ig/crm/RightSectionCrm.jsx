@@ -38,7 +38,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const [openMoveToStageModal, setOpenMoveToStageModal] = useState(false);
     const [openAddStageModal, setOpenAddStageModal] = useState(false);
     const [openEditStageModal, setOpenEditStageModal] = useState(false);
-    const [totalUsersCount, setTotalUsersCount] = useState(0);
 
     const [openNoteModal, setOpenNoteModal] = useState(false);
     const [selectedLead, setSelectedLead] = useState(null);
@@ -72,16 +71,9 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 return { ...element, leads: fakeLeads(element.id) };
             });
 
-            const totalUsers = newStages.reduce(
-                (acc, stage) => acc + (stage.leads?.length || 0),
-                0
-            );
-            setTotalUsersCount(totalUsers);
-
             setSortedStages(newStages);
         } else {
             setSortedStages([]);
-            setTotalUsersCount(0);
         }
     }, [selectedGrpData]);
 
@@ -354,7 +346,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
             <TopbarRightSection
                 companyName={selectedGroup.name}
-                leadsCount={totalUsersCount || 0}
+                leadsCount={selectedGrpData?.taggedUsers?.length || 0}
                 setSortedStages={setSortedStages}
                 onAddStage={handleAddStage}
                 selectedGrpData={selectedGrpData}
