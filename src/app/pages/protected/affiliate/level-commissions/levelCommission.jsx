@@ -46,10 +46,17 @@ const LevelCommission = () => {
 
 
   useEffect(() => {
-    fetchLoginUserData({})
-    loginUserData && setIsPro(loginUserData?.user_type?.toLowerCase() === "distributor" ? true : false)
-  }, [])
+    fetchLoginUserData({});
+  }, []);
 
+  useEffect(() => {
+    if (loginUserData?.user_type?.toLowerCase() !== "distributor") {
+      setIsPro(true);
+    } else {
+      setIsPro(false);
+    }
+  }, [loginUserData]);
+  
   useEffect(() => {
     const PayLoad = { month: selectedMonth, year: selectedYear }
     fetchCommissionData(PayLoad)
