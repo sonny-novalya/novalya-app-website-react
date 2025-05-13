@@ -240,6 +240,19 @@ const RightSectionCrm = ({ selectedGroup }) => {
         const [isDel, setIsDel] = useState(false)
 
         const handleDelete = async (id) => {
+
+            const stageToDelete = sortedStages.find((s) => s.id === id);
+            
+            if (sortedStages.length === 1) {
+                message.error("At least one stage must remain. Cannot delete the only stage.");
+                return;
+            }
+            
+            if (stageToDelete?.leads?.length > 0) {
+                message.error("Please delete all users in this stage before deleting it.");
+                return;
+            }
+
             if (isDel) {
                 const res = await deleteStage({ id, type: 'ig'})
                 if (res.status === 200) {
