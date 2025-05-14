@@ -128,38 +128,48 @@ const SettingStore = create((set) => ({
 
             const data = response?.data;
 
-            if (data.status === "success" && data?.data?.length > 0) {
-                const responseData = data?.data[0];
+            if (data.status === "success" && Array.isArray(data?.data) && typeof data.data[0] === "object" && data.data[0] !== null) {
+                const responseData = data.data[0];
 
-                console.log("responseData", responseData)
                 set({
                     prospection: {
                         group: responseData?.group || [],
                         messageData: responseData?.messages || [],
                         keywordData: responseData?.keywords || [],
                         crmGroupData: responseData?.groups || [],
-                        stratagy: responseData?.stratagy || null,
-                        norequest: responseData?.norequest || null,
-                        interval: responseData?.interval || null,
-                        selectedinterval: responseData?.selectedinterval || null,
-                        gender: responseData?.gender || null,
-                        keyword: responseData?.keyword || null,
-                        prospect: responseData?.prospect || null,
-                        pro_convo: responseData?.pro_convo ,
-                        pro_stratagy: responseData?.pro_stratagy ,
-                        action: responseData?.action || null,
-                        datevalue: responseData?.datevalue || null,
-                        group_id: responseData?.group_id || null,
-                        message: responseData?.message || null,
-                        post_target: responseData?.post_target || null,
-                        newMessage: responseData?.newMessage || null,
-                        keywords: responseData?.keywords || null,
+                        stratagy: responseData?.stratagy ?? null,
+                        norequest: responseData?.norequest ?? null,
+                        interval: responseData?.interval ?? null,
+                        selectedinterval: responseData?.selectedinterval ?? null,
+                        gender: responseData?.gender ?? null,
+                        keyword: responseData?.keyword ?? null,
+                        prospect: responseData?.prospect ?? null,
+                        pro_convo: responseData?.pro_convo ?? null,
+                        pro_stratagy: responseData?.pro_stratagy ?? null,
+                        action: responseData?.action ?? null,
+                        datevalue: responseData?.datevalue ?? null,
+                        group_id: responseData?.group_id ?? null,
+                        message: responseData?.message ?? null,
+                        post_target: responseData?.post_target ?? null,
+                        newMessage: responseData?.newMessage ?? null,
+                        keywords: responseData?.keywords ?? null,
+                        prospect_type: responseData?.prospection_type ?? "facebook",
+                        user_id: responseData?.user_id ?? null,
+                        negative_keyword: responseData?.negative_keyword ?? null,
+                        resume: responseData?.resume ?? null,
+                        search_index: responseData?.search_index ?? 1,
+                        status: responseData?.status ?? null,
+                        stratragy: responseData?.stratragy ?? false,
+                        created_at: responseData?.created_at ?? null,
                     },
                     settingLoading: false
                 });
             } else {
-                set({ settingLoading: false });
-            }
+                set({
+                    prospection: { ...SettingStore.getState().initialProspectionStates },
+                    settingLoading: false
+                });
+        }   
         } catch (error) {
             console.error("Error fetching prospection data:", error);
             set({ settingLoading: false });
