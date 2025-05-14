@@ -1,30 +1,13 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Table, Input, Tag, Avatar } from 'antd';
+import { Table, Input, Tag, Avatar, Spin } from 'antd';
 
 export default function ActiveCustomersTable({ loginUserData, refUsers, isAffiliateLoading }) {
-    const { active_customers } = refUsers || {};
+    const active_customers = refUsers?.active_customers || [];
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 10,
-    });
+    const [page, setPage] = useState(1);
+    const limit = 10;
 
-    const handleSearch = useMemo(() => {
-        return (value) => {
-            const query = value.toLowerCase();
-            const filtered = active_customers?.filter(row => {
-                const name = `${row.firstname || ''} ${row.lastname || ''}`.toLowerCase();
-                return name.includes(query);
-            });
-            setFilteredData(filtered);
-        };
-    }, [active_customers]);
-
-    useEffect(() => {
-        handleSearch(searchQuery);
-    }, [searchQuery, active_customers]);
+    const total = active_customers?.length || 0;
 
     const memoizedFormatDate = (dateInput, isUnix = false) => {
         const date = isUnix ? new Date(dateInput * 1000) : new Date(dateInput);
@@ -71,12 +54,15 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
         }
     };
 
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
     const columns = [
         {
             title: '#',
             key: 'index',
-            render: (_, __, index) =>
-                (pagination.current - 1) * pagination.pageSize + index + 1,
+            render: (_, __, i) => (page - 1) * limit + i + 1,
         },
         {
             title: 'Name',
@@ -129,39 +115,21 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
         },
     ];
 
-    const handleTableChange = (paginationConfig) => {
-        setPagination(paginationConfig);
-    };
-
-    if (isAffiliateLoading) {
-        return (
-            <div className="h-96 flex items-center justify-center">
-                <div className="w-9 h-9 rounded-full border-4 border-gray-200 border-t-blue-500 animate-spin" />
-            </div>
-        );
-    }
 
     return (
-        <div className="">
-
-            {/* Ant Design Table with built-in pagination */}
-            <Table
-                rowKey={(row) => row.customerid}
-                columns={columns}
-                dataSource={filteredData}
-                pagination={{
-                    current: pagination.current,
-                    pageSize: pagination.pageSize,
-                    total: filteredData.length,
-                    showSizeChanger: true,
-                    pageSizeOptions: ['10', '20', '50', '100'],
-                    onChange: (page, pageSize) =>
-                        setPagination({ current: page, pageSize }),
-                }}
-                onChange={handleTableChange}
-                scroll={{ x: 'max-content' }}
-                bordered
-            />
-        </div>
+        <Table
+            rowKey={(record) => record.customerid}
+            columns={columns}
+            dataSource={active_customers}
+            pagination={{
+                current: page,
+                pageSize: limit,
+                total,
+                onChange: handlePageChange,
+                showSizeChanger: false,
+            }}
+            scroll={{ x: 'max-content' }}
+            loading={isAffiliateLoading}
+        />
     );
 }

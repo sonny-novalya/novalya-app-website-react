@@ -27,8 +27,13 @@ const Profile = () => {
     }
   };
 
-  const tabs = ["Profile Page", "Password", "Billing details", "Invoice"];
-
+  const tabs = [
+    { name: "Profile Page", disabled: false },
+    { name: "Password", disabled: false },
+    { name: "Billing details", disabled: true },
+    { name: "Invoice", disabled: true }
+  ];
+  
   useEffect(() => {
     fetchLoginUserData({})
   }, [])
@@ -40,25 +45,32 @@ const Profile = () => {
         </h3>
         <div className='p-4 rounded-md bg-white'>
 
-          <div className="flex space-x-4 ">
-            {tabs.map((tab, index) => {
-              return <div className='flex flex-col' key={index}>
+        <div className="flex space-x-4">
+          {tabs.map((tabObj, index) => {
+            const { name, disabled } = tabObj;
+            const isActive = activeTab === name;
+
+            return (
+              <div className='flex flex-col' key={index}>
                 <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 rounded-md border bg-white cursor-pointer 
-                ${activeTab === tab ? "border-[#0087FF33] text-[#0087FF] border-b-0 rounded-b-none" : "border-[#DADADA] text-black"}`}
+                  onClick={() => {
+                    if (!disabled) setActiveTab(name);
+                  }}
+                  className={`px-4 py-2 rounded-md border bg-white 
+                      ${disabled ? "cursor-not-allowed text-gray-400 border-[#DADADA]"
+                      : isActive ? "border-[#0087FF33] text-[#0087FF] border-b-0 rounded-b-none cursor-pointer"
+                      : "border-[#DADADA] text-black cursor-pointer"}`}
+                  disabled={disabled}
                 >
-                  {tab}
+                  {name}
                 </button>
                 <div
-                  key={tab + "-div"}
-                  className={` h-4 
-                ${activeTab === tab ? "bg-white visible border-x border-[#0087FF33]" : "invisible border-none"}`}
+                  className={`h-4 ${isActive && !disabled ? "bg-white visible border-x border-[#0087FF33]" : "invisible border-none"}`}
                 ></div>
               </div>
-            })}
-          </div>
+            );
+          })}
+        </div>
 
           <div className=''>
             {renderContent()}

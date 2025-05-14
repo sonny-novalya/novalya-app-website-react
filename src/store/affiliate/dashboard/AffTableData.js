@@ -75,6 +75,7 @@ const useAffTableDataStore = create((set, get) => ({
                 method: 'POST',
                 url: '/user/api/affiliate-customers',
                 data: {
+                    search: tableFilters.search,
                     month: tableFilters.month,
                     year: tableFilters.year
                 }

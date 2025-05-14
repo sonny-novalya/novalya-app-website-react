@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     FemaleGenderActiveIcon,
     FemaleGenderIcon,
@@ -7,10 +7,22 @@ import {
 } from "../../common/icons/icons";
 import apiCall from "../../../../services/api";
 import { message } from "antd";
+import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 
 const SelectGender = () => {
-    const [gender, setGender] = useState("male");
+    const [gender, setGender] = useState(null);
+    const { planLimit, fetchPlanLimitDetails } = useSocialAccountsStore();
 
+    useEffect(()=>{
+        fetchPlanLimitDetails()
+    }, [])
+
+    useEffect(() => {
+        if (planLimit?.new_packages?.gender) {
+            setGender(planLimit.new_packages.gender);
+        }
+    }, [planLimit]);
+    
     const handleGender = async (gen) => {
         try {
             const res = await apiCall({

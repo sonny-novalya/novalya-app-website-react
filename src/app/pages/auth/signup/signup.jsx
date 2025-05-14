@@ -37,8 +37,10 @@ const SignUp = () => {
     LTC:coupon_code?.includes("LTC"),
     basic: !(coupon_code?.includes("LTC") && coupon_code?.includes("unlimited"))
   }
+  const plan_qry = searchParams.get("planId")
+  
  
-  const checkPlanSelect = localStorage.getItem("planId");
+  const checkPlanSelect = plan_qry ? plan_qry : localStorage.getItem("planId");
   const backTo = localStorage.getItem("backto");
   const navigate = useNavigate()
   const copyRightYears = getCurrentYear()
