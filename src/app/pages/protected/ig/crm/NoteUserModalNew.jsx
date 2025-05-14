@@ -310,9 +310,9 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                     ref={(el) => (noteEditdropdownRefs.current['header'] = el)}
                                     className="absolute top-6 right-0 bg-white border border-gray-300 px-2 py-1 rounded shadow flex space-x-2 z-20 h-8"
                                 >
-                                    <button className="text-gray-600 hover:text-blue-500 text-sm">
+                                    {/* <button className="text-gray-600 hover:text-blue-500 text-sm">
                                         <SyncTripleArrowIcon />
-                                    </button>
+                                    </button> */}
                                     <button className="text-gray-600 hover:text-red-500 text-sm">
                                         <DeleteGreyIcon />
                                     </button>
