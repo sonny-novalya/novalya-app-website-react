@@ -1362,4 +1362,5 @@ export const nuskinTerms = [
   },
 ];
 
-export const keyType = "984e3d0ec296"
+export const  fallBackPlan = "Basic-Novalya-USD-Monthly"
+export const  nuskinFallBackPlan =  "Nuskin-Wellcommunity-Starter-USD-Monthly"
