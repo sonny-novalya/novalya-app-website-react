@@ -101,11 +101,12 @@ useEffect(() => {
 		sponsor:storageReferralId ||  "NOVALYA" ,
 		country:country || "",
 		plan_id:planId,
-		LANGUAGE:seledtedlang,
-		Reseller: isReseller ? subDom : "Novalya",
-		NOVALYA_PLAN_AMOUNT:selectedPlan?.amount_1,
-		NOVALYA_CURRENCY_CODE:selectedPlan?.currency_code || "EUR",
-		...utm_data
+		language:seledtedlang,
+		reseller: isReseller ? subDom : "Novalya",
+		plan_amount:selectedPlan?.amount_1,
+		currency:selectedPlan?.currency_code || "EUR",
+		utm_data:utm_data,
+		plan_status_update_date:new Date().toISOString().split("T")[0]
 	}
 
 	try {
