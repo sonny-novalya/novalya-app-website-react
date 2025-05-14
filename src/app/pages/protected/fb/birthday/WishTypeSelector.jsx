@@ -15,7 +15,7 @@ const WishTypeSelector = ({ selectedWishType, setSelectedWishType }) => {
             <div className="flex w-full gap-10">
                 <button
                     type="default"
-                    className={`relative w-1/2 flex items-center justify-between px-4 py-2.5 rounded-md border text-[#0087FF] cursor-pointer ${selectedWishType === "message" ? "bg-[#CCE7FF] border-[#CCE7FF] " : "bg-white border-[#0087FF]"}`}
+                    className={`relative w-1/2 flex items-center justify-between px-4 py-2.5 rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedWishType === "message" ? "bg-[#CCE7FF] border-[#CCE7FF] " : "bg-white border-[#0087FF]"}`}
                     onClick={() => setSelectedWishType("message")}
                 >
                     <span className="flex items-center space-x-2 mx-auto">
@@ -31,7 +31,7 @@ const WishTypeSelector = ({ selectedWishType, setSelectedWishType }) => {
 
                 <button
                     type="default"
-                    className={`relative w-1/2 flex items-center justify-between px-4 py-2.5 rounded-md border text-[#0087FF] cursor-pointer ${selectedWishType === "feed" ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                    className={`relative w-1/2 flex items-center justify-between px-4 py-2.5 rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedWishType === "feed" ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
                     onClick={() => setSelectedWishType("feed")}
                 >
                     <span className="flex items-center space-x-2 mx-auto">

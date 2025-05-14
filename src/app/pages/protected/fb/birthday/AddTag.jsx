@@ -22,7 +22,7 @@ const AddTag = ({ selectedTag, setSelectedTag }) => {
                     <button
                         key={tag}
                         type="default"
-                        className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedTag === tag ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                        className={`relative flex items-center justify-between px-4 py-3 rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedTag === tag ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
                         onClick={() => setSelectedTag(tag)}
                     >
                         <span className="flex items-center space-x-2 mx-auto">

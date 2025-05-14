@@ -128,7 +128,7 @@ const Birthday = () => {
     <input type="hidden" id="birthdayMessage" value={messageData?.id || ""} />
     <h2 className="text-[24px] font-[500] mb-5">Wish your friends birthday automatically</h2>
       <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
-      <div className="bg-white px-5 py-4.5 rounded-[10px] mx-auto border border-[#DADADA]">
+      <div className="bg-white px-5 pt-4.5 pb-8 rounded-[10px] mx-auto border border-[#DADADA]">
         
         {/* Wish Type Selector */}
         <WishTypeSelector 
@@ -159,7 +159,7 @@ const Birthday = () => {
             {/* Group Select */}
             <div className="flex flex-col gap-2.5 ctm-nobdr-select">
                 <Select
-                    className="ctm-select-noBdr w-full rounded-lg bg-white border border-[#F0F0F0] px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="ctm-select-noBdr w-full rounded-[10px] bg-white border border-[#F0F0F0] px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Select Group"
                     value={selectedGroup|| undefined}
                     onChange={(value) =>  handleSelectCRM(value)}
@@ -175,7 +175,7 @@ const Birthday = () => {
 
                 {/* Stage Select */}
                 <Select
-                    className="w-full rounded-lg bg-white border border-[#F0F0F0] px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full rounded-[10px] bg-white border border-[#F0F0F0] px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Select Stage"
                     value={selectedStage}
                     onChange={(value) =>  handleSelectStage(value)}
@@ -200,7 +200,7 @@ const Birthday = () => {
         /> */}
 
        
-        <div className="border border-gray-300 p-4 rounded-lg mb-4">
+        <div className="border border-gray-300 px-4 pt-4 pb-3 rounded-lg mb-4">
             <p className="font-[500] text-[20px] text-gray-800 mb-2 flex items-center">
                 Retarget same user
             </p>
@@ -208,7 +208,7 @@ const Birthday = () => {
                 {reTargetUserData.map((option) => (
                     <button
                         key={option.value}
-                        className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${prospect === option.value
+                        className={`relative flex items-center justify-center px-4 py-3 rounded-[10px] border text-[#0087FF] cursor-pointer ${prospect === option.value
                             ? "bg-[#CCE7FF] border-[#CCE7FF]"
                             : "bg-white border-[#0087FF]"
                             }`}
@@ -224,7 +224,7 @@ const Birthday = () => {
                 ))}
             </div>
         </div>
-        <div className="border border-[#DADADA] p-4 rounded-lg">
+        <div className="border border-[#DADADA] px-4 pt-4 pb-8 rounded-lg">
             <div class="flex items-center gap-[6px] mb-4">
               <p className="text-xl mb-0 font-[500]">{t("prospecting.Select Message")} Template</p>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -249,7 +249,7 @@ const Birthday = () => {
 
         {/* Send Birthday Wishes */}
         <div className="flex items-center justify-center">
-          <button onClick={()=>createBithday()} isapi={isApi} className="w-fit py-2 h-[52px] mt-6 rounded-lg text-[14px] bg-green-500 text-white px-37 cursor-pointer send_birthday_message">
+          <button onClick={()=>createBithday()} isapi={isApi} className="w-fit py-2 h-[52px] mt-9 rounded-lg text-[14px] bg-green-500 text-white px-37 cursor-pointer send_birthday_message">
             Send Birthday Wishes
           </button>
         </div>

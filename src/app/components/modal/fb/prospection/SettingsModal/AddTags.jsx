@@ -51,12 +51,12 @@ const AddTags = ({ CRMList, groupId }) => {
 
     return (
         <div className="">
-            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Add Tags")}</h2>
+            <h2 className="text-[24px] font-[500] mb-5">{t("prospecting.Add Tags")}</h2>
 
             {/* Toggle Add Tag Option */}
             <div className="border border-gray-300 p-4 rounded-lg mb-4">
-                <p className="font-medium text-gray-800 mb-2">{t("prospecting.Do you want to add a tag?")}</p>
-                <div className="grid grid-cols-2 gap-3">
+                <p className="text-[20px] font-[500] text-gray-800 mb-4">{t("prospecting.Do you want to add a tag?")}</p>
+                <div className="grid grid-cols-2 gap-5">
                     {addTagsOptions.map((option) => (
                         <button
                             key={option.value}
@@ -85,12 +85,12 @@ const AddTags = ({ CRMList, groupId }) => {
 
             {/* Group and Stage Selection */}
             {actionType !== "no" && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-5">
                     {/* Group Selection */}
                     <div className="border border-gray-300 p-4 rounded-lg relative">
-                        <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Group")}</p>
+                        <p className="text-[20px] font-[500] text-gray-800 mb-4">{t("prospecting.Select Group")}</p>
                         <select
-                            className={`w-full p-3 border rounded-lg ${!selectedGroupId ? "text-gray-500" : "text-gray-800"}`}
+                            className={`border border-[#F0F0F0] w-full p-3 border rounded-lg focus:outline-none ${!selectedGroupId ? "text-gray-500" : "text-gray-800"}`}
                             value={selectedGroupId || ""}
                             onChange={(e) => {
                                 setSelectedGroupId(e.target.value);
@@ -110,10 +110,10 @@ const AddTags = ({ CRMList, groupId }) => {
 
                     {/* Stage Selection */}
                     <div className="border border-gray-300 p-4 rounded-lg relative">
-                        <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Stage")}</p>
+                        <p className="text-[20px] font-[500] text-gray-800 mb-4">{t("prospecting.Select Stage")}</p>
                         <select
                             key={selectedStageId}
-                            className={`w-full p-3 border rounded-lg ${!selectedStageId ? "text-gray-500" : "text-gray-800"}`}
+                            className={`border border-[#F0F0F0] w-full p-3 border rounded-lg focus:outline-none ${!selectedStageId ? "text-gray-500" : "text-gray-800"}`}
                             value={selectedStageId || ""}
                             onChange={(e) => {
                                 const selectedStage = sortedStages.find((stage) => stage.id === parseInt(e.target.value));

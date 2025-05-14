@@ -54,7 +54,7 @@ const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
                     <p className="w-full text-center border border-[#00000014] rounded-md p-2">{norequest}</p>
                 </div>
                 <div className="flex-1 pl-4 space-y-2">
-                    <h3 className="font-medium" >{t("prospecting.Interval")}</h3>
+                    <h3 className="font-medium " >{t("prospecting.Interval")}</h3>
                     <div className="flex space-x-5 items-center">
                         <p className="whitespace-nowrap">{selectedInterval?.time}</p>
                         <p className="w-full text-center border border-[#00000014] rounded-md p-2 ">{selectedInterval?.label}</p>

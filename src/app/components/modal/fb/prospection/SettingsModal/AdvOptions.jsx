@@ -39,16 +39,16 @@ const AdvOptions = () => {
 
     return (
         <div className="">
-            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Advance Options")}</h2>
+            <h2 className="text-[24px] font-[500] mb-5">{t("prospecting.Advance Options")}</h2>
             
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-6">
 
                 {/* Retarget Same User Option */}
                 <div className="border border-gray-300 p-4 rounded-lg w-full">
-                    <p className="font-medium text-gray-800 mb-2 flex items-center">
+                    <p className="text-[20px] font-[500] text-gray-800 mb-4 flex items-center">
                         {t("prospecting.Retarget same user")}
                     </p>
-                    <div className="grid grid-cols-1 gap-3">
+                    <div className="grid grid-cols-2 gap-5">
                         {reTargetUserData.map((option) => (
                             <button
                                 key={option.value}
@@ -71,10 +71,10 @@ const AdvOptions = () => {
 
                 {/* Existing Conversation Option */}
                 <div className="border border-gray-300 p-4 rounded-lg w-full">
-                    <p className="font-medium text-gray-800 mb-2 flex items-center">
+                    <p className="text-[20px] font-[500] text-gray-800 mb-4 flex items-center">
                         {t("prospecting.Existing conversation")}
                     </p>
-                    <div className="grid grid-cols-1 gap-3">
+                    <div className="grid grid-cols-2 gap-5">
                         {existingConversationData.map((option) => (
                             <button
                                 key={option.value}

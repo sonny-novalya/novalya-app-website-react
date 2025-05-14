@@ -4,4 +4,5 @@
 
 .ctm-nobdr-select span.ant-select-selection-placeholder {
     color: #808183 !important;
+    background: transparent  !important;
 }
