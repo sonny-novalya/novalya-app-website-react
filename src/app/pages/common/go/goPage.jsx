@@ -14,7 +14,8 @@ import logo from "../../../../assets/img/pricing-logo.png";
   );
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const refId = queryParams.get("uname");
+  const uref = queryParams.get("uname")
+  const refId = uref || queryParams.get("ref");
   const time = queryParams.get("time");
   const currLang = queryParams.get("lang");
   const { t,i18n } = useTranslation();
