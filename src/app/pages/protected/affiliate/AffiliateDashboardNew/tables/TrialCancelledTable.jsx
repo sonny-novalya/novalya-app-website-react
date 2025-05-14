@@ -4,24 +4,25 @@ import { Table, Input, Tag, Avatar } from 'antd';
 export default function TrialCancelledTable({ loginUserData, refUsers, isAffiliateLoading }) {
     const { trial_cancelled = [] } = refUsers || {};
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+    const [page, setPage] = useState(1);
+    const limit = 10;
 
-    useEffect(() => {
-        const query = searchQuery.toLowerCase();
-        const filtered = trial_cancelled.filter((row) => {
-            const name = `${row.firstname || ''} ${row.lastname || ''}`.toLowerCase();
-            return name.includes(query);
-        });
-        setFilteredData(filtered);
-    }, [searchQuery, trial_cancelled]);
+    const total = trial_cancelled?.length || 0;
 
-    const formatDate = (dateInput, isUnix = false) => {
+    const formatDate = (dateInput) => {
         if (!dateInput) return '';
-        const date = isUnix ? new Date(dateInput * 1000) : new Date(dateInput);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const date = new Date(dateInput);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
     };
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
 
     const statusColors = {
         subscription_cancelled: 'red',
@@ -34,7 +35,8 @@ export default function TrialCancelledTable({ loginUserData, refUsers, isAffilia
     const columns = [
         {
             title: '#',
-            render: (_, __, index) => (pagination.current - 1) * pagination.pageSize + index + 1,
+            dataIndex: 'index',
+            render: (_, __, i) => (page - 1) * limit + i + 1,
         },
         {
             title: 'Name',
@@ -82,31 +84,20 @@ export default function TrialCancelledTable({ loginUserData, refUsers, isAffilia
         },
     ];
 
-    if (isAffiliateLoading) {
-        return (
-            <div className="h-96 flex items-center justify-center">
-                <div className="w-9 h-9 rounded-full border-4 border-gray-200 border-t-blue-500 animate-spin" />
-            </div>
-        );
-    }
-
     return (
-        <div className="">
-            <Table
-                rowKey={(row) => row.customerid}
-                columns={columns}
-                dataSource={filteredData}
-                pagination={{
-                    current: pagination.current,
-                    pageSize: pagination.pageSize,
-                    total: filteredData.length,
-                    showSizeChanger: true,
-                    pageSizeOptions: ['10', '20', '50', '100'],
-                    onChange: (page, pageSize) => setPagination({ current: page, pageSize }),
-                }}
-                scroll={{ x: 'max-content' }}
-                bordered
-            />
-        </div>
+        <Table
+            rowKey={(record) => record.customerid}
+            columns={columns}
+            dataSource={trial_cancelled}
+            pagination={{
+                current: page,
+                pageSize: limit,
+                total,
+                onChange: handlePageChange,
+                showSizeChanger: false,
+            }}
+            scroll={{ x: 'max-content' }}
+            loading={isAffiliateLoading}
+        />
     );
 }
