@@ -833,6 +833,7 @@ const FbProspecting = () => {
                         keyWordList={keyWordList}
                         CRMList={CRMList}
                         tempMessageList={tempMessageList}
+                        handleOpenSettings={handleOpenSettings}
                     />
                 )}
 
