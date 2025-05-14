@@ -272,9 +272,9 @@ const SignUp = () => {
   }, []);
 
   useEffect(() => {
-      const referralId = searchParams.get("ref") ||  searchParams.get("uname") 
-  if (referralId) {
-    localStorage.setItem("referralId",referralId)
+      const reflId = searchParams.get("ref") ||  searchParams.get("uname") || referralId
+  if (reflId) {
+    localStorage.setItem("referralId",reflId)
   }
     const storageReferralId = localStorage.getItem("referralId");
 
