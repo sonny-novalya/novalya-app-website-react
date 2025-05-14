@@ -1,0 +1,7 @@
+.ctm-nobdr-select .ant-select-selector {
+    border: none !important;
+}
+
+.ctm-nobdr-select span.ant-select-selection-placeholder {
+    color: #808183 !important;
+}
