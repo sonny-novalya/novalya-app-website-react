@@ -35,7 +35,7 @@ const FbProspecting = () => {
     // const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup, folderUpdateId, setFolderUpdateId } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup, folderUpdateId, setFolderUpdateId ,initialStoreFilters} = useGroupStore();
     const socialType = "fb_groups";
     const prospect_folder = "fb";
 
@@ -843,6 +843,7 @@ const FbProspecting = () => {
                         onClose={handleCloseCreateFolderModal}
                         socialType={socialType}
                         prospect_folder={prospect_folder}
+                        setFolders={setFolders}
                     />
                 )}
 
@@ -854,6 +855,7 @@ const FbProspecting = () => {
                         onClose={handleCloseUpdateFolderModal}
                         socialType={socialType}
                         prospectFolder={prospect_folder}
+                        initialStoreFilters={initialStoreFilters}
                     />
                 )}
             </div>

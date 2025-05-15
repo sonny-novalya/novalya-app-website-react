@@ -9,10 +9,10 @@ import { DeleteFillIcon } from "../../../../../pages/common/icons/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { t } from "i18next";
 
-const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, prospectFolder }) => {
+const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, prospectFolder , initialStoreFilters}) => {
     const [selectedGroups, setSelectedGroups] = useState([]);
     const [newFolderName, setNewFolderName] = useState(folderName);
-    const { groups, initialGroups, fetchInitialGroups, fetchGroups } = useGroupStore();
+    const { groups, initialGroups, fetchInitialGroups, fetchGroups,storeFilters } = useGroupStore();
     const { folders = [], setFolderManualy } = useFbProspectingStore();
 
     const { updateFolder } = useFbProspectingStore();
@@ -41,7 +41,8 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
             };
         });
 
-        updateFolder(newFolderName, folderId, socialType, selectedGroupsPayload);
+        await  updateFolder(newFolderName, folderId, socialType, selectedGroupsPayload);
+        fetchGroups({...storeFilters, id:folderId});
         onClose();
     };
 
@@ -60,19 +61,22 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
             if (result?.status === "success") {
                 const newFolders = folders?.filter((f)=>f.id !== folderId)
                 setFolderManualy([...newFolders])
+                fetchGroups(initialStoreFilters);
                 onClose();
             }
     };
     useEffect(() => {
+
+        
         const type = prospectFolder === "ig" ? "instagram" : "facebook";
         if (prospectFolder) {
             fetchInitialGroups(type);
         }
 
-        if (folderId && socialType) {
-            fetchGroups(socialType, folderId);
-            fetchInitialGroups(type);
-        }
+        // if (folderId && socialType) {
+        //     fetchGroups(socialType, folderId);
+        //     fetchInitialGroups(type); 
+        // }
 
         
     }, [folderId, prospectFolder]);

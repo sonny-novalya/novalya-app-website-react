@@ -42,6 +42,7 @@ const useFbProspectingStore = create((set) => ({
                     selectedGroups,
                     prospect_folder,
                 },
+                
             });
 
             if (response.statusText !== "OK") {
