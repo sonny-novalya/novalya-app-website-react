@@ -32,11 +32,11 @@ const SidebarMenu = () => {
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
     const currentPath = location.pathname;
-    
+
     const navigate = useNavigate();
-    
+
     const toggleSidebar = () => setCollapsed(!collapsed);
-    
+
     const onLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userData');
@@ -45,39 +45,29 @@ const SidebarMenu = () => {
         window.location.reload()
 
     };
+
     const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
-    const [userData, setUserData] = useState(null);
+
+    const getUpdatedImageUrl = (url) => {
+        if (!url) return '';
+        const stagingBase = "https://stagingbackend.novalya.com";
+        const prodBase = "https://api-v2.novalya.com";
+        return url.includes(stagingBase) ? url.replace(stagingBase, prodBase) : url;
+    };
 
     useEffect(() => {
-        const localUserData = localStorage.getItem("userData");
-
-        if (localUserData) {
-            setUserData(JSON.parse(localUserData));
-        } else {
-            fetchLoginUserData().then(() => {
-                const storedLoginData = useLoginUserDataStore.getState().loginUserData;
-
-                if (storedLoginData) {
-                    const profilePicUrl = storedLoginData?.profilepictureurl?.includes("https://stagingbackend.novalya.com")
-                            ? storedLoginData.profilepictureurl.replace("https://stagingbackend.novalya.com", "https://api-v2.novalya.com")
-                            : storedLoginData.profilepictureurl;
-
-                    const data = {
-                        name: `${storedLoginData?.firstname} ${storedLoginData?.lastname}`,
-                        url: profilePicUrl,
-                        plan:
-                            storedLoginData?.plan_pkg === "Unlimited_new"
-                                ? "Unlimited"
-                                : storedLoginData?.plan_pkg ?? "No Plan",
-                    };
-
-                    setUserData(data);
-                    localStorage.setItem("userData", JSON.stringify(data));
-                }
-            });
+        if (!loginUserData) {
+            fetchLoginUserData();
         }
-    }, []);
+    }, [loginUserData, fetchLoginUserData]);
 
+    const userData = loginUserData ? {
+        name: `${loginUserData.firstname} ${loginUserData.lastname}`,
+        url: getUpdatedImageUrl(loginUserData.profilepictureurl),
+        plan: loginUserData.plan_pkg === "Unlimited_new"
+            ? "Unlimited"
+            : loginUserData.plan_pkg ?? "No Plan",
+    } : null;
 
     const sidebarData = [
         { text: "dashboard", id: "dashboard", path: "/", icon: <DashboardIcon /> },
@@ -162,178 +152,178 @@ const SidebarMenu = () => {
                 {
                     collapsed
                         ? <>
-                            <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-4`}>
-                                <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-12`} />
-                                <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
-                                    <div className={`transition-transform duration-300 rotate-180`}>
-                                        <CollapsedLeftIcon />
-                                    </div>
-                                </button>
-                            </div>
+                        <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-4`}>
+                            <img src={NovaBlueLogo} alt="logo" className={`w-full object-contain h-12`} />
+                            <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                <div className={`transition-transform duration-300 rotate-180`}>
+                                    <CollapsedLeftIcon />
+                                </div>
+                            </button>
+                        </div>
 
                             <div className="flex-1 overflow-y-auto hide_scrollbar px-4 ">
-                                {sidebarData.map((item) => {
-                                    const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
-                                    const isActive = (currentPath === item.path || currentPath === `${item.path}/`) || isSubItemActive;
+                            {sidebarData.map((item) => {
+                                const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
+                                const isActive = (currentPath === item.path || currentPath === `${item.path}/`) || isSubItemActive;
 
-                                    return (
-                                        <div key={item.id} className="w-full mb-2 relative group">
-                                            {item.subNav && collapsed ? (
-                                                <Dropdown
-                                                    placement="rightTop"
-                                                    trigger={["click"]}
-                                                    overlay={
-                                                        <Menu>
-                                                            {item.subNav.map((subItem) => (
-                                                                <Menu.Item key={subItem.id}>
-                                                                    <Link to={subItem.path} className={(currentPath === subItem.path || currentPath === `${subItem.path}/`) ? 'text-[#167AD3] ' : ''}>
-                                                                        {subItem.text}
-                                                                    </Link>
-                                                                </Menu.Item>
-                                                            ))}
-                                                        </Menu>
-                                                    }
+                                return (
+                                    <div key={item.id} className="w-full mb-2 relative group">
+                                        {item.subNav && collapsed ? (
+                                            <Dropdown
+                                                placement="rightTop"
+                                                trigger={["click"]}
+                                                overlay={
+                                                    <Menu>
+                                                        {item.subNav.map((subItem) => (
+                                                            <Menu.Item key={subItem.id}>
+                                                                <Link to={subItem.path} className={(currentPath === subItem.path || currentPath === `${subItem.path}/`) ? 'text-[#167AD3] ' : ''}>
+                                                                    {subItem.text}
+                                                                </Link>
+                                                            </Menu.Item>
+                                                        ))}
+                                                    </Menu>
+                                                }
+                                            >
+                                                <button
+                                                    className={`w-full rounded-[8px] px-3 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
+                                                    onClick={(e) => e.preventDefault()}
                                                 >
-                                                    <button
-                                                        className={`w-full rounded-[8px] px-3 py-3 flex justify-center items-center ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
-                                                        onClick={(e) => e.preventDefault()}
-                                                    >
-                                                        <span className="h-6 w-6">{item.icon}</span>
-                                                    </button>
-                                                </Dropdown>
-                                            ) : (
-                                                <SidebarItem
-                                                    text={collapsed ? '' : item.text}
-                                                    path={item.path}
-                                                    icon={item.icon}
-                                                    isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
-                                                />
-                                            )}
+                                                    <span className="h-6 w-6">{item.icon}</span>
+                                                </button>
+                                            </Dropdown>
+                                        ) : (
+                                            <SidebarItem
+                                                text={collapsed ? '' : item.text}
+                                                path={item.path}
+                                                icon={item.icon}
+                                                isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
+                                            />
+                                        )}
 
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-1">
-                                <LocalizationOptionsIcons />
-                                <div className="flex items-center justify-center mt-1 w-full cursor-pointer">
-                                    <UpgradeProIcon />
-                                </div>
-                                <div className="flex items-center justify-center mt-2 w-full">
-                                    {userData?.url ? (
-                                        <img src={userData.url} className="h-10 w-10 rounded-sm" alt="user img" />
-                                    ) : (
-                                        <div className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
-                                            {userData?.name?.charAt(0)}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <button
-                                    type="button"
-                                    className="flex items-center justify-center hover:bg-[#FF000012] w-12 p-2 mt-2 rounded-lg cursor-pointer  text-[#00000055] hover:text-[#00000085]"
-                                    onClick={onLogout}
-                                >
-                                    <LogoutIcon />
-                                </button>
-                            </div>
-                        </>
-                        : <>
-                            <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-7 relative`}>
-                                <img src={NovalyaBlueLogo} alt="logo" className={`mx-auto w-full max-w-[186px] object-contain h-12`} />
-                                
-                                <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
-                                    <div className={`transition-transform duration-300 `}>
-                                        <CollapsedLeftIcon />
                                     </div>
-                                </button>
-                            </div>
-                            <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
-                                {sidebarData.map((item) => {
-                                    const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
-                                    const isActive = ( currentPath === item.path ||  currentPath === `${item.path}/`) || isSubItemActive;
-                                    const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
+                                );
+                            })}
+                        </div>
 
-                                    return (
+                        <div className="mt-auto flex flex-col items-center justify-center h-48 px-4 space-y-1">
+                            <LocalizationOptionsIcons />
+                            <div className="flex items-center justify-center mt-1 w-full cursor-pointer">
+                                <UpgradeProIcon />
+                            </div>
+                            <div className="flex items-center justify-center mt-2 w-full">
+                                {userData?.url ? (
+                                    <img src={userData.url} className="h-10 w-10 rounded-sm" alt="user img" />
+                                ) : (
+                                        <div className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
+                                        {userData?.name?.charAt(0)}
+                                    </div>
+                                )}
+                            </div>
+
+                            <button
+                                type="button"
+                                    className="flex items-center justify-center hover:bg-[#FF000012] w-12 p-2 mt-2 rounded-lg cursor-pointer  text-[#00000055] hover:text-[#00000085]"
+                                onClick={onLogout}
+                            >
+                                <LogoutIcon />
+                            </button>
+                        </div>
+                    </>
+                        : <>
+                        <div className={`flex items-center justify-between h-23 border-b border-[#0000001A] mb-7 relative`}>
+                            <img src={NovalyaBlueLogo} alt="logo" className={`mx-auto w-full max-w-[186px] object-contain h-12`} />
+
+                            <button onClick={toggleSidebar} className="absolute top-14 -right-3 z-50 bg-[#167AD3] text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
+                                    <div className={`transition-transform duration-300 `}>
+                                    <CollapsedLeftIcon />
+                                </div>
+                            </button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto hide_scrollbar px-4">
+                            {sidebarData.map((item) => {
+                                const isSubItemActive = item.subNav?.some(subItem => (currentPath === subItem.path || currentPath === `${subItem.path}/`));
+                                    const isActive = ( currentPath === item.path ||  currentPath === `${item.path}/`) || isSubItemActive;
+                                const shouldSubNavOpen = openSubNav === item.id || isSubItemActive;
+
+                                return (
                                         <div key={item.id} className="w-full mb-2 ">
-                                            {item.subNav ? (
-                                                <>
-                                                    <button
+                                        {item.subNav ? (
+                                            <>
+                                                <button
 
                                                         className={`w-full rounded-[8px] px-4 py-3 flex justify-between items-center  ${isActive ? 'bg-[#E6F1FB] text-[#167AD3]' : 'hover:bg-[#E6F1FB]'} cursor-pointer`}
-                                                        onClick={(e) => toggleSubNav(e, item.id)}
-                                                    >
-                                                        <div className="flex items-center space-x-5">
-                                                            <span className="sidebar-icons h-6 w-6 flex items-enter justify-center">{item.icon}</span>
-                                                            {!collapsed && (
-                                                                <span className="capitalize text-black/45 font-[500]">{item.text}</span>
-                                                            )}
-                                                        </div>
+                                                    onClick={(e) => toggleSubNav(e, item.id)}
+                                                >
+                                                    <div className="flex items-center space-x-5">
+                                                        <span className="sidebar-icons h-6 w-6 flex items-enter justify-center">{item.icon}</span>
                                                         {!collapsed && (
-                                                            <span>{shouldSubNavOpen ? <UpperArrowIcon /> : <DownArrowIcon />}</span>
+                                                            <span className="capitalize text-black/45 font-[500]">{item.text}</span>
                                                         )}
-                                                    </button>
+                                                    </div>
+                                                    {!collapsed && (
+                                                        <span>{shouldSubNavOpen ? <UpperArrowIcon /> : <DownArrowIcon />}</span>
+                                                    )}
+                                                </button>
 
                                                     {/* SubNav items */}
-                                                    {shouldSubNavOpen && (
-                                                        <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-2 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
-                                                            {item.subNav.map((subItem) => (
-                                                                <SidebarItem 
-                                                                    key={subItem.id}
-                                                                    text={collapsed ? '' : subItem.text}
-                                                                    path={subItem.path}
-                                                                    isActive={(currentPath === subItem.path || currentPath === `${subItem.path}/`)}
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                    )}
-                                                    {item.id === 'instagram' && <div className="h-[1px] bg-[#0000001A] w-full mt-3 scale-125" />}
-                                                </>
-                                            ) : (
-                                                <SidebarItem
-                                                    text={collapsed ? '' : item.text}
-                                                    path={item.path}
-                                                    icon={item.icon}
-                                                    isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
-                                                />
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                            <div className="mt-auto flex flex-col items-center justify-center px-4 gap-[8px] border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
-                                <div className="w-full mb-0 sidebar-lang">
-                                    <span className="font-[500]"><LocalizationOptions /> </span>
-                                </div>
-                                <div className="flex gap-5 items-center w-full px-3.5 py-3 text-black/45 font-[500] cursor-pointer" onClick={()=>navigate("/upgrade")}>
-                                    <span className="sidebar-icons h-6 w-6 flex items-enter justify-center"><UpgradeProIcon /></span>
-                                    Upgrade To Pro
-                                </div>
-                                <div className="flex space-x-3.5 items-center px-3 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
-                                    {userData?.url ? (
-                                        <img src={userData.url} className="h-7.5 w-7.5 rounded-sm" alt="user img" />
-                                    ) : (
-                                        <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-sm">
-                                            {userData?.name?.charAt(0)}
-                                        </div>
-                                    )}
-                                    <div className="flex flex-col text-sm">
-                                        <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
-                                        <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
+                                                {shouldSubNavOpen && (
+                                                    <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-2 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
+                                                        {item.subNav.map((subItem) => (
+                                                            <SidebarItem
+                                                                key={subItem.id}
+                                                                text={collapsed ? '' : subItem.text}
+                                                                path={subItem.path}
+                                                                isActive={(currentPath === subItem.path || currentPath === `${subItem.path}/`)}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                {item.id === 'instagram' && <div className="h-[1px] bg-[#0000001A] w-full mt-3 scale-125" />}
+                                            </>
+                                        ) : (
+                                            <SidebarItem
+                                                text={collapsed ? '' : item.text}
+                                                path={item.path}
+                                                icon={item.icon}
+                                                isActive={(currentPath === item.path || currentPath === `${item.path}/`)}
+                                            />
+                                        )}
                                     </div>
-                                </div>
-
-                                <button
-                                    type="button"
-                                    className="flex items-center space-x-5 hover:bg-[#FF000012] logout px-4 py-3 rounded-[8px] w-full cursor-pointer bg-white text-black/55 hover:text-[#00000085]"
-                                    onClick={onLogout}
-                                >
-                                    <LogoutIcon />
-                                    <span className="text-[16px] ">Logout</span>
-                                </button>
+                                );
+                            })}
+                        </div>
+                        <div className="mt-auto flex flex-col items-center justify-center px-4 gap-[8px] border-t border-t-[rgba(0,0,0,0.1)] pt-[12px]">
+                            <div className="w-full mb-0 sidebar-lang">
+                                <span className="font-[500]"><LocalizationOptions /> </span>
                             </div>
-                        </>
+                                <div className="flex gap-5 items-center w-full px-3.5 py-3 text-black/45 font-[500] cursor-pointer" onClick={()=>navigate("/upgrade")}>
+                                <span className="sidebar-icons h-6 w-6 flex items-enter justify-center"><UpgradeProIcon /></span>
+                                Upgrade To Pro
+                            </div>
+                                <div className="flex space-x-3.5 items-center px-3 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
+                                {userData?.url ? (
+                                    <img src={userData.url} className="h-7.5 w-7.5 rounded-sm" alt="user img" />
+                                ) : (
+                                    <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-sm">
+                                        {userData?.name?.charAt(0)}
+                                    </div>
+                                )}
+                                <div className="flex flex-col text-sm">
+                                    <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
+                                    <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
+                                </div>
+                            </div>
+
+                            <button
+                                type="button"
+                                className="flex items-center space-x-5 hover:bg-[#FF000012] logout px-4 py-3 rounded-[8px] w-full cursor-pointer bg-white text-black/55 hover:text-[#00000085]"
+                                onClick={onLogout}
+                            >
+                                <LogoutIcon />
+                                    <span className="text-[16px] ">Logout</span>
+                            </button>
+                        </div>
+                    </>
                 }
             </div>
         </div>

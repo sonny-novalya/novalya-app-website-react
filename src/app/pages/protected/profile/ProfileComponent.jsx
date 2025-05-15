@@ -5,6 +5,7 @@ import useProfileStore from '../../../../store/profile/profile';
 import PropTypes from 'prop-types';
 import { message, Spin } from 'antd';
 import { CameraIcon } from '../../common/icons/icons';
+import useLoginUserDataStore from '../../../../store/loginuser/loginuserdata';
 
 const ProfileComponent = ({ loginUserData, userDataLoading }) => {
     const [editFields, setEditFields] = useState({
@@ -45,10 +46,10 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
     const [showPhotoDropdown, setShowPhotoDropdown] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileName, setSelectedFileName] = useState(null);
-
     const toggleEdit = (field) => {
         setEditFields((prev) => ({ ...prev, [field]: !prev[field] }));
     };
+    const { fetchLoginUserData } = useLoginUserDataStore();
 
     const handleChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
@@ -109,6 +110,7 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
             message.error("Failed to update profile. Please try again.");
         }
     };
+    const [isImgUploading, setIsImgUploading] = useState(false)
 
     const handleProfileImageUpload = () => {
         if (!selectedFile) {
@@ -122,26 +124,55 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
             const base64Image = reader.result;
 
             try {
+                setIsImgUploading(true);
+
                 const payload = {
-                    image: base64Image
+                    image: base64Image,
                 };
 
-                await updateProfilePicture(payload);
+                const res = await updateProfilePicture(payload);
+                console.log("Response:", res);
 
-                message.success("Profile picture updated successfully");
+                if (res?.pictureurl) {
+                    setImgUrl(getUpdatedImageUrl(res.profilepictureurl));
+                    localStorage.removeItem("userData")
+
+                    fetchLoginUserData().then(() => {
+                        const storedLoginData = useLoginUserDataStore.getState().loginUserData;
+
+                        if (storedLoginData) {
+                            const profilePicUrl = getUpdatedImageUrl(storedLoginData?.profilepictureurl)
+
+                            const data = {
+                                name: `${storedLoginData?.firstname} ${storedLoginData?.lastname}`,
+                                url: profilePicUrl,
+                                plan:
+                                    storedLoginData?.plan === "Unlimited_new"
+                                        ? "Unlimited"
+                                        : storedLoginData?.plan_pkg ?? "No Plan",
+                            };
+                            console.log("ddd", data)
+                            localStorage.setItem("userData", JSON.stringify(data));
+                        }
+                    })
+                    message.success("Profile picture updated successfully");
+                } else {
+                    throw new Error("Invalid response from server");
+                }
 
                 setShowPhotoDropdown(false);
                 setSelectedFile(null);
                 setSelectedFileName('');
-
             } catch (err) {
                 console.error("Error uploading base64 image:", err);
                 message.error("Failed to upload image");
+            } finally {
+                setIsImgUploading(false);
             }
         };
 
         reader.readAsDataURL(selectedFile);
-    };
+      };
 
     useEffect(() => {
         if (loginUserData) {
@@ -256,9 +287,23 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
             });
     }, []);
 
-    const imgUrl = loginUserData?.profilepictureurl?.includes("https://stagingbackend.novalya.com")
-        ? loginUserData.profilepictureurl.replace("https://stagingbackend.novalya.com", "https://api-v2.novalya.com")
-        : loginUserData.profilepictureurl
+    const getUpdatedImageUrl = (url) => {
+        if (!url) return '';
+        const stagingBase = "https://stagingbackend.novalya.com";
+        const prodBase = "https://api-v2.novalya.com";
+
+        return url.includes(stagingBase) ? url.replace(stagingBase, prodBase) : url;
+    };
+    
+    
+    const [imgUrl, setImgUrl] = useState('');
+
+    useEffect(() => {
+        if (loginUserData?.profilepictureurl) {
+            setImgUrl(getUpdatedImageUrl(loginUserData.profilepictureurl));
+        }
+    }, [loginUserData?.profilepictureurl]);
+
 
     return (
         <div className="bg-white p-5 rounded-md rounded-tl-none shadow-md border border-[#0087FF33]">
@@ -335,7 +380,11 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
                                         onClick={handleProfileImageUpload}
                                         className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
                                     >
-                                        Update
+                                    {
+                                            isImgUploading
+                                            ? "Updating ..."
+                                            : "Update"
+                                    }
                                     </button>
                                 </div>
                             )}
@@ -562,6 +611,7 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
 
 ProfileComponent.propTypes = {
     userDataLoading: PropTypes.Boolean,
+    fetchLoginUserData: PropTypes.func,
     loginUserData: PropTypes.shape({
         email: PropTypes.string,
         firstname: PropTypes.string,
