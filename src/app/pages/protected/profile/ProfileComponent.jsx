@@ -150,7 +150,6 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
                                         ? "Unlimited"
                                         : storedLoginData?.plan_pkg ?? "No Plan",
                             };
-                            console.log("ddd", data)
                             localStorage.setItem("userData", JSON.stringify(data));
                         }
                     })
