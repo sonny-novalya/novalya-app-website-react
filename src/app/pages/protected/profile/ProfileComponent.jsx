@@ -131,7 +131,6 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
                 };
 
                 const res = await updateProfilePicture(payload);
-                console.log("Response:", res);
 
                 if (res?.pictureurl) {
                     setImgUrl(getUpdatedImageUrl(res.profilepictureurl));
