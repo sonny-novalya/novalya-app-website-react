@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TickFillIcon } from "../../../../../pages/common/icons/icons";
 import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const AddTags = ({ CRMList, groupId }) => {
     const { prospection, updateProspection } = SettingStore();
     let { action } = prospection;
-
+  
     let parsedAction;
     try {
         parsedAction = action !== 'no' ? JSON.parse(action) : 'no';
@@ -24,7 +24,10 @@ const AddTags = ({ CRMList, groupId }) => {
             parsedAction.stage_num === null);
 
     const [actionType, setActionType] = useState(isNoAction ? "no" : "yes");
-
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [showStageDropdown, setShowStageDropdown] = useState(false);
+    const groupDropdownRef = useRef(null);
+    const stageDropdownRef = useRef(null);
     const [selectedGroupId, setSelectedGroupId] = useState(parsedAction?.moveGroupId || null);
     const [selectedStageId, setSelectedStageId] = useState(parsedAction?.moveStageId || null);
     const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
@@ -49,6 +52,25 @@ const AddTags = ({ CRMList, groupId }) => {
     const selectedGroupData = CRMList?.find((item) => item.id == selectedGroupId);
     const sortedStages = selectedGroupData?.stage?.sort((a, b) => a.stage_num - b.stage_num) || [];
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                groupDropdownRef.current && !groupDropdownRef.current.contains(event.target)
+            ) {
+                setShowDropdown(false);
+            }
+            if (
+                stageDropdownRef.current && !stageDropdownRef.current.contains(event.target)
+            ) {
+                setShowStageDropdown(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+      
+      
     return (
         <div className="">
             <h2 className="text-xl font-semibold mb-4">{t("prospecting.Add Tags")}</h2>
@@ -87,52 +109,133 @@ const AddTags = ({ CRMList, groupId }) => {
             {actionType !== "no" && (
                 <div className="grid grid-cols-2 gap-4">
                     {/* Group Selection */}
-                    <div className="border border-gray-300 p-4 rounded-lg relative">
+                    <div className="border border-gray-300 p-4 rounded-lg relative" ref={groupDropdownRef}>
                         <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Group")}</p>
-                        <select
-                            className={`w-full p-3 border rounded-lg ${!selectedGroupId ? "text-gray-500" : "text-gray-800"}`}
-                            value={selectedGroupId || ""}
-                            onChange={(e) => {
-                                setSelectedGroupId(e.target.value);
-                                setSelectedStageId(null);
-                                setSelectedStageNum(null);
-                                handleSave(e.target.value, null, null);
-                            }}
-                        >
-                            <option value="">{t("prospecting.Select Group")}</option>
-                            {CRMList?.map((group) => (
-                                <option key={group.id} value={group.id}>
-                                    {group.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="relative">
+                            <div className="border p-3 rounded-lg cursor-pointer" onClick={() => setShowDropdown(!showDropdown)}>
+                                {selectedGroupData ? (
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className="w-8 h-8 rounded-md text-white flex items-center justify-center font-semibold"
+                                            style={{ backgroundColor: selectedGroupData.custom_color || "#000" }}
+                                        >
+                                            {selectedGroupData.name?.slice(0, 2).toUpperCase()}
+                                        </span>
+                                        <span className="text-gray-800">{selectedGroupData.name}</span>
+                                    </div>
+                                ) : (
+                                    <span className="text-gray-500">{t("prospecting.Select Group")}</span>
+                                )}
+                            </div>
+
+                            {showDropdown && (
+                                <div className="absolute z-10 bg-white border rounded-lg w-full mt-1 max-h-60 overflow-y-auto shadow-md">
+                                    {CRMList?.map((group) => {
+                                        const isSelected = group.id === selectedGroupId;
+                                        return (
+                                            <div
+                                                key={group.id}
+                                                className={`flex items-center gap-2 p-3 cursor-pointer  ${isSelected ? "bg-blue-100" : "hover:bg-gray-100"
+                                                    }`}
+                                                onClick={() => {
+                                                    setSelectedGroupId(group.id);
+                                                    setSelectedStageId(null);
+                                                    setSelectedStageNum(null);
+                                                    handleSave(group.id, null, null);
+                                                    setShowDropdown(false);
+                                                }}
+                                            >
+                                                <span
+                                                    className="w-8 h-8 rounded-md text-white flex items-center justify-center font-semibold text-sm"
+                                                    style={{ backgroundColor: group.custom_color || "#000" }}
+                                                >
+                                                    {group.name?.slice(0, 2).toUpperCase()}
+                                                </span>
+                                                <span className="flex-1">{group.name}</span>
+
+                                                {isSelected && (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 text-blue-600"
+                                                        viewBox="0 0 20 20"
+                                                        fill="currentColor"
+                                                    >
+                                                        <path
+                                                            fillRule="evenodd"
+                                                            d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z"
+                                                            clipRule="evenodd"
+                                                        />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+
+                                </div>
+                            )}
+                        </div>
+
                     </div>
 
                     {/* Stage Selection */}
-                    <div className="border border-gray-300 p-4 rounded-lg relative">
+                    <div className="border border-gray-300 p-4 rounded-lg relative" ref={stageDropdownRef}>
                         <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Stage")}</p>
-                        <select
-                            key={selectedStageId}
-                            className={`w-full p-3 border rounded-lg ${!selectedStageId ? "text-gray-500" : "text-gray-800"}`}
-                            value={selectedStageId || ""}
-                            onChange={(e) => {
-                                const selectedStage = sortedStages.find((stage) => stage.id === parseInt(e.target.value));
-                                if (selectedStage) {
-                                    setSelectedStageId(selectedStage.id);
-                                    setSelectedStageNum(selectedStage.stage_num);
-                                    handleSave(selectedGroupId, selectedStage.id, selectedStage.stage_num);
-                                }
-                            }}
-                            disabled={!selectedGroupId}
-                        >
-                            <option value="">{t("prospecting.Select Stage")}</option>
-                            {sortedStages.map((stage) => (
-                                <option key={stage.id} value={stage.id}>
-                                    {stage.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="relative">
+                            <div
+                                className="border p-3 rounded-lg cursor-pointer"
+                                onClick={() => setShowStageDropdown(prev => !prev)}
+                            >
+                                {selectedStageId ? (
+                                    <div className="flex items-center gap-2 h-8">
+                                        <span className="text-gray-800">
+                                            {sortedStages.find(stage => stage.id === selectedStageId)?.name}
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <span className="text-gray-500">{t("prospecting.Select Stage")}</span>
+                                )}
+                            </div>
+
+                            {showStageDropdown && (
+                                <div className="absolute z-10 bg-white border rounded-lg w-full mt-1 max-h-60 overflow-y-auto shadow-md">
+                                    {sortedStages.map((stage) => {
+                                        const isSelected = stage.id === selectedStageId;
+                                        return (
+                                            <div
+                                                key={stage.id}
+                                                className={`flex items-center gap-2 p-3 cursor-pointer  ${isSelected ? "bg-blue-100 " : "hover:bg-gray-100"
+                                                    }`}
+                                                onClick={() => {
+                                                    setSelectedStageId(stage.id);
+                                                    setSelectedStageNum(stage.stage_num);
+                                                    handleSave(selectedGroupId, stage.id, stage.stage_num);
+                                                    setShowStageDropdown(false);
+                                                }}
+                                            >
+                                                <span className="flex-1">{stage.name}</span>
+
+                                                {isSelected && (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 text-blue-600"
+                                                        viewBox="0 0 20 20"
+                                                        fill="currentColor"
+                                                    >
+                                                        <path
+                                                            fillRule="evenodd"
+                                                            d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z"
+                                                            clipRule="evenodd"
+                                                        />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
                     </div>
+
                 </div>
             )}
         </div>
