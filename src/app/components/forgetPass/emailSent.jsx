@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import logo from "../../../assets/img/novalya-blue.png";
 import NovaBlue from "../../..//assets/img/nova-blur.png";
+import emailSent from "../../../assets/img/emailSent.svg"
 
 const EmailSent = () => {
     const navigate = useNavigate()
@@ -16,6 +17,10 @@ const EmailSent = () => {
             className="h-52 opacity-50 absolute left-0 bottom-0 pointer-events-none select-none"
         />
         <div className="w-full flex gap-6 flex-col items-center max-w-md p-8 bg-white rounded-lg shadow-2xl z-10 ">
+            <img
+                src={emailSent}
+                alt="mail"
+            />
           <h1 className="text-2xl font-bold mt-2">Check Your Email</h1>
           <p className="text-[#757575] text-center">An email to reset your password has been sent. Please also check your spam folder</p>
             {/* <button
