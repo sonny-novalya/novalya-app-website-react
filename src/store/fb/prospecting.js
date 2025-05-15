@@ -2,7 +2,9 @@ import { create } from "zustand";
 import apiCall from "../../services/api";
 
 const useFbProspectingStore = create((set) => ({
-    folders: [], // Array to store folders
+    folders: [], // Array to store folders,
+
+    setFolderManualy:(val)=>set({folders:val}),
     addFolder: (name, selectedGroups) => set((state) => ({
         folders: [...state.folders, { name, selectedGroups, id: Date.now() }]
     })),

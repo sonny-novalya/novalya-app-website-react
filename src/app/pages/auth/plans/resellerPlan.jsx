@@ -72,7 +72,6 @@ const PlansReseller = () => {
         setPlan2(filteredPLans?.[1]);
         setPlan3(filteredPLans?.[2]);
 
-    localStorage.setItem("plans", JSON.stringify(allPlans));
 
   }, [isAnnual]);
 
@@ -83,7 +82,7 @@ const PlansReseller = () => {
     localStorage.setItem("fromOffers", "false");
     localStorage.setItem("backto", "/plans");
 
-    navigate("/signup");
+    navigate(`/capture?planId=${planId}`);
     window.dataLayer.push({ event: "Abonnement" });
   };
 

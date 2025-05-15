@@ -701,7 +701,7 @@ const FbProspecting = () => {
                                         </div>
                                     </button>
                                     <span className="ml-1 cursor-pointer" onClick={() => {
-                                        // setFolderId(folder.id)
+                                        setFolderUpdateId(folder.id)
                                         setFolderName(folder.folder_name)
                                         setOpenUpdateFolderModal(true)
                                     }}>

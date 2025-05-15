@@ -13,6 +13,8 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
     const [selectedGroups, setSelectedGroups] = useState([]);
     const [newFolderName, setNewFolderName] = useState(folderName);
     const { groups, initialGroups, fetchInitialGroups, fetchGroups } = useGroupStore();
+    const { folders = [], setFolderManualy } = useFbProspectingStore();
+
     const { updateFolder } = useFbProspectingStore();
     const navigate = useNavigate();  
     const handleSelect = (id, checked) => {
@@ -20,6 +22,10 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
             checked ? [...prev, id] : prev.filter((groupId) => groupId !== id)
         );
     };
+
+
+  
+  
 
     const location = useLocation();
     
@@ -52,8 +58,9 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
             const result = await useFbProspectingStore.getState().deleteFolder(folderId, selectedGroupsPayload);
 
             if (result?.status === "success") {
+                const newFolders = folders?.filter((f)=>f.id !== folderId)
+                setFolderManualy([...newFolders])
                 onClose();
-                navigate(location.pathname);
             }
     };
     useEffect(() => {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 // export const BASE_URL = "https://api-v2.novalya.com/user/api";
 export const BASE_URL = "https://api-v2.novalya.com";
@@ -23,11 +24,16 @@ const getDynamicHeaders = () => {
 
   return headers;
 };
-const logoutUser = () => {
-  localStorage.removeItem("token"); 
-  message.error("Session expired. Please log in again.");
-  window.location.reload()
-};
+
+
+   const logoutUser = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('loginUserData');
+        message.error("Session expired. Please log in again.");
+        removeAllCookies();
+        window.location.reload()
+    };
 
 const apiCall = async ({
   method = 'GET',

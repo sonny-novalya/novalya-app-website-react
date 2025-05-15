@@ -19,9 +19,9 @@ const Profile = () => {
       case "Password":
         return <Password userMail={loginUserData?.email} />;
       case "Billing details":
-        return <BillingDetails />;
+        return <BillingDetails userMail = {loginUserData?.email}  />;
       case "Invoice":
-        return <Invoice />;
+        return <Invoice userMail={loginUserData?.email} />;
       default:
         return null;
     }
@@ -31,7 +31,7 @@ const Profile = () => {
     { name: "Profile Page", disabled: false },
     { name: "Password", disabled: false },
     { name: "Billing details", disabled: true },
-    { name: "Invoice", disabled: true }
+    { name: "Invoice", disabled: false }
   ];
   
   useEffect(() => {

@@ -35,7 +35,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
 
     } = prospection
 
-    // Track completion status for each section
     const [sectionsCompleted, setSectionsCompleted] = useState({
         1: false, // Select Message
         2: false, // Settings
@@ -44,9 +43,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         [isInstagram ? 4 : 5]: false, // Add Tags
     });
 
-    // We don't need to track validation errors as state since we'll use message.error
-
-    // Compute allSectionsCompleted from sectionsCompleted state
     const allSectionsCompleted = Object.values(sectionsCompleted).every(isComplete => isComplete);
 
     const tabItems = [
@@ -97,32 +93,44 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
     };
 
     const handleNext = () => {
+        if (!validateCurrentTab(activeKey)) return;
+
         let nextKey = activeKey + 1;
         if (isInstagram && activeKey === 2) nextKey = 3;
         if (nextKey <= tabItems.length) setActiveKey(nextKey);
     };
-
+    
     const handleBack = () => {
         const prevKey = activeKey - 1;
         if (prevKey >= 1) setActiveKey(prevKey);
     };
 
+    const validateCurrentTab = (key) => {
+        const errors = validateSections();
+
+        if (errors[key]) {
+            MessagePopup.error(errors[key]);
+            return false;
+        }
+
+        return true;
+    };
+
+    
     const handleTabClick = (key) => {
+        if (!validateCurrentTab(activeKey)) return;
         setActiveKey(key);
     };
 
-    // Validate each section and update errors
     const validateSections = () => {
         const newValidationErrors = {};
 
-        // Section 1: Select Message
         if (!message) {
             newValidationErrors[1] = "Please select a message";
         } else {
             newValidationErrors[1] = "";
         }
 
-        // Section 2: Settings
         if (pro_stratagy !== 0 && pro_stratagy !== 1) {
             newValidationErrors[2] = "Please select a strategy";
         } else if (!(Number(norequest) >= 1 && Number(norequest) <= 50)) {
@@ -133,7 +141,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             newValidationErrors[2] = "";
         }
 
-        // Section 3: Filters (Only for Facebook)
         if (!isInstagram) {
             if (!gender) {
                 newValidationErrors[3] = "Please select a gender";
@@ -146,7 +153,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             }
         }
 
-        // Section 4: Advanced Options
         const advOptionsKey = isInstagram ? 3 : 4;
         if (prospect === null) {
             newValidationErrors[advOptionsKey] = "Please select a prospect option";
@@ -156,7 +162,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             newValidationErrors[advOptionsKey] = "";
         }
 
-        // Section 5: Add Tags
         const tagsKey = isInstagram ? 4 : 5;
         if (!action) {
             newValidationErrors[tagsKey] = "Please select an action";
@@ -175,7 +180,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 prospection_type: type,
             };
             try {
-               await createSocialTarget({ ...prospectionData });
+                await createSocialTarget({ ...prospectionData });
                 MessagePopup.success("Settings created successfully");
                 onClose();
             } catch (error) {
@@ -183,10 +188,8 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 MessagePopup.error("Failed to create settings");
             }
         } else {
-            // Validate all sections and update error messages
             const errors = validateSections();
 
-            // Find the first incomplete section
             const incompleteSection = Object.entries(sectionsCompleted)
                 .find(([_, isComplete]) => !isComplete);
 
@@ -194,7 +197,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 const [incompleteKey] = incompleteSection;
                 setActiveKey(Number(incompleteKey));
 
-                // Show specific error message for the incomplete section
                 if (errors[incompleteKey]) {
                     MessagePopup.error(errors[incompleteKey]);
                 } else {
@@ -204,12 +206,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         }
     };
 
-    // Handler for clicking disabled save button
     const handleDisabledSaveClick = () => {
-        // Validate all sections and update error messages
         const errors = validateSections();
 
-        // Find the first incomplete section and navigate to it
         const incompleteSection = Object.entries(sectionsCompleted)
             .find(([_, isComplete]) => !isComplete);
 
@@ -217,7 +216,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             const [incompleteKey] = incompleteSection;
             setActiveKey(Number(incompleteKey));
 
-            // Show specific error message for the incomplete section
             if (errors[incompleteKey]) {
                 message.error(errors[incompleteKey]);
             } else {
@@ -226,7 +224,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         }
     };
 
-    // First useEffect for initialization and data fetching
     useEffect(() => {
         handleUpdateGroupId();
         const type = isInstagram ? 'instagram' : 'facebook';
@@ -235,12 +232,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
         }
     }, [groupId]);
 
-    // Second useEffect for checking completion status, with careful comparison to prevent loops
     useEffect(() => {
-        // Skip updates if still loading to prevent premature completion checks
         if (settingLoading) return;
 
-        // Create new completion state based on current prospection values
         const newSectionsCompleted = {
             1: !!message,
 
@@ -256,17 +250,14 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             [isInstagram ? 3 : 4]: prospect !== null && (pro_convo === 0 || pro_convo === 1),
 
             [isInstagram ? 4 : 5]: !!action && (() => {
-                // Check if action meets all criteria when type is "yes"
                 try {
                     if (!action) return false;
 
                     let actionObj = typeof action === 'string' ? JSON.parse(action) : action;
                     let actionType = actionObj?.moveGroupId ? "yes" : "no";
 
-                    // If action type is "no", it's complete
                     if (actionType === "no") return true;
 
-                    // If action type is "yes", check for required fields
                     return !!actionObj.moveGroupId &&
                         !!actionObj.moveStageId &&
                         (actionObj.stage_num !== null && actionObj.stage_num !== undefined);
@@ -277,7 +268,6 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             })(),
         };
 
-        // Only update state if the completion status has actually changed
         const currentJSON = JSON.stringify(sectionsCompleted);
         const newJSON = JSON.stringify(newSectionsCompleted);
 
@@ -301,13 +291,12 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
     return (
         <Modal className="pro-setting-modal" open={visible} onCancel={handleCloseSettings} footer={null} width={1225} centered>
             <div className="flex h-[calc(100vh-80px)] p-0 relative">
-                {/* Left panel - Tabs */}
                 {settingLoading && (
                     <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-10 z-50 rounded-lg h-full">
                         <Spin size="large" />
                     </div>
                 )}
-                <div className="w-1/4 rounded rounded-[10px] px-2 flex flex-col justify-between bg-white px-4 pt-10 pb-4 overflow-auto">
+                <div className="w-1/4  rounded-[10px]  flex flex-col justify-between bg-white px-4 pt-10 pb-4 overflow-auto">
                     <ul className="flex flex-col gap-4">
                         {tabItems.map((tab, index) => {
                             const isActive = activeKey === tab.key;
@@ -320,7 +309,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                                     onClick={() => handleTabClick(tab.key)}
                                 >
                                     <span
-                                        className={`w-6 h-6 flex items-center justify-center text-[16px] rounded rounded-[4px] cursor-pointer text-white mr-3  ${isActive
+                                        className={`w-6 h-6 flex items-center justify-center text-[16px]  rounded-[4px] cursor-pointer text-white mr-3  ${isActive
                                                 ? "bg-[#0087FF]"
                                                 : isCompleted
                                                     ? "bg-[#21BF7C]"
@@ -360,7 +349,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 <div className="h-full w-[20px] bg-[#878787]" />
 
                 {/* Right panel - Content and Navigation */}
-                <div className="w-3/4 overflow-auto px-5 py-4 flex flex-col gap-4 justify-between bg-white rounded rounded-[10px]">
+                <div className="w-3/4 overflow-auto px-5 py-4 flex flex-col gap-4 justify-between bg-white  rounded-[10px]">
                     <div className="h-[calc(100%-64px)]">
                         {tabItems.find((tab) => tab.key === activeKey)?.children}
                     </div>
@@ -373,9 +362,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                             {t("prospecting.Back")}
                         </button>
                         <button
-                            className={`px-12 min-h-[45px] px-12 py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey === tabItems.length ? "opacity-50" : ""}`}
+                            className={`px-12 min-h-[45px]  py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey === tabItems.length ? "opacity-50" : ""}`}
                             onClick={handleNext}
-                            disabled={activeKey === tabItems.length}
+                            disabled={!sectionsCompleted[activeKey] || activeKey === tabItems.length}
                         >
                             {t("prospecting.Next")}
                         </button>

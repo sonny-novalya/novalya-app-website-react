@@ -39,9 +39,11 @@ const SidebarMenu = () => {
     
     const onLogout = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('selectedLocale');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('loginUserData');
         removeAllCookies();
-        navigate("/login");
+        window.location.reload()
+
     };
     const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
     const [userData, setUserData] = useState(null);
