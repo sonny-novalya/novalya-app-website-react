@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import { message } from 'antd'
 import { signupStore } from '../../../../store/signup/signupStore'
-import { Terms } from '../../../../helpers/helperData'
+import { fallBackPlan, nuskinFallBackPlan, nuskinTerms, Terms } from '../../../../helpers/helperData'
 import { domains, getSubdomain } from '../../../../helpers/helper'
 
 
@@ -16,20 +16,16 @@ const CapturePage = () => {
 	 const navigate= useNavigate()
 	 const [loading, setLoading] = useState(false);
 	 const [geoData,setGeoData] = useState(null)
-	
-	 const backto = localStorage.getItem("backto")
-	  const localPlan = localStorage.getItem("planId")
-      let planId = searchParams.get("planId") ? searchParams.get("planId") : localPlan;
-	 
-	  if (!planId && !localPlan) {
-		navigate(backto || "/plans")
-	  }
       const coupon_code = searchParams.get("coupon_code");
       let sign_details = localStorage.getItem("sign_details");
       sign_details= JSON.parse(sign_details)
       let names = sign_details && ((sign_details?.firstname || "") + " " + (sign_details?.lastname || ""))
     const [details,setDetails] = useState({fullName: names || "" , email:sign_details?.email || ""})
-	const urlArr = ["app.novalya.com","dev.novalya.com"]
+	  const referralId = searchParams.get("ref") ||  searchParams.get("uname") 
+  if (referralId) {
+    localStorage.setItem("referralId",referralId)
+  }
+	
  
       
 const handleSubmit = () => {
@@ -68,10 +64,15 @@ const getCountry = async()=>{
 
 
 useEffect(() => {
-if(planId){
+	const localPlan = localStorage.getItem("planId")
+      let planId = searchParams.get("planId") ? searchParams.get("planId") : localPlan
+	  if (!planId) {
+		const subDom = getSubdomain(window.location.href)
+	const isReseller = domains?.some((d)=>d.subdomain === subDom)
+		planId = isReseller?  nuskinFallBackPlan:fallBackPlan
+	  }
     localStorage.setItem('planId',planId)
-}
-}, [planId])
+}, [])
 
 useEffect(() => {
 	getCountry() 
@@ -82,10 +83,12 @@ useEffect(() => {
 
 	setLoading(true)
 	const planId=localStorage.getItem('planId')
-	const  selectedPlan =  Terms?.find((p)=>p.plan_id === planId)
-	const seledtedlang= localStorage.getItem("selectedLocale")
 	const subDom = getSubdomain(window.location.href)
 	const isReseller = domains?.some((d)=>d.subdomain === subDom)
+	const plans  = isReseller ? nuskinTerms : Terms
+	const  selectedPlan =  plans?.find((p)=>p.plan_id === planId)
+	const seledtedlang= localStorage.getItem("selectedLocale") || "en-US"
+	
 	
 	let utm_data = localStorage.getItem("UTM_DATA")
 	utm_data= utm_data ? JSON.parse(utm_data) :{}
@@ -111,7 +114,6 @@ useEffect(() => {
 
 	try {
 		let res = await saveCaptureData(capturePaylaod)
-		console.log(res)
 
 			
 
@@ -138,9 +140,9 @@ useEffect(() => {
 			);
 	
 	if (coupon_code) {
-		navigate(`/signup?coupon_code=${coupon_code}`)
+		navigate(`/signup?planId=${planId}&coupon_code=${coupon_code}`)
 	}else{
-		navigate(`/signup`)
+		navigate(`/signup?planId=${planId}`)
 	}
     setLoading(false)
 		
