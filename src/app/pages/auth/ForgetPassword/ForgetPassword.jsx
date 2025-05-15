@@ -1,84 +1,89 @@
 import { useState } from "react";
-import NovalyaFullWhiteLogo from "../../../../../src/assets/img/NovalyaFullWhiteLogo.png";
-import lockImg from "../../../../../src/assets/img/securityLock.png";
+import logo from "../../../../../src/assets/img/novalya-blue.png";
+import NovaBlue from "../../../../../src/assets/img/nova-blur.png";
 import { Input, message, Spin } from "antd";
 import useAuthStore from "../../../../store/auth/auth-store";
 import { useNavigate } from "react-router-dom";
 import EmailSent from "../../../components/forgetPass/emailSent";
+
 const ForgetPassword = () => {
-    const {forgetPass}=useAuthStore()
+    const { forgetPass } = useAuthStore();
     const [email, setEmail] = useState("");
     const [emailSent, setEmailSent] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const submit = async (e)=>{
-          e.preventDefault(); 
-          if (!email) {
-            message.error("Email is required!")
-            return
-          }
-           setIsLoading(true)
-     const res = await forgetPass({email:email})
-       if (res.status === 200) {
-        message.success("Check you Inbox")
-        setEmailSent(true)
-       }
-    setIsLoading(false)
+    const submit = async (e) => {
+        e.preventDefault();
+        if (!email) {
+            message.error("Email is required!");
+            return;
+        }
+        setIsLoading(true);
+        const res = await forgetPass({ email: email });
+        if (res.status === 200) {
+            message.success("Check your Inbox");
+            setEmailSent(true);
+        }
+        setIsLoading(false);
+    };
 
-    }
     return (
         <>
-            {
-                emailSent ? <EmailSent/>: <div className="flex min-h-screen items-center justify-center bg-[#f2f2f2] px-4">
-            <div className="flex w-full max-w-4xl rounded-lg shadow-lg overflow-hidden bg-white">
-                <div className="w-1/2 bg-gradient-to-r from-[#005199] to-[#0087FF] px-10 py-20 flex flex-col justify-center items-center text-white">
-                    <img src={NovalyaFullWhiteLogo} alt="Novalya Logo" />
-                    
-                    <div className="mt-8">
-                        <img src={lockImg} alt="Globe" className="w-64 h-64" />
+            {emailSent ? (
+                <EmailSent />
+            ) : (
+                <div className="flex flex-col min-h-screen bg-white px-4">
+                    <div className="p-5">
+                        <img src={logo} alt="logo" className="h-12" />
+                    </div>
+                    <div className="flex flex-1 flex-col items-center justify-center relative overflow-hidden">
+                        <img
+                            src={NovaBlue}
+                            alt="blur-bg"
+                            className="h-52 opacity-50 absolute left-0 bottom-0 pointer-events-none select-none"
+                        />
+                        <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-2xl z-10 ">
+                            <h1 className="text-2xl font-bold mt-2">Forgot Password</h1>
+                            <p className="text-[#757575]">Enter your email address</p>
+
+                            <form className="mt-6" onSubmit={submit}>
+                                <div>
+                                    <label className="text-gray-600 text-sm font-semibold">
+                                        Email
+                                    </label>
+                                    <Input
+                                        type="text"
+                                        className="mt-2 py-2"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                        className="mt-6 py-2 w-full px-6 rounded text-sm !bg-[#0087FF] cursor-pointer !border-none !text-white hover:!bg-[#0073E6]"
+                                >
+                                    {isLoading ? (
+                                        <Spin size="small" style={{ color: "white" }} />
+                                    ) : (
+                                        "SUBMIT"
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                            <span
+                                onClick={() => navigate("/login")}
+                                className="block text-center text-[#0066FF] hover:underline font-semibold mt-6 text-lg cursor-pointer"
+                            >
+                                Back to Login
+                            </span>
                     </div>
                 </div>
-
-                <div className="w-1/2 p-10 flex flex-col justify-center">
-                    <h1 className="text-2xl font-bold mt-2">Forgot Password</h1>
-
-                    <form className="mt-6" >
-                        <div>
-                            <label className="text-gray-600 text-sm font-semibold">Email</label>
-                            <Input
-                                type="text"
-                                className="mt-2 py-2"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="flex items-center justify-center">
-                            <button
-                               onClick={(e)=>submit(e)}
-                               disabled={isLoading}
-                                className="mt-4 py-2 px-6 rounded text-sm !bg-[#0087FF] !border-none !text-white hover:!bg-[#0073E6] w-fit w-spinner"
-                            >
-                               {isLoading? <Spin size="small" style={{color:"white"}}/> : "SUBMIT"}
-                            </button>
-                        </div>
-                    </form>
-
-                    <p className="text-center text-gray-600 text-sm mt-4">
-                        Don&apos;t want to reset?{' '}
-                        <span onClick={()=>navigate("/login")} className="text-blue-600 hover:underline">
-                            Login
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-            }
+            )}
         </>
-       
-    )
-}
+    );
+};
 
-export default ForgetPassword
+export default ForgetPassword;
