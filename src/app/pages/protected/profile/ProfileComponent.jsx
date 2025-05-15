@@ -147,7 +147,7 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
                                 name: `${storedLoginData?.firstname} ${storedLoginData?.lastname}`,
                                 url: profilePicUrl,
                                 plan:
-                                    storedLoginData?.plan === "Unlimited_new"
+                                    storedLoginData?.plan_pkg === "Unlimited_new"
                                         ? "Unlimited"
                                         : storedLoginData?.plan_pkg ?? "No Plan",
                             };
