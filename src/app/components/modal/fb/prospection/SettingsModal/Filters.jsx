@@ -63,17 +63,17 @@ const Filters = ({ keyWordList, postType }) => {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4">{t("prospecting.Filters")}</h2>
+            <h2 className="text-[24px] font-[500] mb-5">{t("prospecting.Filters")}</h2>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
                 {/* Gender Filter */}
-                <div className="border border-gray-300 p-4 rounded-lg">
-                    <p className="font-medium mb-2 text-gray-800">{t("prospecting.Gender")}</p>
-                    <div className="grid grid-cols-1 gap-2">
+                <div className="border border-gray-300 px-4 pt-3 pb-5 rounded-lg">
+                    <p className="font-medium text-[20px] mb-3 text-gray-800">{t("prospecting.Gender")}</p>
+                    <div className="grid grid-cols-1 gap-3">
                         {genders.map((gender) => (
                             <button
                                 key={gender.value}
-                                className={`relative flex items-center gap-2 px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer w-full ${propGender === gender.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                                className={`relative flex justify-center min-h-[52px] rounded-[10px] items-center gap-1 px-4 py-3 border text-[#0087FF] cursor-pointer w-full ${propGender === gender.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
                                 onClick={() => handleUpdate("gender", gender.value)}
                             >
                                 {gender.icon} {gender.label}
@@ -91,11 +91,11 @@ const Filters = ({ keyWordList, postType }) => {
                 {
                     postType && !["post", "post-like"].includes(postType.toString().toLowerCase())
                         ?
-                        <div className="border border-gray-300 p-4 rounded-lg">
-                            <p className="font-medium text-gray-800 mb-2 flex items-center">{t("prospecting.Keywords")}</p>
+                        <div className="border border-gray-300 px-4 pt-3 pb-5 rounded-lg">
+                            <p className="font-[500] text-[20px] text-gray-800 mb-3 flex items-center">{t("prospecting.Keywords")}</p>
                             <div className="relative">
                                 <button
-                                    className="flex justify-between items-center px-4 py-3 rounded-md border text-[#0087FF] w-full cursor-pointer"
+                                    className="flex justify-between items-center px-4 py-3 rounded-[10px] border text-[#0087FF] w-full cursor-pointer"
                                     onClick={toggleDropdown}
                                 >
                                     {keyword && updatedKeywordList.find(k => k.id == keyword)?.name || "Select Keyword"}

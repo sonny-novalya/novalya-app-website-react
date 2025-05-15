@@ -6,7 +6,7 @@ const AddTag = ({ selectedTag, setSelectedTag }) => {
     const tagOptions = ["yes", "no"];
 
     return (
-        <div className="border border-[#DADADA] p-4 rounded-lg">
+        <div className="border border-[#DADADA] px-4 pt-4 pb-3 rounded-lg">
 
             <div class="flex items-center gap-[6px] mb-4">
                 <p className="text-xl mb-0 font-[500]">{t("prospecting.Do you want to add a tag?")}</p>
@@ -17,12 +17,12 @@ const AddTag = ({ selectedTag, setSelectedTag }) => {
             </div>
 
             
-            <div className="grid gap-4">
+            <div className="grid gap-2.5">
                 {tagOptions.map((tag) => (
                     <button
                         key={tag}
                         type="default"
-                        className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedTag === tag ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                        className={`relative flex items-center justify-between px-4 py-3 rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedTag === tag ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
                         onClick={() => setSelectedTag(tag)}
                     >
                         <span className="flex items-center space-x-2 mx-auto">

@@ -75,11 +75,11 @@ const Settings = ({ isInstagram }) => {
                             <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fillOpacity="0.75"/>
                         </svg>
                     </p>
-                    <div className="grid grid-cols-1 gap-2">
+                    <div className="grid grid-cols-1 gap-3">
                         {newStratagies.map((option) => (
                             <button
                                 key={option.value}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
+                                className={`relative flex items-center justify-center px-4 py-3 min-h-[52px] rounded-[10px] border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"}`}
                                 onClick={() => handleUpdate("pro_stratagy", option.value)}
@@ -105,7 +105,7 @@ const Settings = ({ isInstagram }) => {
                             <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fillOpacity="0.75"/>
                         </svg>
                         </p>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-3 gap-x-4 gap-y-3">
                         {requestOptions.map((option) => {
                             const isCustom = option === "Custom";
                             const isSelected = isCustom
@@ -117,7 +117,7 @@ const Settings = ({ isInstagram }) => {
                             return (
                                 <button
                                     key={option}
-                                    className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${isSelected ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"
+                                    className={`font-[500] relative flex items-center justify-center px-4 py-3 min-h-[52px] rounded-[10px] border text-[#0087FF] cursor-pointer ${isSelected ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"
                                         }`}
                                     onClick={() => handleUpdate("norequest", isCustom ? "Custom" : Number(option))}
                                 >
@@ -160,8 +160,8 @@ const Settings = ({ isInstagram }) => {
             </div>
 
             {/* Interval Section */}
-            <div className="border border-[#dadada] px-4 py-3 rounded-lg mt-4">
-                <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
+            <div className="border border-[#dadada] px-4 pt-3 pb-7.5 rounded-lg mt-7">
+                <p className="font-[500] text-xl mb-4 text-[#000407] flex items-center gap-[5px]">
                     {t("prospecting.Interval")}
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" strokeOpacity="0.75" strokeWidth="0.9"/>
@@ -176,8 +176,8 @@ const Settings = ({ isInstagram }) => {
                             className={`relative cursor-pointer text-left`}
                             onClick={() => handleUpdate("interval", option.value)}
                         >
-                            <span className="text-[14px] text-[#000407] opacity-50 mr-12">{option.time}</span>
-                            <div className={` flex flex-col items-start px-4 py-3 rounded-lg border transition ${interval === option.value
+                            <span className="block mb-[6px] text-[14px] text-[#000407] opacity-50 mr-12">{option.time}</span>
+                            <div className={`min-h-[52px] justify-center items-center flex flex-col px-4 py-3 rounded-[10px] border transition ${interval === option.value
                                 ? "bg-[#CCE7FF] border-[#CCE7FF] text-[#0087FF] shadow-sm"
                                 : "bg-white border-[#dadada] text-gray-700"
                                 }`}>

@@ -159,7 +159,7 @@ const Request = () => {
              {t("FB_request.Auto-Reply to Requests")}
           </h1>
           <div className="nv-content-wrapper"></div> {/* to display account syncing message */}
-          <div className="border border-[#DADADA] px-5 pt-7.5 pb-8  bg-white rounded-[8px] mb-7">
+          <div className="border border-[#DADADA] px-5 pt-9 pb-8  bg-white rounded-[8px] mb-7">
             <div className="border border-[#DADADA] p-4 bg-white rounded-[8px] mb-6">
               <h1 className="text-xl font-[500] flex items-center gap-[10px] mb-6">
               {t("FB_request.When a request is accepted")} :
@@ -585,19 +585,19 @@ const Request = () => {
             <button
               onClick={() => handleSubmit()}
 
-              className="bg-[#21BF7C] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6bg-[#21BF7C] hover:bg-[#15AE6D] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250 start-manage-request"
+              className="bg-[#21BF7C] hover:bg-[#15AE6D] text-white rounded-[10px] font-bold text-[14px] leading-[21px] px-6 py-3 min-h-[52px] w-full max-w-[338px] mt-6 cursor-pointer transition duration-250 start-manage-request"
 
             >
              {t("FB_request.Save & Check Requests")} 
             </button>
           </div>
           <h1 className="text-[24px] font-[500] mb-4">{t("FB_request.Pending Requests Sent")}</h1>
-          <div className="border border-[#DADADA] p-4 pb-7 bg-white rounded-[8px]">
+          <div className="border border-[#DADADA] p-5 pb-7.5 bg-white rounded-[8px]">
             <h1 className="text-[20px] font-[500] mb-3 flex items-center gap-[10px] mb-6">
             {t("FB_request.do_you_delete_all")} 
             </h1>
                   
-            <button className="flex items-center justify-center gap-[8px]  bg-[#FF0000] hover:bg-[#F40000] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[48px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250" id="delete_pending_request">
+            <button className="flex items-center justify-center gap-[8px]  bg-[#FF0000] hover:bg-[#F40000] text-white rounded-[10px] font-[500] text-[14px] leading-[21px] px-6 py-3 min-h-[52px] w-full max-w-[325px] mt-6 cursor-pointer transition duration-250" id="delete_pending_request">
               <svg
                 width="24"
                 height="24"

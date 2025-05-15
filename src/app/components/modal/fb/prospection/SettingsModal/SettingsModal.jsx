@@ -296,7 +296,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                         <Spin size="large" />
                     </div>
                 )}
-                <div className="w-1/4 rounded rounded-[10px] px-2 flex flex-col justify-between bg-white px-4 pt-10 pb-4 overflow-auto">
+                <div className="w-1/4  rounded-[10px]  flex flex-col justify-between bg-white px-4 pt-10 pb-4 overflow-auto">
                     <ul className="flex flex-col gap-4">
                         {tabItems.map((tab, index) => {
                             const isActive = activeKey === tab.key;
@@ -309,7 +309,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                                     onClick={() => handleTabClick(tab.key)}
                                 >
                                     <span
-                                        className={`w-6 h-6 flex items-center justify-center text-[16px] rounded rounded-[4px] cursor-pointer text-white mr-3  ${isActive
+                                        className={`w-6 h-6 flex items-center justify-center text-[16px]  rounded-[4px] cursor-pointer text-white mr-3  ${isActive
                                                 ? "bg-[#0087FF]"
                                                 : isCompleted
                                                     ? "bg-[#21BF7C]"
@@ -349,20 +349,20 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 <div className="h-full w-[20px] bg-[#878787]" />
 
                 {/* Right panel - Content and Navigation */}
-                <div className="w-3/4 overflow-auto px-5 py-4 flex flex-col justify-between bg-white rounded rounded-[10px]">
-                    <div className="h-[calc(100%-40px)]">
+                <div className="w-3/4 overflow-auto px-5 py-4 flex flex-col gap-4 justify-between bg-white  rounded-[10px]">
+                    <div className="h-[calc(100%-64px)]">
                         {tabItems.find((tab) => tab.key === activeKey)?.children}
                     </div>
-                    <div className="flex justify-end space-x-4">
+                    <div className="flex justify-end space-x-5">
                         <button
-                            className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
+                            className="px-12 min-h-[45px] py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
                             onClick={handleBack}
                             disabled={activeKey === 1}
                         >
                             {t("prospecting.Back")}
                         </button>
                         <button
-                            className={`px-12 py-2 rounded-lg bg-[#0087FF] text-white ${(!sectionsCompleted[activeKey] || activeKey === tabItems.length) ? "opacity-50 cursor-not-allowed" : ""}`}
+                            className={`px-12 min-h-[45px]  py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey === tabItems.length ? "opacity-50" : ""}`}
                             onClick={handleNext}
                             disabled={!sectionsCompleted[activeKey] || activeKey === tabItems.length}
                         >
