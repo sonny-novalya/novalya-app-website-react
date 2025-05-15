@@ -73,12 +73,12 @@ const AddTags = ({ CRMList, groupId }) => {
       
     return (
         <div className="">
-            <h2 className="text-[24px] font-[500] mb-5">{t("prospecting.Add Tags")}</h2>
+            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Add Tags")}</h2>
 
             {/* Toggle Add Tag Option */}
             <div className="border border-gray-300 p-4 rounded-lg mb-4">
-                <p className="text-[20px] font-[500] text-gray-800 mb-4">{t("prospecting.Do you want to add a tag?")}</p>
-                <div className="grid grid-cols-2 gap-5">
+                <p className="font-medium text-gray-800 mb-2">{t("prospecting.Do you want to add a tag?")}</p>
+                <div className="grid grid-cols-2 gap-3">
                     {addTagsOptions.map((option) => (
                         <button
                             key={option.value}
@@ -107,7 +107,7 @@ const AddTags = ({ CRMList, groupId }) => {
 
             {/* Group and Stage Selection */}
             {actionType !== "no" && (
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid grid-cols-2 gap-4">
                     {/* Group Selection */}
                     <div className="border border-gray-300 p-4 rounded-lg relative" ref={groupDropdownRef}>
                         <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Group")}</p>
@@ -175,25 +175,6 @@ const AddTags = ({ CRMList, groupId }) => {
                             )}
                         </div>
 
-                    <div className="border border-gray-300 p-4 rounded-lg relative">
-                        <p className="text-[20px] font-[500] text-gray-800 mb-4">{t("prospecting.Select Group")}</p>
-                        <select
-                            className={`border border-[#F0F0F0] w-full p-3 border rounded-lg focus:outline-none ${!selectedGroupId ? "text-gray-500" : "text-gray-800"}`}
-                            value={selectedGroupId || ""}
-                            onChange={(e) => {
-                                setSelectedGroupId(e.target.value);
-                                setSelectedStageId(null);
-                                setSelectedStageNum(null);
-                                handleSave(e.target.value, null, null);
-                            }}
-                        >
-                            <option value="">{t("prospecting.Select Group")}</option>
-                            {CRMList?.map((group) => (
-                                <option key={group.id} value={group.id}>
-                                    {group.name}
-                                </option>
-                            ))}
-                        </select>
                     </div>
 
                     {/* Stage Selection */}
@@ -253,29 +234,6 @@ const AddTags = ({ CRMList, groupId }) => {
                                 </div>
                             )}
                         </div>
-                    <div className="border border-gray-300 p-4 rounded-lg relative">
-                        <p className="text-[20px] font-[500] text-gray-800 mb-4">{t("prospecting.Select Stage")}</p>
-                        <select
-                            key={selectedStageId}
-                            className={`border border-[#F0F0F0] w-full p-3 border rounded-lg focus:outline-none ${!selectedStageId ? "text-gray-500" : "text-gray-800"}`}
-                            value={selectedStageId || ""}
-                            onChange={(e) => {
-                                const selectedStage = sortedStages.find((stage) => stage.id === parseInt(e.target.value));
-                                if (selectedStage) {
-                                    setSelectedStageId(selectedStage.id);
-                                    setSelectedStageNum(selectedStage.stage_num);
-                                    handleSave(selectedGroupId, selectedStage.id, selectedStage.stage_num);
-                                }
-                            }}
-                            disabled={!selectedGroupId}
-                        >
-                            <option value="">{t("prospecting.Select Stage")}</option>
-                            {sortedStages.map((stage) => (
-                                <option key={stage.id} value={stage.id}>
-                                    {stage.name}
-                                </option>
-                            ))}
-                        </select>
                     </div>
 
                 </div>
