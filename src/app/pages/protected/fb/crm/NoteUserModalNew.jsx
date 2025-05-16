@@ -6,10 +6,12 @@ import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, Trip
 import { useLocation } from "react-router-dom";
 import useFbNoteStore from '../../../../../store/notes/fbNoteStore';
 import SocialsSection from './Notes/SocialsSection';
+import usefbCRM from '../../../../../store/fb/fbCRM';
 
-const NoteUserModal = ({ visible, onCancel, lead }) => {
+const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
     const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
-
+    const { getGroupById } = usefbCRM();
+    console.log("selectedGroup", selectedGroup)
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",
@@ -89,6 +91,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 setNotesData({ note: '' });
                 setActiveNoteEditDropdown(null);
                 await getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
+                handleUpdateGroups()
                 onCancel();
             }
         } catch (error) {
@@ -128,6 +131,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             const res = await createFbNote({ data: payload });
             if (res) {
                 message.success("Note deleted successfully");
+                handleUpdateGroups()
                 getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
             }
         } catch (error) {
@@ -148,6 +152,11 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         setEditingNote(null);
         setNotesData({ note: '' });
     };
+
+    const handleUpdateGroups = async () =>{
+        if (selectedGroup)
+            await getGroupById({ id: selectedGroup?.id, type: 'fb' });
+    }
 
     useEffect(() => {
         if (visible) {
@@ -229,6 +238,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 const res = await createFbNote({ data: payload });
                 if (res) {
                     message.success(res?.message);
+                    handleUpdateGroups()
                     getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
                 }
             } catch (error) {
@@ -285,6 +295,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                 if (res) {
                     message.success(res?.message);
+                    handleUpdateGroups()
                     getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
                 }
             } catch (error) {

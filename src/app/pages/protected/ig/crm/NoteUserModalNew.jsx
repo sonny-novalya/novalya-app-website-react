@@ -6,10 +6,11 @@ import { DeleteGreyIcon, EditIcon, TripleDotIcon } from '../../../common/icons/i
 import { useLocation } from "react-router-dom";
 import SocialsSection from './Notes/SocialsSection';
 import useIgNoteStore from '../../../../../store/notes/igNoteStore';
+import usefbCRM from '../../../../../store/fb/fbCRM';
 
-const NoteUserModal = ({ visible, onCancel, lead }) => {
+const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
     const { createIgNote, getIgNotes, fetchedNotes, deleteUserNote } = useIgNoteStore();
-
+    const { getGroupById } = usefbCRM();
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",
@@ -89,6 +90,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 setNotesData({ note: '' });
                 setActiveNoteEditDropdown(null);
                 await getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
+                handleUpdateGroups()
                 onCancel();
             }
         } catch (error) {
@@ -129,6 +131,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
             if (msg) {
                 message.success("Note Added Successfully");
+                handleUpdateGroups()
                 getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
             }
         } catch (error) {
@@ -149,6 +152,12 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         setEditingNote(null);
         setNotesData({ note: '' });
     };
+
+
+    const handleUpdateGroups = async () => {
+        if (selectedGroup)
+            await getGroupById({ id: selectedGroup?.id, type: 'ig' });
+    }
 
     useEffect(() => {
         if (visible) {
@@ -233,6 +242,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                 if (res) {
                     message.success(res?.message);
+                    handleUpdateGroups()
                     getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
                 }
             } catch (error) {
@@ -289,6 +299,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                 if (res) {
                     message.success(res?.message);
+                    handleUpdateGroups()
                     getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
                 }
             } catch (error) {

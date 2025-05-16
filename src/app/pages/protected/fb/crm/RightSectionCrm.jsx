@@ -307,43 +307,40 @@ const RightSectionCrm = ({ selectedGroup }) => {
     toggleUserSelection,
   }) => {
 
-    return (
-      <div
-        key={lead.id + stage.id}
-        className={`border p-3 rounded-md flex gap-2 items-center shadow-sm ${
-          selectedUsers.includes(lead.id)
-            ? "border-[#0087FF] bg-[#D9EDFF]"
-            : "border-white bg-white"
-        }`}
-        draggable={true}
-        onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
-      >
+    return (  
+      <div className="flex">
         <Checkbox
           checked={selectedUsers.includes(lead.id)}
           onChange={(e) => {
             e.stopPropagation();
-            e.preventDefault(); // Add this
-            setTimeout(() => {
-              toggleUserSelection(lead.id, e);
-            }, 0);
-            return false; 
+            e.preventDefault();
+            setTimeout(() => toggleUserSelection(lead.id, e), 0);
+            return false;
           }}
         />
         <div
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={() => {
-            setSelectedLead(lead);
-            setOpenNoteModal(true);
-          }}
+          key={`${lead.id}-${stage.id}`}
+          className={`border-l-4 border-[#21BF7C] p-3 rounded-md flex gap-2 items-center  shadow-sm ml-2 ${selectedUsers.includes(lead.id) ? "bg-[#D9EDFF]" : "bg-white"
+            }`}
+          draggable
+          onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
         >
-          <img
-            src={lead?.profile_pic}
-            alt={lead?.fb_name}
-            className="w-8 h-8 rounded-full"
-          />
-          <div>
-            <p className="font-medium text-sm">{lead.fb_name}</p>
-            <p className="text-xs text-gray-400">{lead.time}</p>
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              setSelectedLead(lead);
+              setOpenNoteModal(true);
+            }}
+          >
+            <img
+              src={lead?.profile_pic}
+              alt={lead?.fb_name}
+              className="w-8 h-8 rounded-full"
+            />
+            <div className="text-sm line-clamp-2 max-w-[200px] leading-snug text-ellipsis overflow-hidden">
+              <span className="font-medium">{lead.fb_name}</span>
+              <span className="text-xs line-clamp-2 text-gray-400">{lead.user_note}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -415,7 +412,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
               e.stopPropagation();
             }
           };
-
 
           return (
             <DroppableStage stageId={stage.id} key={stage.id}>
@@ -591,6 +587,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
           visible={openNoteModal}
           onCancel={() => setOpenNoteModal(false)}
           lead={selectedLead}
+          selectedGroup={selectedGroup}
         />
       )}
     </div>
