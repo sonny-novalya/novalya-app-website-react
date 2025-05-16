@@ -316,7 +316,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     }) => {
 
         return (
-            <div className="flex">
+            <div className="flex w-full">
                 <Checkbox
                     checked={selectedUsers.includes(lead.id)}
                     onChange={(e) => {
@@ -325,30 +325,31 @@ const RightSectionCrm = ({ selectedGroup }) => {
                         setTimeout(() => toggleUserSelection(lead.id, e), 0);
                         return false;
                     }}
+                    className="flex-shrink-0"
                 />
                 <div
                     key={`${lead.id}-${stage.id}`}
-                    className={`border-l-4 border-[#21BF7C] p-3 rounded-md flex gap-2 items-center  shadow-sm ml-2 ${selectedUsers.includes(lead.id) ? "bg-[#D9EDFF]" : "bg-white"
+                    className={`border-l-4 border-[#21BF7C] p-3 max-w-[300px] rounded-md shadow-lg flex gap-2 items-start w-full ml-2 ${selectedUsers.includes(lead.id) ? "bg-[#D9EDFF]" : "bg-white"
                         }`}
                     draggable
                     onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
                 >
                     <div
-                        className="flex flex-col cursor-pointer"
+                        className="flex flex-col cursor-pointer w-full"
                         onClick={() => {
                             setSelectedLead(lead);
                             setOpenNoteModal(true);
                         }}
                     >
-                        <div className="text-sm line-clamp-2 leading-snug text-ellipsis overflow-hidden flex items-center gap-2">
+                        <div className="text-sm line-clamp-2 leading-snug text-ellipsis overflow-hidden flex items-center gap-2 w-full">
                             <img
                                 src={lead?.profile_pic}
-                                alt={lead?.fb_name}
-                                className="w-8 h-8 rounded-full"
+                                alt={lead?.insta_name}
+                                className="w-8 h-8 rounded-full flex-shrink-0"
                             />
-                            <span className="font-medium">{lead?.insta_name}</span>
+                            <span className="font-medium truncate">{lead?.insta_name}</span>
                         </div>
-                        <span className="text-xs line-clamp-2 max-w-[200px] text-gray-400 mt-1">{lead?.user_note}</span>
+                        <span className="text-xs line-clamp-2 w-full  text-gray-400 mt-1">{lead?.user_note}</span>
                     </div>
                 </div>
             </div>
