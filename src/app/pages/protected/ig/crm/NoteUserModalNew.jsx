@@ -474,7 +474,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                         <div className="">
                             <label className="block text-sm font-medium mb-1">Notes History</label>
-                            <div className="space-y-2 max-h-20 overflow-y-auto pr-1">
+                            <div className="space-y-2 min-h-20 max-h-36 overflow-y-auto pr-1">
                                 {notes?.map((note, index) => {
                                     return <div
                                         key={index}
