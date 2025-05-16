@@ -228,7 +228,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             try {
                 const res = await createFbNote({ data: payload });
                 if (res) {
-                    message.success("Note updated successfully");
+                    message.success(res?.message);
                     getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
                 }
             } catch (error) {
@@ -281,10 +281,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             };
 
             try {
-                const msg = await createFbNote({ data: payload });
+                const res = await createFbNote({ data: payload });
 
-                if (msg) {
-                    message.success("Note Added Successfully");
+                if (res) {
+                    message.success(res?.message);
                     getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
                 }
             } catch (error) {
@@ -476,7 +476,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                         <div className="">
                             <label className="block text-sm font-medium mb-1">Notes History</label>
-                            <div className="space-y-2 max-h-20 overflow-y-auto pr-1">
+                            <div className="space-y-2 min-h-20 max-h-36 overflow-y-auto pr-1">
                                 {notes?.map((note, index) => {
                                     return <div
                                         key={index}

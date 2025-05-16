@@ -215,7 +215,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 profile_pic: lead.profile_pic || '',
                 short_description: userInfo.bio || '',
                 Socials: JSON.stringify(userInfo.socials),
-                description: notes_history?.map((item) => item?.description),
+                description: updatedNotes?.map((item) => item?.text),
                 is_primary: selectedTag.tag_id || '',
                 selected_tag_stage_ids: [
                     {
@@ -229,10 +229,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             };
 
             try {
-                const msg = await createIgNote({ data: payload });
+                const res = await createIgNote({ data: payload });
 
-                if (msg) {
-                    message.success("Note Added Successfully");
+                if (res) {
+                    message.success(res?.message);
                     getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
                 }
             } catch (error) {
@@ -285,10 +285,10 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             };
 
             try {
-                const msg = await createIgNote({ data: payload });
+                const res = await createIgNote({ data: payload });
 
-                if (msg) {
-                    message.success("Note Added Successfully");
+                if (res) {
+                    message.success(res?.message);
                     getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
                 }
             } catch (error) {
