@@ -428,10 +428,10 @@ const RightSectionCrm = ({ selectedGroup }) => {
                             <div
                                 className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
                             >
-                                <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
-                                    <div className="flex items-center justify-between">
+                                <div className="text-[#000000BF] p-3 rounded-md mb-4">
+                                    <div className="border-b border-[#DADADA] flex items-center justify-between">
                                         <div className="flex items-center gap-2">
-                                            <Checkbox
+                                            {/* <Checkbox
                                                 checked={
                                                     selectedUsers?.length === stage?.leads?.length &&
                                                     selectedUsers?.length > 0
@@ -441,19 +441,22 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                                     selectedUsers?.length < stage?.leads?.length
                                                 }
                                                 onChange={handleSelectAll}
-                                            />
+                                            /> */}
                                             <span className="text-sm font-semibold">
                                                 {stage.name}
                                             </span>
-                                            <Badge
+                                            {/* <Badge
                                                 count={`${stage?.leads?.length || 0} leads`}
                                                 style={{
-                                                    backgroundColor: "white",
-                                                    color: "#0087FF",
-                                                    fontSize: "10px",
-                                                    padding: "0 6px",
+                                                backgroundColor: "white",
+                                                color: "#0087FF",
+                                                fontSize: "10px",
+                                                padding: "0 6px",
                                                 }}
-                                            />
+                                            /> */}
+                                            <span>
+                                                ({stage?.leads?.length})
+                                            </span>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <span
@@ -494,7 +497,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                             >
                                                 <Button
                                                     type="text"
-                                                    icon={<VerticalDotsIcon color={"white"} />}
+                                                    icon={<VerticalDotsIcon color={"black"} />}
 
                                                     className="!text-[#808183] !h-9 btn-hover"
                                                 />
