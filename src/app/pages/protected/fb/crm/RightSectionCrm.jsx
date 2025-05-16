@@ -53,8 +53,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
     const delTime = useRef();
 
- 
-  
+  const scrollPositionsRef = useRef({});
 
   useEffect(() => {
     if (selectedGrpData?.stage?.length) {
@@ -321,7 +320,14 @@ const RightSectionCrm = ({ selectedGroup }) => {
       >
         <Checkbox
           checked={selectedUsers.includes(lead.id)}
-          onChange={() => toggleUserSelection(lead.id)}
+          onChange={(e) => {
+            e.stopPropagation();
+            e.preventDefault(); // Add this
+            setTimeout(() => {
+              toggleUserSelection(lead.id, e);
+            }, 0);
+            return false; 
+          }}
         />
         <div
           className="flex items-center gap-2 cursor-pointer"
@@ -378,7 +384,16 @@ const RightSectionCrm = ({ selectedGroup }) => {
             }));
           };
 
-          const toggleUserSelection = (id) => {
+          const toggleUserSelection = (id, e) => {
+            // Store current scroll positions before state update
+            sortedStages.forEach(stage => {
+              const container = document.querySelector(`#stage-container-${stage.id}`);
+              if (container) {
+                scrollPositionsRef.current[stage.id] = container.scrollTop;
+              }
+            });
+
+            // Update state as normal
             setSelectedUsersMap((prev) => {
               const current = prev[stage.id] || [];
               return {
@@ -388,6 +403,21 @@ const RightSectionCrm = ({ selectedGroup }) => {
                   : [...current, id],
               };
             });
+
+            // Restore scroll positions in the next frame
+            requestAnimationFrame(() => {
+              sortedStages.forEach(stage => {
+                const container = document.querySelector(`#stage-container-${stage.id}`);
+                if (container && scrollPositionsRef.current[stage.id] !== undefined) {
+                  container.scrollTop = scrollPositionsRef.current[stage.id];
+                }
+              });
+            });
+
+            // Prevent event bubbling
+            if (e) {
+              e.stopPropagation();
+            }
           };
 
 
@@ -471,7 +501,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 </div>
 
                 {/* Leads */}
-                <div className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+                <div id={`stage-container-${stage.id}`} className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto" >
                   {stage?.leads?.map((lead) => (
                     <SortableItem
                       key={lead.id}
