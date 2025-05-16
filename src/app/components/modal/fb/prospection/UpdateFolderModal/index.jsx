@@ -9,7 +9,7 @@ import { DeleteFillIcon } from "../../../../../pages/common/icons/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { t } from "i18next";
 
-const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, prospectFolder , initialStoreFilters}) => {
+const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, prospectFolder , initialStoreFilters,setSelectedFolder}) => {
     const [selectedGroups, setSelectedGroups] = useState([]);
     const [newFolderName, setNewFolderName] = useState(folderName);
     const { groups, initialGroups, fetchInitialGroups, fetchGroups,storeFilters } = useGroupStore();
@@ -62,8 +62,10 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
                 const newFolders = folders?.filter((f)=>f.id !== folderId)
                 setFolderManualy([...newFolders])
                 fetchGroups(initialStoreFilters);
+                setSelectedFolder(0)
                 onClose();
             }
+
     };
     useEffect(() => {
 

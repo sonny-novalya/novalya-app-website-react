@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DeleteFillRedIcon } from "../../../common/icons/icons";
+import useLoginUserDataStore from "../../../../../store/loginuser/loginuserdata";
 
 const paymentMethods = [
     {
@@ -26,11 +27,26 @@ const paymentMethods = [
 ];
 
 const PaymentMethods = () => {
+
+    const {getCardList}=useLoginUserDataStore()
+    const [cards,setCards] = useState([])
+
+    const fetchCardList = async ()=>{
+        const res = await getCardList()
+        if (res?.status === 200) {
+            setCards(res?.data?.data)
+        }
+    }
+
+    useEffect(() => {
+      fetchCardList()
+    }, [])
+    
     return (
         <div className="space-y-4">
             <h2 className="text-[20px] font-medium text-[#000000BF]">Payment Methods</h2>
             <div className="space-y-4 w-2/3">
-                {paymentMethods.map((card) => (
+                {cards.map((card) => (
                     <div
                         key={card.id}
                         className="flex items-center justify-between border border-[#DCDCDCCD] rounded-md p-4 shadow-sm"
@@ -47,7 +63,7 @@ const PaymentMethods = () => {
                                     {card.status === "expired" ? (
                                         <span className="text-[#FF0000]">Expired on {card.expiry}</span>
                                     ) : (
-                                        <>Expiry {card.expiry}</>
+                                        <>Expiry {`${card.expiry_month}/${card.expiry_year}`}</>
                                     )}
                                 </p>
                             </div>

@@ -44,12 +44,8 @@ const useFbProspectingStore = create((set) => ({
                 },
                 
             });
-
-            if (response.statusText !== "OK") {
-                throw new Error("Failed to create folder");
-            }
-
-            console.log("Folder created successfully:", response.data);
+         
+       
         } catch (error) {
             console.error("Error creating folder:", error);
         }

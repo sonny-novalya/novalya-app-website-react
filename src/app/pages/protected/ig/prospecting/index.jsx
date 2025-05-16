@@ -32,7 +32,7 @@ const IgProspecting = () => {
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup,initialStoreFiltersIG } = useGroupStore();
     const socialType = "ig_followers";
     const prospect_folder = "ig";
 
@@ -722,7 +722,7 @@ const IgProspecting = () => {
                                         </div>
                                     </button>
                                     <span className="ml-1 cursor-pointer" onClick={() => {
-                                        // setFolderId(folder.id)
+                                        setFolderId(folder.id)
                                         setFolderName(folder.folder_name)
                                         setOpenUpdateFolderModal(true)
                                     }}>
@@ -852,6 +852,7 @@ const IgProspecting = () => {
 
                 {openCreateFolderModal && (
                     <CreateFolderModal
+                        setFolders={setFolders}
                         visible={openCreateFolderModal}
                         onClose={handleCloseCreateFolderModal}
                         socialType={socialType}
@@ -867,6 +868,8 @@ const IgProspecting = () => {
                         onClose={handleCloseUpdateFolderModal}
                         socialType={socialType}
                         prospectFolder={prospect_folder}
+                        initialStoreFilters={initialStoreFiltersIG}
+                        setSelectedFolder={setSelectedFolder}
                     />
                 )}
             </div>
