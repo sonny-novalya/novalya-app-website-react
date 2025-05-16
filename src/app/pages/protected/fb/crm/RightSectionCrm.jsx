@@ -331,21 +331,21 @@ const RightSectionCrm = ({ selectedGroup }) => {
           onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
         >
           <div
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex flex-col cursor-pointer"
             onClick={() => {
               setSelectedLead(lead);
               setOpenNoteModal(true);
             }}
           >
-            <img
-              src={lead?.profile_pic}
-              alt={lead?.fb_name}
-              className="w-8 h-8 rounded-full"
-            />
-            <div className="text-sm line-clamp-2 max-w-[200px] leading-snug text-ellipsis overflow-hidden">
-              <span className="font-medium">{lead.fb_name}</span>
-              <span className="text-xs line-clamp-2 text-gray-400">{lead.user_note}</span>
+            <div className="text-sm line-clamp-2 leading-snug text-ellipsis overflow-hidden flex items-center gap-2">
+              <img
+                src={lead?.profile_pic}
+                alt={lead?.fb_name}
+                className="w-8 h-8 rounded-full"
+              />
+              <span className="font-medium">{lead?.fb_name}</span>
             </div>
+            <span className="text-xs line-clamp-2 max-w-[200px] text-gray-400 mt-1">{lead?.user_note}</span>
           </div>
         </div>
       </div>
