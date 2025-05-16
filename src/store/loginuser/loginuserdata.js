@@ -59,7 +59,41 @@ const useLoginUserDataStore = create((set) => ({
       
         }
     },
+    getInvoiceList: async (limit=2) => {
+        try {
+            set({ loading: true });
 
+            const response = await apiCall({
+                method: 'GET',
+                url: `/user/api/chargebee/list-invoices?limit=${limit}`,
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
+     downloadInvoice: async (id) => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: `/user/api/chargebee/download-invoices`,
+                data:{invoice_id:id}
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
 
 }));
 

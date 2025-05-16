@@ -99,6 +99,16 @@ export  const getCurrentYear = ()=>{
   }
 
 
+export function formatUnixDate(unixTimestamp) {
+  // Convert seconds to milliseconds if needed
+  if (unixTimestamp.toString().length === 10) {
+    unixTimestamp *= 1000;
+  }
+
+  const date = new Date(unixTimestamp);
+  const options = { month: 'short', day: 'numeric', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
 
 
 

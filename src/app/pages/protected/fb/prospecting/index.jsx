@@ -690,7 +690,7 @@ const FbProspecting = () => {
                             ))
                         }
                         {
-                            [...(Array.isArray(folders) ? folders : [])].map((folder, index) => (
+                            folders.map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
                                         className={` px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
@@ -715,7 +715,7 @@ const FbProspecting = () => {
 
                         <button className={`px-4 text-sm py-1.5 rounded cursor-pointer bg-[#F2F2F2] text-[#00000080]`} onClick={() => setOpenCreateFolderModal(true)}><span className="text-[#005199]">+</span>{" "}{t("prospecting.Create Folder")}</button>
                     </div>
-                    <Button id="Novalya-Multi-group" className="!text-white !bg-[#0087FF] text-white !rounded-[10px] !px-8 !py-3 min-h-[45px] border !border-transparent">{t("prospecting.Add new group")}</Button>
+                    <Button id="Novalya-Multi-group" className="!text-white !bg-[#0087FF]  !rounded-[10px] !px-8 !py-3 min-h-[45px] border !border-transparent">{t("prospecting.Add new group")}</Button>
                 </div>
                 <div className="flex items-center justify-between my-5 space-x-4 ">
                     <Input
