@@ -14,8 +14,8 @@ import './friendsList.css';
 const FriendsList = () => {
 
     const [searchKeyword, setSearchKeyword] = useState("");
-    const [isPremium, setIsPremium] = useState(false);
-    const { friends, loading, error, totalRecords, fetchFbFriends, fbAddToWhitelist } = useFbFriendListStore();
+    // const [isPremium, setIsPremium] = useState(false);
+    const { friends, loading, error, totalRecords, fetchFbFriends, fbAddToWhitelist, isPremium } = useFbFriendListStore();
     // const [selectedRows, setSelectedRows] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [selectedProfileIds, setSelectedProfileIds] = useState([]);
@@ -287,7 +287,7 @@ const FriendsList = () => {
             </div>
             <div style={{ overflowX: 'auto', maxWidth: '100%' }} className="ctm-friend-table">
               {!isPremium && !loading && (friends.length > 0) && <div class='friends-list-bluredBtn'>
-                  <button
+                  <button onClick={() => navigate('/upgrade')}
                     className="bg-[linear-gradient(to_bottom,_#005199,_#0087FF)] px-10 py-4 text-white rounded-lg flex items-center gap-[15px]"> {upgradeToPremiumIcon()} Upgrade to business</button> 
               </div>}
               <Table 
