@@ -124,13 +124,13 @@ const SortableItem = ({
             : "border-[#E6F1FB]"
         }`}
       >
-        <div className="w-10 h-9 rounded-full flex items-center justify-center font-bold text-white bg-blue-500 uppercase">
-          {group.name
-            .split(" ")
-            .map((word) => word[0])
-            .join("")
-            .slice(0, 2)}
-        </div>
+        <span
+          className="w-11 h-10 rounded-md text-white flex items-center justify-center font-semibold text-sm"
+          style={{ backgroundColor: group.custom_color || "#000" }}
+        >
+          {group.name?.trim().slice(0, 2).toUpperCase()}
+        </span>
+
        {!isCollapse && <div className="flex flex-col items-center w-full">
           <div className="flex items-center justify-between w-full">
             <span className="capitalize max-w-36 truncate">{group.name}</span>
