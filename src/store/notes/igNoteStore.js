@@ -80,13 +80,13 @@ const useIgNoteStore = create((set) => ({
         }
     },
 
-    deleteUserNote: async ({ notes_id, id }) => {
+    deleteUserNote: async ({ note_id }) => {
         try {
             set({ loading: true, error: null });
 
             const response = await apiCall({
                 method: "POST",
-                url: `/user/api/delete-user-note-variants?id=${id}&note_id=${notes_id}`,
+                url: `/user/api/delete-note?id=${note_id}`,
             });
 
             set({ loading: false });

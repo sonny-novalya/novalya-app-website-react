@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import PropTypes from "prop-types";
 import { message, Modal, } from "antd";
 import ListPanel from './Notes/ListPanel';
-import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
+import { DeleteGreyIcon, EditIcon, TripleDotIcon } from '../../../common/icons/icons';
 import { useLocation } from "react-router-dom";
 import SocialsSection from './Notes/SocialsSection';
 import useIgNoteStore from '../../../../../store/notes/igNoteStore';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
-    const { createIgNote, getIgNotes, fetchedNotes } = useIgNoteStore();
+    const { createIgNote, getIgNotes, fetchedNotes, deleteUserNote } = useIgNoteStore();
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -39,6 +39,8 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         tag_id: 0,
         stage_id: 0
     });
+    const [notes_id, setNotesId] = useState(null)
+    const [notes, setNotes] = useState([]);
 
     const noteEditdropdownRefs = useRef([]);
 
@@ -55,6 +57,44 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 [platform]: value
             }
         }));
+    };
+
+    const handleDeleteFullNote = async (note_id) => {
+        if (!notes_id) return message.error("Please Create Notes first")
+        try {
+            const res = await deleteUserNote({ note_id });
+            console.log("ressss", res)
+            if (res?.status === 'success') {
+                message.success(res?.message);
+                setUserInfo({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: "",
+                    profession: "",
+                    bio: "",
+                    socials: {
+                        website: "",
+                        facebook: "",
+                        instagram: "",
+                        twitter: "",
+                        linkedin: "",
+                        youtube: ""
+                    },
+                    note: ""
+                });
+                setNotesId(null);
+                setNotes([]);
+                setEditingNote(null);
+                setNotesData({ note: '' });
+                setActiveNoteEditDropdown(null);
+                await getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
+                onCancel();
+            }
+        } catch (error) {
+            message.error("Failed to delete note");
+            console.error("Delete failed:", error);
+        }
     };
 
     const handleDeleteNote = async (noteToDelete) => {
@@ -111,11 +151,14 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     useEffect(() => {
+        if (visible) {
         getIgNotes({ insta_user_id : lead?.insta_user_id, type: "instagram" })
-    }, [])
+        }
+    }, [visible, lead?.insta_user_id])
 
     useEffect(() => {
         if (fetchedNotes) {
+            setNotesId(fetchedNotes?.id)
             setUserInfo({
                 firstName: fetchedNotes.first_name || '',
                 lastName: fetchedNotes.last_name || '',
@@ -275,8 +318,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [activeNoteEditDropdown]);
 
-    const [notes, setNotes] = useState([]);
-
     return (
         <Modal
             open={visible}
@@ -314,7 +355,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                     {/* <button className="text-gray-600 hover:text-blue-500 text-sm">
                                         <SyncTripleArrowIcon />
                                     </button> */}
-                                    <button className="text-gray-600 hover:text-red-500 text-sm">
+                                    <button className="text-gray-600 hover:text-red-500 text-sm" onClick={() => handleDeleteFullNote(notes_id)}>
                                         <DeleteGreyIcon />
                                     </button>
                                 </div>

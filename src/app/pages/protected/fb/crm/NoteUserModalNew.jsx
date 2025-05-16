@@ -8,7 +8,7 @@ import useFbNoteStore from '../../../../../store/notes/fbNoteStore';
 import SocialsSection from './Notes/SocialsSection';
 
 const NoteUserModal = ({ visible, onCancel, lead }) => {
-    const { createFbNote, getFbNotes, fetchedNotes } = useFbNoteStore();
+    const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
 
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -39,6 +39,8 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         tag_id: 0,
         stage_id: 0
     });
+    const [notes_id, setNotesId] = useState(null)
+    const [notes, setNotes] = useState([]);
 
     const noteEditdropdownRefs = useRef([]);
 
@@ -48,7 +50,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     const handleSocialChange = (platform, value) => {
-        console.log("userInfo.socials", userInfo.socials)
         setUserInfo(prev => ({
             ...prev,
             socials: {
@@ -56,6 +57,44 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 [platform]: value
             }
         }));
+    };
+
+    const handleDeleteFullNote = async (note_id) => {
+        if (!notes_id) return message.error("Please Create Notes first")
+        try {
+            const res = await deleteUserNote({ note_id });
+            console.log("ressss", res)
+            if (res?.status === 'success') {
+                message.success(res?.message);
+                setUserInfo({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: "",
+                    profession: "",
+                    bio: "",
+                    socials: {
+                        website: "",
+                        facebook: "",
+                        instagram: "",
+                        twitter: "",
+                        linkedin: "",
+                        youtube: ""
+                    },
+                    note: ""
+                });
+                setNotesId(null); 
+                setNotes([]);
+                setEditingNote(null);
+                setNotesData({ note: '' });
+                setActiveNoteEditDropdown(null);
+                await getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
+                onCancel();
+            }
+        } catch (error) {
+            message.error("Failed to delete note");
+            console.error("Delete failed:", error);
+        }
     };
 
     const handleDeleteNote = async (noteToDelete) => {
@@ -111,11 +150,14 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
     };
 
     useEffect(() => {
-        getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
-    }, [])
+        if (visible) {
+            getFbNotes({ fb_user_id: lead?.fb_user_id, fb_e2ee_id: lead?.fb_user_e2ee_id });
+        }
+    }, [visible, lead?.fb_user_id, lead?.fb_user_e2ee_id])
 
     useEffect(() => {
         if (fetchedNotes) {
+            setNotesId(fetchedNotes?.id)
             setUserInfo({
                 firstName: fetchedNotes?.first_name || '',
                 lastName: fetchedNotes?.last_name || '',
@@ -270,7 +312,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [activeNoteEditDropdown]);
 
-    const [notes, setNotes] = useState([]);
     
     return (
         <Modal
@@ -316,7 +357,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                     <button className="text-gray-600 hover:text-blue-500 text-sm" value={lead?.fb_user_id} id="sync-facebook-user">
                                         <SyncTripleArrowIcon />
                                     </button>
-                                    <button className="text-gray-600 hover:text-red-500 text-sm">
+                                    <button className="text-gray-600 hover:text-red-500 text-sm" onClick={() => handleDeleteFullNote(notes_id)} >
                                         <DeleteGreyIcon />
                                     </button>
                                 </div>
