@@ -147,7 +147,22 @@ li.ant-pagination-total-text {
     padding: 0;
     box-shadow: none;
 }
-
-
-
+.custom-fb-note-modal-wrap .ant-modal-content {
+    background: #F1F2F2 !important;
+    padding: 30px;
+}
+.custom-fb-note-modal-wrap  select:focus-visible {
+    outline: none;
+}
+.custom-fb-note-modal-wrap .hover-text-white:hover {
+    color: #fff;
+   background: #0087FF;
+}
+.custom-fb-note-modal-wrap .hover-text-white:hover span {
+    color: #fff;
+}
+.custom-fb-note-modal-wrap .hover-text-white:hover svg path {
+    stroke: #fff;
+    opacity: 1 !important;
+}
 /* __________ End CSS For Prospection Setting Poppup _________ */
