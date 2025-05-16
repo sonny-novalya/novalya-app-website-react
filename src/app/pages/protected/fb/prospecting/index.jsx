@@ -651,7 +651,7 @@ const FbProspecting = () => {
     }, []);
 
     useEffect(() => {
-        fetchGroups(storeFilters);
+        fetchGroups({...storeFilters,type:"facebook"});
     }, [storeFilters]);
 
     useEffect(() => {

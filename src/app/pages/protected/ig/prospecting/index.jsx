@@ -672,10 +672,14 @@ const IgProspecting = () => {
         if (savedGroupId) {
             setPrimaryGroupId(savedGroupId);
         }
+            return ()=>{
+            updateFilters({...storeFilters,id:''})
+        }
     }, []);
 
     useEffect(() => {
         fetchGroups({ ...storeFilters, type: "instagram" });
+
     }, [storeFilters]);
 
     useEffect(() => {

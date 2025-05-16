@@ -18,7 +18,7 @@ const useGroupStore = create((set) => ({
         page: 1,
         limit: 25,
     },
-        initialStoreFiltersIG: {
+     initialStoreFiltersIG: {
         sort_by: 0,
         type: 'instagram',
         id: 0, // folder id,
