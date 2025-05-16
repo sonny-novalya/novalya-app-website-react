@@ -111,6 +111,26 @@ const useLoginUserDataStore = create((set) => ({
       
         }
     },
+     removeCard:async (id) => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: `/user/api/chargebee/delete-card`,
+                data:{
+                      payment_source_id: id
+                }
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
 
 }));
 

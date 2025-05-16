@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DeleteFillRedIcon } from "../../../common/icons/icons";
 import useLoginUserDataStore from "../../../../../store/loginuser/loginuserdata";
+import { isExpired } from "../../../../../helpers/helper";
+import { message } from "antd";
 
 const paymentMethods = [
     {
@@ -28,13 +30,21 @@ const paymentMethods = [
 
 const PaymentMethods = () => {
 
-    const {getCardList}=useLoginUserDataStore()
+    const {getCardList,removeCard}=useLoginUserDataStore()
     const [cards,setCards] = useState([])
 
     const fetchCardList = async ()=>{
         const res = await getCardList()
         if (res?.status === 200) {
             setCards(res?.data?.data)
+        }
+    }
+
+    const handleDelete = async(id)=>{
+        const res = await removeCard(id)
+        if(res?.status === 200){
+            message.success("Card has been removced successfully")
+            fetchCardList()
         }
     }
 
@@ -60,26 +70,26 @@ const PaymentMethods = () => {
                             <div>
                                 <p className="">Visa ending in {card.last4}</p>
                                 <p className="text-[12px] text-[#8D8D8D]">
-                                    {card.status === "expired" ? (
-                                        <span className="text-[#FF0000]">Expired on {card.expiry}</span>
+                                    {isExpired(card?.expiry_month,card?.expiry_year) ? (
+                                        <span className="text-[#FF0000]">Expired on {`${card?.expiry_month}/${card?.expiry_year}`}</span>
                                     ) : (
-                                        <>Expiry {`${card.expiry_month}/${card.expiry_year}`}</>
+                                        <>Expiry {`${card?.expiry_month}/${card?.expiry_year}`}</>
                                     )}
                                 </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
-                            {card.status === "primary" && (
+                            {card?.is_primary && (
                                 <span className="bg-[#21BF7C] text-white px-3 py-1 text-sm rounded">
                                     PRIMARY
                                 </span>
                             )}
-                            {card.status === "expired" && (
+                            {isExpired(card?.expiry_month,card?.expiry_year) && (
                                 <span className="bg-[#FF0000] text-white px-3 py-1 text-sm rounded">
                                     EXPIRED
                                 </span>
                             )}
-                            <button>
+                            <button className="cursor-pointer" onClick={()=> handleDelete(card?.id)}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M21.0036 6.73046C20.9836 6.73046 20.9536 6.73046 20.9236 6.73046C15.6336 6.20046 10.3536 6.00046 5.12358 6.53046L3.08358 6.73046C2.66358 6.77046 2.29358 6.47046 2.25358 6.05046C2.21358 5.63046 2.51358 5.27046 2.92358 5.23046L4.96358 5.03046C10.2836 4.49046 15.6736 4.70046 21.0736 5.23046C21.4836 5.27046 21.7836 5.64046 21.7436 6.05046C21.7136 6.44046 21.3836 6.73046 21.0036 6.73046Z" fill="#FF0000" />
                                     <path d="M8.50074 5.72C8.46074 5.72 8.42074 5.72 8.37074 5.71C7.97074 5.64 7.69074 5.25 7.76074 4.85L7.98074 3.54C8.14074 2.58 8.36074 1.25 10.6907 1.25L13.3107 1.25C15.6507 1.25 15.8707 2.63 16.0207 3.55L16.2407 4.85C16.3107 5.26 16.0307 5.65 15.6307 5.71C15.2207 5.78 14.8307 5.5 14.7707 5.1L14.5507 3.8C14.4107 2.93 14.3807 2.76 13.3207 2.76L10.7007 2.76C9.64074 2.76 9.62074 2.9 9.47074 3.79L9.24074 5.09C9.18074 5.46 8.86074 5.72 8.50074 5.72Z" fill="#FF0000" />
