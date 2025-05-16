@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./affiliateSettings.css";
-import AfiliateTopBar from "../../../../components/affilliate/shared/affiliateTopBar";
 import { Button, Input, Select, Upload, message } from "antd";
 import { UploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import adharFront from "../../../../../assets/img/adharBack.png";
@@ -30,6 +29,7 @@ const AffiliateSettings = () => {
   const [picPrev, setPicPrev] = useState({ front: null, back: null });
   const [loginUserData, setLoginUserData] = useState({});
   const [kycStat, setKycStat] = useState();
+  const [bankStat, setBankStat] = useState();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -160,24 +160,35 @@ const AffiliateSettings = () => {
   }, []);
 
   useEffect(() => {
-    loginUserData?.user_data?.kyc_status === "Uploaded" &&
-      setKycStat({ val: "Under Review", clr: "#fcba03" });
+    const kycStatData =
+      loginUserData?.kyc_status === "Uploaded"
+        ? "Under Review"
+        : loginUserData?.kycRejectcount?.length > 0 &&
+          loginUserData?.kyc_status === "Unverified"
+        ? "Rejected"
+        : loginUserData?.kyc_status === "Unverified"
+        ? "Not Verified"
+        : loginUserData?.kyc_status;
+    setKycStat(kycStatData);
 
-    loginUserData?.user_data?.kyc_status === "Unverified" &&
-      setKycStat({ val: "Not Verified", clr: "" });
-
-    loginUserData?.payout_info?.length > 0 &&
-      loginUserData?.user_data?.kyc_status === "Unverified" &&
-      setKycStat({ val: "Rejected", clr: "#ff0202" });
-
-    loginUserData?.user_data?.kyc_status === "Verified" &&
-      setKycStat({ val: "Verified", clr: "#35fc03" });
+    const poStat =
+      loginUserData?.porequestcount === 1
+        ? "Under Review"
+        : !loginUserData?.bank_account_title &&
+          !loginUserData?.outside_bank_account_title &&
+          loginUserData?.poRejectedCount?.length > 0
+        ? "Rejected"
+        : !loginUserData?.bank_account_title &&
+          !loginUserData?.outside_bank_account_title
+        ? "Not Setup"
+        : "Approved";
+    setBankStat(poStat);
   }, [loginUserData]);
 
   return (
     <>
       <div className="p-6 bg-gray-100 h-screen overflow-auto">
-      <h2 className="font-medium text-2xl mb-5">Affiliate Settings</h2>
+        <h2 className="font-medium text-2xl mb-5">Affiliate Settings</h2>
         <div className="flex gap-4">
           <div className="flex-1">
             {/* KYC Section */}
@@ -187,15 +198,8 @@ const AffiliateSettings = () => {
                   KYC Status
                 </h4>
                 <div>
-                  <button
-                    style={{
-                      background: kycStat?.clr,
-                      color: kycStat?.clr ? "white" : "#0087FF",
-                      border: kycStat?.clr || "#0087FF",
-                    }}
-                    className="font-medium text-[14px] leading-[150%] border border-[#0087FF] text-[#0087FF] rounded-[6px] px-5 py-2.5"
-                  >
-                    {kycStat?.val || "Not Verified"}
+                  <button className="font-medium text-[14px] leading-[150%] border border-[#0087FF] text-[#0087FF] rounded-[6px] px-5 py-2.5">
+                    {kycStat || "Not Verified"}
                   </button>
                 </div>
               </div>
@@ -206,11 +210,11 @@ const AffiliateSettings = () => {
                 </h4>
                 <div>
                   <button className="font-medium text-[14px] leading-[150%] border border-[#0087FF] text-[#0087FF] rounded-[6px] px-5 py-2.5">
-                    Not Setup
+                    {bankStat || "Not Setup"}
                   </button>
                 </div>
               </div>
-              {loginUserData?.kyc_status === "Unverified" && (
+              {kycStat !== "Under Review" && kycStat !== "Verified" && (
                 <>
                   <div className="grid grid-cols-[40%_60%]  gap-4 items-center">
                     <h4 className="font-medium text-[20px] leading-[150%]">
@@ -341,23 +345,23 @@ const AffiliateSettings = () => {
                 </>
               )}
 
-              <div className="border border-dashed border-[#0087FF] bg-[#0087FF33] rounded-[10px] mt-[20px] px-[30px] py-[20px] flex items-center gap-[16px]">
+             { kycStat !== "Verified" && <div className="border border-dashed border-[#0087FF] bg-[#0087FF33] rounded-[10px] mt-[20px] px-[30px] py-[20px] flex items-center gap-[16px]">
                 <InfoCircleOutlined className="affi-svg" />
                 <span className="font-medium text-[14px] leading-[150%] text-[#0087FF]">
-                  {loginUserData?.user_data?.kyc_status === "Uploaded" &&
+                  {kycStat === "Under Review" &&
                     " You have successfully uploaded your documents. It will be verify soon."}
-                  {loginUserData?.user_data?.kyc_status === "Unverified" &&
+                  {kycStat === "Not Verified" &&
                     " Please verify your KYC to set up your payment method for payouts."}
-                  {loginUserData?.payout_info?.length > 0 &&
-                  loginUserData?.user_data?.kyc_status === "Unverified"
-                    ? `Your KYC request has been rejected : ${loginUserData?.payout_info[0]?.reason}`
+                  {kycStat === "Rejected"
+                    ? `Your KYC request has been rejected : ${loginUserData?.kycRejectcount?.[0]?.reason}`
                     : null}
                 </span>
-              </div>
+              </div>}
 
-              {loginUserData?.user_data?.bank_account_title === null &&
-                loginUserData?.user_data?.outside_bank_account_title ===
-                  null && (
+              {!loginUserData?.user_data?.bank_account_title &&
+                !loginUserData?.user_data?.outside_bank_account_title &&
+                bankStat !== "Under Review" &&
+                bankStat !== "Approved" && (
                   /* && loginUserData?.porequestcount === 0 */
                   <>
                     {" "}
@@ -655,9 +659,6 @@ const AffiliateSettings = () => {
             </h3>
             <button className="font-medium text-[14px] leading-[150%] bg-[#0087FF] border border-[#0087FF] text-white w-full px-8 py-2.5 rounded-md cursor-pointer">
               Affiliate Agreement
-            </button>
-            <button className="font-medium text-[14px] leading-[150%] bg-[#0087FF] border border-[#0087FF] text-white w-full px-8 py-2.5 rounded-md cursor-pointer">
-              Compensation Plan
             </button>
           </div>
         </div>

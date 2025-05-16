@@ -135,9 +135,7 @@ const LoginPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center mt-4">
-                <Checkbox className="text-gray-600 text-[16px]">{t("login.Remember me!")}</Checkbox>
-              </div>
+           
 
               <div className="flex items-center justify-center mt-7">
                 <button

@@ -10,7 +10,7 @@ const Strategy = ({selectedStrategy, setSelectedStrategy}) => {
     };
 
     return (
-        <div className="border border-[#DADADA] px-4 pt-4 pb-6 rounded-lg mb-5 mx-auto w-full">
+        <div className="border border-[#DADADA] px-4 pt-4 pb-7.5 rounded-lg mb-5 mx-auto w-full">
             <div className="flex items-center gap-[6px] mb-4">
                 <p className="text-xl mb-0 font-[500]">Select the strategy</p>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,18 +20,18 @@ const Strategy = ({selectedStrategy, setSelectedStrategy}) => {
                 </svg>
             </div>
 
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-6">
                 <div className="flex">
                     <p className="font-medium w-40 mt-3">Past :</p>
-                    <div className="w-full grid grid-cols-3 gap-5">
+                    <div className="w-full grid grid-cols-3 gap-y-5 gap-x-6">
                         {strategyOptions.Past.map((option) => (
                             <button
                                 key={option.value}
                                 type="default"
-                                className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === option.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                                className={`min-h-13 relative flex items-center justify-between px-4 py-3 rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedStrategy === option.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
                                 onClick={() => setSelectedStrategy(option.value)}
                             >
-                                <span className="flex items-center space-x-2 mx-auto">
+                                <span className="flex text-[14px] items-center space-x-2 mx-auto">
                                     {option.label}
                                 </span>
                                 {selectedStrategy === option.value && (
@@ -46,9 +46,9 @@ const Strategy = ({selectedStrategy, setSelectedStrategy}) => {
 
                 <div className="flex  ">
                     <p className="font-medium w-40 mt-3">Present :</p>
-                    <div className="w-full grid grid-cols-3 gap-5">
+                    <div className="w-full grid grid-cols-3 gap-y-5 gap-x-6">
                         <button
-                            className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === "today" ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                            className={`relative flex items-center justify-between px-4 py-3 rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedStrategy === "today" ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
                             onClick={() => setSelectedStrategy("today")}
                         >
                             <span className="flex items-center space-x-2 mx-auto">
@@ -65,12 +65,12 @@ const Strategy = ({selectedStrategy, setSelectedStrategy}) => {
 
                 <div className="flex ">
                     <p className="font-medium w-40 mt-3">Future :</p>
-                    <div className="w-full grid grid-cols-3 gap-5">
+                    <div className="w-full grid grid-cols-3 gap-y-5 gap-x-6">
                         {strategyOptions.Future.map((option) => (
                             <button
                                 key={option.value}
                                 type="default"
-                                className={`relative flex items-center justify-between px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${selectedStrategy === option.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                                className={`relative flex items-center justify-between px-4 py-3 rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedStrategy === option.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
                                 onClick={() => setSelectedStrategy(option.value)}
                             >
                                 <span className="flex items-center space-x-2 mx-auto">

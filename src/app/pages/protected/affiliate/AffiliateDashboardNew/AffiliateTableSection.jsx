@@ -21,9 +21,22 @@ const AffiliateTableSection = ({ isPro }) => {
     const { tableFilters, updateTableFilters } = useAffTableDataStore();
 
     useEffect(() => {
-        fetchLoginUserData()
-        fetchAffiliateCustomers()
+        fetchLoginUserData();
+    }, []);
+
+    useEffect(() => {
+        // Reset filters whenever tab changes
+        updateTableFilters({
+            search: "",
+            month: null,
+            year: new Date().getFullYear(),
+        });
+    }, [activeTab]);
+
+    useEffect(() => {
+        fetchAffiliateCustomers();
     }, [tableFilters]);
+    
 
     useEffect(()=>{
         if(activeTab === 'new_trials'){
@@ -34,15 +47,6 @@ const AffiliateTableSection = ({ isPro }) => {
             })
         }
     }, [])
-
-    useEffect(() => {
-        updateTableFilters({
-            search: "",
-            month: null,
-            year: new Date().getFullYear()
-        });
-    }, [activeTab]);
-    
 
     const TableComponent = (currentTab) => {
         switch (currentTab) {

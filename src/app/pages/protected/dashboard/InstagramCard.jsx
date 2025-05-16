@@ -37,7 +37,7 @@ const InstagramCard = ({ data }) => {
 
     return (
         <>
-        <div className="flex-1 bg-white rounded-[16px] overflow-hidden relative dashboard-ig-card">
+            <div className="bg-white rounded-[16px] overflow-hidden relative dashboard-ig-card shadow-lg">
             <div className="relative">
                 <div className="flex items-center h-15 justify-end items-center h-15 px-4 py-2 bg-[linear-gradient(90deg,_#3a0ca3_0%,_#b5179e_25%,_#f72585_45%,_#fb5607_70%,_#ffbe0b_100%)]">
                     <img src={IgImg} alt="Cover" className="w-full max-w-[120px]" />

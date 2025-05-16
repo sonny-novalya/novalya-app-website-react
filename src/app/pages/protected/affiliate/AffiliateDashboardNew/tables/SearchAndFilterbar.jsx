@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 
 export const months = [
     { label: 'January', value: 1 },
@@ -21,6 +22,19 @@ const years = Array.from({ length: 3 }, (_, i) => ({
 }));
 
 export default function SearchAndFilterBar({ tableFilters, updateTableFilters, isNewTrials }) {
+    const [searchTerm, setSearchTerm] = useState(tableFilters?.search || '');
+
+    useEffect(() => {
+        setSearchTerm(tableFilters?.search || '');
+    }, [tableFilters?.search]);
+    
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            updateTableFilters({ search: searchTerm });
+        }, 500); // 500ms debounce
+
+        return () => clearTimeout(delayDebounce);
+    }, [searchTerm]);
 
     return (
         <div className="mb-4 flex items-center gap-3">
@@ -34,13 +48,12 @@ export default function SearchAndFilterBar({ tableFilters, updateTableFilters, i
                 <input
                     type="text"
                     placeholder="Search by name or email"
-                    value={tableFilters?.search}
-                    onChange={(e) => updateTableFilters({ search: e.target.value })}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm"
                 />
             </div>
 
-            
             {!isNewTrials && (
                 <div className="flex space-x-3">
                     <select
@@ -66,8 +79,7 @@ export default function SearchAndFilterBar({ tableFilters, updateTableFilters, i
                     </select>
                 </div>
             )}
-
-            
         </div>
     );
 }
+

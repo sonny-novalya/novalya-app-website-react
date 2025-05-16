@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Table, Tag, Pagination } from 'antd';
+import { Input, Table, Tag, Pagination, Spin } from 'antd';
 
-export default function ActiveCustomersTable({ loginUserData, refUsers, isAffiliateLoading, showStatus = true }) {
-    const { active_customers = [] } = refUsers || {};
+export default function ActiveCustomersTable({ loginUserData, refUsers, isAffiliateLoading }) {
+    const customer_cancelled = refUsers?.customer_cancelled || [];
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
 
-    useEffect(() => {
-        setFilteredData(active_customers);
-    }, [active_customers]);
+    const [page, setPage] = useState(1);
+    const limit = 10;
 
-    useEffect(() => {
-        const searchValue = searchQuery.toLowerCase();
-        const filtered = active_customers.filter(user =>
-            `${user.firstname || ''} ${user.lastname || ''}`.toLowerCase().includes(searchValue)
-        );
-        setFilteredData(filtered);
-    }, [searchQuery, active_customers]);
+    const total = customer_cancelled?.length || 0;
 
     const formatDate = (dateInput, isUnix = false) => {
         const date = isUnix ? new Date(dateInput * 1000) : new Date(dateInput);
@@ -44,6 +33,10 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
         return map[status] || 'Unknown';
     };
 
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
     const statusColors = {
         Active: 'green',
         subscription_activated: 'green',
@@ -65,7 +58,7 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
         {
             title: '#',
             key: 'index',
-            render: (_, __, index) => (currentPage - 1) * pageSize + index + 1,
+            render: (_, __, i) => (page - 1) * limit + i + 1,
         },
         {
             title: 'Name',
@@ -108,45 +101,34 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
             title: 'Next Payment',
             render: (record) => formatDate(record.nextBillingAt, true)
         },
-        ...(showStatus
-            ? [{
-                title: 'Status',
-                dataIndex: 'subscription_status',
-                render: (status) => (
-                    status && (
-                        <Tag color={statusColors[status] || 'default'}>
-                            {getLabel(status)}
-                        </Tag>
-                    )
+
+        {
+            title: 'Status',
+            dataIndex: 'subscription_status',
+            render: (status) => (
+                status && (
+                    <Tag color={statusColors[status] || 'default'}>
+                        {getLabel(status)}
+                    </Tag>
                 )
-            }]
-            : [])
+            )
+        }
     ];
 
     return (
-        <div className="">
-
-            <Table
-                rowKey={(record) => `${record.customerid}`}
-                columns={columns}
-                dataSource={filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
-                pagination={false}
-                loading={isAffiliateLoading}
-            />
-
-            <div className="mt-4 flex justify-end">
-                <Pagination
-                    current={currentPage}
-                    total={filteredData.length}
-                    pageSize={pageSize}
-                    showSizeChanger
-                    pageSizeOptions={['10', '20', '50', '100']}
-                    onChange={(page, size) => {
-                        setCurrentPage(page);
-                        setPageSize(size);
-                    }}
-                />
-            </div>
-        </div>
+        <Table
+            rowKey={(record) => record.customerid}
+            columns={columns}
+            dataSource={customer_cancelled}
+            pagination={{
+                current: page,
+                pageSize: limit,
+                total,
+                onChange: handlePageChange,
+                showSizeChanger: false,
+            }}
+            scroll={{ x: 'max-content' }}
+            loading={isAffiliateLoading}
+        />
     );
 }

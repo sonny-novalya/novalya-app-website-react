@@ -1,28 +1,27 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Table, Input, Tag, Avatar } from 'antd';
+import { Table, Input, Tag, Avatar, Spin } from 'antd';
 
 export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoading, showStatus = true }) {
-    const { new_trails = [] } = refUsers || {};
+    const new_trails = refUsers?.new_trails || [];
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
-    
-    const newTrialsList = useMemo(() => refUsers?.new_trails || [], [refUsers]);
 
-    useEffect(() => {
-        const query = searchQuery.toLowerCase();
-        const filtered = newTrialsList.filter(row => {
-            const name = `${row.firstname || ''} ${row.lastname || ''}`.toLowerCase();
-            return name.includes(query);
-        });
-        setFilteredData(filtered);
-    }, [searchQuery, newTrialsList]);
+    const [page, setPage] = useState(1);
+    const limit = 10;
 
-    const formatDate = (dateInput, isUnix = false) => {
+    const total = new_trails?.length || 0;
+
+    const formatDate = (dateInput) => {
         if (!dateInput) return '';
-        const date = isUnix ? new Date(dateInput * 1000) : new Date(dateInput);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const date = new Date(dateInput);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
+    };
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
     };
 
     const statusColors = {
@@ -47,7 +46,7 @@ export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoa
     const columns = [
         {
             title: '#',
-            render: (_, __, index) => (pagination.current - 1) * pagination.pageSize + index + 1,
+            render: (_, __, i) => (page - 1) * limit + i + 1,
         },
         {
             title: 'Name',
@@ -101,32 +100,20 @@ export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoa
         }
     ];
 
-    if (isAffiliateLoading) {
-        return (
-            <div className="h-96 flex items-center justify-center">
-                <div className="w-9 h-9 rounded-full border-4 border-gray-200 border-t-blue-500 animate-spin" />
-            </div>
-        );
-    }
-
     return (
-        <div className="">
-
-            <Table
-                rowKey={(row) => row.customerid}
-                columns={columns}
-                dataSource={filteredData}
-                pagination={{
-                    current: pagination.current,
-                    pageSize: pagination.pageSize,
-                    total: filteredData.length,
-                    showSizeChanger: true,
-                    pageSizeOptions: ['10', '20', '50', '100'],
-                    onChange: (page, pageSize) => setPagination({ current: page, pageSize }),
-                }}
-                scroll={{ x: 'max-content' }}
-                bordered
-            />
-        </div>
+        <Table
+            rowKey={(record) => record.customerid}
+            columns={columns}
+            dataSource={new_trails}
+            pagination={{
+                current: page,
+                pageSize: limit,
+                total,
+                onChange: handlePageChange,
+                showSizeChanger: false,
+            }}
+            scroll={{ x: 'max-content' }}
+            loading={isAffiliateLoading}
+        />
     );
 }

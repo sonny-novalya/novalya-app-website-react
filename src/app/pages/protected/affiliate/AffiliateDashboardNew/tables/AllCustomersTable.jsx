@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Table, Input, Tag, Pagination, Spin } from 'antd';
-import SearchAndFilterBar from './SearchAndFilterbar';
+import { Table, Tag, Spin } from 'antd';
+import { useState } from 'react';
 
 const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
     const all_customers = refUsers?.all_customers || [];
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+
+    const [page, setPage] = useState(1);
+    const limit = 10;
+
+    const total = all_customers?.length || 0;
 
     const formatDate = (dateInput) => {
         if (!dateInput) return '';
@@ -19,32 +19,15 @@ const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
         });
     };
 
-    const handleSearch = (value) => {
-        setSearchQuery(value.toLowerCase());
-        setCurrentPage(1); // reset to page 1 on new search
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
     };
-
-    useEffect(() => {
-        if (all_customers?.length) {
-            const filtered = all_customers.filter(row => {
-                const name = `${row.firstname || ''} ${row.lastname || ''}`.toLowerCase();
-                const email = (row.email || '').toLowerCase();
-                return name.includes(searchQuery) || email.includes(searchQuery);
-            });
-            setFilteredData(filtered);
-        }
-    }, [searchQuery, all_customers]);
-
-    const paginatedData = useMemo(() => {
-        const start = (currentPage - 1) * itemsPerPage;
-        return filteredData.slice(start, start + itemsPerPage);
-    }, [filteredData, currentPage, itemsPerPage]);
 
     const columns = [
         {
             title: '#',
             dataIndex: 'index',
-            render: (_, __, i) => (currentPage - 1) * itemsPerPage + i + 1,
+            render: (_, __, i) => (page - 1) * limit + i + 1,
         },
         {
             title: 'Name',
@@ -109,50 +92,20 @@ const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
     ];
 
     return (
-        <div>
-            {isAffiliateLoading ? (
-                <div className="flex justify-center items-center h-64">
-                    <Spin size="large" />
-                </div>
-            ) : (
-                <>
-                    <Table
-                        rowKey={(record) => record.customerid}
-                        columns={columns}
-                        dataSource={paginatedData}
-                        pagination={false}
-                        scroll={{ x: 'max-content' }}
-                    />
-
-                    <div className="flex justify-between items-center mt-4">
-                        <div>
-                            <span className="text-gray-600 text-sm">Items per page: </span>
-                            <Input
-                                type="number"
-                                min={1}
-                                value={itemsPerPage}
-                                onChange={(e) => {
-                                    const value = parseInt(e.target.value, 10);
-                                    if (!isNaN(value) && value > 0) {
-                                        setItemsPerPage(value);
-                                        setCurrentPage(1);
-                                    }
-                                }}
-                                style={{ width: 80 }}
-                            />
-                        </div>
-
-                        <Pagination
-                            current={currentPage}
-                            pageSize={itemsPerPage}
-                            total={filteredData.length}
-                            onChange={setCurrentPage}
-                            showSizeChanger={false}
-                        />
-                    </div>
-                </>
-            )}
-        </div>
+        <Table
+            rowKey={(record) => record.customerid}
+            columns={columns}
+            dataSource={all_customers}
+            pagination={{
+                current: page,
+                pageSize: limit,
+                total,
+                onChange: handlePageChange,
+                showSizeChanger: false,
+            }}
+            scroll={{ x: 'max-content' }}
+            loading={isAffiliateLoading}
+        />
     );
 };
 

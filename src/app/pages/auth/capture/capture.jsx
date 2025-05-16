@@ -5,29 +5,27 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import { message } from 'antd'
 import { signupStore } from '../../../../store/signup/signupStore'
-import { keyType } from '../../../../helpers/helperData'
-import { decryptKey } from '../../../../helpers/helper'
+import { fallBackPlan, nuskinFallBackPlan, nuskinTerms, Terms } from '../../../../helpers/helperData'
+import { domains, getSubdomain } from '../../../../helpers/helper'
+
 
 
 const CapturePage = () => {
      const [searchParams] = useSearchParams();
-	 const {getEncKey,saveCaptureData}=signupStore()
+	 const {saveCaptureData}=signupStore()
 	 const navigate= useNavigate()
 	 const [loading, setLoading] = useState(false);
 	 const [geoData,setGeoData] = useState(null)
-	 const [brevoKey,setBrevoKey] = useState(null)
-	 const backto = localStorage.getItem("backto")
-      const planId = searchParams.get("planId");
-	  const localPlan = localStorage.getItem("planId")
-	  if (!planId && !localPlan) {
-		navigate(backto || "/plans")
-	  }
       const coupon_code = searchParams.get("coupon_code");
       let sign_details = localStorage.getItem("sign_details");
       sign_details= JSON.parse(sign_details)
       let names = sign_details && ((sign_details?.firstname || "") + " " + (sign_details?.lastname || ""))
     const [details,setDetails] = useState({fullName: names || "" , email:sign_details?.email || ""})
-	const urlArr = ["app.novalya.com","dev.novalya.com"]
+	  const referralId = searchParams.get("ref") ||  searchParams.get("uname") 
+  if (referralId) {
+    localStorage.setItem("referralId",referralId)
+  }
+	
  
       
 const handleSubmit = () => {
@@ -62,37 +60,36 @@ const getCountry = async()=>{
 	
 }
 
-const getBrevoApiKey = async()=>{
-	try {
-		const res= await getEncKey()
-		const keyData = {br:res?.data?.data?.br_key,iv:res?.data?.data?.iv}
-		const decodedKey = await decryptKey(keyData.br,keyData.iv,keyType)
-	    setBrevoKey(decodedKey)
-	
-	} catch (error) {
-		console.error(error)
-	}
-}
+
 
 
 useEffect(() => {
-if(planId){
+	const localPlan = localStorage.getItem("planId")
+      let planId = searchParams.get("planId") ? searchParams.get("planId") : localPlan
+	  if (!planId) {
+		const subDom = getSubdomain(window.location.href)
+	const isReseller = domains?.some((d)=>d.subdomain === subDom)
+		planId = isReseller?  nuskinFallBackPlan:fallBackPlan
+	  }
     localStorage.setItem('planId',planId)
-}
-}, [planId])
+}, [])
 
 useEffect(() => {
-	getBrevoApiKey()
 	getCountry() 
 }, [])
 
 
- const addContactToBrevo = async (email, firstName, lastName, listIds = [173]) => {
+ const addContactToBrevo = async (email, firstName, lastName) => {
 
 	setLoading(true)
 	const planId=localStorage.getItem('planId')
-	const seledtedlang= localStorage.getItem("selectedLocale")
-	const BREVO_API_URL = "https://api.brevo.com/v3/contacts";
+	const subDom = getSubdomain(window.location.href)
+	const isReseller = domains?.some((d)=>d.subdomain === subDom)
+	const plans  = isReseller ? nuskinTerms : Terms
+	const  selectedPlan =  plans?.find((p)=>p.plan_id === planId)
+	const seledtedlang= localStorage.getItem("selectedLocale") || "en-US"
+	
+	
 	let utm_data = localStorage.getItem("UTM_DATA")
 	utm_data= utm_data ? JSON.parse(utm_data) :{}
     const country =geoData?.country_name;
@@ -106,13 +103,17 @@ useEffect(() => {
 		plan_period:checkPeriod(planId),
 		sponsor:storageReferralId ||  "NOVALYA" ,
 		country:country || "",
-		plan_id:planId
-
+		plan_id:planId,
+		language:seledtedlang,
+		reseller: isReseller ? subDom : "Novalya",
+		plan_amount:selectedPlan?.amount_1,
+		currency:selectedPlan?.currency_code || "EUR",
+		utm_data:utm_data,
+		plan_status_update_date:new Date().toISOString().split("T")[0]
 	}
 
 	try {
 		let res = await saveCaptureData(capturePaylaod)
-		console.log(res)
 
 			
 
@@ -121,39 +122,8 @@ useEffect(() => {
                 return;
 			}
 			
-	 if(urlArr.includes(window.location.hostname)){
-		axios.post(
-			BREVO_API_URL,
-			{
-			  email,
-			  attributes: {
-				FIRSTNAME: firstName || '',
-				LASTNAME: lastName || '',
-				OPTIN_PROSPECT: "YES",
-				PROSPECT_PLAN_NAME:checkPlan(planId),
-				PROSPECT_PLAN_PERIOD:checkPeriod(planId),
-				LANGUAGE:seledtedlang || "en-US",
-				ID:61,
-				LAST_REFERRAL_CODE:storageReferralId || "NOVALYA",
-				COUNTRY:country || "",
-				utm_campaign:utm_data?.utm_campaign || "",
-				utm_medium:utm_data?.utm_medium || "",
-				utm_source:utm_data?.utm_source || "",
-				utm_content:utm_data?.utm_content || "",
-				utm_term:utm_data?.utm_term|| ""
-		
-			  },
-			  listIds,
-			  updateEnabled: true,
-			},
-			{
-			  headers: {
-				"accept": "application/json",
-				"api-key": brevoKey,
-				"content-type": "application/json",
-			  },
-			}
-		  );
+	
+	
 	
 		  axios.post(
 			MAKE_API_URL,
@@ -168,11 +138,11 @@ useEffect(() => {
 				  COUNTRY:country || ""
 			  },
 			);
-	 }
+	
 	if (coupon_code) {
-		navigate(`/signup?coupon_code=${coupon_code}`)
+		navigate(`/signup?planId=${planId}&coupon_code=${coupon_code}`)
 	}else{
-		navigate(`/signup`)
+		navigate(`/signup?planId=${planId}`)
 	}
     setLoading(false)
 		
@@ -192,7 +162,7 @@ useEffect(() => {
 		if(data.includes("Monthly")){
 			period="1 month"
 		}else if(data.includes("3-months")){
-            period="3 month"
+            period="3 months"
 		}else{
 			period="1 year"
 		}

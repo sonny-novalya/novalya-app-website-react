@@ -7,7 +7,7 @@ import useGroupStore from "../../../../../../store/group/groupStore";
 import GroupImg from "../../../../../../assets/img/groupImg.png";
 import { t } from "i18next";
 
-const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder }) => {
+const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder,setFolders }) => {
     const [folderName, setFolderName] = useState("");
     const [selectedGroups, setSelectedGroups] = useState([]);
     const { initialGroups, fetchInitialGroups } = useGroupStore();
@@ -22,9 +22,10 @@ const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder }) =>
         );
     };
 
-    const handleCreateFolder = () => {
+    const handleCreateFolder =async () => {
         if (folderName && selectedGroups.length > 0) {
-            createFolder(folderName, socialType, selectedGroups, prospect_folder);
+            await createFolder(folderName, socialType, selectedGroups, prospect_folder);
+            setFolders(prospect_folder)
             setFolderName("");
             setSelectedGroups([]);
             onClose();
