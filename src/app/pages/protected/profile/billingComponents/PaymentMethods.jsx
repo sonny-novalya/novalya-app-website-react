@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { DeleteFillRedIcon } from "../../../common/icons/icons";
+import PaymentCardModal from "./PaymentCardModal";
 
 const paymentMethods = [
     {
@@ -26,6 +27,8 @@ const paymentMethods = [
 ];
 
 const PaymentMethods = () => {
+
+    const [ showModal, setShowModal ] = useState(false)
     return (
         <div className="space-y-4">
             <h2 className="text-[20px] font-medium text-[#000000BF]">Payment Methods</h2>
@@ -75,10 +78,14 @@ const PaymentMethods = () => {
                         </div>
                     </div>
                 ))}
-                <button className="mt-4 bg-[#0087FF] text-white px-8 py-2 rounded-md  hover:bg-blue-600">
+                <button className="mt-4 bg-[#0087FF] text-white px-8 py-2 rounded-md  hover:bg-blue-600" onClick={() => setShowModal(true)} >
                     + Add New card
                 </button>
             </div>
+            <PaymentCardModal 
+                visible={showModal}
+                onCancel={() => setShowModal(false)}
+            />
         </div>
     );
 };
