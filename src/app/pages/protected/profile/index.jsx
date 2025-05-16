@@ -10,8 +10,12 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("Profile Page");
   const { loginUserData, fetchLoginUserData, loading } = useLoginUserDataStore();
 
-  if (!loginUserData) return 
-  
+  useEffect(() => {
+    fetchLoginUserData({});
+  }, []);
+
+  if (!loginUserData) return null;
+
   const renderContent = () => {
     switch (activeTab) {
       case "Profile Page":
@@ -19,7 +23,7 @@ const Profile = () => {
       case "Password":
         return <Password userMail={loginUserData?.email} />;
       case "Billing details":
-        return <BillingDetails userMail = {loginUserData?.email}  />;
+        return <BillingDetails userMail={loginUserData?.email} />;
       case "Invoice":
         return <Invoice userMail={loginUserData?.email} />;
       default:
@@ -28,54 +32,45 @@ const Profile = () => {
   };
 
   const tabs = [
-    { name: "Profile Page", disabled: false },
-    { name: "Password", disabled: false },
-    { name: "Billing details", disabled: true },
-    { name: "Invoice", disabled: false }
+    "Profile Page",
+    "Password",
+    "Billing details",
+    "Invoice"
   ];
-  
-  useEffect(() => {
-    fetchLoginUserData({})
-  }, [])
 
   return (
     <Layout>
-        <h3 className="text-[24px] font-[600] mb-5 pl-5 mt-1.5 tracking-[0.02em]">
-          Profile
-        </h3>
-        <div className='p-4 rounded-md bg-white'>
-
+      <h3 className="text-[24px] font-[600] mb-5 pl-5 mt-1.5 tracking-[0.02em]">
+        Profile
+      </h3>
+      <div className='p-4 rounded-md bg-white'>
         <div className="flex space-x-4">
-          {tabs.map((tabObj, index) => {
-            const { name, disabled } = tabObj;
+          {tabs.map((name, index) => {
             const isActive = activeTab === name;
 
             return (
               <div className='flex flex-col' key={index}>
                 <button
-                  onClick={() => {
-                    if (!disabled) setActiveTab(name);
-                  }}
-                  className={`px-4 py-2 rounded-md border bg-white 
-                      ${disabled ? "cursor-not-allowed text-gray-400 border-[#DADADA]"
-                      : isActive ? "border-[#0087FF33] text-[#0087FF] border-b-0 rounded-b-none cursor-pointer"
-                      : "border-[#DADADA] text-black cursor-pointer"}`}
-                  disabled={disabled}
+                  onClick={() => setActiveTab(name)}
+                  className={`px-4 py-2 rounded-md border bg-white cursor-pointer  
+                    ${isActive
+                      ? "border-[#0087FF33] text-[#0087FF] border-b-0 rounded-b-none"
+                      : "border-[#DADADA] text-black"}`}
                 >
                   {name}
                 </button>
                 <div
-                  className={`h-4 ${isActive && !disabled ? "bg-white visible border-x border-[#0087FF33]" : "invisible border-none"}`}
+                  className={`h-4 ${isActive ? "bg-white visible border-x border-[#0087FF33]" : "invisible border-none"}`}
                 ></div>
               </div>
             );
           })}
         </div>
 
-          <div className=''>
-            {renderContent()}
-          </div>
+        <div>
+          {renderContent()}
         </div>
+      </div>
     </Layout>
   );
 };
