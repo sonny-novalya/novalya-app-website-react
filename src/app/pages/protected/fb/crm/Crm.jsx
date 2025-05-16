@@ -69,7 +69,7 @@ const Crm = () => {
       <h2 className="text-xl font-medium mb-2">{t("crm.Facebook CRM")}</h2>
       <div class="nv-content-wrapper"></div>{" "}
       {/* to display account syncing message */}
-      <div className="flex bg-gray-100 shadow-lg rounded-lg">
+      <div className="flex bg-white shadow-lg rounded-lg">
         <div
           className="w-[300px] p-4 flex pt-[40px] flex-col overflow-hidden relative "
           style={{ width: isCollapse ? "110px" : "" }}
