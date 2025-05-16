@@ -385,7 +385,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
           };
 
           const toggleUserSelection = (id, e) => {
-            // Store current scroll positions before state update
             sortedStages.forEach(stage => {
               const container = document.querySelector(`#stage-container-${stage.id}`);
               if (container) {
@@ -393,7 +392,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
               }
             });
 
-            // Update state as normal
             setSelectedUsersMap((prev) => {
               const current = prev[stage.id] || [];
               return {
@@ -404,7 +402,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
               };
             });
 
-            // Restore scroll positions in the next frame
             requestAnimationFrame(() => {
               sortedStages.forEach(stage => {
                 const container = document.querySelector(`#stage-container-${stage.id}`);
@@ -414,7 +411,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
               });
             });
 
-            // Prevent event bubbling
             if (e) {
               e.stopPropagation();
             }

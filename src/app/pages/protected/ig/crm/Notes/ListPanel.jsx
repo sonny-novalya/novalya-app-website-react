@@ -4,6 +4,7 @@ import usefbCRM from '../../../../../../store/fb/fbCRM';
 import tagImg from '../../../../../../assets/img/visibitlityTag.png';
 import { rgbToHex } from '../../../../../../helpers/rgbToHex';
 import PropTypes from "prop-types";
+import { UserIcon } from '../../../../common/icons/icons';
 
 const ListPanel = ({ setSelectedTag, selectedTag }) => {
     const location = useLocation()
@@ -17,6 +18,7 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
     const [mainListSelection, setMainListSelection] = useState('');
 
     const dropdownRef = useRef(null);
+    console.log("CRMList", CRMList)
 
     useEffect(() => {
         const type = isInstagram ? 'ig' : 'fb'
@@ -43,7 +45,7 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
                     listId: listId,
                     stageId: stageId,
                     stageName: stage.name,
-                    taggedUsersStageCount: stage.taggedUsersStageCount ?? 0
+                    userStageCounts: stage.userStageCounts ?? 0
                 });
             }
         }
@@ -73,7 +75,7 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
                 listId: id,
                 stageId: firstStage.id,
                 stageName: firstStage.name,
-                // taggedUsersStageCount: firstStage.taggedUsersStageCount ?? 0 
+                taggedUsersStageCount: firstStage.taggedUsersStageCount ?? 0 
             });
         } else {
             setSelectedStage(null);
@@ -85,14 +87,14 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
     };
 
     const selectStage = (listId, stageId, stageName) => {
-        // const list = CRMList.find(item => item.id === listId);
-        // const stage = list?.stage.find(s => s.id === stageId);
+        const list = CRMList.find(item => item.id === listId);
+        const stage = list?.stage.find(s => s.id === stageId);
 
         setSelectedStage({
             listId,
             stageId,
             stageName,
-            // taggedUsersStageCount: stage?.taggedUsersStageCount ?? 0
+            taggedUsersStageCount: stage?.taggedUsersStageCount ?? 0
         });
 
         setActiveDropdown(null);
@@ -229,9 +231,9 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
                                         <div className="text-sm font-medium max-w-[180px] truncate flex">
                                             {list.name}
 
-                                            {/* <span className='flex items-center justify-between text-[#00000080] ml-2'>
-                                                ( <UserIcon /> <span className='text-[#000000B2] ml-[2px]'>{list.taggedUsersCount}</span> )
-                                            </span> */}
+                                            <span className='flex items-center justify-between text-[#00000080] ml-2'>
+                                                ( <UserIcon /> <span className='text-[#000000B2] ml-[2px]'>{list.userTagsCount ?? 0}</span> )
+                                            </span>
                                         </div>
 
                                         {
@@ -249,10 +251,10 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
                                                                         : "Select Stage"}
                                                                 </span>
 
-                                                                {/* <span className='flex items-center justify-between text-[#00000080] ml-2'>
+                                                                <span className='flex items-center justify-between text-[#00000080] ml-2'>
                                                                     ( <UserIcon /> 
-                                                                    <span className='text-[#000000B2] ml-[2px]'>{selectedStage?.taggedUsersStageCount }</span> )
-                                                                </span> */}
+                                                                    <span className='text-[#000000B2] ml-[2px]'>{selectedStage?.userStageCounts }</span> )
+                                                                </span>
                                                             </span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-gray-500 absolute right-2">
                                                                 <path d="M7 10l5 5 5-5z" />
@@ -276,9 +278,9 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
                                                                         onClick={() => selectStage(list.id, stage.id, stage.name)}
                                                                     >
                                                                             <span>{stage.name || `Stage ${index + 1}`}</span>
-                                                                        {/* <span className='flex items-center justify-between text-[#00000080]'>
-                                                                            ( <UserIcon /> <span className='text-[#000000B2] ml-[2px]'>{stage.taggedUsersStageCount ?? 0}</span> )
-                                                                        </span> */}
+                                                                        <span className='flex items-center justify-between text-[#00000080]'>
+                                                                            ( <UserIcon /> <span className='text-[#000000B2] ml-[2px]'>{stage.userStageCounts ?? 0}</span> )
+                                                                        </span>
                                                                     </div>
                                                                 ))}
                                                             </div>
