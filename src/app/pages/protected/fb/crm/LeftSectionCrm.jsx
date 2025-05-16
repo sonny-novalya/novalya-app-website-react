@@ -121,7 +121,7 @@ const SortableItem = ({
         className={`flex items-center space-x-2 px-4 py-2 mb-2 rounded-md cursor-pointer border bg-white hover:bg-gray-100 ${
           selectedGroup?.id === group.id
             ? "border-[#0087FF]"
-            : "border-[#E6F1FB]"
+            : "border-[#DADADA]"
         }`}
       >
         <span

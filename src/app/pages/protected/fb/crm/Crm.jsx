@@ -71,7 +71,7 @@ const Crm = () => {
       {/* to display account syncing message */}
       <div className="flex bg-gray-100 shadow-lg rounded-lg">
         <div
-          className="w-[300px] bg-[#E6F1FB] p-4 flex pt-[40px] flex-col overflow-hidden relative"
+          className="w-[300px] p-4 flex pt-[40px] flex-col overflow-hidden relative "
           style={{ width: isCollapse ? "110px" : "" }}
         >
           <button className="absolute right-[5px] top-[5px] z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
