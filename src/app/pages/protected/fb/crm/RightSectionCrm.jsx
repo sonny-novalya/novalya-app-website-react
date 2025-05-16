@@ -356,7 +356,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const DroppableStage = ({ stageId, children }) => {
     return (
       <div
-        className="min-w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md"
+        className="min-w-[300px] flex-shrink-0 bg-white rounded-lg"
         onDragOver={(e) => e.preventDefault()}
         onDrop={() => handleDrop(stageId)}
       >
@@ -422,7 +422,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
           return (
             <DroppableStage stageId={stage.id} key={stage.id}>
               <div
-                className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
+                className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg overflow-hidden"
               >
                 <div className="text-[#000000BF] p-3 rounded-md mb-4">
                   <div className="border-b border-[#DADADA] flex items-center justify-between">
