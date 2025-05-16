@@ -285,6 +285,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             width={1100}
             centered
             closeIcon={null}
+            wrapClassName="custom-ig-note-modal-wrap"
         >
             <div className="flex items-stretch justify-center w-full gap-4 h-[calc(100vh-200px)]" >
                 {/* Note Panel */}
