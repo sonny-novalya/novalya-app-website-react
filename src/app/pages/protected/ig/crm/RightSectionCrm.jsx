@@ -53,8 +53,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const delTime = useRef();
 
     const scrollPositionsRef = useRef({});
-
-
+    const [totalLeadsCount, setTotalLeadsCount] = useState(0);
 
     useEffect(() => {
         if (selectedGrpData?.stage?.length) {
@@ -73,8 +72,13 @@ const RightSectionCrm = ({ selectedGroup }) => {
             });
 
             setSortedStages(newStages);
+
+            const totalCount = newStages.reduce((acc, stage) =>
+                acc + (stage.leads?.length || 0), 0);
+            setTotalLeadsCount(totalCount);
         } else {
             setSortedStages([]);
+            setTotalLeadsCount(0);
         }
     }, [selectedGrpData]);
 
@@ -103,6 +107,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
                 setSelectedUsersMap({})
                 setSortedStages(newArr)
+                setTotalLeadsCount(prevCount => prevCount - 1);
                 setIsDel(false)
             }
         } else {
@@ -365,7 +370,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
             <TopbarRightSection
                 companyName={selectedGroup.name}
-                leadsCount={selectedGrpData?.taggedUsers?.length || 0}
+                leadsCount={totalLeadsCount}
                 setSortedStages={setSortedStages}
                 onAddStage={handleAddStage}
                 selectedGrpData={selectedGrpData}

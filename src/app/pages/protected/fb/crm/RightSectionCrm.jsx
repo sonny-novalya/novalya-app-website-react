@@ -54,6 +54,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const delTime = useRef();
 
   const scrollPositionsRef = useRef({});
+  const [totalLeadsCount, setTotalLeadsCount] = useState(0);
 
   useEffect(() => {
     if (selectedGrpData?.stage?.length) {
@@ -72,40 +73,44 @@ const RightSectionCrm = ({ selectedGroup }) => {
       });
 
       setSortedStages(newStages);
+
+      const totalCount = newStages.reduce((acc, stage) =>
+        acc + (stage.leads?.length || 0), 0);
+      setTotalLeadsCount(totalCount);
     } else {
       setSortedStages([]);
+      setTotalLeadsCount(0);
     }
   }, [selectedGrpData]);
     
 
   const handleUserDelete = async()=>{
 
-    if(isDel){
-      const stageId= Object.keys(selectedUsersMap)?.[0]
-      const res =  await deleteTaggedUser({
+    if (isDel) {
+      const stageId = Object.keys(selectedUsersMap)?.[0]
+      const res = await deleteTaggedUser({
         id: totalSlectedIds[0],
         type: 'fb'
       })
-   
+
       if (res.status === 200) {
-       message.success("user has been deleted")
-       const newArr = sortedStages?.map((data) => {
-         if (data.id === Number(stageId)) {
-         
-           return {
-             ...data,
-             leads: data?.leads?.filter((card) => card?.id !== totalSlectedIds?.[0]),
-           };
-         }
-           return data;
-         
-       });
-    
-       setSelectedUsersMap({})
-       setSortedStages(newArr)
-       setIsDel(false)
+        message.success("user has been deleted")
+        const newArr = sortedStages?.map((data) => {
+          if (data.id === Number(stageId)) {
+            return {
+              ...data,
+              leads: data?.leads?.filter((card) => card?.id !== totalSlectedIds?.[0]),
+            };
+          }
+          return data;
+        });
+
+        setSelectedUsersMap({})
+        setSortedStages(newArr)
+        setTotalLeadsCount(prevCount => prevCount - 1);
+        setIsDel(false)
       }
-    }else{
+    } else{
       if (totalSlectedIds.length === 0 ) {
         message.error("Select atleast one user")
         return
@@ -362,7 +367,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     <div  className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
       <TopbarRightSection
         companyName={selectedGroup.name}
-        leadsCount={selectedGrpData?.taggedUsers?.length || 0}
+        leadsCount={totalLeadsCount}
         setSortedStages={setSortedStages}
         onAddStage={handleAddStage}
         selectedGrpData={selectedGrpData}
