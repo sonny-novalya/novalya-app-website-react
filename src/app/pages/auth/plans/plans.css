@@ -1,0 +1,798 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+.TermPlan section{
+    min-height: fit-content !important;
+}
+section.aug-plan-main {
+    display: none;
+}
+.aug-header #customizer-select-locale {
+    background: white;
+    justify-content: flex-start!important;
+    border-radius: 8px;
+}
+.TermPlan .aug-hd-logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+div#customizer-select-locale span {
+    color: #170F49;
+    padding-left: 3px;
+}
+.TermPlan .aug-card-discount-text {
+    color: #175EEA;
+    font-size: 52px;
+    font-weight: 600;
+    letter-spacing: -.75px;
+    font-style: italic;
+    margin-bottom: 10px;
+    margin-top: 16px;
+    text-align: center;
+    line-height: 1.1;
+    width: 175px;
+    overflow: hidden;
+}
+
+.TermPlan .discount-banner {
+    width: 100%;
+    background-color: #ff4d4d; /* Bright Red */
+    color: white;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.aug-card-section-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+    justify-content: center;
+}
+.aug-plan-footer-inn a {
+    color: rgb(0 0 0 / 50%) !important;
+    text-decoration: underline !important;
+}
+.TermPlan li{
+	list-style-type: none;
+}
+.TermPlan a{
+	text-decoration: none;
+}
+.TermPlan img{
+	max-width:100%;
+	width:100%;
+}
+.TermPlan  h1 {
+	font-size:48px;
+	color:#170F49;
+    font-weight: 700;
+}
+.aug-card-sm-hd {
+    text-transform: capitalize;
+    text-align: center;
+    padding: 12px 0 16px;
+    margin-top: 0px;
+    font-size: 16px;
+    color: rgb(23 15 73 / 75%);
+    letter-spacing: -.16px;
+    font-weight: 500;
+}
+.TermPlan button{
+	background: #2C73FF;
+	color:#fff;
+}
+.TermPlan .container {
+    width:100%;
+	max-width: 1275px; 
+	margin:0 auto;
+	padding: 0 20px;
+}
+.aug-header {
+    background: #EAF1FF;
+}
+.aug-hd-logo img {
+    max-width: 150px;
+}
+.aug-popular {
+    position: absolute;
+    right: -12px;
+    top: -11px;
+}
+.aug-hd-logo {
+    padding: 10px 0;
+}
+
+.aug-card-main{
+    padding: 0;
+}
+.aug-plan-main {
+    padding-top: 85px;
+    padding-bottom: 35px;
+}
+.aug-price-table {
+    border: 1px solid rgb(44 115 255 / 12%);
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgb(0 0 0 / 10%);
+    overflow-x: auto;
+}
+.aug-card-facebook-list, .aug-card-facebook-heading {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: 1.65fr 1fr 1fr 1fr;
+    margin: 0;
+}
+.aug-card-facebook-list li span {
+    display: flex;
+    justify-content: space-between;
+    color: #170F49;
+    font-size: 16px;
+    line-height: 1.25;
+    align-items: center;
+    font-weight: 500;
+    width: 100%;
+    gap: 10px;
+    letter-spacing: -.25px;
+}
+.aug-price-table ul:nth-child(even) li {
+    background: rgb(44 115 255 / 5%);
+}
+.aug-price-table ul li {
+    padding: 10px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 66px;
+    box-sizing: border-box;
+}
+.aug-price-table ul li.aug-fb-hd {
+    justify-content: start;
+    font-size: 21px;
+    letter-spacing: -.2px;
+    font-weight: 500;
+    color: #2c73ff;
+}
+ul.aug-card-facebook-list.aug-table-btn li {
+    padding: 10px;
+}   
+ul.aug-card-facebook-list li:not(:last-child),
+ul.aug-card-facebook-heading li:not(:last-child) {
+    border-right: 1px solid #D7E4FF;
+}
+.aug-card-facebook-list li , .aug-card-facebook-heading li{
+    position: relative;
+}	
+.aug-card-facebook-list img {
+    width: 24px;
+    border-radius: 0;
+}
+.aug-tooltip-wrap img {
+    width: 20px;
+}
+.aug-price-table ul li:not(:first-child) {
+    text-align: center;
+    min-width: 230px;
+}
+ul.aug-card-facebook-list>li:first-child,
+.aug-card-facebook-heading li.aug-fb-hd  {
+    min-width: 275px;
+}
+.aug-card-facebook-heading .aug-plan-hd{
+    background: #2C73FF;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    min-width: 200px;
+}
+.aug-card-facebook-heading .aug-plan-hd {
+    background: #2C73FF;
+    color: #fff;
+}
+.TermPlan {
+    background: #fff;
+}
+.aug-btn {
+    border: none;
+    padding: 12px 4px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 170px;
+    transition: .2s;
+    letter-spacing: -.35px;
+}
+.aug-btn:hover {
+    box-shadow: 0 3px 10px rgb(0 0 0 / 15%);
+}
+.aug-plan-img img {
+    margin: 0 auto;
+    max-width: 890px;
+    width: 100%;
+    display: block;
+}
+.aug-tooltiptext h5 {
+    font-size: 14px;
+    line-height: 1.35;
+    margin: 0;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.aug-tooltiptext p {
+    font-size: 12px;
+    margin: 5px 0;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+.aug-tooltip-wrap {
+    width: 13%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 0;
+}
+.aug-tooltiptext {
+    display: none;
+    position: absolute;
+    background: #373D3F;
+    padding: 15px;
+    border-radius: 8px;
+    top: 53px;
+    right: 9px;
+    z-index: 9;
+    min-width: 140px;
+    transition: .15s;
+    max-width: 255px;
+    z-index: 999;
+}
+
+.aug-tooltip-wrap:hover .aug-tooltiptext {
+    display: block;
+}
+.aug-tooltiptext:after {
+    position: absolute;
+    content: "";
+    width: 12px;
+    height: 12px;
+    top: -6px;
+    right: 19px;
+    background: #373D3F;
+    transform: rotate(45deg);
+}
+.aug-card-tab {
+    max-width: 100%;
+    text-align: center;
+    width: 100%;
+    margin:  0 auto;
+}
+.aug-card-instagram {
+    margin: 75px 0 0;
+    padding: 0;
+}
+.rael-humans-gray img {
+    filter: grayscale(1);
+}
+
+li.rael-humans-gray span {
+    text-decoration: line-through;
+}
+.aug-card-tab-hd {
+    max-width: 740px;
+    text-align: center;
+    width: 100%;
+    margin: 75px auto 60px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+.aug-Also-Included-inner {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+    background: #F6F9FF;
+    padding: 48px 36px;
+    border-radius: 22px;
+}
+.aug-svg-outer img {
+    width: 45px !important;
+    height: 45px !important;
+    object-fit: contain;
+}
+.aug-Included-inn {
+    display: flex;
+    border: 1px solid rgb(44 115 255 / 25%);
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+    background: #fff;
+    position: relative;
+}
+.aug-table-btn li {
+    min-height: 84px !important;
+    background:#fff !important;
+}
+ul.aug-card-facebook-list.aug-table-btn {
+    border-top: 1px solid #D7E4FF;
+    border-radius: 0 0 24px 24px;
+}
+.aug-Included-inn img {
+    width: 20px;
+    height: 20px;
+}
+.aug-Included-inn .aug-tooltiptext {
+    top: 81px;
+    right: 5px;
+}
+.aug-Included-left {
+    align-items: center;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 80px 1fr;
+}
+.aug-Included-left span {
+    font-size: 18px;
+    font-weight: 500;
+    color: #170F49;
+    line-height: 1.3;
+}
+.aug-svg-outer {
+    display: flex;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background: #EAF1FF;
+    justify-content: center;
+    border-radius: 50px;
+}
+.aug-14day-trail .aug-14day-wrap {
+    background: #fff;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    display: grid;
+    align-items: center;
+    justify-content: space-around;
+    gap: 2%;
+    grid-template-columns: 49% 49%;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 5px 35px rgb(0 0 0 / 10%);
+}
+.aug-14day-trail .aug-14day-wrap::before {
+    position: absolute;
+    content: "";
+    background-image: url(../../../../assets/img/trail-bg.png);
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 52%;
+    height: 100%;
+    z-index: 0;
+    opacity: .5;
+}
+.aug-14day-wrap img {
+    max-width: 275px;
+    display: block;
+    margin: 0 auto;
+    z-index: 0;
+}
+.aug-14day-wrap {
+    display: flex;
+}
+.aug-14day-hd {
+    font-size: 30px;
+    color: #170F49;
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+.aug-14day-hd span {
+    color: #2C73FF;
+}
+.aug-14day-right p {
+    color: #170F49;
+    margin: 0;
+    font-size: 16px;
+}
+.aug-14trail-btn {
+    border: rgb(255 255 255 / 20%);
+    background: #2C73FF;
+    padding: 12px 32px;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-top: 30px;
+    font-weight: 500;
+}
+button.aug-14trail-btn:hover {
+    box-shadow: 0 5px 10px rgb(0 0 0 / 10%);
+}
+.aug-card-media.aug-card-facebook {
+    padding: 75px 0 0;
+}
+.aug-14day-trail {
+    padding-top: 70px;
+}
+/*--check-css--*/
+.aug-social-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+.aug-section-main input[type="radio"] {
+    display: none;
+}
+.aug-social-wrap input:checked + label {
+    background: #4A8CFC;
+    color: #fff;
+    border: 1px solid #4a8cfc;
+}
+.aug-top-btn-toggle label, .aug-social-wrap label {
+    background: #fff;
+    padding: 6px 20px 6px 20px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid #efefef;
+}
+.aug-social-wrap input:checked + label span.aug-discount-label {
+    color: #170F49;
+}
+/* .aug-social-wrap label span {
+    padding: 5px;
+    right: 7px;
+    border-radius: 8px;
+    color: #170F49;
+} */
+span.aug-discount-label {
+    background: #BAEDC9;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 8px 12px !important;
+    min-width: 150px;
+    border-radius: 7px;
+    transform: translateX(12px);
+}
+
+span.aug-discount-label.aug-discount-yearly {
+    background: #B5CEFF;
+}
+.aug-face-importation {
+    justify-content: center !important;
+}
+.aug-social-wrap input:checked + label {
+    background: #4A8CFC;
+    color: #fff;
+}
+.aug-plans-btn label {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    font-weight: 500;
+    color: #000000;
+    line-height: 1;
+    font-size: 16px;
+    justify-content: center;
+    min-height: 48px;
+    position: relative;
+    min-width: 160px;
+}
+.aug-social-wrap input:checked + label span.aug-check-span {
+    border: 5px solid #fff;
+}
+span.aug-check-span {
+    display: flex;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #D9D9D9;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+.aug-section-main input[type="radio"] {
+    display: none;
+}
+.aug-section-main input[type="radio"] {
+    display: none;
+}
+.aug-plans-btn input {
+    opacity: 0;
+    display: none;
+}
+.aug-discount-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+    max-width: 1160px;
+    width: 100%;
+    margin: 0 auto;
+}
+.aug-starter-discont-cards {
+    border: 1px solid #efefef;
+    border-radius: 24px;
+    box-shadow: 0 5px 35px rgb(0 0 0 / 10%);
+    padding: 25px 25px 36px;
+    background: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.aug-card-lg-hd {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2C73FF;
+    margin-top: 10px;
+    text-align: center;
+    letter-spacing: -.2px;
+    margin-bottom: 0;
+}
+.aug-small-year {
+    font-size: 14px;
+    color: #175EEA;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+.aug-text-bold {
+    font-weight: 600 !important;
+    margin-bottom: 45px;
+}
+.aug-card-chose-btn {
+    background: #2C73FF;
+    border: none;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 auto 10px;
+    display: block;
+    width: max-content;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: -35px;
+    box-shadow: 0 5px 15px rgb(94 59 183 / 0%);
+}
+.aug-card-chose-btn:hover {
+    box-shadow: 0 5px 15px rgb(94 59 183 / 25%);
+}
+.aug-popular-card {
+    background: linear-gradient(45deg, #5e3bb7, #371c7b);
+    padding: 10px 40px;
+    border-radius: 50px 0px 0px 50px;
+    position: absolute;
+    right: 0;
+    top: 45px;
+}
+.aug-starter-discont-cards.aug-starter-mid-card {
+    position: relative;
+}
+
+.aug-popular-card {
+    background: linear-gradient(45deg, #5e3bb7, #371c7b);
+    padding: 10px 40px;
+    border-radius: 50px 0px 0px 50px;
+    position: absolute;
+    right: 0;
+    top: 45px;
+}
+.aug-popular-txt {
+    color: #fff;
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+.aug-card-section {
+    background: linear-gradient(180deg, #f9f9f9, #EEF4FF);
+    padding: 90px 0 100px;
+}
+.aug-card-section-list li {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 12px;
+    gap: 10px;
+    letter-spacing: -.2px;
+    font-weight: 600;
+    color: rgb(23 15 73 / 85%);
+}
+
+.aug-card-section-list li img {
+    width: 16px;
+    height: 16px;
+}
+.aug-plan-discount-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+/*--check-css-end--*/
+.aug-plan-footer {
+    background: rgb(44 115 255 / 10%);
+    margin-top: 20px;
+}
+.aug-plan-footer-inn {
+    padding: 25px;
+    text-align: center;
+}
+.aug-plan-footer-inn p {
+    margin: 0;
+    color: rgb(0 0 0 / 50%);
+    font-size: 14px;
+    font-weight: 500;
+}
+.aug-hd-logo .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl {
+    width: 170px;
+}
+
+section.aug-Also-Included-plans {
+    padding: 0;
+}
+.aug-Also-Included-plans h1.aug-card-tab-hd {
+    margin-bottom: 35px;
+}
+
+.aug-price-table ul.aug-card-facebook-list:nth-last-child(2) .aug-tooltiptext {
+    bottom: 55px;
+    top: unset;
+}
+
+.aug-price-table ul.aug-card-facebook-list:nth-last-child(2) .aug-tooltiptext:after {
+    top: unset;
+    bottom: -6px;
+}
+
+
+@media(max-width:991px){
+    .aug-Also-Included-inner {
+        grid-template-columns: repeat(2,1fr);
+    }
+    .aug-plan-discount-cards {
+        grid-template-columns: 1fr;
+        gap: 55px;
+    }
+    .aug-starter-discont-cards {
+        width: 100%;
+        max-width: 425px;
+        margin: 0 auto;
+    }
+    .aug-card-section {
+        padding: 50px 0 75px;
+    }
+    .aug-card-facebook-list, .aug-card-facebook-heading {
+        grid-template-columns: 275px 1fr 1fr 1fr;
+    }
+    .aug-card-facebook-heading .aug-plan-hd {
+        font-size: 16px;
+    }
+    .aug-price-table ul li.aug-fb-hd {
+        font-size: 17px;
+    }
+    .aug-Also-Included-inner {
+        padding: 24px;
+    }
+    .aug-card-facebook-list li span {
+        font-size: 14px;
+    }
+    .aug-btn {
+        font-size: 13px;
+    }
+    .TermPlan h1.aug-card-tab-hd {
+        font-size: 28px;
+        color: #170F49;
+        margin: 60px auto 50px;
+        line-height: 1.15;
+    }
+    .aug-plan-main {
+        padding-top: 65px;
+        padding-bottom: 25px;
+    }
+    .aug-card-section-list {
+        min-height: unset;
+    }
+    .aug-card-media.aug-card-facebook {
+        padding: 50px 0 0;
+    }
+    .aug-card-instagram {
+        margin: 50px 0;
+    }
+    .aug-14day-trail {
+        padding-top: 50px;
+    }
+    
+}
+
+@media(max-width: 850px){
+    .aug-price-table ul li {
+        padding: 8px 16px;
+    }
+    .aug-social-wrap {
+        gap: 6px;
+        display: flex;
+        max-width: 320px;
+        margin: 0 auto 20px;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .aug-plans-btn {
+        width: 100%;
+    }
+    .aug-plans-btn label {
+        border-radius: 8px;
+    }
+    .aug-plan-footer {
+        margin-top: 0;
+    }
+    .aug-tooltiptext:after {
+        width: 10px;
+        height: 10px;
+        top: -5px;
+        right: 11px;
+    }
+    .aug-price-table ul.aug-card-facebook-list:nth-last-child(2) .aug-tooltiptext:after {
+        bottom: -5px;
+    }
+}
+
+@media(max-width:767px){
+    .aug-svg-outer {
+        width: 60px;
+        height: 60px;
+    }
+    .aug-Included-left {
+        grid-template-columns: 60px 1fr;
+    }
+    .aug-Also-Included-inner {
+        grid-template-columns: 1fr;
+    }
+    .aug-14day-trail .aug-14day-wrap {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .aug-14day-right {
+        text-align: center;
+    }
+    .aug-plans-btn label::before {
+        left: 8px;
+    }
+    .aug-social-wrap input:checked + label:before {
+        left: 8px;
+    }
+    .aug-social-wrap input:checked + label:after {
+        left: 13px;
+    }
+    .aug-14day-wrap img {
+        z-index: 9;
+    }
+    .aug-14day-right {
+        z-index: 9;
+    }
+    span.aug-discount-label {
+        font-size: 16px;
+        min-width: unset;
+    }
+    .aug-plans-btn label {
+        font-size: 14px;
+    }
+    .aug-Included-inn .aug-tooltiptext {
+        top: 72px;
+        right: 13px;
+    }
+}

@@ -1,0 +1,17 @@
+.ctm-nobdr-select .ant-select-selector {
+    border: none !important;
+}
+
+.ctm-nobdr-select span.ant-select-selection-placeholder {
+    color: #808183 !important;
+    background: transparent  !important;
+}
+
+.ctm-nobdr-select .ant-select-selector {
+    border-radius: 8px;
+}
+
+.ctm-nobdr-select .ant-select-focused .ant-select-selector {
+    border: 1px solid #0087FF !important;
+    box-shadow: none !important;
+}

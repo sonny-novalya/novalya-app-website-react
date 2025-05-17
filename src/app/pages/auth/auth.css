@@ -1,0 +1,6 @@
+.login_parent .ant-spin-dot-item{
+    color: white !important;
+}
+.login_parent span.ant-input-affix-wrapper {
+    background: #F2F2F2;
+}

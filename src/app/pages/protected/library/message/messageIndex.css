@@ -1,0 +1,116 @@
+input:focus-visible {
+    outline: none !important;
+}
+.ctm-list-design li.ant-list-item {
+    border: none !important;
+    background: #F5F5F5;
+    padding: 14px 20px !important;
+    border-radius: 8px;
+}
+.ctm-list-design .ant-list {
+    border: none;
+}
+.ctm-list-design ul.ant-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ant-list.ant-list-split.ant-list-bordered {
+    border: none;
+}
+.btn-hover:hover {
+    background: #3DA5FF !important;
+}
+.btn-hover:hover span {
+    color: white !important;
+}
+.active {
+    border: 1px solid #0087FF;
+    background: #0087FF;
+    color: white;
+}
+.message-main-wraper .anticon-search svg {
+    color: #8C8E8F;
+    width: 20px;
+    height: 20px;
+}
+.message-main-wraper input.ant-input {
+    font-family: 'Outfit';
+    letter-spacing: .25px;
+    font-size: 16px;
+    color: #8C8E8F;
+}
+.message-main-wraper input.ant-input::placeholder {
+    color: #8C8E8F;
+}
+.message-main-wraper input.ant-input::placeholder {
+    font-size: 16px;
+}
+.ctm-green-btn {
+    color: #21BF7C !important;
+}
+.ctm-green-btn:hover {
+    background: #21BF7C !important;
+    color: #fff !important;
+    border-color: #21BF7C !important;
+}
+.ctm-blue-btn {
+    color: #0087FF !important;
+}
+.ctm-blue-btn:hover {
+    background: #0087FF !important;
+    color: #fff !important;
+    border-color: #0087FF !important;
+}
+.ctm-red-btn {
+    color: #FF0000 !important;
+}
+
+.ctm-red-btn:hover {
+    background: #FF0000 !important;
+    color: #fff !important;
+    border-color: #FF0000 !important;
+}
+.varient-btn-hover:hover svg path {
+    fill: white;
+}
+
+.varient-btn-hover:hover svg.stroke-only path {
+    stroke: #fff;
+    fill: transparent;
+}
+
+.pros-dropdownCont {
+    box-shadow: -2px 4px 6.3px 0px #00000040;
+}
+.pros-dropdownWrap:hover .pros-dropdownCont {
+    opacity: 1;
+    visibility: visible;
+    z-index: 9;
+}
+.normalIconHover {
+    display: none;
+}
+.pros-dropdownItems:hover .normalIcon, .pros-dropdownItems.active .normalIcon {
+    display: none;
+}
+.pros-dropdownItems:hover .normalIconHover, .pros-dropdownItems.active .normalIconHover {
+    display: block;
+}
+.ctm-list-design  button:hover .fill-svg path {
+    fill: #fff;
+}
+.ctm-list-design li.ant-list-item:hover {
+    background: #0087FF33;
+    outline: 1px solid  #0087FF !important;
+}
+.message-template ul.divide-y li:hover img.template-arrow {
+    filter: invert(1);
+}
+.template-items {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(156, 208, 255, 0.38) 100%);
+}
+.ctm-blue-btn svg {
+    width: 18px;
+    height: 18px;
+}
