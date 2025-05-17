@@ -1,7 +1,7 @@
 
 import AddOns from './billingComponents/AddOns';
 import PaymentMethods from './billingComponents/PaymentMethods';
-import SubsDetails from './billingComponents/subsDetails';
+// import SubsDetails from './billingComponents/subsDetails';
 
 const BillingDetails = ({ userMail }) => {
   return (
@@ -11,7 +11,7 @@ const BillingDetails = ({ userMail }) => {
       </p>
 
       <div className='p-6 rounded border border-[#DADADA] flex flex-col gap-4'>
-        <SubsDetails />
+        {/* <SubsDetails /> */}
         <AddOns />
         <PaymentMethods />
       </div>
