@@ -87,7 +87,7 @@ const IgProspecting = () => {
         if (![0, 33333333333, 44444444444, 55555555555].includes(Number(selectedFolder))) {
             const folder = folders?.find((item) => item.id == selectedFolder);
             return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+                <div className=" flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folder ? folder.folder_name : t("prospecting.None")}
                     </span>
@@ -125,7 +125,7 @@ const IgProspecting = () => {
 
         if (folderNames.length === 1) {
             return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+                <div className=" flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 rounded-[20px] text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folderNames[0]}
                     </span>
@@ -134,7 +134,7 @@ const IgProspecting = () => {
         }
 
         return (
-            <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+            <div className=" flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{folderNames[0]}</span>
                 <Dropdown overlay={<Menu>{folderNames.slice(1).map((name, index) => <Menu.Item key={index}>{name}</Menu.Item>)}</Menu>} trigger={['hover']}>
                     <span className="cursor-pointer">
@@ -179,11 +179,11 @@ const IgProspecting = () => {
     // );
 
     const TypeColumn = (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 justify-center">
             <span>{t("prospecting.Type")}</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "type" ? (
                 <button
-                    className="w-8 h-8 border-none cursor-pointer"
+                    className="w-3 h-6 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
@@ -219,7 +219,7 @@ const IgProspecting = () => {
                 </button>
             ) : (
                 <button
-                    className="w-8 h-8 border-none cursor-pointer"
+                    className="w-3 h-6 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
@@ -259,11 +259,11 @@ const IgProspecting = () => {
     );
 
     const GroupNameColumn = (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 justify-center pr-12">
             <span>{t("prospecting.Group Name")}</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
-                    className="w-8 h-8 border-none cursor-pointer"
+                    className="w-3 h-6 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
@@ -299,7 +299,7 @@ const IgProspecting = () => {
                 </button>
             ) : (
                 <button
-                    className="w-8 h-8 border-none cursor-pointer"
+                    className="w-3 h-6 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
@@ -339,11 +339,11 @@ const IgProspecting = () => {
     );
 
     const TotalMemberColumn = (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 justify-center">
             <span>{t("prospecting.Total Members")}</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
                 <button
-                    className="w-8 h-8 border-none cursor-pointer"
+                    className="w-3 h-6 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
@@ -379,7 +379,7 @@ const IgProspecting = () => {
                 </button>
             ) : (
                 <button
-                    className="w-8 h-8 border-none cursor-pointer"
+                    className="w-3 h-6 border-none cursor-pointer"
                     onClick={() => {
                         updateFilters({
                             ...storeFilters,
@@ -458,7 +458,7 @@ const IgProspecting = () => {
             <div className="relative" ref={(el) => setDropdownRef(record.id, el)}>
                 {isOpen && !isConfirming && (
                     <div className="absolute right-0 z-10 mt-1 origin-top-right bg-white rounded-md shadow-lg focus:outline-none">
-                        <div className="flex space-x-3 px-2 py-1 rounded-md">
+                        <div className="flex space-x-8 px-5 py-3 rounded-[5px] shadow-[-5px_6px_6px_rgba(0,0,0,0.19)]">
                             <button
                                 onClick={() => window.open(record.url, "_blank")}
                                 className="cursor-pointer"
@@ -479,7 +479,8 @@ const IgProspecting = () => {
                                 onClick={() => handleMenuClick(record.id, 'Delete')}
                                 className="cursor-pointer"
                             >
-                                <DeleteFillRedIcon />
+                                {/* <DeleteFillRedIcon /> */}
+                                <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1H10.5L9.5 0H4.5L3.5 1H0V3H14M1 16C1 16.5304 1.21071 17.0391 1.58579 17.4142C1.96086 17.7893 2.46957 18 3 18H11C11.5304 18 12.0391 17.7893 12.4142 17.4142C12.7893 17.0391 13 16.5304 13 16V4H1V16Z" fill="#808183"></path><path d="M14 1H10.5L9.5 0H4.5L3.5 1H0V3H14M1 16C1 16.5304 1.21071 17.0391 1.58579 17.4142C1.96086 17.7893 2.46957 18 3 18H11C11.5304 18 12.0391 17.7893 12.4142 17.4142C12.7893 17.0391 13 16.5304 13 16V4H1V16Z" fill="black" fill-opacity="0.2"></path></svg>
                             </button>
                         </div>
                     </div>
@@ -507,7 +508,7 @@ const IgProspecting = () => {
             dataIndex: "name",
             render: (text, record) => (
                 <div className="flex items-center space-x-2">
-                    <img src={record.post_image || GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
+                    <img src={record.post_image || GroupImg} alt="Group" className="w-16 h-11 rounded-[4px] object-cover" />
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{text}</span>
                 </div>
             ),
@@ -523,8 +524,10 @@ const IgProspecting = () => {
         },
         {
             title: t("prospecting.Privacy"), dataIndex: "privacy", render: () => (
-                <span className="">
-                    🌎
+                <span className="flex justify-center">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.9974 0.167969C5.0174 0.167969 0.164062 5.0213 0.164062 11.0013C0.164062 16.9813 5.0174 21.8346 10.9974 21.8346C16.9774 21.8346 21.8307 16.9813 21.8307 11.0013C21.8307 5.0213 16.9774 0.167969 10.9974 0.167969ZM9.91406 19.5921C5.6349 19.0613 2.33073 15.4213 2.33073 11.0013C2.33073 10.3296 2.4174 9.69047 2.55823 9.06214L7.7474 14.2513V15.3346C7.7474 16.5263 8.7224 17.5013 9.91406 17.5013V19.5921ZM17.3891 16.8405C17.1074 15.963 16.3057 15.3346 15.3307 15.3346H14.2474V12.0846C14.2474 11.4888 13.7599 11.0013 13.1641 11.0013H6.66406V8.83464H8.83073C9.42656 8.83464 9.91406 8.34714 9.91406 7.7513V5.58464H12.0807C13.2724 5.58464 14.2474 4.60964 14.2474 3.41797V2.9738C17.4216 4.26297 19.6641 7.37214 19.6641 11.0013C19.6641 13.2546 18.7974 15.3021 17.3891 16.8405Z" fill="#565656"></path>
+                    </svg>
                 </span>
             ),
         },
@@ -544,13 +547,13 @@ const IgProspecting = () => {
             title: t("prospecting.Settings"),
             render: (_, record) => (
                 <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
+                    className=" bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
                     onClick={() => handleOpenSettings(record.id)}
                 >
                     <span>
                         <SettingsIconWhite />
                     </span>
-                    <span>
+                    <span className="!text-white">
                         {t("prospecting.Settings")}
                     </span>
                 </button>
@@ -573,10 +576,12 @@ const IgProspecting = () => {
             render: (_, record) => (
                 <div ref={(el) => setDropdownRef(record.id, el)} className="relative">
                     <Button
-                        icon={<MoreOutlined />}
-                        className="bg-gray-200 px-3 py-1 rounded-md"
+                        
+                        className="!bg-[transparent] px-3 py-1 rounded-md border-0 ctm-dot-btn hover:!bg-white"
                         onClick={() => toggleDropdown(record.id)}
-                    />
+                    >
+                        <svg width="4" height="20" viewBox="0 0 4 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 2C4 1.46957 3.78929 0.960859 3.41421 0.585786C3.03914 0.210713 2.53043 -6.42368e-08 2 -8.74228e-08C1.46957 -1.10609e-07 0.960859 0.210713 0.585786 0.585786C0.210713 0.960859 -6.42368e-08 1.46957 -8.74228e-08 2C-1.10609e-07 2.53043 0.210713 3.03914 0.585786 3.41421C0.960859 3.78929 1.46957 4 2 4C2.53043 4 3.03914 3.78929 3.41421 3.41421C3.78929 3.03914 4 2.53043 4 2ZM2 8C2.53043 8 3.03914 8.21071 3.41421 8.58579C3.78929 8.96086 4 9.46957 4 10C4 10.5304 3.78929 11.0391 3.41421 11.4142C3.03914 11.7893 2.53043 12 2 12C1.46957 12 0.960858 11.7893 0.585786 11.4142C0.210713 11.0391 -4.603e-07 10.5304 -4.37114e-07 10C-4.13928e-07 9.46957 0.210713 8.96086 0.585786 8.58579C0.960859 8.21071 1.46957 8 2 8ZM2 16C2.53043 16 3.03914 16.2107 3.41421 16.5858C3.78929 16.9609 4 17.4696 4 18C4 18.5304 3.78929 19.0391 3.41421 19.4142C3.03914 19.7893 2.53043 20 2 20C1.46957 20 0.960858 19.7893 0.585785 19.4142C0.210712 19.0391 -8.09991e-07 18.5304 -7.86805e-07 18C-7.63619e-07 17.4696 0.210713 16.9609 0.585785 16.5858C0.960858 16.2107 1.46957 16 2 16Z" fill="black"></path></svg>
+                    </Button>
                     <RowDropdown record={record} />
                 </div>
             ),
@@ -694,17 +699,17 @@ const IgProspecting = () => {
 
     return (
         <Layout>
-            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Easily connect with new prospects")}</h2>
+            <h2 className="text-[24px] font-[500] mb-7 pl-7">{t("prospecting.Easily connect with new prospects")}</h2>
             {/* <div class="nv-content-wrapper"></div> to display account syncing message */}
             <div className="nv-content-wrapper"></div> {/* to display account syncing message */}
-            <div className="bg-white p-2">
+            <div className="bg-white px-5 py-7 rounded-[16px]">
                 <div className="flex items-center justify-between ">
                     <div className="space-x-2 overflow-x-auto max-w-full mb-2 flex">
                         {
                             buttonsData.map((folder, index) => (
                                 <div className="flex items-center " key={index}>
                                     <button
-                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={`min-h-[34px] px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] bg-[#D7E5F3] text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">
@@ -742,7 +747,7 @@ const IgProspecting = () => {
                     </div>
 
                 </div>
-                <div className="flex items-center justify-between my-3 space-x-4 asda">
+                <div className="flex items-center justify-between mt-5 mb-3 space-x-4 ">
                     <Input
                         placeholder="Search groups"
                         prefix={<SearchOutlined />}
@@ -754,7 +759,7 @@ const IgProspecting = () => {
                                 search_grp: e.target.value
                             });
                         }}
-                        className="w-1/3 px-3 py-2 rounded-md border border-gray-300"
+                        className="w-1/3 px-3 py-2 !rounded-[4px] border border-[#CCCDCD] min-h-[44px] ctm-search"
                     />
                     <Dropdown
                         trigger={['click']}
@@ -798,8 +803,11 @@ const IgProspecting = () => {
                             </Menu>
                         }
                     >
-                        <Button icon={<FilterOutlined />}>
-                            {selectedSortLabel}
+                        <Button className="!text-[16px] !rounded-[4px] !p-2.5 min-h-[44px] min-w-[155px] !text-[#808183] !justify-start" >
+                            <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.33333 10.8203H4.66667C5.125 10.8203 5.5 10.4453 5.5 9.98698C5.5 9.52865 5.125 9.15365 4.66667 9.15365H1.33333C0.875 9.15365 0.5 9.52865 0.5 9.98698C0.5 10.4453 0.875 10.8203 1.33333 10.8203ZM0.5 1.65365C0.5 2.11198 0.875 2.48698 1.33333 2.48698H14.6667C15.125 2.48698 15.5 2.11198 15.5 1.65365C15.5 1.19531 15.125 0.820312 14.6667 0.820312H1.33333C0.875 0.820312 0.5 1.19531 0.5 1.65365ZM1.33333 6.65365H9.66667C10.125 6.65365 10.5 6.27865 10.5 5.82031C10.5 5.36198 10.125 4.98698 9.66667 4.98698H1.33333C0.875 4.98698 0.5 5.36198 0.5 5.82031C0.5 6.27865 0.875 6.65365 1.33333 6.65365Z" fill="black"></path>
+                            </svg>
+                            {selectedSortLabel} 
                         </Button>
                     </Dropdown>
                 </div>
