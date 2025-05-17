@@ -1,6 +1,7 @@
-import SubsDetails from './billingComponents/subsDetails';
+
 import AddOns from './billingComponents/AddOns';
 import PaymentMethods from './billingComponents/PaymentMethods';
+import SubsDetails from './billingComponents/subsDetails';
 
 const BillingDetails = ({ userMail }) => {
   return (
