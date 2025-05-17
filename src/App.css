@@ -147,6 +147,10 @@ li.ant-pagination-total-text {
     padding: 0;
     box-shadow: none;
 }
+
+/* __________ End CSS For Prospection Setting Poppup _________ */
+
+/* __________ Start CSS For Add Note Poppup _________ */
 .custom-fb-note-modal-wrap .ant-modal-content {
     background: #F1F2F2 !important;
     padding: 30px;
@@ -165,4 +169,6 @@ li.ant-pagination-total-text {
     stroke: #fff;
     opacity: 1 !important;
 }
-/* __________ End CSS For Prospection Setting Poppup _________ */
+
+
+/* __________ Start CSS For Add Note Poppup _________ */

@@ -3,7 +3,7 @@ import { FeedPostIcon, MessengerIcon, TickFillIcon } from "../../../common/icons
 
 const WishTypeSelector = ({ selectedWishType, setSelectedWishType }) => {
     return (
-        <div className="border border-[#DADADA] px-4 pt-4 pb-8 rounded-lg mb-4">
+        <div className="border border-[#DADADA] px-4 pt-4 pb-8 rounded-[6px] mb-4">
             <div className="flex items-center gap-[6px] mb-4">
                 <p className="text-xl font-[500] mb-0">Select How You’d Like to Wish</p>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
