@@ -41,8 +41,8 @@ const SelectGender = () => {
     };
 
     return (
-        <div className="space-y-4">
-            <div className="flex items-center gap-2.5 text-[20px] font-[500] mb-5">
+        <div className="space-y-5">
+            <div className="flex items-center gap-2.5 text-[20px] font-[500] mb-6">
                 Select Your Gender
                 <svg
                     width="16"

@@ -86,11 +86,11 @@ const SelectMessage = ({ tempMessageList }) => {
                 </Button>
             </div>
 
-            <div className="flex-1 overflow-auto my-5 ctm-list-design">
+            <div className="flex-1 overflow-auto mt-3 ctm-list-design ">
                 {filteredMessages?.map((record) => (
                     <div
                         key={record?.id}
-                        className={`cursor-pointer flex w-full items-center justify-between px-4 py-3 border bg-[#F5F5F5] rounded-[8px] my-2 ${selectedRow == record?.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white hover:border-[#0087FF]"}`}
+                        className={`message-popup-items cursor-pointer flex w-full items-center justify-between px-4 py-3 border bg-[#F5F5F5] rounded-[8px] mb-2 ${selectedRow == record?.id ? "bg-blue-100 rounded-xl border-[#0087FF]" : "border-white hover:border-[#0087FF]"}`}
                         onClick={() => handleRowClick(record?.id)}
                     >
                         <h2>

@@ -26,11 +26,11 @@ const SocialsSection = ({ socials, handleSocialChange }) => {
                 <img src={InfoIcon} alt="info" />
             </label>
 
-            <div className="flex flex-wrap justify-between gap-y-4">
+            <div className="flex flex-wrap justify-between gap-y-2.5">
                 {platforms.map(({ icon, key, placeholder }) => (
                     <div
                         key={key}
-                        className="grid grid-cols-[30px_1fr_30px] items-center gap-1.5 border border-gray-300 rounded w-[calc(50%-10px)]"
+                        className="grid grid-cols-[30px_1fr_30px] items-center gap-1.5 border border-gray-300 rounded w-[calc(50%-10px)] min-h-[34px]"
                     >
                         <div className="w-[30px] h-[30px] flex items-center justify-center border-r border-gray-300">
                             <img src={icon} alt={`${key} icon`} />

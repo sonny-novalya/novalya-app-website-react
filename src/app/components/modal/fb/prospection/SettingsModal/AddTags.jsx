@@ -73,16 +73,16 @@ const AddTags = ({ CRMList, groupId }) => {
       
     return (
         <div className="">
-            <h2 className="text-xl font-semibold mb-4">{t("prospecting.Add Tags")}</h2>
+            <h2 className="text-[24px] font-[500] mb-5">{t("prospecting.Add Tags")}</h2>
 
             {/* Toggle Add Tag Option */}
-            <div className="border border-gray-300 p-4 rounded-lg mb-4">
-                <p className="font-medium text-gray-800 mb-2">{t("prospecting.Do you want to add a tag?")}</p>
-                <div className="grid grid-cols-2 gap-3">
+            <div className="border border-gray-300 p-4 rounded-lg mb-5">
+                <p className="text-[20px] text-gray-800 mb-2">{t("prospecting.Do you want to add a tag?")}</p>
+                <div className="grid grid-cols-2 gap-5">
                     {addTagsOptions.map((option) => (
                         <button
                             key={option.value}
-                            className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${actionType === option.value
+                            className={`min-h-[52px] relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${actionType === option.value
                                 ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                 : "bg-white border-[#0087FF]"}`}
                             onClick={() => {
@@ -107,12 +107,12 @@ const AddTags = ({ CRMList, groupId }) => {
 
             {/* Group and Stage Selection */}
             {actionType !== "no" && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-5">
                     {/* Group Selection */}
                     <div className="border border-gray-300 p-4 rounded-lg relative" ref={groupDropdownRef}>
-                        <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Group")}</p>
+                        <p className="text-[20px] text-[#000407] mb-2">{t("prospecting.Select Group")}</p>
                         <div className="relative">
-                            <div className="border p-3 rounded-lg cursor-pointer" onClick={() => setShowDropdown(!showDropdown)}>
+                            <div className="min-h-[52px] border border-[#F0F0F0] px-5 py-3 rounded-[10px] cursor-pointer" onClick={() => setShowDropdown(!showDropdown)}>
                                 {selectedGroupData ? (
                                     <div className="flex items-center gap-2">
                                         <span
@@ -129,13 +129,13 @@ const AddTags = ({ CRMList, groupId }) => {
                             </div>
 
                             {showDropdown && (
-                                <div className="absolute z-10 bg-white border rounded-lg w-full mt-1 max-h-60 overflow-y-auto shadow-md">
+                                <div className="absolute z-10 bg-white w-full mt-1 max-h-60 overflow-y-auto shadow-[-2px_4px_7px_rgb(0_0_0_/_25%)] rounded-[10px] pt-[15px]">
                                     {CRMList?.map((group) => {
                                         const isSelected = group.id === selectedGroupId;
                                         return (
                                             <div
                                                 key={group.id}
-                                                className={`flex items-center gap-2 p-3 cursor-pointer  ${isSelected ? "bg-blue-100" : "hover:bg-gray-100"
+                                                className={`flex items-center gap-5 p-3 cursor-pointer  ${isSelected ? "bg-blue-100" : "hover:bg-[#D6E6F4]"
                                                     }`}
                                                 onClick={() => {
                                                     setSelectedGroupId(group.id);
@@ -151,7 +151,7 @@ const AddTags = ({ CRMList, groupId }) => {
                                                 >
                                                     {group.name?.slice(0, 2).toUpperCase()}
                                                 </span>
-                                                <span className="flex-1">{group.name}</span>
+                                                <span className="flex-1 text-[16px] leading-[1]">{group.name}</span>
 
                                                 {isSelected && (
                                                     <svg
@@ -179,10 +179,10 @@ const AddTags = ({ CRMList, groupId }) => {
 
                     {/* Stage Selection */}
                     <div className="border border-gray-300 p-4 rounded-lg relative" ref={stageDropdownRef}>
-                        <p className="font-medium text-gray-800 mb-2">{t("prospecting.Select Stage")}</p>
+                        <p className="text-[20px] text-[#000407] mb-2">{t("prospecting.Select Stage")}</p>
                         <div className="relative">
                             <div
-                                className="border p-3 rounded-lg cursor-pointer"
+                                className="border border-[#F0F0F0] px-5 py-3 rounded-[10px] cursor-pointer"
                                 onClick={() => setShowStageDropdown(prev => !prev)}
                             >
                                 {selectedStageId ? (
@@ -197,13 +197,13 @@ const AddTags = ({ CRMList, groupId }) => {
                             </div>
 
                             {showStageDropdown && (
-                                <div className="absolute z-10 bg-white border rounded-lg w-full mt-1 max-h-60 overflow-y-auto shadow-md">
+                                <div className="absolute z-10 bg-white w-full mt-1 max-h-60 overflow-y-auto shadow-[-2px_4px_7px_rgb(0_0_0_/_25%)] rounded-[10px] pt-[15px]">
                                     {sortedStages.map((stage) => {
                                         const isSelected = stage.id === selectedStageId;
                                         return (
                                             <div
                                                 key={stage.id}
-                                                className={`flex items-center gap-2 p-3 cursor-pointer  ${isSelected ? "bg-blue-100 " : "hover:bg-gray-100"
+                                                className={`min-h-[45px] flex items-center gap-2 px-4 py-[6px] cursor-pointer  ${isSelected ? "bg-blue-100 " : "hover:bg-[#D6E6F4]"
                                                     }`}
                                                 onClick={() => {
                                                     setSelectedStageId(stage.id);
@@ -212,7 +212,7 @@ const AddTags = ({ CRMList, groupId }) => {
                                                     setShowStageDropdown(false);
                                                 }}
                                             >
-                                                <span className="flex-1">{stage.name}</span>
+                                                <span className="flex-1 text-[16px] leading-[1]">{stage.name}</span>
 
                                                 {isSelected && (
                                                     <svg

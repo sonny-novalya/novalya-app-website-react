@@ -6,7 +6,7 @@ const AddTag = ({ selectedTag, setSelectedTag }) => {
     const tagOptions = ["yes", "no"];
 
     return (
-        <div className="border border-[#DADADA] px-4 pt-4 pb-3 rounded-lg">
+        <div className="border border-[#DADADA] px-4 pt-4 pb-3 rounded-[6px]">
 
             <div class="flex items-center gap-[6px] mb-4">
                 <p className="text-xl mb-0 font-[500]">{t("prospecting.Do you want to add a tag?")}</p>
