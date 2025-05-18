@@ -28,7 +28,7 @@ const paymentMethods = [
     },
 ];
 
-const PaymentMethods = () => {
+const PaymentMethods = ({setIsPop}) => {
 
     const {getCardList,removeCard}=useLoginUserDataStore()
     const [cards,setCards] = useState([])
@@ -101,7 +101,7 @@ const PaymentMethods = () => {
                         </div>
                     </div>
                 ))}
-                <button className="mt-4 bg-[#0087FF] text-white px-8 py-2 rounded-md  hover:bg-blue-600">
+                <button onClick={()=>setIsPop(true)} className="mt-4 bg-[#0087FF] text-white px-8 py-2 rounded-md  hover:bg-blue-600">
                     + Add New card
                 </button>
             </div>

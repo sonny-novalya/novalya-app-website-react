@@ -382,3 +382,15 @@ else if (plan === "Unlimited" && period === "1_year"){
 return {...result};
 
 }
+
+export function getCardType(cardNumber) {
+  const cleanNumber = cardNumber.replace(/\s+/g, '');
+
+  for (const [type, pattern] of Object.entries(cardTypePatterns)) {
+    if (pattern.test(cleanNumber)) {
+      return type;
+    }
+  }
+
+  return '';
+}

@@ -1364,3 +1364,28 @@ export const nuskinTerms = [
 
 export const  fallBackPlan = "Basic-Novalya-USD-Monthly"
 export const  nuskinFallBackPlan =  "Nuskin-Wellcommunity-Starter-USD-Monthly"
+
+export const cardTypePatterns = {
+  visa: /^4\d{0,15}$/,
+  mastercard: /^(5[1-5]|2[2-7])\d{0,14}$/,
+  amex: /^3[47]\d{0,13}$/,
+  discover: /^6(?:011|5|4[4-9])\d{0,12}$/,
+  diners: /^3(?:0[0-5]|[68])\d{0,11}$/,
+  jcb: /^35\d{0,17}$/,
+  maestro: /^(50|5[6-9]|6\d)\d{0,17}$/,
+};
+
+export const months = [
+  { label: "January", value: 1 },
+  { label: "February", value: 2 },
+  { label: "March", value: 3 },
+  { label: "April", value: 4 },
+  { label: "May", value: 5 },
+  { label: "June", value: 6 },
+  { label: "July", value: 7 },
+  { label: "August", value: 8 },
+  { label: "September", value: 9 },
+  { label: "October", value: 10 },
+  { label: "November", value: 11 },
+  { label: "December", value: 12 }
+];
