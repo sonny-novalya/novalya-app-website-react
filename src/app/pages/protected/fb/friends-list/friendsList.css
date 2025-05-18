@@ -55,3 +55,30 @@ button span.ant-btn-icon {
 .ctm-friend-table th.ant-table-cell::before {
     opacity: 0;
 }
+.custom-table .ant-table-thead th.ant-table-cell:nth-child(02) {
+    text-align: left !important;
+    padding-left: 68px  !important;
+}
+.custom-table-unfriend .ant-table-thead th.ant-table-cell:nth-child(01) {
+    text-align: left !important;
+    padding-left: 68px  !important;
+}
+span.ant-checkbox-inner:after {
+    background-color: transparent !important;
+}
+span.ant-checkbox-inner {
+    background: transparent !important;
+    border-radius: 2px !important;
+    border-color: #0087ff !important;
+}
+span.ant-checkbox-inner:after {
+    border: 1px solid #0087ff !important;
+    width: 6px !important;
+    height: 10px !important;
+    display: block !important;
+    transform: rotate(225deg) !important;
+    border-width: 1px 0px 0px 1px !important;
+    inset-inline-start: unset !important;
+    top: 2px !important;
+    left: 5px !important;
+}

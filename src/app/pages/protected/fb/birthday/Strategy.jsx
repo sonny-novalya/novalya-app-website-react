@@ -10,7 +10,7 @@ const Strategy = ({selectedStrategy, setSelectedStrategy}) => {
     };
 
     return (
-        <div className="border border-[#DADADA] px-4 pt-4 pb-7.5 rounded-lg mb-5 mx-auto w-full">
+        <div className="border border-[#DADADA] px-4 pt-4 pb-7.5 rounded-[6px] mb-5 mx-auto w-full">
             <div className="flex items-center gap-[6px] mb-4">
                 <p className="text-xl mb-0 font-[500]">Select the strategy</p>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

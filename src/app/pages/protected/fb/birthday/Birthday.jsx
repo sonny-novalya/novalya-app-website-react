@@ -146,7 +146,7 @@ const Birthday = () => {
             setSelectedTag={setSelectedTag} 
           />
           {/* Select Group */}
-         { selectedTag === "yes" &&<div className=" border border-gray-300 p-4 rounded-lg">
+         { selectedTag === "yes" &&<div className=" border border-gray-300 p-4 rounded-[6px]">
             
 
             <div class="flex items-center gap-[6px] mb-4">
@@ -200,7 +200,7 @@ const Birthday = () => {
         /> */}
 
        
-        <div className="border border-gray-300 px-4 pt-4 pb-3 rounded-lg mb-4">
+        <div className="border border-gray-300 px-4 pt-4 pb-3 rounded-[6px] mb-4">
             <p className="font-[500] text-[20px] text-gray-800 mb-2 flex items-center">
                 Retarget same user
             </p>
@@ -224,7 +224,7 @@ const Birthday = () => {
                 ))}
             </div>
         </div>
-        <div className="border border-[#DADADA] px-4 pt-4 pb-8 rounded-lg">
+        <div className="border border-[#DADADA] px-4 pt-4 pb-8 rounded-[6px]">
             <div class="flex items-center gap-[6px] mb-4">
               <p className="text-xl mb-0 font-[500]">{t("prospecting.Select Message")} Template</p>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

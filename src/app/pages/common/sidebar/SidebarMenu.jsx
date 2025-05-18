@@ -267,7 +267,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                 {shouldSubNavOpen && (
-                                                    <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-2 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
+                                                    <div className={`pl-${collapsed ? '4' : '6'} my-3 !pl-2 ml-[28px]  test flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
                                                         {item.subNav.map((subItem) => (
                                                             <SidebarItem
                                                                 key={subItem.id}

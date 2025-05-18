@@ -334,11 +334,11 @@ const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
             closeIcon={null}
             wrapClassName="custom-fb-note-modal-wrap"
         >
-            <div className="flex items-stretch justify-center w-full gap-4 h-[calc(100vh-200px)]" >
+            <div className="flex items-stretch justify-center w-full gap-4 h-[calc(100vh-100px)]" >
                 {/* Note Panel */}
-                <div className="bg-white rounded-lg shadow-md w-full px-6 flex flex-col overflow-y-auto">
-                    <div className="flex justify-between items-center mb-6 relative">
-                        <h2 className="text-lg font-medium">
+                <div className="bg-white rounded-[10px] border border-[#CFCFCF] w-full px-6 py-3 flex flex-col overflow-y-auto">
+                    <div className="flex justify-between items-center mb-3 relative">
+                        <h2 className="text-[20px] font-medium">
                             Note for {user_name}
                         </h2>
 
@@ -353,7 +353,7 @@ const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
                             </a>
 
                             <div className="relative cursor-pointer">
-                                <button onClick={() => setActiveNoteEditDropdown('header')} className='pt-2 ml-2'>
+                                <button onClick={() => setActiveNoteEditDropdown('header')} className='pt-2 ml-2.5'>
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.25 5C11.25 4.66848 11.1183 4.35054 10.8839 4.11612C10.6495 3.8817 10.3315 3.75 10 3.75C9.66848 3.75 9.35054 3.8817 9.11612 4.11612C8.8817 4.35054 8.75 4.66848 8.75 5C8.75 5.33152 8.8817 5.64946 9.11612 5.88388C9.35054 6.1183 9.66848 6.25 10 6.25C10.3315 6.25 10.6495 6.1183 10.8839 5.88388C11.1183 5.64946 11.25 5.33152 11.25 5ZM10 8.75C10.3315 8.75 10.6495 8.8817 10.8839 9.11612C11.1183 9.35054 11.25 9.66848 11.25 10C11.25 10.3315 11.1183 10.6495 10.8839 10.8839C10.6495 11.1183 10.3315 11.25 10 11.25C9.66848 11.25 9.35054 11.1183 9.11612 10.8839C8.8817 10.6495 8.75 10.3315 8.75 10C8.75 9.66848 8.8817 9.35054 9.11612 9.11612C9.35054 8.8817 9.66848 8.75 10 8.75ZM10 13.75C10.3315 13.75 10.6495 13.8817 10.8839 14.1161C11.1183 14.3505 11.25 14.6685 11.25 15C11.25 15.3315 11.1183 15.6495 10.8839 15.8839C10.6495 16.1183 10.3315 16.25 10 16.25C9.66848 16.25 9.35054 16.1183 9.11612 15.8839C8.8817 15.6495 8.75 15.3315 8.75 15C8.75 14.6685 8.8817 14.3505 9.11612 14.1161C9.35054 13.8817 9.66848 13.75 10 13.75Z" fill="black" fillOpacity="0.5" />
                                     </svg>
@@ -375,169 +375,169 @@ const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
                             )}
                         </div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-1">First name</label>
-                            <input
-                                name="firstName"
-                                value={userInfo.firstName}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                                placeholder="Name"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Last name</label>
-                            <input
-                                name="lastName"
-                                value={userInfo.lastName}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                                placeholder="Name"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-1">
-                                Email <span className="text-gray-400">ⓘ</span>
-                            </label>
-                            <input
-                                name="email"
-                                value={userInfo.email}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                                placeholder="Enter Email"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">
-                                Phone <span className="text-gray-400">ⓘ</span>
-                            </label>
-                            <input
-                                name="phone"
-                                value={userInfo.phone}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                                placeholder="Enter Phone Number"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-1">
-                                Profession <span className="text-gray-400">ⓘ</span>
-                            </label>
-                            <input
-                                name="profession"
-                                value={userInfo.profession}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                                placeholder="Enter Profession"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">
-                                Bio <span className="text-gray-400">ⓘ</span>
-                            </label>
-                            <input
-                                name="bio"
-                                value={userInfo.bio}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                                placeholder="Enter Bio"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-4">
-                        <SocialsSection
-                            socials={userInfo.socials}
-                            handleSocialChange={handleSocialChange}
-                        />
-                    </div>
-
-                    <div className="px-4 py-3 border border-[#DADADA] rounded-md mb-4">
-                        <div className="flex-grow mb-3">
-                            <label className="block text-sm font-medium mb-1">
-                                {editingNote ? "Edit Note" : "New Note"} <span className="text-gray-400">ⓘ</span>
-                            </label>
-                            <div className="relative w-full mb-3">
+                    <div className='border border-[#DCDCDC] rounded-[10px] px-[24px] py-[12px]'>      
+                        <div className="grid grid-cols-2 gap-5 mb-2">
+                            <div>
+                                <label className="block text-sm font-medium mb-1.5">First name</label>
                                 <input
-                                    name="note"
-                                    value={notesData.note}
-                                    onChange={(e) => setNotesData({ ...notesData, note: e.target.value })}
-                                    placeholder={editingNote ? "Edit your note" : "Write your Note"}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 h-8 text-sm pr-8" 
+                                    name="firstName"
+                                    value={userInfo.firstName}
+                                    onChange={handleChange}
+                                    className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-3 py-2 text-sm min-h-10"
+                                    placeholder="Name"
                                 />
-                                {editingNote && (
-                                    <button
-                                        type="button"
-                                        onClick={cancelEditing}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 cursor-pointer"
-                                    >
-                                        ✕
-                                    </button>
-                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1.5">Last name</label>
+                                <input
+                                    name="lastName"
+                                    value={userInfo.lastName}
+                                    onChange={handleChange}
+                                    className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-3 py-2 text-sm min-h-10"
+                                    placeholder="Name"
+                                />
                             </div>
                         </div>
 
-                        <div className="">
-                            <label className="block text-sm font-medium mb-1">Notes History</label>
-                            <div className="space-y-2 min-h-20 max-h-36 overflow-y-auto pr-1">
-                                {notes?.map((note, index) => {
-                                    return <div
-                                        key={index}
-                                        className="bg-gray-100 p-3 rounded flex justify-between items-start relative"
-                                    >
-                                        <div className="text-xs text-[#00000099]">
-                                            <div>{note.text}</div>
-                                        </div>
+                        <div className="grid grid-cols-2 gap-5 mb-2">
+                            <div>
+                                <label className="block text-sm font-medium mb-1.5">
+                                    Email <span className="text-gray-400">ⓘ</span>
+                                </label>
+                                <input
+                                    name="email"
+                                    value={userInfo.email}
+                                    onChange={handleChange}
+                                    className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-3 py-2 text-sm min-h-10"
+                                    placeholder="Enter Email"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1.5">
+                                    Phone <span className="text-gray-400">ⓘ</span>
+                                </label>
+                                <input
+                                    name="phone"
+                                    value={userInfo.phone}
+                                    onChange={handleChange}
+                                    className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-3 py-2 text-sm min-h-10"
+                                    placeholder="Enter Phone Number"
+                                />
+                            </div>
+                        </div>
 
-                                        <div className="mt-1 cursor-pointer" onClick={() => {
-                                            setNoteDeletedData(note)
-                                            setActiveNoteEditDropdown(activeNoteEditDropdown === index ? null : index)
-                                        }}>
-                                            <TripleDotIcon />
-                                        </div>
+                        <div className="grid grid-cols-2 gap-5 mb-2">
+                            <div>
+                                <label className="block text-sm font-medium mb-1.5">
+                                    Profession <span className="text-gray-400">ⓘ</span>
+                                </label>
+                                <input
+                                    name="profession"
+                                    value={userInfo.profession}
+                                    onChange={handleChange}
+                                    className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-3 py-2 text-sm min-h-10"
+                                    placeholder="Enter Profession"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1.5">
+                                    Bio <span className="text-gray-400">ⓘ</span>
+                                </label>
+                                <input
+                                    name="bio"
+                                    value={userInfo.bio}
+                                    onChange={handleChange}
+                                    className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-3 py-2 text-sm min-h-10"
+                                    placeholder="Enter Bio"
+                                />
+                            </div>
+                        </div>
 
-                                        {activeNoteEditDropdown === index && (
-                                            <div
-                                                ref={(el) => (noteEditdropdownRefs.current[index] = el)}
-                                                className="absolute top-6 right-0 bg-white border border-gray-300 px-2 py-1 rounded shadow flex space-x-2 z-20 h-8"
-                                            >
-                                                <button
-                                                    className="text-gray-600 hover:text-blue-500 text-sm"
-                                                    onClick={() => handleEditNote(note)}
-                                                >
-                                                    <EditIcon />
-                                                </button>
-                                                <button
-                                                    className="text-gray-600 hover:text-red-500 text-sm"
-                                                    onClick={() => handleDeleteNote(noteDeletedData)}
-                                                >
-                                                    <DeleteGreyIcon />
-                                                </button>
+                        <div className="mb-4 pt-1">
+                            <SocialsSection
+                                socials={userInfo.socials}
+                                handleSocialChange={handleSocialChange}
+                            />
+                        </div>
+
+                        <div className="px-4 py-3 border border-[#DADADA] rounded-md mb-1">
+                            <div className="flex-grow mb-3">
+                                <label className="block text-sm font-medium mb-1.5">
+                                    {editingNote ? "Edit Note" : "New Note"} <span className="text-gray-400">ⓘ</span>
+                                </label>
+                                <div className="relative w-full mb-3">
+                                    <input
+                                        name="note"
+                                        value={notesData.note}
+                                        onChange={(e) => setNotesData({ ...notesData, note: e.target.value })}
+                                        placeholder={editingNote ? "Edit your note" : "Write your Note"}
+                                        className="w-full border border-[#DCDCDC] bg-[rgb(217_217_217_/_10%)] rounded-[4px] px-3 py-2 h-8 text-sm pr-8 min-h-10" 
+                                    />
+                                    {editingNote && (
+                                        <button
+                                            type="button"
+                                            onClick={cancelEditing}
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 cursor-pointer"
+                                        >
+                                            ✕
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="">
+                                <label className="block text-sm font-medium mb-1.5">Notes History</label>
+                                <div className="space-y-2 min-h-20 max-h-16 overflow-y-auto pr-1">
+                                    {notes?.map((note, index) => {
+                                        return <div
+                                            key={index}
+                                            className="bg-gray-100 p-3 rounded flex justify-between items-start relative gap-2"
+                                        >
+                                            <div className="text-xs text-[#00000099]">
+                                                <div>{note.text}</div>
                                             </div>
-                                        )}
-                                    </div>
-                                })}
+
+                                            <div className="mt-1 cursor-pointer" onClick={() => {
+                                                setNoteDeletedData(note)
+                                                setActiveNoteEditDropdown(activeNoteEditDropdown === index ? null : index)
+                                            }}>
+                                                <TripleDotIcon />
+                                            </div>
+
+                                            {activeNoteEditDropdown === index && (
+                                                <div
+                                                    ref={(el) => (noteEditdropdownRefs.current[index] = el)}
+                                                    className="absolute top-6 right-0 bg-white shadow-[0_0_4px_rgb(0_0_0_/_20%)] px-2 py-1 rounded-[5px] shadow flex space-x-2 z-20 h-8"
+                                                >
+                                                    <button
+                                                        className="text-gray-600 hover:text-blue-500 text-sm"
+                                                        onClick={() => handleEditNote(note)}
+                                                    >
+                                                        <EditIcon />
+                                                    </button>
+                                                    <button
+                                                        className="text-gray-600 hover:text-red-500 text-sm"
+                                                        onClick={() => handleDeleteNote(noteDeletedData)}
+                                                    >
+                                                        <DeleteGreyIcon />
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    })}
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="flex justify-center space-x-3 mb-4">
+                    </div>  
+                    <div className="flex justify-end space-x-4 my-4">
                         <button
-                            className="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium cursor-pointer"
+                            className="px-6 py-2 w-full max-w-[150px] text-[#2B2B2B] bg-[#E8E8E8] text-[18px] min-h-[48px] rounded-[6px] cursor-pointer"
                             onClick={onCancel}
                         >
                             Cancel
                         </button>
                         <button
-                            className="px-6 py-2 rounded-lg bg-green-500 text-white font-medium cursor-pointer"
+                            className="px-6 py-2 w-full max-w-[150px] text-[18px] min-h-[48px] rounded-[6px] bg-[#21BF7C] text-white font-medium cursor-pointer"
                             onClick={handleAddNote}
                         >
                             {editingNote ? "Update Note" : "Update"}
@@ -546,7 +546,7 @@ const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
                 </div>
 
                 {/* List Panel */}
-                <div className="w-full h-full">
+                <div className="bg-white rounded-[10px] border border-[#CFCFCF] w-full h-full">
                     <ListPanel setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
                 </div>
             </div>

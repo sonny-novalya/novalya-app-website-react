@@ -98,7 +98,7 @@ const Settings = ({ isInstagram }) => {
                 {/* How Many Requests Section */}
                 <div className="border border-[#dadada] px-4 py-3 rounded-lg">
                     <p className="font-[500] text-xl mb-3 text-[#000407] flex items-center gap-[5px]">
-                        {t("prospecting.How many Requests")}
+                        {t("prospecting.How many Requests")} 
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8.0026 14.1666C11.4084 14.1666 14.1693 11.4057 14.1693 7.99992C14.1693 4.59416 11.4084 1.83325 8.0026 1.83325C4.59685 1.83325 1.83594 4.59416 1.83594 7.99992C1.83594 11.4057 4.59685 14.1666 8.0026 14.1666Z" stroke="black" strokeOpacity="0.75" strokeWidth="0.9"/>
                             <path d="M8 7.87524V11.2086" stroke="black" strokeOpacity="0.75" strokeLinecap="round"/>
@@ -151,7 +151,7 @@ const Settings = ({ isInstagram }) => {
                                         }
                                     }}
                                     placeholder="Enter value"
-                                    className="col-span-2 border border-[#0087FF] rounded-md px-4 py-2 text-gray-800 focus:outline-none "
+                                    className="col-span-2 h-13 border border-[#0087FF] rounded-md px-4 py-2 text-gray-800 focus:outline-none "
                                 />
                             </>
                         )}

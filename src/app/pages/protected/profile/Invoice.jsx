@@ -9,6 +9,14 @@ const Invoice = ({ userMail }) => {
   const {getInvoiceList,downloadInvoice} = useLoginUserDataStore()
   const [data,setData]=useState([])
   const [isLoading,setIsLoading]=useState(false)
+   const checkCurr = (str,price)=>{
+    price=price/100
+  if (str.includes("USD")) {
+    return `$${price}`
+  }else{
+    return `€${price}`
+  }
+  }
   const columns = [
     {
       title: "",
@@ -27,9 +35,9 @@ const Invoice = ({ userMail }) => {
       title: "Amount",
       dataIndex: "amount_paid",
       key: "amount_paid",
-        render :(val)=>(
+        render :(val,row)=>(
         <>
-          {(val/100) || 0}
+          {checkCurr(row?.currency_code,val)  || 0}
         </>
       )
     },
@@ -71,6 +79,8 @@ const Invoice = ({ userMail }) => {
   useEffect(() => {
   fetchInvoiceData()
   }, [])
+
+ 
 
   const fetchInvoiceData = async()=>{
     setIsLoading(true)

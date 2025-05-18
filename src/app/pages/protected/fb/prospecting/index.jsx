@@ -95,7 +95,7 @@ const FbProspecting = () => {
         if (![0, 11111111111, 22222222222].includes(Number(selectedFolder))) {
             const folder = folders?.find((item) => item.id == selectedFolder);
             return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600  cursor-pointer ">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folder ? folder.folder_name : t("prospecting.None")}
                     </span>
@@ -131,7 +131,7 @@ const FbProspecting = () => {
         </div>;
         if (folderNames.length === 1) {
             return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+                <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 rounded-[20px] text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folderNames[0]}
                     </span>
@@ -140,7 +140,7 @@ const FbProspecting = () => {
         }
 
         return (
-            <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+            <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 rounded-[20px] text-white hover:bg-green-600 cursor-pointer">
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{folderNames[0]}</span>
                 <Dropdown overlay={<Menu>{folderNames.slice(1).map((name, index) => <Menu.Item key={index}>{name}</Menu.Item>)}</Menu>} trigger={['hover']}>
                     <span className="cursor-pointer">
@@ -508,7 +508,7 @@ const FbProspecting = () => {
             dataIndex: "name",
             render: (text, record) => (
                 <div className="flex items-center space-x-2">
-                    <img src={record.post_image || GroupImg} alt="Group" className="w-10 h-10 rounded-full object-cover" />
+                    <img src={record.post_image || GroupImg} alt="Group" className="w-16 h-11 rounded-[4px] object-cover" />
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{text}</span>
                 </div>
             ),
@@ -524,8 +524,11 @@ const FbProspecting = () => {
         },
         {
             title: t("prospecting.Privacy"), dataIndex: "privacy", render: () => (
-                <span className="">
-                    🌎
+                <span className="flex justify-center">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.9974 0.167969C5.0174 0.167969 0.164062 5.0213 0.164062 11.0013C0.164062 16.9813 5.0174 21.8346 10.9974 21.8346C16.9774 21.8346 21.8307 16.9813 21.8307 11.0013C21.8307 5.0213 16.9774 0.167969 10.9974 0.167969ZM9.91406 19.5921C5.6349 19.0613 2.33073 15.4213 2.33073 11.0013C2.33073 10.3296 2.4174 9.69047 2.55823 9.06214L7.7474 14.2513V15.3346C7.7474 16.5263 8.7224 17.5013 9.91406 17.5013V19.5921ZM17.3891 16.8405C17.1074 15.963 16.3057 15.3346 15.3307 15.3346H14.2474V12.0846C14.2474 11.4888 13.7599 11.0013 13.1641 11.0013H6.66406V8.83464H8.83073C9.42656 8.83464 9.91406 8.34714 9.91406 7.7513V5.58464H12.0807C13.2724 5.58464 14.2474 4.60964 14.2474 3.41797V2.9738C17.4216 4.26297 19.6641 7.37214 19.6641 11.0013C19.6641 13.2546 18.7974 15.3021 17.3891 16.8405Z" fill="#565656"/>
+                    </svg>
+
                 </span>
             ),
         },
@@ -651,7 +654,7 @@ const FbProspecting = () => {
     }, []);
 
     useEffect(() => {
-        fetchGroups(storeFilters);
+        fetchGroups({...storeFilters,type:"facebook"});
     }, [storeFilters]);
 
     useEffect(() => {
@@ -666,10 +669,10 @@ const FbProspecting = () => {
 
     return (
         <Layout>
-            <h2 className="text-xl font-[500] mb-6">{t("prospecting.Easily connect with new prospects")}</h2>
+            <h2 className="text-[24px] font-[500] mb-7 pl-7">{t("prospecting.Easily connect with new prospects")}</h2>
             {/* <div class="nv-content-wrapper"></div> to display account syncing message */}
             <div className="nv-content-wrapper"></div> {/* to display account syncing message */}
-            <div className="bg-white p-5 rounded-[16px]">
+            <div className="bg-white px-5 py-7 rounded-[16px]">
                 <div className="flex items-center justify-between ">
                     <div className="space-x-3 overflow-x-auto max-w-full flex">
                         {
@@ -693,7 +696,7 @@ const FbProspecting = () => {
                             folders.map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
-                                        className={` px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={` px-4 text-sm py-[7px] rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">
@@ -717,7 +720,7 @@ const FbProspecting = () => {
                     </div>
                     <Button id="Novalya-Multi-group" className="!text-white !bg-[#0087FF]  !rounded-[10px] !px-8 !py-3 min-h-[45px] border !border-transparent">{t("prospecting.Add new group")}</Button>
                 </div>
-                <div className="flex items-center justify-between my-5 space-x-4 ">
+                <div className="flex items-center justify-between mt-5 mb-4 space-x-4 ">
                     <Input
                         placeholder="Search groups"
                         prefix={<SearchOutlined />}

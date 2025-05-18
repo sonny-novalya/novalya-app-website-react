@@ -87,17 +87,17 @@ const Unfriended = () => {
 
     return (
       <>
-        <div className="p-6 bg-[#f2f2f2] h-screen overflow-auto">
-        <h2 className="text-[24px] font-[500] mb-4">List of Unfriends</h2>
-          <div className="bg-white p-5 rounded-[16px]">
-            <div className="flex items-center justify-between mb-4 ctm-serach">
+        <div className="pl-10 pr-8 py-8 bg-[#f2f2f2] h-screen overflow-auto">
+        <h2 className="text-[24px] font-[500] mb-7 pl-7">List of Unfriends</h2>
+          <div className="bg-white p-5 rounded-[16px] ">
+            <div className="flex items-center justify-between mb-4 ">
                 <Input
                     placeholder="Search novalya"
                     prefix={<SearchOutlined />}
                     value={searchKeyword}
                     onChange={(e) => applySearch(e.target.value)}
-                    className="w-1/3 px-3 py-2 rounded-md border border-gray-300 !rounded-[4px] min-h-[44px]"
-                    style={{maxWidth: "290px"}}
+                    className="w-1/3 px-3 py-2 !rounded-[4px] border border-[#CCCDCD] min-h-[44px] ctm-search w-full max-w-[320px]"
+                    
                 />
                 {/* <Button className="bg-gray-200 px-4 py-2 rounded-md">
                   Start Process
@@ -118,7 +118,7 @@ const Unfriended = () => {
                   pageSizeOptions: ['10', '20', '50']
                 }}
                 onChange={(pagination) => fetchNewPageData(pagination.current, pagination.pageSize)}
-                className="custom-table" 
+                className="custom-table custom-table-unfriend" 
               />
             </div>
           </div>

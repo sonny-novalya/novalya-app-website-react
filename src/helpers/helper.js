@@ -110,6 +110,15 @@ export function formatUnixDate(unixTimestamp) {
   return date.toLocaleDateString('en-US', options);
 }
 
+export function isExpired(month, year) {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1; // getMonth() returns 0-based month
+
+  if (year < currentYear) return true;
+  if (year === currentYear && month < currentMonth) return true;
+  return false;
+}
 
 
 

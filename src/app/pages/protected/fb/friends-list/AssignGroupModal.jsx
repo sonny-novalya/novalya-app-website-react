@@ -41,16 +41,16 @@ const AssignGroupModal = ({ open, close, selectedUsers, clearSelection, refreshT
             onCancel={() => close()}
             footer={null}
             centered
-            className="rounded-lg"
+            className="rounded-lg friendlist-addGroup-popup"
             closable={false}
-            width={650}
+            width={750}
         >
             <div className="text-center rounded-t-lg">
-                <h2 className="text-left text-2xl font-medium text-gray-700">Add to group</h2>
-                <h4 className="text-left text-l font-medium text-gray-700" style={{marginTop:"5px"}}>Where would you like to Add {selectedUsers.length} users?</h4>
+                <h2 className="text-left text-[24px] font-medium text-gray-700">Add to group</h2>
+                <h4 className="text-left text-l font-medium text-gray-700 mt-1.5">Where would you like to Add {selectedUsers.length} users?</h4>
             </div>
 
-            <div style={{height:"300px", overflowY:"auto", marginTop:"15px"}}>
+            <div style={{height:"300px", overflowY:"auto", marginTop:"20px"}}>
 
                 {groupsLoading && <div className="text-center mt-10">
                     <Spin tip="Loading..." size="large"/>
@@ -74,14 +74,14 @@ const AssignGroupModal = ({ open, close, selectedUsers, clearSelection, refreshT
                 ))}
             </div>
 
-            <div className="bg-gray-50 mt-2 rounded-b-lg flex justify-end space-x-4">
-                <button onClick={() => close()} className="bg-white w-32 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6 cursor-pointer close-fb-group-popup">
+            <div className="bg-gray-50 mt-2 rounded-b-lg flex justify-end space-x-5">
+                <button onClick={() => close()} className="bg-white w-37.5 text-[#0087FF] min-h-[52px] border border-[#0087FF] rounded-lg py-2 px-6 cursor-pointer close-fb-group-popup">
                     Cancel
                 </button>
-                <button className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6 cursor-pointer assign-fb-group" selected-tag={selected} selected-users={JSON.stringify(selectedUsers)}>
+                <button className="bg-[#21BF7C] w-37.5 text-white rounded-lg py-2 px-6 min-h-[52px] cursor-pointer assign-fb-group" selected-tag={selected} selected-users={JSON.stringify(selectedUsers)}>
                     Add
                 </button>
-                <button className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6 cursor-pointer" onClick={removeGroup}>
+                <button className="bg-[#FF0000] w-37.5 text-white rounded-lg py-2 px-6 min-h-[52px] cursor-pointer" onClick={removeGroup}>
                     Remove
                 </button>
             </div>

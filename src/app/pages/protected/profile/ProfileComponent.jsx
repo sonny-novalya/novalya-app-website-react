@@ -607,20 +607,20 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
     );
 };
 
-ProfileComponent.propTypes = {
-    userDataLoading: PropTypes.Boolean,
-    fetchLoginUserData: PropTypes.func,
-    loginUserData: PropTypes.shape({
-        email: PropTypes.string,
-        firstname: PropTypes.string,
-        lastname: PropTypes.string,
-        mobile: PropTypes.string,
-        zip_code: PropTypes.string,
-        address1: PropTypes.string,
-        country: PropTypes.string,
-        city: PropTypes.string,
-        profilepictureurl: PropTypes.string,
-    }).isRequired,
-};
+// ProfileComponent.propTypes = {
+//     userDataLoading: PropTypes.Boolean,
+//     fetchLoginUserData: PropTypes.func,
+//     loginUserData: PropTypes.shape({
+//         email: PropTypes.string,
+//         firstname: PropTypes.string,
+//         lastname: PropTypes.string,
+//         mobile: PropTypes.string,
+//         zip_code: PropTypes.string,
+//         address1: PropTypes.string,
+//         country: PropTypes.string,
+//         city: PropTypes.string,
+//         profilepictureurl: PropTypes.string,
+//     }).isRequired,
+// };
 
 export default ProfileComponent;

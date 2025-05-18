@@ -305,7 +305,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                             return (
                                 <li
                                     key={tab.key}
-                                    className={`flex items-center cursor-pointer p-3 rounded-lg ${isActive ? "bg-[#E6F1FB]" : "hover:[#E6F1FB]"}`}
+                                    className={`flex text-[16px] tracking-[0.02em] items-center cursor-pointer p-3 rounded-lg ${isActive ? "bg-[#E6F1FB]" : "hover:[#E6F1FB]"}`}
                                     onClick={() => handleTabClick(tab.key)}
                                 >
                                     <span
@@ -337,7 +337,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                         placement="top"
                     >
                         <button
-                            className={`w-full py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${!allSectionsCompleted ? "opacity-50" : ""}`}
+                            className={`w-full py-3 rounded-lg bg-[#0087FF] text-white cursor-pointer ${!allSectionsCompleted ? "opacity-50" : ""}`}
                             onClick={allSectionsCompleted ? handleSave : handleDisabledSaveClick}
                         >
                             {createSocialLoading ? t("prospecting.Saving") : t("prospecting.Save")}
@@ -349,7 +349,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
                 <div className="h-full w-[20px] bg-[#878787]" />
 
                 {/* Right panel - Content and Navigation */}
-                <div className="w-3/4 overflow-auto px-5 py-4 flex flex-col gap-4 justify-between bg-white  rounded-[10px]">
+                <div className="w-3/4 overflow-auto px-5 py-4 flex flex-col gap-3 justify-between bg-white  rounded-[10px]">
                     <div className="h-[calc(100%-64px)]">
                         {tabItems.find((tab) => tab.key === activeKey)?.children}
                     </div>
