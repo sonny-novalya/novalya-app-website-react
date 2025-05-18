@@ -145,3 +145,6 @@ ul.pros-dropdown li:hover span {
     color: #8C8E8F;
     font-weight: 300;
 }
+.message-template ul li.text-white span .template-arrow {
+    filter: invert(1);
+}

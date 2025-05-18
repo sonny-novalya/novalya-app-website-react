@@ -304,12 +304,12 @@ const SidebarMenu = () => {
                                 {userData?.url ? (
                                     <img src={userData.url} className="h-7.5 w-7.5 rounded-sm" alt="user img" />
                                 ) : (
-                                    <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-sm">
+                                    <div className="h-10 w-10 min-w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-[12px]">
                                         {userData?.name?.charAt(0)}
                                     </div>
                                 )}
                                 <div className="flex flex-col text-sm">
-                                    <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
+                                    <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[150px]">{userData?.name}</span>
                                     <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
                                 </div>
                             </div>
@@ -320,7 +320,7 @@ const SidebarMenu = () => {
                                 onClick={onLogout}
                             >
                                 <LogoutIcon />
-                                    <span className="text-[16px] ">Logout</span>
+                                    <span className="text-[16px] font-[500]">Logout</span>
                             </button>
                         </div>
                     </>

@@ -29,10 +29,13 @@ const MessageSelector = ({containerRef}) => {
           
           <div className='grid grid-cols-3 gap-12'>
             {data.map((item, index) => (
-              <div key={index} className="cursor-pointer border border-[#0087FF33] rounded-[6px] text-center px-5 py-[16px] ${item.color}" onClick={()=>handleSelector(index)}>
-                <img className='mx-auto flex mt-[36px] mb-[36px]' src={item.img} alt={item.title} />
+              <div
+                key={index}
+                className={`cursor-pointer border rounded-[6px] text-center px-5 py-[16px] ${item.color} ${item.borderColor}`}
+                onClick={() => handleSelector(index)}>
+                <img className='mx-auto flex my-[44px]' src={item.img} alt={item.title} />
                 <span className={`font-semibold text-[24px] leading-[36px] max-w-[220px] text-center block mx-auto ${item.color}`}>{t(`message.${item.title}`)}</span>
-                <button className={`cursor-pointer font-medium text-[14px] leading-[20px] px-5 py-[10px] text-white rounded-[24px] w-full max-w-[200px] mt-2 ${item.bgColor}`}>{item.buttonText}</button>
+                <button className={`cursor-pointer font-medium text-[14px] leading-[20px] px-5 py-[10px] text-white rounded-[10px] w-full max-w-[200px] mt-2 ${item.bgColor}`}>{item.buttonText}</button>
               </div>
             ))}
           </div>
@@ -47,21 +50,24 @@ const data = [
       title: "Start from a blank page",
       buttonText: "Blank",
       color: "text-[#0087FF]",
-      bgColor: "bg-[#0087FF]"
+      bgColor: "bg-[#0087FF]",
+      borderColor:  "border-[#0087ff33]"
     },
     {
       img: tempIconImg,
       title: "Over 30 Templates ready to use",
       buttonText: "Use Template",
       color: "text-[#3833A1]",
-      bgColor: "bg-[#3833A1]"
+      bgColor: "bg-[#3833A1]",
+      borderColor:  "border-[#3833a133]"
     },
     {
       img: aiIconImg,
       title: "Use AI to write your Message",
       buttonText: "Ask AI",
       color: "text-[#B136C6]",
-      bgColor: "bg-[#B136C6]"
+      bgColor: "bg-[#B136C6]",
+      borderColor:  "border-[#b136c633]"
     }
   ];
 

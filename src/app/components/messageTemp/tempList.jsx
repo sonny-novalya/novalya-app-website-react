@@ -150,31 +150,32 @@ const TempList = ({containerRef}) => {
                 <div className="flex items-center gap-[10px] text-[20px]">{t("message.Select a template")}
                  <TempMessageIcon index={0}/>
                 </div>
-                <div className="lang-dropdownWrap relative">
-                    {/* <div className="pros-dropdown-text flex items-center justify-around gap-2 border border-[#CCCDCD] min-h-[44px] rounded-[6px] px-[10px] py-[5px] min-w-[193px] font-medium text-[14px] leading-[21px] text-black">
-                        <img src={libFlag}/>
-                        <span className="flex-1 text-[14px]">English</span>
-                        <TempMessageIcon index={1}/>
-                    </div> */}
-                    {/* <div className="lang-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
-                        <div className="lang-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
-                            <img src={libFlag}/>
-                            <span className="flex-1 text-[14px]">English</span>
-                            <TempMessageIcon index={2}/>
-                        </div>
-                    </div> */}
+                
+                  <div className="lang-dropdownWrap relative">
+                      {/* <div className="pros-dropdown-text flex items-center justify-around gap-2 border border-[#CCCDCD] min-h-[44px] rounded-[6px] px-[10px] py-[5px] min-w-[193px] font-medium text-[14px] leading-[21px] text-black">
+                          <img src={libFlag}/>
+                          <span className="flex-1 text-[14px]">English</span>
+                          <TempMessageIcon index={1}/>
+                      </div> */}
+                      {/* <div className="lang-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white py-3 rounded-[10px]">
+                          <div className="lang-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white">
+                              <img src={libFlag}/>
+                              <span className="flex-1 text-[14px]">English</span>
+                              <TempMessageIcon index={2}/>
+                          </div>
+                      </div> */}
 
-                    <select onChange={(e)=>handleLangChange(e.target.value)}>
-                    {
-                        langData.map((lang)=>{
-                            return  <option key={lang.value}  value={lang.value}>{lang.lable}</option>
-                  
-                        })
-                    }
-                       
-                    </select>
-                  
-                </div>
+                      <select className='border border-[#00040733] min-h-[44px] px-[12px] py-[8px] w-[150px] rounded-[4px] text-[16px] text-[#000407]' onChange={(e)=>handleLangChange(e.target.value)}>
+                      {
+                          langData.map((lang)=>{
+                              return  <option key={lang.value}  value={lang.value}>{lang.lable}</option>
+                    
+                          })
+                      }
+                        
+                      </select>
+                    
+                  </div>
             </div>
 
             <div className="message-template flex flex-wrap gap-1.5 items-start h-[67vh]">
@@ -211,15 +212,15 @@ const TempList = ({containerRef}) => {
                         </li>
                     </ul>
                 </div>
-                <div className="w-[calc(80%-6px)] h-full border border-[#0087FF1A] rounded-md p-4">
-                    <div className="flex flex-wrap gap-x-5 gap-y-4 max-h-full overflow-y-auto items-start">
+                <div className="w-[calc(80%-6px)] h-full border border-[#0087FF1A] rounded-md px-4 py-5">
+                    <div className="flex flex-wrap gap-x-6 gap-y-5 max-h-full overflow-y-auto items-start">
                        { 
                         handleLoader(selecetdCat?.category) ?<div className='flex justify-center items-center w-full h-[600px]'>
                         <Spin size='large'/>
                         </div>:
                         selecetdCat?.items?.map((data,i)=>{
                            return (
-                            <div key={`${data.title}${i}`} className="template-items border border-[#0087FF1A] p-3 w-[calc(25%-15px)] rounded-lg">
+                            <div key={`${data.title}${i}`} className="template-items border border-[#0087ff1a] p-3 w-[calc(33.33%-16px)] rounded-lg">
                             <div className="flex justify-between items-start">
                                 <img src={noteIcon}/>
                                 <div  onClick={()=>handleFav(data)} className="bg-[#EFEFEF] w-6 h-6 flex items-center justify-center rounded-full mt-2 cursor-pointer">
@@ -227,9 +228,9 @@ const TempList = ({containerRef}) => {
                                     
                                 </div>
                             </div>
-                            <h3 className="font-medium text-sm leading-6 mt-2 mb-3 min-h-[48px] flex items-center">{data.title}</h3>
-                            <div className="flex gap-2">
-                                <button className="cursor-pointer flex-1 font-medium text-sm bg-white px-3 py-1.5 rounded-full" onClick={()=>handlePreview(data)}>{t("message.Preview")}</button>
+                            <h3 className="font-medium text-sm leading-[120%] mt-2 mb-3 min-h-[48px] flex items-center">{data.title}</h3>
+                            <div className="flex gap-3">
+                                <button className="cursor-pointer flex-1 font-[500] text-sm bg-white text-[#808182] px-3 py-1.5 rounded-full" onClick={()=>handlePreview(data)}>{t("message.Preview")}</button>
                                 <button className="cursor-pointer flex-1 font-medium text-sm bg-[#0087FF] text-white px-3 py-1.5 rounded-full" onClick={()=>handleCreate(data)} >{t("message.Select")}</button>
                             </div>
                         </div>

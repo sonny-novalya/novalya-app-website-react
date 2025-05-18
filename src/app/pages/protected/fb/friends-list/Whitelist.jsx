@@ -110,7 +110,7 @@ const Whitelist = () => {
     return (
       <>
         <div className="pl-10 pr-8 py-8 bg-[#f2f2f2] h-screen overflow-auto">
-        <h2 className="text-[24px] font-[500] mb-7 pl-7">List of Whitelisted Friends</h2>
+        <h2 className="text-[24px] font-[500] mb-6 pl-7">List of Whitelisted Friends</h2>
           <div className="bg-white p-5 rounded-[16px]">
             
             <div className="flex items-center justify-between mb-4">
@@ -133,7 +133,7 @@ const Whitelist = () => {
                   Remove
                 </Button>
             </div>
-            <div style={{ overflowX: 'auto', maxWidth: '100%' }} className="ctm-friend-table">
+            <div style={{ overflowX: 'auto', maxWidth: '100%' }} className="ctm-friend-table custom-table-groupSecond ">
               <Table 
                 rowKey="id" 
                 rowSelection={rowSelection}
