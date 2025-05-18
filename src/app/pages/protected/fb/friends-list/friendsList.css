@@ -55,11 +55,11 @@ button span.ant-btn-icon {
 .ctm-friend-table th.ant-table-cell::before {
     opacity: 0;
 }
-.custom-table .ant-table-thead th.ant-table-cell:nth-child(02) {
+.custom-table-groupFirst .ant-table-thead th.ant-table-cell:nth-child(01) {
     text-align: left !important;
     padding-left: 68px  !important;
 }
-.custom-table-unfriend .ant-table-thead th.ant-table-cell:nth-child(01) {
+.custom-table-groupSecond .ant-table-thead th.ant-table-cell:nth-child(02) {
     text-align: left !important;
     padding-left: 68px  !important;
 }

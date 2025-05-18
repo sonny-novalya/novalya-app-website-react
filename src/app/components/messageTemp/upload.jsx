@@ -51,7 +51,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
           <h3 className="text-[24px] font-medium mb-4">Upload files</h3>
   
           { previewUrl? <div className='flex items-center content-center'>
-            <img src={previewUrl}   className=' w-full h-[400px]'  alt={"previewUrl"}/>
+            <img src={previewUrl}   className=' w-full h-[300px] object-contain'  alt={"previewUrl"}/>
           </div>: <div className="border-2 border-dashed border-[#CBD0DC] text-center px-6 pt-5 pb-8 rounded-[10px]">
             <div className="flex justify-center mb-2">
               <img src={uploadImg} alt="uploadImg" />

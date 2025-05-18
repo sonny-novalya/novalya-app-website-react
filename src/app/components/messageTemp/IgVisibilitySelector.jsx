@@ -16,7 +16,7 @@ const IgVisibilitySelector = ({containerRef}) => {
       return (
         <div className="fixed inset-0 flex items-center flex-col justify-center bg-black/30 h-screen z-[9999]">
             
-            <div ref={containerRef} className="bg-white px-6 py-6 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+            <div ref={containerRef} className="bg-white p-5 rounded-[10px] max-w-[880px] mx-auto w-full relative max-h-[90vh] overflow-auto">
             
               <button className='absolute right-1 top-1.5 cursor-pointer' onClick={()=>setIsMessage(false)}>
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@ const IgVisibilitySelector = ({containerRef}) => {
               {t("message.Select feature")}
                 <PreviewMessageIcon index={0}/>
               </div>
-              <div className="grid grid-cols-4 gap-4 border border-[#0087FF33] rounded-[10px] p-3 px-4 mt-6">
+              <div className="grid grid-cols-4 gap-4 border border-[#0087FF33] rounded-[10px] px-3 py-5 mt-4">
                 {features.map((feature, index) => (
                   <div key={index} onClick={()=>handleVisibilty(feature.value)} className="px-10 py-6 bg-[#E2F1FE4F] border border-[#0087FF3D] rounded-[6px] text-center hover:bg-[#E2F1FE] hover:border-[#0087FF] cursor-pointer">
                     <div className="w-12 h-12 flex items-center justify-center mx-auto">

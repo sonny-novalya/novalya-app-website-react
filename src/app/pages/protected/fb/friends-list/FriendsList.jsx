@@ -263,7 +263,7 @@ const FriendsList = () => {
     return (
       <>
         <div className="pl-10 pr-8 py-8 bg-[#f2f2f2] h-screen overflow-auto">
-          <h2 className="text-[24px] font-[500] mb-7 pl-7">List of Friends</h2>
+          <h2 className="text-[24px] font-[500] mb-6 pl-7">List of Friends</h2>
           <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
           <div className={`bg-white p-5 rounded-[16px]  ${!isPremium ? "friends-list-blurry" : ""}`} style={{position:"relative"}}>
             <div className="flex items-center justify-between mb-3">
@@ -313,7 +313,7 @@ const FriendsList = () => {
                   ),
                 }}
                 onChange={(pagination) => fetchNewPageData(pagination.current, pagination.pageSize)}
-                className="custom-table" 
+                className="custom-table custom-table-groupSecond" 
                 scroll={{ x: 'max-content' }}
               />
             </div>

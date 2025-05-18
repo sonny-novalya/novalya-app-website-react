@@ -73,7 +73,7 @@ const MessageIndex = () => {
       "!text-[#f34e55] !border-[#f34e55]";
     return (
       <Button
-        className={`${platformClasses} capitalize px-3 py-1 !rounded-[25px] !font-medium text-[14px] leading-[21px] tracking-normal gap-[4px] p-[6px_12px] flex !h-9`}
+        className={`${platformClasses} capitalize px-3 py-1 !rounded-[25px] !font-medium text-[14px] leading-[21px] tracking-normal gap-[4px] p-[6px_12px] flex !h-9 min-w-[150px]`}
       >
         <img className="normalIcon" src={feature?.icon} />
         {feature?.label}
@@ -154,19 +154,39 @@ const MessageIndex = () => {
 
   const DropdownMenu = ({ item, onDuplicate, onDelete }) => (
     <div
-      className="bg-white rounded-md shadow-md p-2"
+      className="bg-white p-3 rounded-[6px] shadow-[-5px_6px_6px_rgba(0,0,0,0.19)]"
       onClick={(e) => e.stopPropagation()} // Prevent closing on click
     >
       <div
         onClick={() => onDuplicate(item)}
-        className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
+        className="flex gap-3 items-center px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
       >
+        <span className="flex items-center justify-center w-[20px] h-[20px]">
+          <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_8299_5359)">
+            <path d="M14.666 11.4876V13.9876C14.666 17.321 13.3327 18.6543 9.99935 18.6543H6.83268C3.49935 18.6543 2.16602 17.321 2.16602 13.9876V10.821C2.16602 7.48763 3.49935 6.1543 6.83268 6.1543H9.33268" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12.0007 11.4876C10.0007 11.4876 9.33398 10.821 9.33398 8.82096V6.1543L14.6673 11.4876H12.0007Z" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10.166 1.98633H13.4993" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.33398 4.48633C6.33398 3.10299 7.45065 1.98633 8.83398 1.98633H11.0173" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.8339 6.98633V12.1447C18.8339 13.4363 17.7839 14.4863 16.4922 14.4863" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16.334 6.98633C14.459 6.98633 13.834 6.36133 13.834 4.48633V1.98633L18.834 6.98633H16.334Z" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_8299_5359">
+            <rect width="21" height="21" fill="white"/>
+            </clipPath>
+            </defs>
+          </svg>
+        </span>
         Duplicate
       </div>
-      <div
+      <div 
         onClick={() => onDelete(item.id)}
-        className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
+        className="flex gap-3 items-center px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
       >
+        <span className="flex items-center justify-center w-[20px] h-[20px]">
+          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1H10.5L9.5 0H4.5L3.5 1H0V3H14M1 16C1 16.5304 1.21071 17.0391 1.58579 17.4142C1.96086 17.7893 2.46957 18 3 18H11C11.5304 18 12.0391 17.7893 12.4142 17.4142C12.7893 17.0391 13 16.5304 13 16V4H1V16Z" fill="#808183"></path><path d="M14 1H10.5L9.5 0H4.5L3.5 1H0V3H14M1 16C1 16.5304 1.21071 17.0391 1.58579 17.4142C1.96086 17.7893 2.46957 18 3 18H11C11.5304 18 12.0391 17.7893 12.4142 17.4142C12.7893 17.0391 13 16.5304 13 16V4H1V16Z" fill="black" fill-opacity="0.2"></path></svg>
+        </span>
         {isDelete ? "Really?" : " Delete"}
       </div>
     </div>
@@ -350,7 +370,7 @@ const MessageIndex = () => {
                   className={`flex justify-between items-center bg-[#0087FF33]`}
                 >
                   <span className="cursor-pointer">{item?.title}</span>
-                  <div className="flex gap-4 items-center">
+                  <div className="flex gap-4 items-center message-first-btn">
                     {renderPlatformButton(item?.visibility_type)}
 
                     <Button

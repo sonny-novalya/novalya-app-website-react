@@ -31,6 +31,11 @@
 .custom-scrollbar::-webkit-scrollbar-button {
     display: none;
 }
+
+.sidebarlang-items {
+    height: 44px;
+    align-items: center;
+}
 .overlayed-actions {
     position: fixed;
     bottom: 90px;

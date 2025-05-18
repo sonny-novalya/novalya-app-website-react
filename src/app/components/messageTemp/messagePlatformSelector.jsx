@@ -33,7 +33,7 @@ const MessagePlatformSelector = ({containerRef}) => {
             </svg>
           </button>
             
-            <div className="flex items-center text-[20px] gap-[10px] mt-4">
+            <div className="flex items-center font-[500] text-[20px] gap-[10px] mt-4">
               {t("message.Select feature")}
             
               <PreviewMessageIcon index={0}/>
