@@ -4,7 +4,7 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-const Settings = ({ isInstagram }) => {
+const Settings = ({ isInstagram, groupId }) => {
     const { prospection, updateProspection } = SettingStore();
 
     const { pro_stratagy, norequest, interval } = prospection;
@@ -51,12 +51,12 @@ const Settings = ({ isInstagram }) => {
     const handleUpdate = (field, value) => {
         if (field === "norequest") {
             if (value === "Custom") {
-                updateProspection({ ...prospection, norequest: Number(customRequest) });
+                updateProspection({ ...prospection, group_id: groupId, norequest: Number(customRequest) });
             } else {
-                updateProspection({ ...prospection, norequest: value });
+                updateProspection({ ...prospection, group_id: groupId, norequest: value });
             }
         } else {
-            updateProspection({ ...prospection, [field]: value });
+            updateProspection({ ...prospection, group_id: groupId, [field]: value });
         }
     };
 
@@ -198,6 +198,7 @@ const Settings = ({ isInstagram }) => {
 
 Settings.propTypes = {
     isInstagram: PropTypes.bool,
+    groupId: PropTypes.string,
 };
 
 export default Settings;

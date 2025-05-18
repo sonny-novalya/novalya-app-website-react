@@ -59,6 +59,7 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             key: 2,
             children: <Settings
                 isInstagram={isInstagram}
+                groupId={groupId}
             />
         },
         ...(isInstagram ? [] : [{
@@ -153,21 +154,21 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
             }
         }
 
-        const advOptionsKey = isInstagram ? 3 : 4;
-        if (prospect === null) {
-            newValidationErrors[advOptionsKey] = "Please select a prospect option";
-        } else if (pro_convo !== 0 && pro_convo !== 1) {
-            newValidationErrors[advOptionsKey] = "Please select a conversation option";
-        } else {
-            newValidationErrors[advOptionsKey] = "";
-        }
+        // const advOptionsKey = isInstagram ? 3 : 4;
+        // if (prospect === null) {
+        //     newValidationErrors[advOptionsKey] = "Please select a prospect option";
+        // } else if (pro_convo !== 0 && pro_convo !== 1) {
+        //     newValidationErrors[advOptionsKey] = "Please select a conversation option";
+        // } else {
+        //     newValidationErrors[advOptionsKey] = "";
+        // }
 
-        const tagsKey = isInstagram ? 4 : 5;
-        if (!action) {
-            newValidationErrors[tagsKey] = "Please select an action";
-        } else {
-            newValidationErrors[tagsKey] = "";
-        }
+        // const tagsKey = isInstagram ? 4 : 5;
+        // if (!action) {
+        //     newValidationErrors[tagsKey] = "Please select an action";
+        // } else {
+        //     newValidationErrors[tagsKey] = "";
+        // }
 
         return newValidationErrors;
     };
@@ -235,37 +236,28 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
     useEffect(() => {
         if (settingLoading) return;
 
+        const section1Complete = !!message;
+
+        const section2Complete =
+            (pro_stratagy === 0 || pro_stratagy === 1) &&
+            (Number(norequest) >= 1 && Number(norequest) <= 50) &&
+            !!interval;
+
+        const section3Complete = isInstagram ? true : (
+            !!gender &&
+            (
+                postType && !["post", "post-like"].includes(postType.toString().toLowerCase())
+                    ? keyword !== undefined
+                    : !!post_target
+            )
+        );
+
         const newSectionsCompleted = {
-            1: !!message,
-
-            2: (pro_stratagy === 0 || pro_stratagy === 1) &&
-                (Number(norequest) >= 1 && Number(norequest) <= 50) &&
-                !!interval,
-
-            3: isInstagram ? true : (
-                !!gender &&
-                (postType && !["post", "post-like"].includes(postType.toString().toLowerCase()) ? keyword !== undefined : !!post_target)
-            ),
-
-            [isInstagram ? 3 : 4]: prospect !== null && (pro_convo === 0 || pro_convo === 1),
-
-            [isInstagram ? 4 : 5]: !!action && (() => {
-                try {
-                    if (!action) return false;
-
-                    let actionObj = typeof action === 'string' ? JSON.parse(action) : action;
-                    let actionType = actionObj?.moveGroupId ? "yes" : "no";
-
-                    if (actionType === "no") return true;
-
-                    return !!actionObj.moveGroupId &&
-                        !!actionObj.moveStageId &&
-                        (actionObj.stage_num !== null && actionObj.stage_num !== undefined);
-                } catch (error) {
-                    console.error("Error parsing action in completion check:", error);
-                    return false;
-                }
-            })(),
+            1: section1Complete,
+            2: section2Complete,
+            3: isInstagram ? true : section3Complete,
+            [isInstagram ? 3 : 4]: section3Complete, 
+            [isInstagram ? 4 : 5]: section3Complete 
         };
 
         const currentJSON = JSON.stringify(sectionsCompleted);
@@ -277,9 +269,9 @@ const SettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId,
     }, [
         message, pro_stratagy, norequest, interval,
         gender, keyword, post_target,
-        prospect, pro_convo, action,
         isInstagram, settingLoading
     ]);
+       
 
     const handleCloseSettings = () => {
         updateProspection({
