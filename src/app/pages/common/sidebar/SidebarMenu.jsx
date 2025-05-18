@@ -302,7 +302,7 @@ const SidebarMenu = () => {
                             </div>
                                 <div className="flex space-x-3.5 items-center px-3 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
                                 {userData?.url ? (
-                                    <img src={userData.url} className="h-7.5 w-7.5 rounded-sm" alt="user img" />
+                                    <img src={userData.url} className="h-7.5 w-7.5 rounded-[6px]" alt="user img" />
                                 ) : (
                                     <div className="h-10 w-10 min-w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-[12px]">
                                         {userData?.name?.charAt(0)}
