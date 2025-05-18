@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { DeleteFillRedIcon } from "../../../common/icons/icons";
 import useLoginUserDataStore from "../../../../../store/loginuser/loginuserdata";
 import { isExpired } from "../../../../../helpers/helper";
 import { message } from "antd";
+import masterCard from "../../../../../assets/img/master-card.png"
+import amexCard from "../../../../../assets/img/amex-card.png"
+import visaCard from "../../../../../assets/img/visa-card.png"
+
 
 const paymentMethods = [
     {
@@ -30,14 +33,11 @@ const paymentMethods = [
 
 const PaymentMethods = ({setIsPop}) => {
 
-    const {getCardList,removeCard}=useLoginUserDataStore()
-    const [cards,setCards] = useState([])
+    const {getCardList,removeCard,cards}=useLoginUserDataStore()
+   
 
     const fetchCardList = async ()=>{
-        const res = await getCardList()
-        if (res?.status === 200) {
-            setCards(res?.data?.data)
-        }
+         await getCardList()
     }
 
     const handleDelete = async(id)=>{
@@ -51,6 +51,18 @@ const PaymentMethods = ({setIsPop}) => {
     useEffect(() => {
       fetchCardList()
     }, [])
+
+      const cardImages = (data)=>{
+        if (data === "visa") {
+            return visaCard
+        }else if(data === "mastercard"){
+             return masterCard
+        }else if (data === "american_express") {
+            return amexCard
+        }else{
+            return null
+        }
+      }
     
     return (
         <div className="space-y-4">
@@ -63,12 +75,12 @@ const PaymentMethods = ({setIsPop}) => {
                     >
                         <div className="flex items-center gap-3">
                             <img
-                                src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg"
+                                src={cardImages(card.brand)}
                                 alt="visa"
                                 className="w-12 h-10 p-1 rounded border border-[#DCDCDCCD]"
                             />
                             <div>
-                                <p className="">Visa ending in {card.last4}</p>
+                                <p className="">{card.brand} ending in {card.last4}</p>
                                 <p className="text-[12px] text-[#8D8D8D]">
                                     {isExpired(card?.expiry_month,card?.expiry_year) ? (
                                         <span className="text-[#FF0000]">Expired on {`${card?.expiry_month}/${card?.expiry_year}`}</span>

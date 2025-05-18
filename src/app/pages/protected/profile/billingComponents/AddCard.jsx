@@ -1,8 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import CardIcon from "../../../../../assets/img/card-info-icon.svg";
-import { message } from "antd";
+import { message, Spin } from "antd";
 import useLoginUserDataStore from "../../../../../store/loginuser/loginuserdata";
 import { cardTypePatterns, months } from "../../../../../helpers/helperData";
+import visaCard from "../../../../../assets/img/visa-card.png"
+import masterCard from "../../../../../assets/img/master-card.png"
+import amexCard from "../../../../../assets/img/amex-card.png"
+
 
 const AddCard = ({ setIsPop }) => {
   const [card, setCard] = useState({
@@ -14,8 +18,9 @@ const AddCard = ({ setIsPop }) => {
   });
   const [formErr,setFormErr]=useState({})
   const [cardType,setCardType] =useState('')
+  const [isLoading,setIsLoading] =useState(false)
   const boxRef = useRef(null);
-  const {addCard}=useLoginUserDataStore()
+  const {addCard,getCardList}=useLoginUserDataStore()
   useEffect(() => {
     function handleClickOutside(event) {
       if (boxRef.current && !boxRef.current.contains(event.target)) {
@@ -29,26 +34,37 @@ const AddCard = ({ setIsPop }) => {
     };
   }, []);
 
-  useEffect(() => {
- console.log(card)
-  }, [card])
+ 
   
+  const cardImages = (data)=>{
+    if (data === "visa") {
+        return visaCard
+    }else if(data === "mastercard"){
+         return masterCard
+    }else if (data === "americanexpress") {
+        return amexCard
+    }else{
+        return null
+    }
+  }
 
   function getCardType(cardNumber) {
-    const cleanNumber = cardNumber.replace(/\s+/g, "");
+    const cleanNumber = cardNumber.replace(/ /g, "");
 
     for (const [type, pattern] of Object.entries(cardTypePatterns)) {
       if (pattern.test(cleanNumber)) {
-        return type;
+        setCardType(type)
+        return ;
       }
     }
 
-    return "unknown";
+     setCardType("unknown");
+     
   }
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value)
+   
     if (name === "card_no") {
         getCardType(value)
     }
@@ -56,36 +72,43 @@ const AddCard = ({ setIsPop }) => {
   };
 
   const handleSubmit = async()=>{
+    setIsLoading(true)
 
     if (validateCardForm(card)) {
         message.error("fill required fields!!")
       return
     }
+    let PayLoad = {
+        ...card, 
+        card_no:card?.card_no?.replace(/ /g, '')
+    }
 
-          const res =await addCard(card)
+          const res =await addCard(PayLoad)
       if (res.status === 200) {
         message.success("Card has been Added successfully")
+        getCardList()
+          setIsPop(false);
       }
+       setIsLoading(false)
   }
 
+
+  function formatCardNumber(input) {
+  return input.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+}
 
 
   function validateCardForm(form) {
   const errors = {};
 
-  const cardNumber = form.card_no?.replace(/\s+/g, '');
-  console.log(form.card_no)
+  const cardNumber = form.card_no?.replace(/ /g, '');
 
   // Validate card number length
   if (!cardNumber) {
     errors.card_no = "Card number is required";
-  } else if (cardType === "visa") {
-    if (cardNumber.length < 12 || cardNumber.length > 16) {
-      errors.card_no = "Visa card number must be between 12 and 16 digits";
-    }
   } else {
-    if (cardNumber.length !== 16) {
-      errors.card_no = "Card number must be 16 digits";
+    if (cardNumber.length < 12) {
+      errors.card_no = "Card number must be 12 to 16 digits";
     }
   }
 
@@ -118,13 +141,14 @@ const AddCard = ({ setIsPop }) => {
               </label>
               <input
                 onChange={(e) => onChange(e)}
+                value={formatCardNumber(card?.card_no)}
+                maxLength={19}
                 name="card_no"
                 class="text-[rgba(0,4,7,0.5)] px-5 py-3 w-full bg-[#F5F5F5] border border-[#F0F0F0] rounded-[8px] text-[14px] focus:outline-none"
                 type="text"
-                placeholder="4017-8039-4200-1111"
               />
               <span class={`absolute right-[8px] ${formErr?.card_no || formErr?.cvv? "bottom-[33px]": "bottom-[9px]"}`}>
-                <svg
+             { cardImages(cardType)? <img style={{width:"28px",marginBottom:"9px"}} src={cardImages(cardType)}/> : <svg
                   width="28"
                   height="28"
                   viewBox="0 0 28 28"
@@ -143,7 +167,7 @@ const AddCard = ({ setIsPop }) => {
                     stroke-width="1.875"
                     stroke-linejoin="round"
                   />
-                </svg>
+                </svg>}
               </span>
            {formErr?.card_no && <label className="text-red-500 text-[12px]">{formErr?.card_no}</label>}
 
@@ -155,9 +179,12 @@ const AddCard = ({ setIsPop }) => {
               <input
                onChange={(e) => onChange(e)}
                 name="cvv"
+                value={card.cvv}
                 class="text-[rgba(0,4,7,0.5)] px-5 py-3 w-full bg-[#F5F5F5] border border-[#F0F0F0] rounded-[8px] text-[14px] focus:outline-none"
                 type="text"
                 placeholder="CVV"
+                maxLength={4}
+                
               />
            {formErr?.cvv && <label className="text-red-500 text-[12px]">{formErr?.cvv}</label>}
 
@@ -170,7 +197,7 @@ const AddCard = ({ setIsPop }) => {
               <label class="text-[16px] text-[#030102] block mb-[8px] leading-[1]">
                 Expiry Month
               </label>
-              <select onChange={(e)=>onChange(e)} name="expiry_month" class="text-[rgba(0,4,7,0.5)] px-5 py-3 w-full bg-[#F5F5F5] border border-[#F0F0F0] rounded-[8px] text-[14px] focus:outline-none">
+              <select value={card.expiry_month} onChange={(e)=>onChange(e)} name="expiry_month" class="text-[rgba(0,4,7,0.5)] px-5 py-3 w-full bg-[#F5F5F5] border border-[#F0F0F0] rounded-[8px] text-[14px] focus:outline-none">
                <option value="">MM</option>
               {months.map((month) => (
                                <option key={month.value} value={month.value}>{month.label}</option>
@@ -182,7 +209,7 @@ const AddCard = ({ setIsPop }) => {
             </div>
             <div>
               <label>Expiry Year</label>
-              <select onChange={(e)=>onChange(e)} name="expiry_year" class="text-[rgba(0,4,7,0.5)] px-5 py-3 w-full bg-[#F5F5F5] border border-[#F0F0F0] rounded-[8px] text-[14px] focus:outline-none">
+              <select  value={card.expiry_year} onChange={(e)=>onChange(e)} name="expiry_year" class="text-[rgba(0,4,7,0.5)] px-5 py-3 w-full bg-[#F5F5F5] border border-[#F0F0F0] rounded-[8px] text-[14px] focus:outline-none">
                 <option>YY</option>
                 <option value={2025}>2025</option>
                 <option value={2026} >2026</option>
@@ -202,13 +229,15 @@ const AddCard = ({ setIsPop }) => {
               class="text-[rgba(0,4,7,0.5)] px-5 py-3 w-full bg-[#F5F5F5] border border-[#F0F0F0] rounded-[8px] text-[14px] focus:outline-none"
               type="text"
               placeholder="Your name"
+              onChange={(e)=>onChange(e)}
               name="card_holder_name"
+              value={card.card_holder_name}
             />
            {formErr?.card_holder_name && <label className="text-red-500 text-[12px]">{formErr?.card_holder_name}</label>}
 
           </div>
-          <button onClick={()=>handleSubmit()} class="bg-[#0087FF] cursor-pointer hover:bg-[#0081F5] text-white w-full h-[48px] rounded-[8px] flex items-center justify-center">
-            Confirm
+          <button onClick={()=>handleSubmit()} class="bg-[#0087FF] w-spinner cursor-pointer hover:bg-[#0081F5] text-white w-full h-[48px] rounded-[8px] flex items-center justify-center">
+          {isLoading ? <Spin size="small"/>:"  Confirm"}
           </button>
         </div>
       </div>

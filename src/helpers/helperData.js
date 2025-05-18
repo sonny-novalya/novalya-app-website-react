@@ -1368,11 +1368,7 @@ export const  nuskinFallBackPlan =  "Nuskin-Wellcommunity-Starter-USD-Monthly"
 export const cardTypePatterns = {
   visa: /^4\d{0,15}$/,
   mastercard: /^(5[1-5]|2[2-7])\d{0,14}$/,
-  amex: /^3[47]\d{0,13}$/,
-  discover: /^6(?:011|5|4[4-9])\d{0,12}$/,
-  diners: /^3(?:0[0-5]|[68])\d{0,11}$/,
-  jcb: /^35\d{0,17}$/,
-  maestro: /^(50|5[6-9]|6\d)\d{0,17}$/,
+  americanexpress: /^3[47]\d{0,13}$/,
 };
 
 export const months = [

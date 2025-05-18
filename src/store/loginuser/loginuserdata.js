@@ -4,6 +4,7 @@ import apiCall from "../../services/api";
 const useLoginUserDataStore = create((set) => ({
     loading: false,
     loginUserData: localStorage.getItem("loginUserData") ? JSON.parse(localStorage.getItem("loginUserData")) :{},
+    cards:[],
     fetchLoginUserData: async (data) => {
         try {
             set({ loading: true });
@@ -103,7 +104,9 @@ const useLoginUserDataStore = create((set) => ({
                 url: `/user/api/chargebee/card-listing`,
             });
 
-            return response
+
+            set({cards:response?.data?.data || []})
+          
 
      
         } catch (error) {

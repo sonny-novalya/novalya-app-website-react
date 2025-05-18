@@ -394,3 +394,4 @@ export function getCardType(cardNumber) {
 
   return '';
 }
+
