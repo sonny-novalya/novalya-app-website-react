@@ -657,7 +657,12 @@ const AffiliateSettings = () => {
             <h3 className="font-medium text-[20px] leading-[150%]">
               Documents
             </h3>
-            <button className="font-medium text-[14px] leading-[150%] bg-[#0087FF] border border-[#0087FF] text-white w-full px-8 py-2.5 rounded-md cursor-pointer">
+            <button className="font-medium text-[14px] leading-[150%] bg-[#0087FF] border border-[#0087FF] text-white w-full px-8 py-2.5 rounded-md cursor-pointer" onClick={() => {
+              window.open(
+                "https://novalya.com/en/affiliate-agreement/",
+                "_blank"
+              );
+            }}>
               Affiliate Agreement
             </button>
           </div>
