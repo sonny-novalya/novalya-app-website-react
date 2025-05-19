@@ -19,7 +19,7 @@ const TempList = ({containerRef}) => {
 }
 
   useEffect(() => {
-    if(tempList.length && tempMessageList.length){
+    if(tempList.length){
         mergeAndSetTemps(tempList,tempMessageList)
     }
   

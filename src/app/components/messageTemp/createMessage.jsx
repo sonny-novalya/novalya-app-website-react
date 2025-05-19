@@ -43,7 +43,8 @@ const CreateMessage = ({containerRef}) => {
     attachment,
     setAttachment,
     getTemplateVariants,
-    getMessageVariants
+    getMessageVariants,
+    totalMessages
   } = useMessageSteps();
   const [variants, setVariants] = useState([]);
   const [name, setName] = useState("");
@@ -121,11 +122,13 @@ const CreateMessage = ({containerRef}) => {
           getMessageVariants(selecetdMessage);
         }
       }
+      setName(selecetdMessage?.title || "");
     }else{
+      setName(`Message #${Number(totalMessages) + 1}`);
       setVariants(getDefaultVariants());
     }
 
-    setName(selecetdMessage?.title || "");
+    
   }, []);
 
   // once getTemplateVariants gets the variants data then update variants in the state

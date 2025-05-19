@@ -20,6 +20,7 @@ const useMessageSteps = create((set) => ({
    flow:0,
    searchKeyword: null,
    attachment: null,
+   totalMessages: 0,
 
 
    setStep: (val) => set(() => ({ step:val})), 
@@ -108,6 +109,8 @@ const useMessageSteps = create((set) => ({
          }else{
             set({ messageList: res?.data?.data?.messages || [], loading: false, totalPages:total });
          }
+
+         set({ totalMessages: res?.data?.data?.total || 0 });
       } catch (error) {
           set({
               loading: false,
