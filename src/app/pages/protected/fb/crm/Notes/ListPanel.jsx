@@ -307,7 +307,7 @@ const ListPanel = ({ setSelectedTag, selectedTag }) => {
 
 ListPanel.propTypes = {
     setSelectedTag: PropTypes.func,
-    onCancel: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
     lead: PropTypes.object,
     selectedTag: PropTypes.object,
 };
