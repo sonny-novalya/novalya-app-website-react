@@ -6,7 +6,6 @@ import {
     InstagramIcon,
     AiCommentsIcon,
     LibraryIcon,
-    TrainingVideosIcon,
     AffiliateIcon,
     // EventsIcon,
     UpgradeProIcon,
@@ -14,10 +13,10 @@ import {
     DownArrowIcon,
     LogoutIcon,
     FriendlistIcon,
-    CollapsedLeftIcon
+    CollapsedLeftIcon,
 } from "../icons/icons";
 import NovaBlueLogo from "../../../../assets/img/nova-blue.png"
-import SidebarActive from "../../../../assets/img/sidebar-active.jpeg"
+import newUserLogo from "../../../../assets/img/new_user.png"
 import NovalyaBlueLogo from "../../../../assets/img/novalya-blue.png"
 import LocalizationOptions from "../../../../helpers/shared/LocalizationOptions";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -46,29 +45,49 @@ const SidebarMenu = () => {
 
     };
 
-    const { loginUserData, fetchLoginUserData } = useLoginUserDataStore();
+    const { fetchLoginUserData } = useLoginUserDataStore();
+    const [ userInfo, setUserInfo ] = useState({
+        name: "",
+        url: "",
+        plan: ""
+    });
 
     const getUpdatedImageUrl = (url) => {
         if (!url) return '';
+        if (url.includes("/uploads/userprofile/profile.png")) {
+            return null;
+        }
+
         const stagingBase = "https://stagingbackend.novalya.com";
         const prodBase = "https://api-v2.novalya.com";
         return url.includes(stagingBase) ? url.replace(stagingBase, prodBase) : url;
     };
 
-    useEffect(() => {
-        if (!loginUserData) {
-            fetchLoginUserData();
+    const fetchAndSetUserData = async () => {
+        const data = localStorage.getItem('loginUserData');
+        if (data) {
+            const parsedData = JSON.parse(data);
+            setUserInfo({
+                name: parsedData.name || '',
+                url: getUpdatedImageUrl(parsedData.url),
+                plan: parsedData.plan ?? "No Plan",
+            });
+        } else {
+            const user = await fetchLoginUserData();
+            if (user) {
+                setUserInfo({
+                    name: user.name || '',
+                    url: getUpdatedImageUrl(user.url),
+                    plan: user.plan ?? "No Plan",
+                });
+            }
         }
-    }, [loginUserData, fetchLoginUserData]);
+    };
 
-    const userData = loginUserData ? {
-        name: `${loginUserData.firstname} ${loginUserData.lastname}`,
-        url: getUpdatedImageUrl(loginUserData.profilepictureurl),
-        plan: loginUserData.plan_pkg === "Unlimited_new"
-            ? "Unlimited"
-            : loginUserData.plan_pkg ?? "No Plan",
-    } : null;
-
+    useEffect(() => {
+        fetchAndSetUserData();
+    }, []);
+    
     const sidebarData = [
         { text: "dashboard", id: "dashboard", path: "/", icon: <DashboardIcon /> },
         {
@@ -211,13 +230,7 @@ const SidebarMenu = () => {
                                 <UpgradeProIcon />
                             </div>
                             <div className="flex items-center justify-center mt-2 w-full">
-                                {userData?.url ? (
-                                    <img src={userData.url} className="h-10 w-10 rounded-sm" alt="user img" />
-                                ) : (
-                                        <div className="h-10 w-12 rounded-lg bg-purple-200  flex items-center justify-center">
-                                        {userData?.name?.charAt(0)}
-                                    </div>
-                                )}
+                                <img src={userInfo?.url || newUserLogo} className="h-10 w-10 rounded-sm" alt="user img" />
                             </div>
 
                             <button
@@ -301,16 +314,10 @@ const SidebarMenu = () => {
                                 Upgrade To Pro
                             </div>
                                 <div className="flex space-x-3.5 items-center px-3 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
-                                {userData?.url ? (
-                                    <img src={userData.url} className="h-7.5 w-7.5 rounded-[6px]" alt="user img" />
-                                ) : (
-                                    <div className="h-10 w-10 min-w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-[12px]">
-                                        {userData?.name?.charAt(0)}
-                                    </div>
-                                )}
+                                        <img src={userInfo?.url || newUserLogo} className="h-7.5 w-7.5 rounded-[6px]" alt="user img" />
                                 <div className="flex flex-col text-sm">
-                                    <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[150px]">{userData?.name}</span>
-                                    <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
+                                        <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[150px]">{userInfo?.name}</span>
+                                        <span className="text-[13px] text-[#167AD3]">{userInfo?.plan}</span>
                                 </div>
                             </div>
 
