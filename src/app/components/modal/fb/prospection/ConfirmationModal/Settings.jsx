@@ -34,30 +34,30 @@ const Settings = ({ proStratagy, norequest, interval, handleOpen }) => {
     const selectedStratagy = strategies?.find((item) => item.value == proStratagy)?.label
     return (
         <main className="">
-            <div className="flex gap-3 items-center">
-                <h2 className="font-medium text-lg">{t("prospecting.Settings")}</h2>
+            <div className="flex gap-5 items-center mb-5">
+                <h2 className="font-[500] text-[24px]">{t("prospecting.Settings")}</h2>
                 <span 
                     className="cursor-pointer" 
                     onClick={() => handleOpen(2)}>
                     <EditIconSquaredIcon />
                 </span>
             </div>
-            <div className="flex justify-between border border-[#00000014] rounded-md p-4">
-                <div className="flex flex-col flex-1 pr-4 space-y-2">
-                    <h3 className="font-medium" >{t("prospecting.Strategy")}</h3>
-                    <p className="w-full text-center border border-[#00000014] rounded-md p-2">
+            <div className="flex justify-start border border-[#00000014] rounded-[6px] px-5 pt-3 pb-5">
+                <div className="w-[35%] flex flex-col pr-6">
+                    <h3 className="font-[500] text-[20px] mb-2" >{t("prospecting.Strategy")}</h3>
+                    <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">
                         {selectedStratagy}
                     </p>
                 </div>
-                <div className="border-x-2 border-[#00000014] px-5 space-y-2">
-                    <h3 className="font-medium" >{t("prospecting.How many Requests")}</h3>
-                    <p className="w-full text-center border border-[#00000014] rounded-md p-2">{norequest}</p>
+                <div className="w-[24%] border-x-2 border-[#00000014] px-6">
+                    <h3 className="text-center font-[500] text-[20px] mb-2" >{t("prospecting.How many Requests")}</h3>
+                    <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">{norequest}</p>
                 </div>
-                <div className="flex-1 pl-4 space-y-2">
-                    <h3 className="font-medium " >{t("prospecting.Interval")}</h3>
-                    <div className="flex space-x-5 items-center">
-                        <p className="whitespace-nowrap">{selectedInterval?.time}</p>
-                        <p className="w-full text-center border border-[#00000014] rounded-md p-2 ">{selectedInterval?.label}</p>
+                <div className="w-[30%] pl-6">
+                    <h3 className="font-[500] text-[20px] mb-2" >{t("prospecting.Interval")}</h3>
+                    <div className="flex space-x-3 items-center">
+                        <p className="whitespace-nowrap text-[#808183]">{selectedInterval?.time}</p>
+                        <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">{selectedInterval?.label}</p>
                     </div>
                 </div>
             </div>

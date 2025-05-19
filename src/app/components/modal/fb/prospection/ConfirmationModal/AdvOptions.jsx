@@ -9,25 +9,25 @@ const AdvOptions = ({ pro_convo, prospect, handleOpen }) => {
 
     return (
         <main className="">
-            <div className="flex gap-3 items-center">
-                <h2 className="font-medium text-lg">{t("prospecting.Advance Options")}</h2>
+            <div className="flex gap-5 items-center mb-5">
+                <h2 className="font-[500] text-[24px]">{t("prospecting.Advance Options")}</h2>
                 <span
                     className="cursor-pointer"
                     onClick={() => handleOpen(isInstagram ? 3 : 4)}>
                     <EditIconSquaredIcon />
                 </span>
             </div>
-            <div className="flex justify-between border border-[#00000014] rounded-md p-4">
-                <div className="flex flex-col flex-1 space-y-2 pr-5">
-                    <h3 className="font-medium">{t("prospecting.Retarget same user")}</h3>
-                    <p className="w-full text-center border border-[#00000014] rounded-md p-2 capitalize">
+            <div className="flex justify-start border border-[#00000014] rounded-[6px] px-5 pt-3 pb-5">
+                <div className="w-[35%] flex flex-col pr-6">
+                    <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Retarget same user")}</h3>
+                    <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">
                         {prospect}
                     </p>
                 </div>
-                <div className="bg-[#00000014] w-[1px] mx-4"/>
-                <div className=" space-y-2 flex-1">
-                    <h3 className="font-medium">{t("prospecting.Existing conversation")}</h3>
-                    <p className="w-full text-center border border-[#00000014] rounded-md p-2">{pro_convo === 1 ? t("prospecting.Yes") : t("prospecting.No")}</p>
+                <div className="bg-[#00000014] w-[1px]"></div>
+                <div className="w-[45%] flex flex-col pl-6">
+                    <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Existing conversation")}</h3>
+                    <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">{pro_convo === 1 ? t("prospecting.Yes") : t("prospecting.No")}</p>
                 </div>
             </div>
         </main>
