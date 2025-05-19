@@ -1,11 +1,11 @@
 import { t } from "i18next";
-import { Modal } from "antd";
-import { useState } from "react";
+import { Button, Dropdown } from "antd";
+import { useRef, useState } from "react";
 import FbImg from "../../../../assets/img/fb-cover.png"
 import { useSocialAccountsStore } from "../../../../store/dashboard/dashboard-store";
 import { LinkRedIcon, SyncBlueIcon } from "../../common/icons/icons"
-import PropTypes from "prop-types";
 import UserImg from "../../../../assets/img/user-img.png";
+import { EllipsisOutlined } from "@ant-design/icons";
 
 const FacebookCard = ({ data }) => {
     // const { fb_user_name, total_friends, followers, following, profile_image } = data;
@@ -20,20 +20,51 @@ const FacebookCard = ({ data }) => {
     
     const { unlinkFacebookAccount , fetchPlanLimitDetails } = useSocialAccountsStore();
 
-    const [unlinkModal, setUnlinkModal] = useState(false);
-
-    const handleFbConfirmUnlink = () => {
-        setUnlinkModal(false);
-        unlinkFacebookAccount(
-            {},
-            (resp) => {
-                if (resp) fetchPlanLimitDetails()
-            },
-            () => {}
+        const [dropdownVisible, setDropdownVisible] = useState(false);
+        const [showConfirmUnlink, setShowConfirmUnlink] = useState(false);
+        const timeoutRef = useRef(null);
+    
+        const handleUnlinkClick = () => {
+            clearTimeout(timeoutRef.current);
+            setShowConfirmUnlink(true);
+            timeoutRef.current = setTimeout(() => setShowConfirmUnlink(false), 3000);
+        };
+    
+        const confirmUnlink = () => {
+            setShowConfirmUnlink(false);
+            setDropdownVisible(false);
+            unlinkFacebookAccount(
+                {},
+                (resp) => {
+                    if (resp) fetchPlanLimitDetails();
+                },
+                () => { }
+            );
+        };
+    
+        const dropdownMenu = (
+            <div className="bg-white flex items-centered rounded-md shadow-md px-3 py-2 space-x-3 ">
+                <div
+                    className="cursor-pointer facebook-sync"
+                >
+                    <SyncBlueIcon />
+                </div>
+                <div
+                    onClick={showConfirmUnlink ? confirmUnlink : handleUnlinkClick}
+                    className="cursor-pointer"
+                >
+                    {!showConfirmUnlink ? (
+                        <>
+                            <LinkRedIcon />
+                        </>
+                    ) : (
+                        <span className="text-red-500 ">Really?</span>
+                    )}
+                </div>
+            </div>
         );
-    };
+    
     return (
-        <>
         <div className="bg-white rounded-[16px] overflow-hidden relative dashboard-fb-card shadow-lg">
             <div className="relative">
                 <div className="flex items-center h-15 justify-end items-center h-15 px-4 py-2 bg-[linear-gradient(90deg,_#089BED_0%,_#2861B9_100%)]">
@@ -50,14 +81,19 @@ const FacebookCard = ({ data }) => {
 
             <div className="mt-4 ml-30 flex justify-between items-center ">
                 <p className="font-medium d-fb-card-uname">{fb_user_name}</p>
-                <div className="flex gap-5 mr-4.5">
-                    <button className="text-blue-600 cursor-pointer facebook-sync">
-                        <SyncBlueIcon />
-                    </button>
-                    <button className="text-red-500 cursor-pointer" onClick={() => setUnlinkModal(true)}>
-                        <LinkRedIcon />
-                    </button>
-                </div>
+                    <Dropdown
+                        trigger={["click"]}
+                        placement="bottomRight"
+                        open={dropdownVisible}
+                        onOpenChange={(visible) => setDropdownVisible(visible)}
+                        overlay={dropdownMenu}
+                    >
+                   <button className="mr-3 px-2 cursor-pointer">
+                        <svg width="4" height="16" viewBox="0 0 4 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 2C4 1.46957 3.78929 0.960859 3.41421 0.585786C3.03914 0.210713 2.53043 -6.42368e-08 2 -8.74228e-08C1.46957 -1.10609e-07 0.960859 0.210713 0.585786 0.585786C0.210713 0.960859 -6.42368e-08 1.46957 -8.74228e-08 2C-1.10609e-07 2.53043 0.210713 3.03914 0.585786 3.41421C0.960859 3.78929 1.46957 4 2 4C2.53043 4 3.03914 3.78929 3.41421 3.41421C3.78929 3.03914 4 2.53043 4 2ZM2 8C2.53043 8 3.03914 8.21071 3.41421 8.58579C3.78929 8.96086 4 9.46957 4 10C4 10.5304 3.78929 11.0391 3.41421 11.4142C3.03914 11.7893 2.53043 12 2 12C1.46957 12 0.960858 11.7893 0.585786 11.4142C0.210713 11.0391 -4.603e-07 10.5304 -4.37114e-07 10C-4.13928e-07 9.46957 0.210713 8.96086 0.585786 8.58579C0.960859 8.21071 1.46957 8 2 8ZM2 16C2.53043 16 3.03914 16.2107 3.41421 16.5858C3.78929 16.9609 4 17.4696 4 18C4 18.5304 3.78929 19.0391 3.41421 19.4142C3.03914 19.7893 2.53043 20 2 20C1.46957 20 0.960858 19.7893 0.585785 19.4142C0.210712 19.0391 -8.09991e-07 18.5304 -7.86805e-07 18C-7.63619e-07 17.4696 0.210713 16.9609 0.585785 16.5858C0.960858 16.2107 1.46957 16 2 16Z" fill="black" />
+                        </svg>
+                   </button>
+                    </Dropdown>
             </div>
 
             <div className="mt-3 px-5 mb-4">
@@ -86,33 +122,6 @@ const FacebookCard = ({ data }) => {
                 </button>
             </div>
         </div>
-
-        <Modal
-            open={unlinkModal}
-            closable={false}
-            onCancel={() => setUnlinkModal(false)}
-            footer={null}
-            width={600}
-            className="custom-modal p-0"
-        >
-            <div className="bg-gray-50 rounded-t-lg">
-                <h2 className="text-xl font-medium text-gray-700">Unlink Facebook Account</h2>
-            </div>
-
-            <div className="mt-8 mb-8 text-base">
-                If you unlink the Facebook account, then your data will be permanently deleted.
-            </div>
-
-            <div className="bg-gray-50 mt-2 rounded-b-lg flex justify-end space-x-4">
-                <button className="bg-white w-32 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6" onClick={() => setUnlinkModal(false)}>
-                    Cancel
-                </button>
-                <button className="bg-[#fa2c2c] w-32 text-white rounded-lg py-2 px-6 fbConfirmUnlink" onClick={handleFbConfirmUnlink}>
-                    Unlink
-                </button>
-            </div>
-        </Modal>
-        </>
     )
 }
 
