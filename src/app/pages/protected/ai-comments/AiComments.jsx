@@ -98,11 +98,11 @@ const AiComments = () => {
             <h2 className="text-[24px] font-[500] mb-5">
                 Generate Automated AI Comments
             </h2>
-            <div className="bg-white p-6 rounded-[10px] flex flex-col space-y-5.5 mb-5">
+            <div className="bg-white p-7 rounded-[10px] flex flex-col space-y-5.5 mb-5">
                 <SelectGender />
                 {data.map((categoryData) => (
                     <div key={categoryData.category}>
-                        <div className="text-[18px] font-[500] text-[#0087FF] bg-[#0087FF42] border border-[#0087FF7D] py-2.5 px-5 rounded-[6px]">
+                        <div className="text-[18px] font-[500] text-[#0087FF] bg-[#0087FF42] border border-[#0087FF7D] py-2 px-5 rounded-[6px]">
                             {categoryData.category} 
                             
                         </div>

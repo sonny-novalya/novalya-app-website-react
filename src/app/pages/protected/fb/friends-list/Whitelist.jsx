@@ -109,18 +109,18 @@ const Whitelist = () => {
 
     return (
       <>
-        <div className="p-6 bg-[#f2f2f2] h-screen overflow-auto">
-        <h2 className="text-[24px] font-[500] mb-4">List of Whitelisted Friends</h2>
+        <div className="pl-10 pr-8 py-8 bg-[#f2f2f2] h-screen overflow-auto">
+        <h2 className="text-[24px] font-[500] mb-6 pl-7">List of Whitelisted Friends</h2>
           <div className="bg-white p-5 rounded-[16px]">
             
-            <div className="flex items-center justify-between mb-4 ctm-serach">
+            <div className="flex items-center justify-between mb-4">
                 <Input
                     placeholder="Search novalya"
                     prefix={<SearchOutlined />}
                     value={searchKeyword}
                     onChange={(e) => applySearch(e.target.value)}
-                    className="w-1/3 px-3 py-2 rounded-md border border-gray-300 !rounded-[4px] min-h-[44px]"
-                    style={{maxWidth: "290px"}}
+                    className="w-1/3 px-3 py-2 !rounded-[4px] border border-[#CCCDCD] min-h-[44px] ctm-search w-full max-w-[320px]"
+                   
                 />
                 <Button 
                   className="px-5 py-[10px] min-h-[44px] gap-[10px] min-w-[110px]"
@@ -133,7 +133,7 @@ const Whitelist = () => {
                   Remove
                 </Button>
             </div>
-            <div style={{ overflowX: 'auto', maxWidth: '100%' }} className="ctm-friend-table">
+            <div style={{ overflowX: 'auto', maxWidth: '100%' }} className="ctm-friend-table custom-table-groupSecond ">
               <Table 
                 rowKey="id" 
                 rowSelection={rowSelection}

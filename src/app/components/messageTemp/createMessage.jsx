@@ -298,7 +298,7 @@ const CreateMessage = ({containerRef}) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
-      <div ref={containerRef} className="bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+      <div ref={containerRef} className="flex flex-col bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative h-[85vh] overflow-auto">
         <div className="flex items-center gap-[10px] text-[20px] font-[500]">
             {t("message.Message name")} 
           <CreateMessageIcon index={0} />
@@ -372,7 +372,7 @@ const CreateMessage = ({containerRef}) => {
             </div>
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
+        <div className="flex gap-3 mt-4 flex-1">
           <div className="w-[200px] bg-[#F5F5F5] rounded p-3">
             <div className="flex items-center gap-[10px] text-[20px] font-[500]">
                {t("message.Your variants")}
@@ -403,7 +403,7 @@ const CreateMessage = ({containerRef}) => {
               </button> 
             </div>
           </div>
-          <div className="w-[685px] px-3 py-1">
+          <div className="flex-1">
             <div className="flex items-center justify-between gap-[10px] mb-1">
               <div className="flex items-center gap-[10px] text-[20px] font-[500]">
                  {t("message.Write message")}
@@ -429,7 +429,7 @@ const CreateMessage = ({containerRef}) => {
                   </>}
               </button>:""}
             </div>
-            <div className="border border-[#E6E6E6] h-[93.75%] p-3">
+            <div className="border border-[#E6E6E6] flex flex-col h-[92%] p-3 ">
               <textarea
                 onChange={(e) =>
                   handleVariantText(e.target.value, selectedVariant.id, false)
@@ -438,7 +438,7 @@ const CreateMessage = ({containerRef}) => {
                 onKeyUp={handleCaretPosition}
                 value={selectedVariant?.name}
                 className="w-full font-outfit font-normal text-[14px] leading-[17.64px]
-                      tracking-[0px] text-left h-[90%] text-black focus:outline-none"
+                      tracking-[0px] text-left text-black focus:outline-none flex-1"
               />
 
               <div className="flex items-center gap-[10px] justify-between">
@@ -504,7 +504,7 @@ const CreateMessage = ({containerRef}) => {
               </div>
             </div>
           </div>
-          <div className="w-[200px] bg-[#F5F5F5] rounded p-3 ">
+          {/* <div className="w-[200px] bg-[#F5F5F5] rounded p-3 ">
             <div className="flex items-center gap-[10px] text-[20px] mb-3 font-[500]">
               {t("message.Write with AI")}
               <CreateMessageIcon index={0} />
@@ -558,12 +558,12 @@ const CreateMessage = ({containerRef}) => {
               <CreateMessageIcon index={10} />
                {t("message.Revert changes")}
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="flex gap-4 justify-between mt-6">
           <button
             onClick={() => handlePreview()}
-            className="cursor-pointer flex justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-full max-w-[200px] rounded-md"
+            className="cursor-pointer flex justify-center gap-2 font-regular text-[21px] text-[#0087FF] border border-[#0087FF] leading-[36px] bg-white px-4 py-1.5 w-full max-w-[200px] rounded-md"
           >
              {t("message.Preview")}
           </button>

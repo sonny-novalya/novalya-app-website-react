@@ -52,8 +52,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
     const delTime = useRef();
 
-
-
+    const scrollPositionsRef = useRef({});
+    const [totalLeadsCount, setTotalLeadsCount] = useState(0);
 
     useEffect(() => {
         if (selectedGrpData?.stage?.length) {
@@ -72,8 +72,13 @@ const RightSectionCrm = ({ selectedGroup }) => {
             });
 
             setSortedStages(newStages);
+
+            const totalCount = newStages.reduce((acc, stage) =>
+                acc + (stage.leads?.length || 0), 0);
+            setTotalLeadsCount(totalCount);
         } else {
             setSortedStages([]);
+            setTotalLeadsCount(0);
         }
     }, [selectedGrpData]);
 
@@ -102,6 +107,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
                 setSelectedUsersMap({})
                 setSortedStages(newArr)
+                setTotalLeadsCount(prevCount => prevCount - 1);
                 setIsDel(false)
             }
         } else {
@@ -310,38 +316,43 @@ const RightSectionCrm = ({ selectedGroup }) => {
     }) => {
 
         return (
-            <div
-                key={lead.id + stage.id}
-                className={`border p-3 rounded-md flex gap-2 items-center shadow-sm ${selectedUsers.includes(lead?.id)
-                        ? "border-[#0087FF] bg-[#D9EDFF]"
-                        : "border-white bg-white"
-                    }`}
-                draggable={true}
-                onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
-            >
+            <div className="flex">
                 <Checkbox
                     checked={selectedUsers.includes(lead.id)}
-                    onChange={() => toggleUserSelection(lead.id)}
+                    onChange={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setTimeout(() => toggleUserSelection(lead.id, e), 0);
+                        return false;
+                    }}
                 />
                 <div
-                    className="flex items-center gap-2 cursor-pointer"
-                    onClick={() => {
-                        setSelectedLead(lead);
-                        setOpenNoteModal(true);
-                    }}
+                    key={`${lead.id}-${stage.id}`}
+                    className={`border-l-4 border-[#21BF7C] p-3 rounded-md flex gap-2 items-center  shadow-sm ml-2 ${selectedUsers.includes(lead.id) ? "bg-[#D9EDFF]" : "bg-white"
+                        }`}
+                    draggable
+                    onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
                 >
-                    <img
-                        src={lead?.profile_pic}
-                        alt={lead?.insta_name}
-                        className="w-8 h-8 rounded-full"
-                    />
-                    <div>
-                        <p className="font-medium text-sm">{lead?.insta_name}</p>
-                        <p className="text-xs text-gray-400">{lead.time}</p>
+                    <div
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => {
+                            setSelectedLead(lead);
+                            setOpenNoteModal(true);
+                        }}
+                    >
+                        <img
+                            src={lead?.profile_pic}
+                            alt={lead?.fb_name}
+                            className="w-8 h-8 rounded-full"
+                        />
+                        <div className="text-sm line-clamp-2 max-w-[200px] leading-snug text-ellipsis overflow-hidden">
+                            <span className="font-medium">{lead.insta_name}</span>
+                            <span className="text-xs line-clamp-2 text-gray-400">{lead.user_note}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        );
+          );
     };
 
     const DroppableStage = ({ stageId, children }) => {
@@ -359,7 +370,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
             <TopbarRightSection
                 companyName={selectedGroup.name}
-                leadsCount={selectedGrpData?.taggedUsers?.length || 0}
+                leadsCount={totalLeadsCount}
                 setSortedStages={setSortedStages}
                 onAddStage={handleAddStage}
                 selectedGrpData={selectedGrpData}
@@ -378,7 +389,14 @@ const RightSectionCrm = ({ selectedGroup }) => {
                         }));
                     };
 
-                    const toggleUserSelection = (id) => {
+                    const toggleUserSelection = (id, e) => {
+                        sortedStages.forEach(stage => {
+                            const container = document.querySelector(`#stage-container-${stage.id}`);
+                            if (container) {
+                                scrollPositionsRef.current[stage.id] = container.scrollTop;
+                            }
+                        });
+
                         setSelectedUsersMap((prev) => {
                             const current = prev[stage.id] || [];
                             return {
@@ -388,6 +406,19 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                     : [...current, id],
                             };
                         });
+
+                        requestAnimationFrame(() => {
+                            sortedStages.forEach(stage => {
+                                const container = document.querySelector(`#stage-container-${stage.id}`);
+                                if (container && scrollPositionsRef.current[stage.id] !== undefined) {
+                                    container.scrollTop = scrollPositionsRef.current[stage.id];
+                                }
+                            });
+                        });
+
+                        if (e) {
+                            e.stopPropagation();
+                        }
                     };
 
 
@@ -473,7 +504,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                 </div>
 
                                 {/* Leads */}
-                                <div className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+                                <div id={`stage-container-${stage.id}`} className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto">
                                     {stage?.leads?.map((lead) => (
                                         <SortableItem
                                             key={lead.id}
@@ -567,6 +598,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     visible={openNoteModal}
                     onCancel={() => setOpenNoteModal(false)}
                     lead={selectedLead}
+                    selectedGroup={selectedGroup}
                 />
             )}
         </div>

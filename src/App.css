@@ -32,25 +32,41 @@
     display: none;
 }
 
+.sidebarlang-items {
+    height: 44px;
+    align-items: center;
+}
 .overlayed-actions {
     position: fixed;
-    bottom: 50px;
+    bottom: 90px;
     background: #ffffff;
-    padding: 10px;
+    padding: 8px 16px;
     display: flex;
-    gap: 10px;
-    border-radius: 4px;
-    left: calc(50% - 250px);
-    box-shadow: 0px 0px 3px #ccc;
+    gap: 15px;
+    border-radius: 10px;
+    left: calc(50% - 180px);
+    border: 1px solid rgb(171 171 171 / 40%);
+}
+.friend-group-btn {
+    border-color: rgb(115 82 199 / 50%) !important;
+}
+.friend-unfriend-btn {
+    border-color: #ff000080 !important;
+}
+.friend-whitelist-btn {
+    border-color: rgb(33 191 124 / 50%) !important;
+}
+.friend-sync-btn {
+    border-color: rgb(0 135 255 / 50%) !important;
 }
 .fb-group-row {
-    margin: 10px 0px;
+    margin: 5px 0px;
     display: flex;
     align-items: center;
     gap: 10px;
     position: relative;
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 6px 16px;
 }
 
 span.fb-group-icon {
@@ -88,6 +104,10 @@ span.fb-group-icon {
     top: 320px;
     z-index: 999;
     text-align: center;
+}
+
+.friendlist-addGroup-popup .ant-modal-content {
+    padding: 20px !important;
 }
 
 .custom-table li.ant-pagination-options {
@@ -148,6 +168,27 @@ li.ant-pagination-total-text {
     box-shadow: none;
 }
 
-
-
 /* __________ End CSS For Prospection Setting Poppup _________ */
+
+/* __________ Start CSS For Add Note Poppup _________ */
+.custom-fb-note-modal-wrap .ant-modal-content {
+    background: #F1F2F2 !important;
+    padding: 30px;
+}
+.custom-fb-note-modal-wrap  select:focus-visible {
+    outline: none;
+}
+.custom-fb-note-modal-wrap .hover-text-white:hover {
+    color: #fff;
+   background: #0087FF;
+}
+.custom-fb-note-modal-wrap .hover-text-white:hover span {
+    color: #fff;
+}
+.custom-fb-note-modal-wrap .hover-text-white:hover svg path {
+    stroke: #fff;
+    opacity: 1 !important;
+}
+
+
+/* __________ Start CSS For Add Note Poppup _________ */

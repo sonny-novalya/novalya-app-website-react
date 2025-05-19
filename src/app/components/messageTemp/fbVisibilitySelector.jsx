@@ -39,7 +39,7 @@ const FbVisibilitySelector = ({containerRef}) => {
                   {t("message.Select feature")}
                   <PreviewMessageIcon index={0}/>
                 </div>
-                <div className="grid grid-cols-4 gap-4 border border-[#0087FF33] rounded-[10px] p-3 px-4 mt-6">
+                <div className="grid grid-cols-4 gap-4 border border-[#0087FF33] rounded-[10px] px-3 py-5 mt-4">
                   {features.map((feature, index) => (
                     <div key={index} onClick={()=>handleVisibilty(feature.value)}  className="px-10 py-6 bg-[#E2F1FE4F] border border-[#0087FF3D] rounded-[6px] text-center hover:bg-[#E2F1FE] hover:border-[#0087FF] cursor-pointer">
                       <div className="w-12 h-12 flex items-center justify-center mx-auto">

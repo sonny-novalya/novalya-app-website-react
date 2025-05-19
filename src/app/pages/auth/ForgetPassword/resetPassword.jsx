@@ -58,7 +58,7 @@ const ResetPassword = () => {
 
   return (
     <>
-      {!isChanged ? (
+      {isChanged ? (
         <PassChanged />
       ) : (
         <div className="flex flex-col min-h-screen bg-white px-4">

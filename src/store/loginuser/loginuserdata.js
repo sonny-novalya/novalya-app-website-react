@@ -4,6 +4,7 @@ import apiCall from "../../services/api";
 const useLoginUserDataStore = create((set) => ({
     loading: false,
     loginUserData: localStorage.getItem("loginUserData") ? JSON.parse(localStorage.getItem("loginUserData")) :{},
+    cards:[],
     fetchLoginUserData: async (data) => {
         try {
             set({ loading: true });
@@ -59,7 +60,98 @@ const useLoginUserDataStore = create((set) => ({
       
         }
     },
+    getInvoiceList: async (limit=2) => {
+        try {
+            set({ loading: true });
 
+            const response = await apiCall({
+                method: 'GET',
+                url: `/user/api/chargebee/list-invoices?limit=${limit}`,
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
+     downloadInvoice: async (id) => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: `/user/api/chargebee/download-invoices`,
+                data:{invoice_id:id}
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
+    getCardList:async () => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: `/user/api/chargebee/card-listing`,
+            });
+
+
+            set({cards:response?.data?.data || []})
+          
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
+     removeCard:async (id) => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: `/user/api/chargebee/delete-card`,
+                data:{
+                      payment_source_id: id
+                }
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
+       addCard:async (data) => {
+        try {
+            set({ loading: true });
+
+            const response = await apiCall({
+                method: 'POST',
+                url: `/user/api/chargebee/create-new-card`,
+                data
+            });
+
+            return response
+
+     
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+      
+        }
+    },
 
 }));
 

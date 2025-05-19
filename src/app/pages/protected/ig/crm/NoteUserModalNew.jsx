@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import PropTypes from "prop-types";
 import { message, Modal, } from "antd";
 import ListPanel from './Notes/ListPanel';
-import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
+import { DeleteGreyIcon, EditIcon, TripleDotIcon } from '../../../common/icons/icons';
 import { useLocation } from "react-router-dom";
 import SocialsSection from './Notes/SocialsSection';
 import useIgNoteStore from '../../../../../store/notes/igNoteStore';
+import usefbCRM from '../../../../../store/fb/fbCRM';
 
-const NoteUserModal = ({ visible, onCancel, lead }) => {
-    const { createIgNote, getIgNotes, fetchedNotes } = useIgNoteStore();
-
+const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
+    const { createIgNote, getIgNotes, fetchedNotes, deleteUserNote } = useIgNoteStore();
+    const { getGroupById } = usefbCRM();
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",
@@ -39,6 +40,8 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         tag_id: 0,
         stage_id: 0
     });
+    const [notes_id, setNotesId] = useState(null)
+    const [notes, setNotes] = useState([]);
 
     const noteEditdropdownRefs = useRef([]);
 
@@ -55,6 +58,45 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 [platform]: value
             }
         }));
+    };
+
+    const handleDeleteFullNote = async (note_id) => {
+        if (!notes_id) return message.error("Please Create Notes first")
+        try {
+            const res = await deleteUserNote({ note_id });
+            console.log("ressss", res)
+            if (res?.status === 'success') {
+                message.success(res?.message);
+                setUserInfo({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: "",
+                    profession: "",
+                    bio: "",
+                    socials: {
+                        website: "",
+                        facebook: "",
+                        instagram: "",
+                        twitter: "",
+                        linkedin: "",
+                        youtube: ""
+                    },
+                    note: ""
+                });
+                setNotesId(null);
+                setNotes([]);
+                setEditingNote(null);
+                setNotesData({ note: '' });
+                setActiveNoteEditDropdown(null);
+                await getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
+                handleUpdateGroups()
+                onCancel();
+            }
+        } catch (error) {
+            message.error("Failed to delete note");
+            console.error("Delete failed:", error);
+        }
     };
 
     const handleDeleteNote = async (noteToDelete) => {
@@ -89,6 +131,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
             if (msg) {
                 message.success("Note Added Successfully");
+                handleUpdateGroups()
                 getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
             }
         } catch (error) {
@@ -110,12 +153,21 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         setNotesData({ note: '' });
     };
 
+
+    const handleUpdateGroups = async () => {
+        if (selectedGroup)
+            await getGroupById({ id: selectedGroup?.id, type: 'ig' });
+    }
+
     useEffect(() => {
+        if (visible) {
         getIgNotes({ insta_user_id : lead?.insta_user_id, type: "instagram" })
-    }, [])
+        }
+    }, [visible, lead?.insta_user_id])
 
     useEffect(() => {
         if (fetchedNotes) {
+            setNotesId(fetchedNotes?.id)
             setUserInfo({
                 firstName: fetchedNotes.first_name || '',
                 lastName: fetchedNotes.last_name || '',
@@ -172,7 +224,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                 profile_pic: lead.profile_pic || '',
                 short_description: userInfo.bio || '',
                 Socials: JSON.stringify(userInfo.socials),
-                description: notes_history?.map((item) => item?.description),
+                description: updatedNotes?.map((item) => item?.text),
                 is_primary: selectedTag.tag_id || '',
                 selected_tag_stage_ids: [
                     {
@@ -186,10 +238,11 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             };
 
             try {
-                const msg = await createIgNote({ data: payload });
+                const res = await createIgNote({ data: payload });
 
-                if (msg) {
-                    message.success("Note Added Successfully");
+                if (res) {
+                    message.success(res?.message);
+                    handleUpdateGroups()
                     getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
                 }
             } catch (error) {
@@ -242,10 +295,11 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             };
 
             try {
-                const msg = await createIgNote({ data: payload });
+                const res = await createIgNote({ data: payload });
 
-                if (msg) {
-                    message.success("Note Added Successfully");
+                if (res) {
+                    message.success(res?.message);
+                    handleUpdateGroups()
                     getIgNotes({ insta_user_id: lead?.insta_user_id, type: "instagram" });
                 }
             } catch (error) {
@@ -275,8 +329,6 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [activeNoteEditDropdown]);
 
-    const [notes, setNotes] = useState([]);
-
     return (
         <Modal
             open={visible}
@@ -285,6 +337,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
             width={1100}
             centered
             closeIcon={null}
+            wrapClassName="custom-ig-note-modal-wrap"
         >
             <div className="flex items-stretch justify-center w-full gap-4 h-[calc(100vh-200px)]" >
                 {/* Note Panel */}
@@ -313,7 +366,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
                                     {/* <button className="text-gray-600 hover:text-blue-500 text-sm">
                                         <SyncTripleArrowIcon />
                                     </button> */}
-                                    <button className="text-gray-600 hover:text-red-500 text-sm">
+                                    <button className="text-gray-600 hover:text-red-500 text-sm" onClick={() => handleDeleteFullNote(notes_id)}>
                                         <DeleteGreyIcon />
                                     </button>
                                 </div>
@@ -432,7 +485,7 @@ const NoteUserModal = ({ visible, onCancel, lead }) => {
 
                         <div className="">
                             <label className="block text-sm font-medium mb-1">Notes History</label>
-                            <div className="space-y-2 max-h-20 overflow-y-auto pr-1">
+                            <div className="space-y-2 min-h-20 max-h-36 overflow-y-auto pr-1">
                                 {notes?.map((note, index) => {
                                     return <div
                                         key={index}

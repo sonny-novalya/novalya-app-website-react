@@ -267,7 +267,7 @@ const SidebarMenu = () => {
 
                                                     {/* SubNav items */}
                                                 {shouldSubNavOpen && (
-                                                    <div className={`pl-${collapsed ? '4' : '6'} my-3 pl-2 ml-[28px] flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
+                                                    <div className={`pl-${collapsed ? '4' : '6'} my-3 !pl-2 ml-[28px]  test flex flex-col space-y-1 border-l border-[#E6F1FB]`}>
                                                         {item.subNav.map((subItem) => (
                                                             <SidebarItem
                                                                 key={subItem.id}
@@ -302,14 +302,14 @@ const SidebarMenu = () => {
                             </div>
                                 <div className="flex space-x-3.5 items-center px-3 w-full mb-0 cursor-pointer hover:bg-blue-50" onClick={()=> navigate('/profile')}>
                                 {userData?.url ? (
-                                    <img src={userData.url} className="h-7.5 w-7.5 rounded-sm" alt="user img" />
+                                    <img src={userData.url} className="h-7.5 w-7.5 rounded-[6px]" alt="user img" />
                                 ) : (
-                                    <div className="h-10 w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-sm">
+                                    <div className="h-10 w-10 min-w-10 bg-gray-300 flex items-center justify-center text-white font-bold text-lg rounded-[12px]">
                                         {userData?.name?.charAt(0)}
                                     </div>
                                 )}
                                 <div className="flex flex-col text-sm">
-                                    <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[175px]">{userData?.name}</span>
+                                    <span className="text-[22px] font-[500] whitespace-nowrap overflow-hidden text-ellipsis w-[150px]">{userData?.name}</span>
                                     <span className="text-[13px] text-[#167AD3]">{userData?.plan}</span>
                                 </div>
                             </div>
@@ -320,7 +320,7 @@ const SidebarMenu = () => {
                                 onClick={onLogout}
                             >
                                 <LogoutIcon />
-                                    <span className="text-[16px] ">Logout</span>
+                                    <span className="text-[16px] font-[500]">Logout</span>
                             </button>
                         </div>
                     </>

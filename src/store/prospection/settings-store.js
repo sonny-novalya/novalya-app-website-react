@@ -52,10 +52,10 @@ const SettingStore = create((set) => ({
         selectedinterval: null, // selected interval custom goes here
         gender: null,
         keyword: null,
-        prospect: null, // retarget same user
-        pro_convo: null, // Existing conversation
+        prospect: "no", // retarget same user
+        pro_convo: 0, // Existing conversation
         pro_stratagy: null, // Request + Message
-        action: null, // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
+        action: "{\"moveGroupId\":null,\"moveStageId\":null,\"stage_num\":null}", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string
         datevalue: null,
         group_id: null,
         message: null,
@@ -86,10 +86,10 @@ const SettingStore = create((set) => ({
         selectedinterval: null, // selected interval custom goes here
         gender: null,
         keyword: null,
-        prospect: null, // retarget same user
-        pro_convo: null, // Existing conversation
+        prospect: "no", // retarget same user
+        pro_convo: 0, // Existing conversation
         pro_stratagy: null, // Request + Message
-        action: null, // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
+        action: "{\"moveGroupId\":null,\"moveStageId\":null,\"stage_num\":null}", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
         datevalue: null,
         group_id: null,
         message: null,
@@ -143,10 +143,10 @@ const SettingStore = create((set) => ({
                         selectedinterval: responseData?.selectedinterval ?? null,
                         gender: responseData?.gender ?? null,
                         keyword: responseData?.keyword ?? null,
-                        prospect: responseData?.prospect ?? null,
-                        pro_convo: responseData?.pro_convo ?? null,
+                        prospect: responseData?.prospect ?? "no",
+                        pro_convo: responseData?.pro_convo ?? 0,
                         pro_stratagy: responseData?.pro_stratagy ?? null,
-                        action: responseData?.action ?? null,
+                        action: responseData?.action ?? "no",
                         datevalue: responseData?.datevalue ?? null,
                         group_id: responseData?.group_id ?? null,
                         message: responseData?.message ?? null,

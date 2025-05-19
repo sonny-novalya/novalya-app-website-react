@@ -99,7 +99,26 @@ export  const getCurrentYear = ()=>{
   }
 
 
+export function formatUnixDate(unixTimestamp) {
+  // Convert seconds to milliseconds if needed
+  if (unixTimestamp.toString().length === 10) {
+    unixTimestamp *= 1000;
+  }
 
+  const date = new Date(unixTimestamp);
+  const options = { month: 'short', day: 'numeric', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
+
+export function isExpired(month, year) {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1; // getMonth() returns 0-based month
+
+  if (year < currentYear) return true;
+  if (year === currentYear && month < currentMonth) return true;
+  return false;
+}
 
 
 
@@ -363,3 +382,16 @@ else if (plan === "Unlimited" && period === "1_year"){
 return {...result};
 
 }
+
+export function getCardType(cardNumber) {
+  const cleanNumber = cardNumber.replace(/\s+/g, '');
+
+  for (const [type, pattern] of Object.entries(cardTypePatterns)) {
+    if (pattern.test(cleanNumber)) {
+      return type;
+    }
+  }
+
+  return '';
+}
+

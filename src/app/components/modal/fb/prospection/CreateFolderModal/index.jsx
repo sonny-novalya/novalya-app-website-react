@@ -74,7 +74,7 @@ const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder,setFo
                                     onClick={(e) => e.stopPropagation()}
                                 />
                                 <img
-                                    src={GroupImg}
+                                    src={ group.post_image || GroupImg}
                                     alt="Group"
                                     className="w-10 h-10 rounded-full object-cover mx-2"
                                 />
