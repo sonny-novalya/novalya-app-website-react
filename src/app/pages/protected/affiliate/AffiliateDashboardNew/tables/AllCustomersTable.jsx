@@ -1,5 +1,6 @@
 import { Table, Tag, Spin } from 'antd';
 import { useState } from 'react';
+import { formatDateFun } from './memoizedFormatDate';
 
 const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
     const all_customers = refUsers?.all_customers || [];
@@ -8,16 +9,6 @@ const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
     const limit = 10;
 
     const total = all_customers?.length || 0;
-
-    const formatDate = (dateInput) => {
-        if (!dateInput) return '';
-        const date = new Date(dateInput);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
-    };
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
@@ -64,12 +55,12 @@ const AllCustomersTable = ({ loginUserData, refUsers, isAffiliateLoading }) => {
         {
             title: 'Joining Date',
             dataIndex: 'createdat',
-            render: (date) => formatDate(date),
+            render: (date) => formatDateFun(date),
         },
         {
             title: 'Activation on',
             dataIndex: 'createdat',
-            render: (date) => formatDate(date),
+            render: (date) => formatDateFun(date, true),
         },
         {
             title: 'Sponsor By',

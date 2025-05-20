@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Table, Input, Tag, Avatar } from 'antd';
+import { formatDateFun } from './memoizedFormatDate';
 
 export default function TrialCancelledTable({ loginUserData, refUsers, isAffiliateLoading }) {
     const { trial_cancelled = [] } = refUsers || {};
@@ -8,16 +9,6 @@ export default function TrialCancelledTable({ loginUserData, refUsers, isAffilia
     const limit = 10;
 
     const total = trial_cancelled?.length || 0;
-
-    const formatDate = (dateInput) => {
-        if (!dateInput) return '';
-        const date = new Date(dateInput);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
-    };
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
@@ -67,11 +58,11 @@ export default function TrialCancelledTable({ loginUserData, refUsers, isAffilia
         },
         {
             title: 'Joining Date',
-            render: (row) => formatDate(row.createdat),
+            render: (row) => formatDateFun(row.createdat),
         },
         {
             title: 'Cancellation Date',
-            render: (row) => formatDate(row.cancellation_date, true),
+            render: (row) => formatDateFun(row.cancellation_date, true),
         },
         {
             title: 'Status',

@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Table, Input, Tag, Avatar, Spin } from 'antd';
+import { formatDateFun } from './memoizedFormatDate';
 
 export default function ActiveCustomersTable({ loginUserData, refUsers, isAffiliateLoading }) {
     const active_customers = refUsers?.active_customers || [];
@@ -8,11 +9,6 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
     const limit = 10;
 
     const total = active_customers?.length || 0;
-
-    const memoizedFormatDate = (dateInput, isUnix = false) => {
-        const date = isUnix ? new Date(dateInput * 1000) : new Date(dateInput);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    };
 
     const calEstRevenue = (user) => {
         if (!user?.t_paid_amount && !user?.plan_price) return 0;
@@ -98,11 +94,11 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
         },
         {
             title: 'Joining Date',
-            render: (row) => memoizedFormatDate(row.createdat),
+            render: (row) => formatDateFun(row.createdat),
         },
         {
             title: 'Next Payment',
-            render: (row) => memoizedFormatDate(row.nextBillingAt, true),
+            render: (row) => formatDateFun(row.nextBillingAt, true),
         },
         {
             title: 'Status',
