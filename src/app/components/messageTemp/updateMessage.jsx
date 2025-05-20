@@ -313,7 +313,7 @@ const handleSubmit =async ()=>{
                   <span className="flex-1 text-[14px]">{visibility?.label}</span>
                   <CreateMessageIcon index={1} />
                 </div>
-                <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px]">
+            <div className={`pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px] ${activeDropdownItem ? " message-dropdown-active" : ""}`}>
                   {getGroupedVisibilityOptions(visibilityOptions).map(([platform, options]) => (
                     <div key={platform} className="mt-3 ">
                       {/* Platform Heading - no background, just light text + border */}
@@ -327,7 +327,7 @@ const handleSubmit =async ()=>{
                           <div
                             key={visibility.id}
                             onClick={() => handleVisibilityChange(visibility)}
-                            className={`pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white ${activeDropdownItem ? " message-dropdown-active" : ""}`}
+                            className={`pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white`}
                           >
                             <img className="normalIcon" src={visibility.icon} />
                             <img className="normalIconHover" src={visibility.iconLight} />

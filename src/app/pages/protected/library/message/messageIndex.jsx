@@ -286,7 +286,7 @@ const MessageIndex = () => {
                       </span>
                     </Button>
                   </div>
-                  <div ref={dropdownRef} className={`pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px]`}>
+                  <div ref={dropdownRef} className={`pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px] ${activeDropdownItem ? "message-dropdown-active" : ""}`}>
                     {getGroupedVisibilityOptions(visibilityOptions).map(([platform, options]) => (
                       <div key={platform} className="mt-3 ">
                         <div className="text-gray-500 text-sm font-semibold capitalize border-b border-gray-200 pb-1 mb-2 px-4">
@@ -299,7 +299,7 @@ const MessageIndex = () => {
                               key={visibility.id}
                               onClick={() => handleVisibilityChange(visibility)}
                               className={`pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white 
-                              ${visibility.id === visFilter?.id ? "active bg-[#0087FF] text-white" : ""}  ${activeDropdownItem ? "message-dropdown-active" : ""}`}
+                              ${visibility.id === visFilter?.id ? "active bg-[#0087FF] text-white" : ""}`}
                             >
                               <img className="normalIcon" src={visibility.icon} />
                               <img className="normalIconHover" src={visibility.iconLight} />
