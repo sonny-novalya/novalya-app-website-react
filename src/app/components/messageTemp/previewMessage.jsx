@@ -169,7 +169,7 @@ const CarouselComponent = ({MessagePreview, variantsLoading}) => {
                     </div>
                     <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] grid grid-cols-[12%_85%] items-end gap-[3%]">
                       <img src={messageImg} className="w-full" />
-                      <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%]">
+                      <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%] whitespace-pre-line">
                         <p className="my-[10px]">{variant?.name}</p>
                         {MessagePreview?.attachment != null && <img className="my-[10px]" src={MessagePreview?.attachment} style={{ maxWidth: "100%", maxHeight: "150px"}}/>}
                       </div>

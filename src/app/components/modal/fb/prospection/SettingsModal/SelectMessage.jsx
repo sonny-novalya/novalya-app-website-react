@@ -121,7 +121,7 @@ const SelectMessage = ({ tempMessageList }) => {
 
                 {(!filteredMessages || filteredMessages.length === 0) && (
                     <div className="text-center py-8 text-gray-500">
-                        {t("prospecting.No messages available")}
+                        {t("No messages available")}
                     </div>
                 )}
             </div>

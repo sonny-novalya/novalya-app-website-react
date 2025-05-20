@@ -47,7 +47,7 @@ const Birthday = () => {
 
   useEffect(()=>{
     if (!tempMessageList?.length) {
-    fetchMessagesNew({limit:200,page:1})
+    fetchMessagesNew({ page: 1, limit: 200 }, "", null, "birthday");
     }
     fetchCRMGroups({data: {}, type: "fb"})
     preSelectedData()

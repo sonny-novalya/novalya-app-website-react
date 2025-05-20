@@ -292,7 +292,7 @@ const handleUpdate =(item)=>{
 
       </div>
     </div>
-   { flow === 1 && <KeywordPop containerRef={containerRef} setData={setData} handleCreate={handleCreate}  actionLoader={actionLoader} data={data}/>}
+   { flow === 1 && <KeywordPop containerRef={containerRef} setData={setData} handleCreate={handleCreate}  actionLoader={actionLoader} data={data} close={() => setFlow(0)}/>}
    { flow === 2 &&  <KeywordUpdatePop containerRef={containerRef}/>}
   
     </>

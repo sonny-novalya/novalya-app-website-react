@@ -663,7 +663,7 @@ const FbProspecting = () => {
 
     useEffect(() => {
         fetchKeywords({ page: 1, limit: 100 });
-        fetchMessagesNew({ page: 1, limit: 200 });
+        fetchMessagesNew({ page: 1, limit: 200 }, "", null, "fb_prospecting");
         fetchCRMGroups({ type: 'facebook' });
     }, []);
 

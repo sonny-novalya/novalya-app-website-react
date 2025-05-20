@@ -1,7 +1,7 @@
 import { Spin } from 'antd'
 import React from 'react'
 
-const KeywordPop = ({containerRef,setData,data,handleCreate,actionLoader}) => {
+const KeywordPop = ({containerRef,setData,data,handleCreate,actionLoader, close}) => {
     const handleKeywordsEntery = (keyword,type)=>{
         const KeyArr = keyword?.split(",") || []
       if(type){
@@ -25,7 +25,11 @@ const KeywordPop = ({containerRef,setData,data,handleCreate,actionLoader}) => {
     // }
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-[#00000047] h-screen">
-    <div ref={containerRef} className="bg-white px-6 py-5 rounded-[10px] max-w-[700px] mx-auto w-full relative max-h-[90vh] overflow-auto">
+    <div ref={containerRef} className="bg-white px-6 py-5 rounded-[10px] max-w-[700px] mx-auto w-full relative max-h-[90vh] overflow-auto1">
+        <svg style={{position: "absolute", right: "2px", cursor: "pointer", top: "-40px"}} onClick={close} width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.6875 8.3125L8.3125 19.6875M8.3125 8.3125L19.6875 19.6875" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
         <h3 className="text-[20px] font-medium mb-5">Create Keyword</h3>
         <div className="border border-[#DCDCDC] rounded-[10px] p-5">
             <div className="mb-4">
