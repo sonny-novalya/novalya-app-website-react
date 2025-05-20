@@ -11,7 +11,6 @@ import usefbCRM from '../../../../../store/fb/fbCRM';
 const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
     const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
     const { getGroupById } = usefbCRM();
-    console.log("selectedGroup", selectedGroup)
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",

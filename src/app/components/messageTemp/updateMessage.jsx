@@ -369,7 +369,7 @@ const handleSubmit =async ()=>{
                         } hover:bg-[#0087FF] hover:text-white`}
                       >
                         <CreateMessageIcon index={4} />
-                        Varient - {i + 1}
+                        Variant - {i + 1}
                       </button>
                     );
                   })}

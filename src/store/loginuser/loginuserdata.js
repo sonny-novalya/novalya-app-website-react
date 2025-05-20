@@ -34,6 +34,7 @@ const useLoginUserDataStore = create((set) => ({
             if (response.status === 200) {
                 set({ loading: false, loginUserData: result });
                 localStorage.setItem("loginUserData", JSON.stringify(userData));
+                return userData;
             } else {
                 throw new Error("Failed to fetch user data");
             }

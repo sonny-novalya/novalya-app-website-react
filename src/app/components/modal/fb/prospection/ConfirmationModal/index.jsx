@@ -47,8 +47,8 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
             open={visible}
             onCancel={onClose}
             footer={null}
-            width={isEmpty ? 600 : 900}
-            className="custom-modal p-0"
+            width={isEmpty ? 600 : 1115}
+            className="custom-modal custom-modal-edit-filter p-0"
             closeIcon={null}
             centered
         >
@@ -79,8 +79,8 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
                                     <Spin size="large" />
                                 </div>
                             )}
-                            <h2 className="font-medium text-lg">{t("prospecting.Message Selected")}</h2>
-                            <h3 className="border border-[#00000014] rounded-md p-4 text-[#0087FF] cursor-pointer" onClick={() => handleOpen(1)}>
+                            <h2 className="font-[500] text-[24px] mb-5">{t("prospecting.Message Selected")}</h2>
+                            <h3 className="flex items-center border border-[#00000024] rounded-[6px] p-4 text-[#0087FF] cursor-pointer min-h-[62px] tracking-[.32px] mb-5" onClick={() => handleOpen(1)}>
                                 {messageTitle}
                             </h3>
                             <Settings
@@ -99,15 +99,15 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
                             />
                             <AddTags action={action} CRMList={CRMList} handleOpen={handleOpen} />
                         </div>
-                        <div className="flex justify-end space-x-4 pr-4 mt-4">
+                        <div className="flex justify-end space-x-10 pr-4 mt-7">
                             <button
-                                className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer"
+                                className="px-12 py-2 rounded-lg border border-[#0087FF] text-[#0087FF] cursor-pointer min-h-[52px] w-[250px]"
                                 onClick={() => onClose()}
                             >
                                 {t("prospecting.Cancel")}
                             </button>
                             <button
-                                className={`px-12 py-2 rounded-lg bg-[#21BF7C] text-white cursor-pointer `}
+                                className={`px-12 py-2 rounded-lg bg-[#21BF7C] text-white cursor-pointer min-h-[52px] w-[250px]`}
                                 id="start-novayla-connect"
                                 // eslint-disable-next-line react/no-unknown-property
                                 groupId={groupId}

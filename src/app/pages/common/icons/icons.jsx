@@ -535,9 +535,9 @@ export const CollapsedLeftIcon = () => (
 )
 
 export const EditIconSquaredIcon = () => (
-    <svg width="22" height="22" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0.5" y="0.5" width="29" height="29" rx="4.5" stroke="#C0C0C0" />
-        <path d="M17 9.14853L20 12.1167M15 23H23M7 19.0424L6 23L10 22.0106L21.586 10.5475C21.9609 10.1765 22.1716 9.67324 22.1716 9.14853C22.1716 8.62383 21.9609 8.12061 21.586 7.74954L21.414 7.57936C21.0389 7.2084 20.5303 7 20 7C19.4697 7 18.9611 7.2084 18.586 7.57936L7 19.0424Z" stroke="#C0C0C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.5" y="0.5" width="29" height="29" rx="4.5" stroke="#C0C0C0"/>
+        <path d="M17 9.14853L20 12.1167M15 23H23M7 19.0424L6 23L10 22.0106L21.586 10.5475C21.9609 10.1765 22.1716 9.67324 22.1716 9.14853C22.1716 8.62383 21.9609 8.12061 21.586 7.74954L21.414 7.57936C21.0389 7.2084 20.5303 7 20 7C19.4697 7 18.9611 7.2084 18.586 7.57936L7 19.0424Z" stroke="#C0C0C0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 )
 

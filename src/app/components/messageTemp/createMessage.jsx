@@ -227,43 +227,47 @@ const CreateMessage = ({containerRef}) => {
    }
   }
 
-  const handleSubmit = async()=>{
+  const handleSubmit = async () => {
     if (!name.trim()) {
       message.error("Message Title is Required")
       return
     }
-  
+
     if (!visibility?.id) {
       message.error("Visibility is Required")
       return
     }
-    
-    // .some() checks if at least one item matches the condition.
-    if (variants.some(v => v.name.trim() === "")) {
-      message.error("Some variants have an empty message.");
+
+    // Find all empty variants and show their numbers in the error message
+    const emptyVariants = variants
+      .map((variant, index) => variant.name.trim() === "" ? index + 1 : null)
+      .filter(index => index !== null);
+
+    if (emptyVariants.length > 0) {
+      message.error(`Please fill in all variants. Empty variants: ${emptyVariants.join(", ")}`)
       return
     }
-     
-    let uploadData =  attachment
+
+    let uploadData = attachment
     if (!visibility?.attachment) {
       uploadData = null
     }
     const data = {
-      name:name,
-      variants:variants.map(variant => variant.name),
-      visibility_type:[visibility.id],
-      attachment:uploadData
+      name: name,
+      variants: variants.map(variant => variant.name),
+      visibility_type: [visibility.id],
+      attachment: uploadData
     }
     if (data.variants.length < 3) {
            message.error("Atleast 3 Variants are Required")
-           return
+      return
     }
     setIsLoading(true)
 
-      try {
-        const res = await apiCall({
-              method: 'POST',
-              url: '/all/messages/api/create-messages',
+    try {
+      const res = await apiCall({
+        method: 'POST',
+        url: '/all/messages/api/create-messages',
               data})
       if (res?.status === 200) {
         message.success("Message Successfully Created")
@@ -276,11 +280,11 @@ const CreateMessage = ({containerRef}) => {
       }else{
         message.error("Message Successfully Created")
       }
-    setIsLoading(false)
-      } catch (error) {
+      setIsLoading(false)
+    } catch (error) {
         message.error("Message Successfully Created")
-        setIsLoading(false)
-      }
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -394,7 +398,7 @@ const CreateMessage = ({containerRef}) => {
                     } hover:bg-[#0087FF] hover:text-white`}
                   >
                     <CreateMessageIcon index={4} />
-                    Varient - {i + 1}
+                    Variant - {i + 1}
                   </button>
                 );
               })}

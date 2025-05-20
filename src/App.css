@@ -192,3 +192,7 @@ li.ant-pagination-total-text {
 
 
 /* __________ Start CSS For Add Note Poppup _________ */
+
+.custom-modal-edit-filter .ant-modal-content {
+    padding: 20px;
+}
