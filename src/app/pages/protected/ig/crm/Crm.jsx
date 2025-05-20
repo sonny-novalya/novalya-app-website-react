@@ -63,7 +63,7 @@ const Crm = () => {
       <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
       <div className="flex bg-gray-100 shadow-lg rounded-lg">
        <div
-          className="w-[270px] bg-white flex pt-[40px] flex-col overflow-hidden  flex-shrink-0 relative"
+          className="w-[270px] bg-white flex pt-[40px] flex-col overflow-hidden flex-shrink-0 relative"
           style={{ width: isCollapse ? "110px" : "" }}
         >
           <button className="absolute right-[5px] top-[5px] z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
