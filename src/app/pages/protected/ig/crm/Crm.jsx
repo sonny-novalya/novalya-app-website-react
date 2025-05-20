@@ -61,7 +61,7 @@ const Crm = () => {
     <Layout>
       <h2 className="text-xl font-medium mb-2">{t("crm.Instagram CRM")}</h2>
       <div class="nv-content-wrapper"></div> {/* to display account syncing message */}
-      <div className="flex bg-gray-100 shadow-lg rounded-lg">
+      <div className="flex bg-gray-100 shadow-lg rounded-lg overflow-hidden">
        <div
           className="w-[270px] bg-white flex pt-[40px] flex-col overflow-hidden flex-shrink-0 relative"
           style={{ width: isCollapse ? "110px" : "" }}
@@ -111,7 +111,7 @@ const Crm = () => {
               </>
           }
           <div
-            className="flex-1 overflow-y-auto px-4 max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]"
+            className="flex-1 overflow-y-auto px-4 overflow-auto h-full"
           >
             <LeftSectionCrm
               isLoading={fbCRMLoading}
@@ -127,7 +127,7 @@ const Crm = () => {
             />
           </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 w-full overflow-hidden">
           <RightSectionCrm selectedGroup={selectedGroup} />
         </div>
       </div>

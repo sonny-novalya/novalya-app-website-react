@@ -370,7 +370,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         );
     };
     return (
-        <div className="flex-1 overflow-x-auto min-h-full relative">
+        <div className="flex-1 overflow-x-auto min-h-full relative flex flex-col overflow-hidden h-full">
             <TopbarRightSection
                 companyName={selectedGroup.name}
                 leadsCount={totalLeadsCount}
@@ -379,7 +379,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 selectedGrpData={selectedGrpData}
             />
             {selectedGrpLoader && <div className="absolute z-10 w-[100%] h-full bg-white/50 flex pt-50 justify-center"> <Spin size="large" /> </div>}
-            <div className="flex gap-4 p-3 bg-white overflow-auto">
+            <div className="flex gap-4 p-3 bg-white overflow-auto flex-grow h-full overflow-x-scroll overflow-y-hidden">
                 {sortedStages.map((stage) => {
                     const selectedUsers = selectedUsersMap[stage.id] || [];
 
@@ -432,7 +432,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     return (
                         <DroppableStage stageId={stage.id} key={stage.id}>
                             <div
-                                className="pb-[10px] bg-white rounded-lg w-[270px]"
+                                className="pb-[10px] bg-white rounded-lg w-[270px] h-full flex flex-col"
                             >
                                 <div className="text-black p-3 rounded-md mb-4 shadow-sm">
                                     <div className="flex items-center justify-between">
