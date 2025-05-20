@@ -109,7 +109,7 @@ const SortableItem = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-w-[230px] max-w-[230px]">
       <div
         ref={setNodeRef}
         style={style}
@@ -118,10 +118,10 @@ const SortableItem = ({
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onClick={() => onClick(group)}
-        className={`flex items-center space-x-2 px-4 py-2 mb-2 rounded-md cursor-pointer border bg-white hover:bg-gray-100 ${
+        className={`flex items-center space-x-2 px-4 py-2  mb-2 rounded-md cursor-pointer border bg-white hover:bg-gray-100 ${
           selectedGroup?.id === group.id
             ? "border-[#0087FF]"
-            : "border-[#E6F1FB]"
+          : "border-[#00000040]"
         }`}
       >
         <span

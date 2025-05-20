@@ -71,7 +71,7 @@ const Crm = () => {
       {/* to display account syncing message */}
       <div className="flex bg-gray-100 shadow-lg rounded-lg">
         <div
-          className="w-[300px] bg-[#E6F1FB] p-4 flex pt-[40px] flex-col overflow-hidden relative"
+          className="w-[270px] bg-white flex pt-[40px] flex-col overflow-hidden relative"
           style={{ width: isCollapse ? "110px" : "" }}
         >
           <button className="absolute right-[5px] top-[5px] z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
@@ -84,7 +84,7 @@ const Crm = () => {
               <CollapsedLeftIcon />
             </div>
           </button>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 px-4">
             <h2 className="text-lg font-semibold">{t("crm.Groups")}</h2>
             {!isCollapse && (
               <Button
@@ -98,12 +98,14 @@ const Crm = () => {
             )}
           </div>
           {!isCollapse && (
-            <Input
-              placeholder={t("crm.Search...")}
-              className="mb-4"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className="px-4 pr-5">
+              <Input
+                placeholder={t("crm.Search...")}
+                className="mb-4"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           )}
 
           {isCollapse && (
@@ -115,7 +117,7 @@ const Crm = () => {
             ></Button>
           )}
           <div
-            className="flex-1 overflow-y-auto max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]"
+            className="flex-1 overflow-y-auto px-4 max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]"
             style={{ width: isCollapse ? "75px" : "" }}
           >
             <LeftSectionCrm
