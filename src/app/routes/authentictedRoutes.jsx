@@ -4,12 +4,63 @@ import { Route, Routes,Navigate } from "react-router-dom";
 import { DashboardPage, CrmPage, BirthdayPage, FriendsPage, RequestPage, MessageIndexPage, AffiliateLinksPage, LevelCommissionPage, AffiliateSettingsPage, UnfriendedPage, DeactivatedPage, WhitelistPage, IgCrmPage, AiCommentsPage, KeywordsPage, ConnectionDashboardPage, FbProspectingPage, IgProspectingPage, ProfilePage, NewAffiliatePage, UpgradePage } from "../pages/protected";
 import MessageTempIndex from "../components/messageTemp/messageTempIndex";
 import useMessageSteps from "../../store/messageTemp/MessageTemp";
+import { useEffect } from "react";
+import { Crisp } from "crisp-sdk-web";
+import { decryptKey } from "../../helpers/helper";
+import { keyType } from "../../helpers/helperData";
+import { useSocialAccountsStore } from "../../store/dashboard/dashboard-store";
+import useLoginUserDataStore from "../../store/loginuser/loginuserdata";
+
 
 
 
 
 const AuthentictedRoutes = () => {
+  const {loginUserData}=useLoginUserDataStore()
+  const {getEncKey}=useSocialAccountsStore()
   const {isMessage,step,selectedPlatform,setIsMessage} = useMessageSteps();
+  useEffect(() => {
+  getCrispData()
+}, [loginUserData])
+
+const getCrispData = async()=>{
+  if (!loginUserData?.email) return
+	try {
+		const res= await getEncKey()
+		const keyData = {crisp:res?.data?.data?.crisp_key,iv:res?.data?.data?.iv}
+		const decodedKey = await decryptKey(keyData.crisp,keyData.iv,keyType)
+
+Crisp.configure(decodedKey, {
+  autoload: false
+});
+
+// Set user email
+if (loginUserData?.email) {
+  Crisp.user.setEmail(loginUserData?.email);
+}
+
+// Set user nickname
+if (loginUserData?.firstname || loginUserData?.lastname) {
+  const nickname = `${loginUserData?.firstname || ''} ${loginUserData?.lastname || ''}`.trim();
+  Crisp.user.setNickname(nickname);
+}
+
+// Set custom session data
+Crisp.session.setData({
+  user_id: loginUserData?.user_id,
+  plan: loginUserData?.plan_pkg
+});
+
+// Load Crisp manually
+Crisp.load();
+
+	
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+
 
   return (
     <>

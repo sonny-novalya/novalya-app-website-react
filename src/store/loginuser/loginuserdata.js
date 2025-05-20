@@ -28,7 +28,11 @@ const useLoginUserDataStore = create((set) => ({
                 plan_period:result?.plan_period || 1,
                 plan_pkg:result.plan_pkg || "Basic",
                 customerid:result?.customerid || "",
-                randomcode: result?.randomcode || ""
+                randomcode: result?.randomcode || "",
+                email:result?.email || "",
+                firstname:result?.firstname || "",
+                lastname:result?.lastname || "",
+                user_id:user_id || ""
             };
 
             if (response.status === 200) {

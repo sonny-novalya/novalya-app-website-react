@@ -4,7 +4,6 @@ import IndexRoutes from './app/routes/routes'
 import './services/i18/i18n'
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
 function App() {
   const { i18n } = useTranslation();
 const selectedLocale = localStorage.getItem('selectedLocale') || 'en-US'
@@ -30,6 +29,9 @@ if (token && userId) {
 useEffect(() => {
   i18n.changeLanguage(selectedLocale);
 }, [selectedLocale])
+
+
+
 
 
   return (

@@ -1371,6 +1371,8 @@ export const cardTypePatterns = {
   americanexpress: /^3[47]\d{0,13}$/,
 };
 
+export const keyType = "984e3d0ec296"
+
 export const months = [
   { label: "January", value: 1 },
   { label: "February", value: 2 },
