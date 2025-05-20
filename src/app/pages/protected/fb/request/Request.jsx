@@ -122,7 +122,7 @@ const Request = () => {
 
   useEffect(() => {
     fetchCRMGroups({data: {}, type: "fb"});
-    fetchMessagesNew({limit:200,page:1});
+    fetchMessagesNew({ page: 1, limit: 200 }, "", null, "request");
     preSelectedSettings();
   }, []);
 

@@ -40,7 +40,7 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
     });
 
     useEffect(() => {
-        fetchMessagesNew({ page: 1, limit: 200 });
+        fetchMessagesNew({ page: 1, limit: 200 }, "", null, "ig_crm");
         fetchCRMGroups({ type: 'ig' })
     }, []);
 

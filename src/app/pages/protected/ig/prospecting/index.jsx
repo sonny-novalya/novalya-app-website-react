@@ -693,7 +693,7 @@ const IgProspecting = () => {
 
     useEffect(() => {
         fetchKeywords({ page: 1, limit: 100 });
-        fetchMessagesNew({ page: 1, limit: 200 });
+        fetchMessagesNew({ page: 1, limit: 200 }, "", null, "ig_prospecting");
         fetchCRMGroups({ type: 'instagram' });
     }, []);
 
