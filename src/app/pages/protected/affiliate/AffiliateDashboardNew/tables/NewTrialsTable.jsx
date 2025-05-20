@@ -2,13 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Table, Input, Tag, Avatar, Spin } from 'antd';
 
 export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoading, showStatus = true }) {
-    const new_trails = refUsers?.new_trails || [];
+    const new_trials = refUsers?.new_trials || [];
 
 
     const [page, setPage] = useState(1);
     const limit = 10;
 
-    const total = new_trails?.length || 0;
+    const total = new_trials?.length || 0;
 
     const formatDate = (dateInput) => {
         if (!dateInput) return '';
@@ -104,7 +104,7 @@ export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoa
         <Table
             rowKey={(record) => record.customerid}
             columns={columns}
-            dataSource={new_trails}
+            dataSource={new_trials}
             pagination={{
                 current: page,
                 pageSize: limit,
