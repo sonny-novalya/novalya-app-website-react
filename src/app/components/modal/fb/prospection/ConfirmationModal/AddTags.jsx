@@ -30,29 +30,29 @@ const AddTags = ({ action = 'no', CRMList, handleOpen }) => {
 
   return (
     <main className="">
-      <div className="flex gap-3 items-center">
-        <h2 className="font-medium text-lg">{t("prospecting.Add Tags")}</h2>
+      <div className="flex gap-5 items-center mb-5">
+        <h2 className="font-[500] text-[24px]">{t("prospecting.Add Tags")}</h2>
         <span
           className="cursor-pointer"
           onClick={() => handleOpen(isInstagram ? 4 : 5)}>
           <EditIconSquaredIcon />
         </span>
       </div>
-      <div className="flex justify-between border border-[#00000014] rounded-md p-4">
-        <div className="flex flex-col flex-1 pr-4 space-y-2">
-          <h3 className="font-medium">{t("prospecting.Do you want to add a tag?")}</h3>
-          <p className="w-full text-center border border-[#00000014] rounded-md p-2 capitalize">
+      <div className="flex justify-start border border-[#00000014] rounded-[6px] px-5 pt-3 pb-5">
+        <div className="w-[35%] flex flex-col pr-6">
+          <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Do you want to add a tag?")}</h3>
+          <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2 capitalize">
             {actionType}
           </p>
 
         </div>
         {actionType === 'no'
           ? <div />
-          : <div className="border-l-2 border-[#00000014] px-5 space-y-2 flex-1">
-            <h3 className="font-medium">{t("prospecting.Select Group")}</h3>
-            <div className="flex space-x-2">
-              <p className="w-full text-center border border-[#00000014] rounded-md p-2">{selectedGroupData?.name || "Group Name"}</p>
-              <p className="w-full text-center border border-[#00000014] rounded-md p-2">{StageName}</p>
+          : <div className="w-[45%] border-l-2 border-[#00000014] px-5">
+            <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Select Group")}</h3>
+            <div className="flex gap-6">
+              <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">{selectedGroupData?.name || "Group Name"}</p>
+              <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">{StageName}</p>
             </div>
           </div>
         }

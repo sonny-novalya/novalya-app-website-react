@@ -6,32 +6,32 @@ const Filters = ({ gender, keyword, postTarget, handleOpen, postType }) => {
   
   return (
     <main className="">
-      <div className="flex gap-3 items-center">
-        <h2 className="font-medium text-lg">{t("prospecting.Filters")}</h2>
+      <div className="flex gap-5 items-center mb-5">
+        <h2 className="font-[500] text-[24px]">{t("prospecting.Filters")}</h2>
         <span 
           className="cursor-pointer"
           onClick={() => handleOpen(3)}>
             <EditIconSquaredIcon />
           </span>
       </div>
-      <div className="flex justify-between border border-[#00000014] rounded-md p-4">
-        <div className="flex flex-col flex-1 pr-4 space-y-2">
-          <h3 className="font-medium">{t("prospecting.Gender")}</h3>
-          <p className="w-full text-center border border-[#00000014] rounded-md p-2 capitalize">
+      <div className="flex justify-start border border-[#00000014] rounded-[6px] px-5 pt-3 pb-5">
+        <div className="w-[35%] flex flex-col pr-6">
+          <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Gender")}</h3>
+          <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2 capitalize">
             {gender}
           </p>
         </div>
         {
           postType && !["post", "post-like"].includes(postType.toString().toLowerCase()) 
-          ? <div className="border-l-2 border-[#00000014] px-5 space-y-2 flex-1">
-            <h3 className="font-medium">{t("prospecting.Keywords")}</h3>
-            <p className="w-full text-center border border-[#00000014] rounded-md p-2">
+          ? <div className="w-[22%] border-l-2 border-[#00000014] pl-6">
+            <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Keywords")}</h3>
+            <p className="leading-none text-center flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">
               {keyword}
             </p>
           </div>
-            : <div className="flex flex-col flex-1 pr-4 space-y-2">
-              <h3 className="font-medium">Which one to target?</h3>
-              <p className="w-full text-center border border-[#00000014] rounded-md p-2 capitalize">
+            : <div className="w-[22%] flex flex-col pr-6 space-y-2">
+              <h3 className="font-[500] text-[20px] mb-2">Which one to target?</h3>
+              <p className="leading-none text-center flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2 capitalize">
                 {postTarget}
               </p>
             </div>
