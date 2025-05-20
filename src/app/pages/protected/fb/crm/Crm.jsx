@@ -71,52 +71,55 @@ const Crm = () => {
       {/* to display account syncing message */}
       <div className="flex bg-gray-100 shadow-lg rounded-lg">
         <div
-          className="w-[300px] bg-[#E6F1FB] p-4 flex pt-[40px] flex-col overflow-hidden relative"
+          className="w-[270px] bg-white flex pt-[40px] flex-col overflow-hidden flex-shrink-0 relative"
           style={{ width: isCollapse ? "110px" : "" }}
         >
           <button className="absolute right-[5px] top-[5px] z-50 bg-[#167AD3] text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md scale-90 hover:scale-100 transition cursor-pointer">
             <div
               onClick={() => setCollapse(!isCollapse)}
-              className={`transition-transform duration-300 ${
-                isCollapse ? "rotate-180" : "rotate-0"
-              }`}
+              className={`transition-transform duration-300 ${isCollapse ? "rotate-180" : "rotate-0"
+                }`}
             >
               <CollapsedLeftIcon />
             </div>
           </button>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">{t("crm.Groups")}</h2>
-            {!isCollapse && (
-              <Button
-                icon={<PlusOutlined />}
-                type="primary"
-                size="small"
-                onClick={toggleAddGroupModal}
-              >
-                {t("crm.Add Group")}
-              </Button>
-            )}
-          </div>
-          {!isCollapse && (
-            <Input
-              placeholder={t("crm.Search...")}
-              className="mb-4"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          )}
 
-          {isCollapse && (
-            <Button
-              icon={<PlusOutlined />}
-              type="primary"
-              style={{ width: "75px", height: "44px" }}
-              onClick={toggleAddGroupModal}
-            ></Button>
-          )}
+        {
+          isCollapse
+          ? <>
+                <div className="flex justify-center">
+                  <Button
+                    icon={<PlusOutlined />}
+                    type="primary"
+                    style={{ width: "44px", height: "44px", borderRadius: "50%", marginRight: "12px" }}
+                    onClick={toggleAddGroupModal}
+                  ></Button>
+                </div>
+          </>
+          : <>
+                <div className="flex items-center justify-between mb-4 px-4">
+                  <h2 className="text-lg font-semibold">{t("crm.Groups")}</h2>
+                    <Button
+                      icon={<PlusOutlined />}
+                      type="primary"
+                      size="small"
+                      onClick={toggleAddGroupModal}
+                    >
+                      {t("crm.Add Group")}
+                    </Button>
+                </div>
+                <div className="px-4 pr-5">
+                  <Input
+                    placeholder={t("crm.Search...")}
+                    className="mb-4"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+          </>
+        }
           <div
-            className="flex-1 overflow-y-auto max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]"
-            style={{ width: isCollapse ? "75px" : "" }}
+            className="flex-1 overflow-y-auto px-4 max-h-[calc(100vh-170px)] min-h-[calc(100vh-170px)]"
           >
             <LeftSectionCrm
               isLoading={fbCRMLoading}
