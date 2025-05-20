@@ -451,7 +451,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                                 onClick={() => handleSelectAll(stage)}
                                                 className="cursor-pointer text-blue-600 text-xs underline"
                                             >
-                                                {selectedUsers.length === stage.leads.length && selectedUsers.length > 0
+                                                {selectedUsers?.length === stage?.leads?.length && selectedUsers?.length > 0
                                                     ? "Unselect All"
                                                     : "Select All"}
                                             </span>
