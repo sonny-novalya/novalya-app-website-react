@@ -331,7 +331,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
             }}
           />
           <div
-            className="flex flex-col cursor-pointer max-w-[200px]  leading-snug text-ellipsis overflow-hidden"
+            className="flex flex-col cursor-pointer leading-snug text-ellipsis overflow-hidden"
             onClick={() => {
               setSelectedLead(lead);
               setOpenNoteModal(true);
@@ -358,7 +358,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const DroppableStage = ({ stageId, children }) => {
     return (
       <div
-        className="min-w-[300px] flex-shrink-0 bg-white rounded-lg"
+        className="flex-shrink-0 bg-white rounded-lg"
         onDragOver={(e) => e.preventDefault()}
         onDrop={() => handleDrop(stageId)}
       >
@@ -367,7 +367,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     );
   };
   return (
-    <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
+    <div className="flex-1 overflow-x-auto min-h-full relative">
       <TopbarRightSection
         companyName={selectedGroup.name}
         leadsCount={totalLeadsCount}
@@ -376,7 +376,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         selectedGrpData={selectedGrpData}
       />
       {selectedGrpLoader && <div className="absolute z-10 w-[100%] h-full bg-white/50 flex pt-50 justify-center"> <Spin size="large" /> </div>}
-      <div className="flex gap-4 p-3 bg-white">
+      <div className="flex gap-4 p-3 bg-white overflow-auto">
         {sortedStages.map((stage) => {
           const selectedUsers = selectedUsersMap[stage.id] || [];
 
@@ -428,8 +428,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
           return (
             <DroppableStage stageId={stage.id} key={stage.id}>
               <div
-                className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg overflow-hidden"
-              >
+                className="pb-[10px] bg-white rounded-lg w-[270px]"
+              > 
                 <div className="text-black p-3 rounded-md mb-4 shadow-sm">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
@@ -499,7 +499,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
                   </div>
                 </div>
 
-                {/* Leads */}
                 <div id={`stage-container-${stage.id}`} className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto" >
                   {stage?.leads?.map((lead) => (
                     <SortableItem
