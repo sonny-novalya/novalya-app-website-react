@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, LikeOutlined } from "@ant-design/icons";
+import { SearchOutlined, LikeOutlined, MessageOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
@@ -534,13 +534,39 @@ const FbProspecting = () => {
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
             title: (TotalMemberColumn),
-            dataIndex: "total_member", render: (text, record) => (
-                <span className="">
-                    {formatNumber(text)}{' '}
-                    {record?.group_type?.toLowerCase() === 'post-like' ? <LikeOutlined /> : getGroupVolumeTitle(record?.group_type)}
-                </span>
-            )
-        },
+            dataIndex: "total_member",
+            render: (text, record) => {
+                if (text === null || text == 0) return "-"
+
+                const type = record?.group_type?.toLowerCase()
+
+                if (type === 'member' || type === 'things in common' ){
+                    return `${formatNumber(text)} ${getGroupVolumeTitle(type)}`
+                }
+
+                const likeCount = text ;
+                const commentCount = record?.comment_member;
+
+                return (
+                    <span className="flex items-center justify-center">
+                        {likeCount && (
+                            <>
+                                {formatNumber(likeCount)} <LikeOutlined style={{ marginRight: 8, marginLeft: 4 }} />
+                            </>
+                        )}
+                        {commentCount && (
+                            <div className="flex space-x-2 items-center">
+                                <span>|</span>
+                                <span>
+                                    {formatNumber(commentCount)} <MessageOutlined />
+                                </span>
+                            </div>
+                        )}
+                        {!likeCount && !commentCount && '-'}
+                    </span>
+                );
+            }
+        },        
         {
             title: t("prospecting.Folder"),
             dataIndex: "grp_folder_ids",

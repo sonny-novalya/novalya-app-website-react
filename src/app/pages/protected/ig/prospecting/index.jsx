@@ -535,12 +535,28 @@ const IgProspecting = () => {
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
             title: (TotalMemberColumn),
-            dataIndex: "total_member", render: (text, record) => (
-                <span className="">
-                    {formatNumber(text)}{' '}
-                    {record?.group_type?.toLowerCase() === 'insta_likepost' ? <LikeOutlined /> : getGroupVolumeTitle(record?.group_type)}
-                </span>
-            )
+            dataIndex: "total_member",
+            render: (text, record) => {
+                if (text === null || text == 0) return "-"
+
+                const type = record?.group_type?.toLowerCase()
+
+                if (type === 'insta_profile' || type === 'insta_hashtag') {
+                    return `${formatNumber(text)} ${getGroupVolumeTitle(type)}`
+                }
+
+                const likeCount = text;
+
+                return (
+                    <span className="flex items-center justify-center">
+                        {likeCount && (
+                            <>
+                                {formatNumber(likeCount)} <LikeOutlined style={{ marginRight: 8, marginLeft: 4 }} />
+                            </>
+                        )}
+                    </span>
+                );
+            }
         },
         {
             title: t("prospecting.Folder"),

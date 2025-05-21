@@ -1,5 +1,5 @@
 export const getGroupVolumeTitle = (type) => {
-    switch (type?.toLowerCase()) {
+    switch (type) {
         case 'member':
         case 'things in common':
             return 'Members';
