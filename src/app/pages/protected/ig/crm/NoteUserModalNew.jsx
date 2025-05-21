@@ -204,6 +204,13 @@ const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
 
     const handleAddNote = async () => {
         let notes_history = []
+        
+        if (!userInfo?.firstName.trim()) {
+            return message.error("Please add first Name")
+        }
+        if (!userInfo?.lastName.trim()) {
+            return message.error("Please add Last Name")
+        }
 
         if (editingNote) {
             const updatedNotes = notes.map(note =>
