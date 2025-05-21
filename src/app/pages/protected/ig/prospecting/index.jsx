@@ -731,7 +731,7 @@ const IgProspecting = () => {
                             buttonsData.map((folder, index) => (
                                 <div className="flex items-center " key={index}>
                                     <button
-                                        className={`min-h-[34px] px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] bg-[#D7E5F3] text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={`min-h-[34px] px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">
@@ -745,7 +745,7 @@ const IgProspecting = () => {
                             [...(Array.isArray(folders) ? folders : [])].map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
-                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">
