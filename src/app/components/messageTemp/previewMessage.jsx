@@ -111,16 +111,17 @@ useEffect(() => {
 
 const CarouselComponent = ({MessagePreview, variantsLoading}) => {
 
-    if(variantsLoading){
-        return (
-          <div className="min-h-[400px] w-full flex flex-col items-center pt-[170px]">
-            <Spin size="large" /> 
-            <span className='mt-[20px]'>Loading Preview...</span>
-          </div>
-        )
-    }
+    // if(variantsLoading){
+    //     return (
+    //       <div className="min-h-[400px] w-full flex flex-col items-center pt-[170px]">
+    //         <Spin size="large" /> 
+    //         <span className='mt-[20px]'>Loading Preview...</span>
+    //       </div>
+    //     )
+    // }
 
-    const variants = MessagePreview.variants || [];
+    // const variants = MessagePreview.variants || [];
+    const variants = MessagePreview.variants || Array(3).fill(null);
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const visibleCount = 3;
@@ -167,14 +168,19 @@ const CarouselComponent = ({MessagePreview, variantsLoading}) => {
                       <div className="text-[12px] font-bold text-black leading-[1.25]">User 1</div>
                       <div className="text-[11px] text-gray-500 font-normal leading-none">Messenger</div>
                     </div>
-                    <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] grid grid-cols-[12%_85%] items-end gap-[3%]">
+
+                    {/* {variantsLoading && <div className="min-h-[400px] w-full flex flex-col items-center pt-[170px]"> */}
+                    {variantsLoading && <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] flex justify-center items-center">
+                      <Spin size="large" /> 
+                    </div>}
+            
+                    {!variantsLoading && <div className="absolute top-[15%] left-[5%] w-[90%] p-2 h-[74%] grid grid-cols-[12%_85%] items-end gap-[3%]">
                       <img src={messageImg} className="w-full" />
                       <div className="bg-[#E8E8E8] p-2 rounded-[12px] text-[12px] overflow-y-auto leading-[1.3] max-h-[98%] whitespace-pre-line">
                         <p className="my-[10px]">{variant?.name}</p>
                         {MessagePreview?.attachment != null && <img className="my-[10px]" src={MessagePreview?.attachment} style={{ maxWidth: "100%", maxHeight: "150px"}}/>}
                       </div>
-                      
-                    </div>
+                    </div>}
                     
                   </div>
                   <button className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full max-w-[160px] mt-4 mx-auto px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white">

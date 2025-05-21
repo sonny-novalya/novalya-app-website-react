@@ -58,7 +58,7 @@ const FacebookCard = ({ data }) => {
                             <LinkRedIcon />
                         </>
                     ) : (
-                        <span className="text-red-500 ">Really?</span>
+                        <span className="text-red-500 fbConfirmUnlink">Really?</span>
                     )}
                 </div>
             </div>
