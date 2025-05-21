@@ -353,7 +353,7 @@ const CreateMessage = ({containerRef}) => {
                   </div>
 
                   {/* List the options with indent */}
-                  <div className="px-2">
+                  <div className="px-2 flex flex-col gap-1">
                     {options.map((visibility) => (
                       <div
                         key={visibility.id}

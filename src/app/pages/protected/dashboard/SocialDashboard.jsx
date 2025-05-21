@@ -10,7 +10,7 @@ const SocialDashboard = ({ facebook_data, instagram_data, limit_data, isLoading,
     return (
         <div className="flex gap-5">
                 <div className="flex flex-col w-full">
-                    <h3 className="text-[24px] tracking-[0.02em] font-[500] mb-2">Hello {loginUserData?.firstname}</h3>
+                    <h3 className="text-[24px] tracking-[0.02em] font-[500] mb-[-4px]">Hello {loginUserData?.firstname}</h3>
                     <SocialStatsPage limit_data={limit_data} isLoading={isLoading} />
                 </div>
                 <div className="flex flex-col gap-5 w-lg relative">

@@ -293,7 +293,7 @@ const MessageIndex = () => {
                           {platform}
                         </div>
 
-                        <div className="px-2">
+                        <div className="px-2 flex flex-col gap-1">
                           {options.map((visibility) => (
                             <div
                               key={visibility.id}

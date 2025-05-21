@@ -94,8 +94,8 @@ const data = [
 ];
 const AiComments = () => {
     return (
-        <Layout>
-            <h2 className="text-[24px] font-[500] mb-5">
+        <Layout >
+            <h2 className="text-[24px] font-[500] mb-5 ">
                 Generate Automated AI Comments
             </h2>
             <div className="bg-white p-7 rounded-[10px] flex flex-col space-y-5.5 mb-5">
