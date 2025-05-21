@@ -87,7 +87,10 @@ const CreateFolderModal = ({ socialType, visible, onClose, prospect_folder,setFo
                 <div className="flex justify-between mt-5 space-x-5">
                     <button
                         className="border border-[#0087FF] text-[#0087FF] w-1/2 py-2 rounded-md cursor-pointer min-h-[52px]"
-                        onClick={() => setSelectedGroups([])}
+                        onClick={() => {
+                            setSelectedGroups([])
+                            onClose()
+                        }}
                     >
                         {t("prospecting.Cancel")}
                     </button>

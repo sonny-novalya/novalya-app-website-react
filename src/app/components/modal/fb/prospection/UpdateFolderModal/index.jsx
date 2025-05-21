@@ -171,7 +171,10 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
                         </button>
                         <button
                             className="border border-[#0087FF] text-[#0087FF] w-1/2 py-2 rounded-md cursor-pointer"
-                            onClick={() => setSelectedGroups([])}
+                            onClick={() => {
+                                    setSelectedGroups([])
+                                    onClose()
+                                }}
                         >
                             Cancel
                         </button>
