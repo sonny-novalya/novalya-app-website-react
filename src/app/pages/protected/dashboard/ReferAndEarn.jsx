@@ -34,13 +34,13 @@ const ReferAndEarn = ({ code }) => {
                 <span>Refer & Earn 40%</span>
             </div>
             <div className="p-5">
-                <label className="block text-xl font-semibold text-black mb-1">Your Affiliate link</label>
+                <label className="block font-medium text-black mb-1">Share your affiliate link</label>
                 <div className="relative w-full ">
                     <input
                         type="text"
                         value={code}
                         readOnly
-                        className="w-full p-3 border border-gray-300 rounded-md text-sm pr-14 truncate"
+                        className="w-full p-3 border border-gray-300 rounded-md text-sm pr-14 truncate text-[#00000099]"
                     />
                     <div className="absolute inset-y-0 right-2 flex items-center">
                         <button onClick={handleCopy} className='cursor-pointer' >
