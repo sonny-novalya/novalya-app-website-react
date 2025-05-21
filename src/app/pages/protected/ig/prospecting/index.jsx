@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
+import { SearchOutlined, MoreOutlined, FilterOutlined, LikeOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
@@ -18,6 +18,7 @@ import Layout from "../../Layout";
 import SettingStore from "../../../../../store/prospection/settings-store";
 import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
 import useKeyWordStore from "../../../../../store/keyword/keywordStore";
+import { getGroupVolumeTitle } from "../../../../../helpers/getGroupVolumeTitle";
 
 const IgProspecting = () => {
     const [searchParams] = useSearchParams();
@@ -89,7 +90,7 @@ const IgProspecting = () => {
             return (
                 <div className=" flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folder ? folder.folder_name : t("prospecting.None")}
+                        {folder ? folder.folder_name : "-"}
                     </span>
                 </div>
             );
@@ -98,7 +99,7 @@ const IgProspecting = () => {
 
         if (folderIds === null) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                {t("prospecting.None")}
+                -
             </span>
         </div>;
 
@@ -119,13 +120,13 @@ const IgProspecting = () => {
 
         if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                {t("prospecting.None")}
+                -
             </span>
         </div>;
 
         if (folderNames.length === 1) {
             return (
-                <div className=" flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 rounded-[20px] text-white hover:bg-green-600 cursor-pointer">
+                <div className=" flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white hover:bg-green-600 cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folderNames[0]}
                     </span>
@@ -260,7 +261,7 @@ const IgProspecting = () => {
 
     const GroupNameColumn = (
         <div className="flex items-center space-x-2 justify-center pr-12">
-            <span>{t("prospecting.Group Name")}</span>
+            <span>Title</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
                     className="w-3 h-6 border-none cursor-pointer"
@@ -340,7 +341,7 @@ const IgProspecting = () => {
 
     const TotalMemberColumn = (
         <div className="flex items-center space-x-2 justify-center">
-            <span>{t("prospecting.Total Members")}</span>
+            <span>Volume</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
                 <button
                     className="w-3 h-6 border-none cursor-pointer"
@@ -534,8 +535,11 @@ const IgProspecting = () => {
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
             title: (TotalMemberColumn),
-            dataIndex: "total_member", render: (text) => (
-                <span>{formatNumber(text)}</span>
+            dataIndex: "total_member", render: (text, record) => (
+                <span className="">
+                    {formatNumber(text)}{' '}
+                    {record?.group_type?.toLowerCase() === 'insta_likepost' ? <LikeOutlined /> : getGroupVolumeTitle(record?.group_type)}
+                </span>
             )
         },
         {
@@ -546,17 +550,19 @@ const IgProspecting = () => {
         {
             title: t("prospecting.Settings"),
             render: (_, record) => (
-                <button
-                    className=" bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
-                    onClick={() => handleOpenSettings(record.id)}
-                >
-                    <span>
-                        <SettingsIconWhite />
-                    </span>
-                    <span className="!text-white">
-                        {t("prospecting.Settings")}
-                    </span>
-                </button>
+                <div className="flex justify-center">
+                    <button
+                        className="ml-2 bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
+                        onClick={() => handleOpenSettings(record.id, record.group_type)}
+                    >
+                        <span>
+                            <SettingsIconWhite />
+                        </span>
+                        <span className="!text-white">
+                            {t("prospecting.Settings")}
+                        </span>
+                    </button>
+                </div>
             ),
         },
         {
@@ -572,7 +578,7 @@ const IgProspecting = () => {
             )
         },
         {
-            title: t("prospecting.Action"),
+            title: "More",
             render: (_, record) => (
                 <div ref={(el) => setDropdownRef(record.id, el)} className="relative">
                     <Button
