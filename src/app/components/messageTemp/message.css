@@ -1,3 +1,19 @@
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.ctm-scroll-2px::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.ctm-scroll-2px::-webkit-scrollbar-track {
+  background: #dadada;                         /* Gray track */
+}
+
+.ctm-scroll-2px::-webkit-scrollbar-thumb {
+  background-color: #007bff;                /* Blue thumb */
+}
+
+
 .creatMessage .varient-btn-hover:hover svg path {
     fill: white;
 }
@@ -101,7 +117,14 @@
     border-collapse: separate;
     border-spacing: 0 10px;
 }
-
+.custom-table td.ant-table-cell.ant-table-selection-column {
+    padding-left: 18px !important;
+    padding-right: 4px !important;
+}
+.custom-table th.ant-table-cell.ant-table-selection-column {
+    padding-left: 18px !important;
+    padding-right: 4px !important;
+}
 .custom-table tbody.ant-table-tbody tr.ant-table-row td.ant-table-cell span {
     font-weight: 400;
     color: #000407;
@@ -148,3 +171,5 @@ ul.pros-dropdown li:hover span {
 .message-template ul li.text-white span .template-arrow {
     filter: invert(1);
 }
+
+

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Table, Tag, Pagination, Spin } from 'antd';
+import { formatDateFun } from './memoizedFormatDate';
 
 export default function ActiveCustomersTable({ loginUserData, refUsers, isAffiliateLoading }) {
     const customer_cancelled = refUsers?.customer_cancelled || [];
@@ -9,14 +10,6 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
     const limit = 10;
 
     const total = customer_cancelled?.length || 0;
-
-    const formatDate = (dateInput, isUnix = false) => {
-        const date = isUnix ? new Date(dateInput * 1000) : new Date(dateInput);
-        const day = date.getDate();
-        const year = date.getFullYear();
-        const month = date.toLocaleString('default', { month: 'long' });
-        return `${month} ${day}, ${year}`;
-    };
 
     const getLabel = (status) => {
         const map = {
@@ -95,11 +88,11 @@ export default function ActiveCustomersTable({ loginUserData, refUsers, isAffili
         },
         {
             title: 'Joining Date',
-            render: (record) => formatDate(record.createdat)
+            render: (record) => formatDateFun(record.createdat)
         },
         {
             title: 'Next Payment',
-            render: (record) => formatDate(record.nextBillingAt, true)
+            render: (record) => formatDateFun(record.nextBillingAt, true)
         },
 
         {

@@ -38,7 +38,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const [openMoveToStageModal, setOpenMoveToStageModal] = useState(false);
   const [openAddStageModal, setOpenAddStageModal] = useState(false);
   const [openEditStageModal, setOpenEditStageModal] = useState(false);
-  
+
   const [openNoteModal, setOpenNoteModal] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [sortedStages, setSortedStages] = useState([]);
@@ -51,7 +51,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     peopleCount: 0,
   });
 
-    const delTime = useRef();
+  const delTime = useRef();
 
   const scrollPositionsRef = useRef({});
   const [totalLeadsCount, setTotalLeadsCount] = useState(0);
@@ -82,7 +82,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
       setTotalLeadsCount(0);
     }
   }, [selectedGrpData]);
-    
+
 
   const handleUserDelete = async()=>{
 
@@ -138,7 +138,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     );
   }
 
-  
+
 
 
 
@@ -242,8 +242,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const DropdownMenu = ({ item }) => {
     const [isDel,setIsDel] = useState(false)
 
- 
-    
+
+
     const handleDelete = async (id) => {
       const stageToDelete = sortedStages.find((s) => s.id === id);
 
@@ -259,12 +259,12 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
       if (isDel) {
        const res =await deleteStage({ id, type: 'fb'})
-       if (res.status === 200) {
-        message.success("Staged has been deleted")
+        if (res.status === 200) {
+          message.success("Staged has been deleted")
         const newArr = sortedStages?.filter((s)=>s.id !== Number(id))
-        setSortedStages(newArr)
-       }
-       setIsDel(false)
+          setSortedStages(newArr)
+        }
+        setIsDel(false)
       } else {
         if (sortedStages.length === 1) {
           message.error("Can not delete this single Stage")
@@ -274,36 +274,36 @@ const RightSectionCrm = ({ selectedGroup }) => {
         delTime.current = setTimeout(()=>{
           setIsDel(false)
         },3000)
-  
+
       }
     };
 
     return(
-     <div
-     className="bg-white rounded-md shadow-md p-2"
-     onClick={(e) => e.stopPropagation()} // Prevent closing on click
-   >
-     <div
+      <div
+        className="bg-white rounded-md shadow-md p-2"
+        onClick={(e) => e.stopPropagation()} // Prevent closing on click
+      >
+        <div
        onClick={() =>{
-        setSelectStage(item)
-        setOpenEditStageModal(true)
-       }}
-       className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
-     >
-       Rename
-     </div>
-     <div
-       onClick={() => {
+            setSelectStage(item)
+            setOpenEditStageModal(true)
+          }}
+          className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
+        >
+          Rename
+        </div>
+        <div
+          onClick={() => {
          handleDelete(item.id)}}
-       className="px-3 py-2 hover:bg-red-100 cursor-pointer rounded"
-     >
-       {isDel ? "Really?" : "Delete"}
-     </div>
-   </div>
+          className="px-3 py-2 hover:bg-red-100 cursor-pointer rounded"
+        >
+          {isDel ? "Really?" : "Delete"}
+        </div>
+      </div>
     )
   }
-  
-  
+
+
 
   const SortableItem = ({
     lead,
@@ -312,40 +312,43 @@ const RightSectionCrm = ({ selectedGroup }) => {
     toggleUserSelection,
   }) => {
 
-    return (  
-      <div className="flex">
-        <Checkbox
-          checked={selectedUsers.includes(lead.id)}
-          onChange={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            setTimeout(() => toggleUserSelection(lead.id, e), 0);
-            return false;
-          }}
-        />
+    return (
+      <div className="flex items-start">
         <div
           key={`${lead.id}-${stage.id}`}
-          className={`border-l-4 border-[#21BF7C] p-3 rounded-md flex gap-2 items-center  shadow-sm ml-2 ${selectedUsers.includes(lead.id) ? "bg-[#D9EDFF]" : "bg-white"
+          className={`border-l-4 border-[#21BF7C] p-3 rounded-md flex items-center gap-2 w-full shadow-lg ${selectedUsers.includes(lead.id) ? "" : ""
             }`}
           draggable
           onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
         >
+          <Checkbox
+            checked={selectedUsers.includes(lead.id)}
+            onChange={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setTimeout(() => toggleUserSelection(lead.id, e), 0);
+              return false;
+            }}
+          />
           <div
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex flex-col cursor-pointer leading-snug text-ellipsis overflow-hidden"
             onClick={() => {
               setSelectedLead(lead);
               setOpenNoteModal(true);
             }}
           >
-            <img
-              src={lead?.profile_pic}
-              alt={lead?.fb_name}
-              className="w-8 h-8 rounded-full"
-            />
-            <div className="text-sm line-clamp-2 max-w-[200px] leading-snug text-ellipsis overflow-hidden">
-              <span className="font-medium">{lead.fb_name}</span>
-              <span className="text-xs line-clamp-2 text-gray-400">{lead.user_note}</span>
+            <div className="line-clamp-2 flex items-center gap-2 py-1">
+              <img
+                src={lead?.profile_pic}
+                alt={lead?.fb_name}
+                className="w-8 h-8 rounded-full "
+              />
+             <div className="flex flex-col">
+                <span className="font-medium text-[14px]">{lead.fb_name}</span>
+                <span className="font-medium text-[12px] text-[#878787]">{lead.profession}</span>
+             </div>
             </div>
+            <span className="text-[10px] line-clamp-2">{lead.user_note}</span>
           </div>
         </div>
       </div>
@@ -355,7 +358,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
   const DroppableStage = ({ stageId, children }) => {
     return (
       <div
-        className="min-w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md"
+        className="flex-shrink-0 bg-white rounded-lg"
         onDragOver={(e) => e.preventDefault()}
         onDrop={() => handleDrop(stageId)}
       >
@@ -364,7 +367,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     );
   };
   return (
-    <div  className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
+    <div className="flex-1 overflow-x-auto min-h-full relative">
       <TopbarRightSection
         companyName={selectedGroup.name}
         leadsCount={totalLeadsCount}
@@ -373,16 +376,20 @@ const RightSectionCrm = ({ selectedGroup }) => {
         selectedGrpData={selectedGrpData}
       />
       {selectedGrpLoader && <div className="absolute z-10 w-[100%] h-full bg-white/50 flex pt-50 justify-center"> <Spin size="large" /> </div>}
-      <div className="flex gap-4 p-4 min-w-max">
+      <div className="flex gap-4 p-3 bg-white overflow-auto">
         {sortedStages.map((stage) => {
           const selectedUsers = selectedUsersMap[stage.id] || [];
 
-          const handleSelectAll = (e) => {
+          const handleSelectAll = (stage) => {
+            const stageId = stage?.id;
+            const allLeadIds = stage?.leads?.map((lead) => lead?.id);
+            const selectedIds = selectedUsersMap[stageId] || [];
+
+            const isAllSelected = selectedIds?.length === allLeadIds?.length;
+
             setSelectedUsersMap((prev) => ({
               ...prev,
-              [stage.id]: e.target.checked
-                ? stage.leads.map((lead) => lead.id)
-                : [],
+              [stageId]: isAllSelected ? [] : allLeadIds,
             }));
           };
 
@@ -421,34 +428,29 @@ const RightSectionCrm = ({ selectedGroup }) => {
           return (
             <DroppableStage stageId={stage.id} key={stage.id}>
               <div
-                className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
-              >
-                <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
+                className="pb-[10px] bg-white rounded-lg w-[270px]"
+              > 
+                <div className="text-black p-3 rounded-md mb-4 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Checkbox
-                        checked={
-                          selectedUsers?.length === stage?.leads?.length &&
-                          selectedUsers?.length > 0
-                        }
-                        indeterminate={
-                          selectedUsers?.length > 0 &&
-                          selectedUsers?.length < stage?.leads?.length
-                        }
-                        onChange={handleSelectAll}
-                      />
-                      <span className="text-sm font-semibold">
-                        {stage.name}
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold">
+                          {stage.name}
+                        </span>
+
+                        <span>
+                          ({stage?.leads?.length || 0})
+                        </span>
+
+                      </div>
+                      <span
+                        onClick={() => handleSelectAll(stage)}
+                        className="cursor-pointer text-blue-600 text-xs underline"
+                      >
+                        {selectedUsers?.length === stage?.leads?.length && selectedUsers?.length > 0
+                          ? "Unselect All"
+                          : "Select All"}
                       </span>
-                      <Badge
-                        count={`${stage?.leads?.length || 0} leads`}
-                        style={{
-                          backgroundColor: "white",
-                          color: "#0087FF",
-                          fontSize: "10px",
-                          padding: "0 6px",
-                        }}
-                      />
                     </div>
                     <div className="flex items-center gap-2">
                       <span
@@ -475,29 +477,28 @@ const RightSectionCrm = ({ selectedGroup }) => {
                       >
                         <SendIcon />
                       </span>
-                  
+
                       <Dropdown
-                      overlay={
-                        <DropdownMenu
-                          item={stage}
+                        overlay={
+                          <DropdownMenu
+                            item={stage}
+                          />
+                        }
+                        trigger={["click"]}
+                        placement="bottomRight"
+                      >
+                        <Button
+                          type="text"
+                          icon={<VerticalDotsIcon color={"black"} />}
+
+                          className="!text-[#808183] !h-9 btn-hover"
                         />
-                      }
-                      trigger={["click"]}
-                      placement="bottomRight"
-                    >
-                      <Button
-                        type="text"
-                        icon={<VerticalDotsIcon color={"white"} />}
-                       
-                        className="!text-[#808183] !h-9 btn-hover"
-                      />
-                    </Dropdown>
+                      </Dropdown>
 
                     </div>
                   </div>
                 </div>
 
-                {/* Leads */}
                 <div id={`stage-container-${stage.id}`} className="flex flex-col gap-2 px-2 max-h-[calc(100vh-200px)] overflow-y-auto" >
                   {stage?.leads?.map((lead) => (
                     <SortableItem
@@ -516,7 +517,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
       </div>
       <div className="flex gap-4 p-4 items-center justify-center border border-[#DADADA] w-fit mx-auto rounded-lg mt-auto">
         {buttonActions.map((action, index) => {
-        
+
           if(totalSlectedIds?.length>1 &&  action.id === 4) return null
         return   <button
             key={index}
@@ -529,27 +530,27 @@ const RightSectionCrm = ({ selectedGroup }) => {
             <span className="font-medium">{action.label}</span>
           </button>
         }
-      
-  
-        
+
+
+
         )}
       </div>
 
       {openCampaignModal && (
-                      <SendCampaignModal
-                          visible={openCampaignModal}
-                          onCancel={() => setOpenCampaignModal(false)}
-                          userIds={campaignModalData.userIds}
-                          peopleCount={campaignModalData.peopleCount}
-                          onSend={(data) => {
-                              console.log("Sending with data:", data);
-                              setOpenCampaignModal(false);
-                          }}
-                          stages={sortedStages}
-                          groupId={selectedGroup?.id}
-                      />
-                  )}
-                  
+        <SendCampaignModal
+          visible={openCampaignModal}
+          onCancel={() => setOpenCampaignModal(false)}
+          userIds={campaignModalData.userIds}
+          peopleCount={campaignModalData.peopleCount}
+          onSend={(data) => {
+            console.log("Sending with data:", data);
+            setOpenCampaignModal(false);
+          }}
+          stages={sortedStages}
+          groupId={selectedGroup?.id}
+        />
+      )}
+
       {openMoveToStageModal && (
         <MoveToStageModal
           visible={openMoveToStageModal}

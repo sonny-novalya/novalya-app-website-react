@@ -130,4 +130,17 @@ export const useSocialAccountsStore = create((set) => ({
             });
         }
     },
+
+        getEncKey: async () => {
+        try {
+         const response = await apiCall({
+             method: 'POST',
+             url: `/user/api/get-enc-keys`
+         });
+        return response
+         
+        } catch (error) {
+         console.error("Error getting response", error);
+        }
+     },
 }));

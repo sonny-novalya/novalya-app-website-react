@@ -44,7 +44,8 @@ const UpdateMessage = ({containerRef}) => {
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
   const [variantsLoading, setVariantsLoading] = useState(false);
-
+  const [activeDropdownItem, setActiveDropdownItem] = useState(false);
+  const dropdownRef = useRef(null); 
 
   const handleVisibilityChange = (val) => {
       console.log(val);
@@ -85,7 +86,20 @@ const UpdateMessage = ({containerRef}) => {
       }
     
       setVisibility(val);
+      setActiveDropdownItem(true)
   };
+      useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setActiveDropdownItem(false);
+          }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, []);
+  
 
   const handleCaretPosition = (e) => {
     setCaretPosition(e.target.selectionStart);
@@ -110,12 +124,12 @@ const UpdateMessage = ({containerRef}) => {
     setName(selecetdMessage?.title || '')
     setAttachment(selecetdMessage?.attachment)
 
-    if (!selecetdMessage.variants) {
+    if (!selecetdMessage?.variants) {
       setVariantsLoading(true);
       setVariants([]); 
       getMessageVariants(selecetdMessage)
     }else{
-      setVariants([...selecetdMessage.variants])
+      setVariants([...selecetdMessage?.variants])
       setVariantsLoading(false);
     }   
   }, [selecetdMessage]);
@@ -294,12 +308,12 @@ const handleSubmit =async ()=>{
                 </span>
               </div>
               <div className="pros-dropdownWrap relative">
-                <div className="pros-dropdown-text flex items-center justify-around gap-2 border border-[#CCCDCD] min-h-[44px] rounded-[6px] px-[10px] py-[5px] min-w-[193px] font-medium text-[14px] leading-[21px] text-black">
+            <div className="pros-dropdown-text flex items-center justify-around gap-2 border border-[#CCCDCD] min-h-[44px] rounded-[6px] px-[10px] py-[5px] min-w-[193px] font-medium text-[14px] leading-[21px] text-black" onClick={() => setActiveDropdownItem(true)}>
                   <img src={visibility?.icon} />
                   <span className="flex-1 text-[14px]">{visibility?.label}</span>
                   <CreateMessageIcon index={1} />
                 </div>
-                <div className="pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px]">
+            <div className={`pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px] ${activeDropdownItem ? " message-dropdown-active" : ""}`}>
                   {getGroupedVisibilityOptions(visibilityOptions).map(([platform, options]) => (
                     <div key={platform} className="mt-3 ">
                       {/* Platform Heading - no background, just light text + border */}
@@ -313,7 +327,7 @@ const handleSubmit =async ()=>{
                           <div
                             key={visibility.id}
                             onClick={() => handleVisibilityChange(visibility)}
-                            className="pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white"
+                            className={`pros-dropdownItems min-h-[40px] flex items-center gap-2 px-[10px] py-2 rounded-md cursor-pointer hover:bg-[#0087FF] hover:text-white`}
                           >
                             <img className="normalIcon" src={visibility.icon} />
                             <img className="normalIconHover" src={visibility.iconLight} />

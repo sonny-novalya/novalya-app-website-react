@@ -1,24 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Table, Input, Tag, Avatar, Spin } from 'antd';
+import { formatDateFun } from './memoizedFormatDate';
 
 export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoading, showStatus = true }) {
-    const new_trails = refUsers?.new_trails || [];
+    const new_trials = refUsers?.new_trials || [];
 
 
     const [page, setPage] = useState(1);
     const limit = 10;
 
-    const total = new_trails?.length || 0;
-
-    const formatDate = (dateInput) => {
-        if (!dateInput) return '';
-        const date = new Date(dateInput);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
-    };
+    const total = new_trials?.length || 0;
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
@@ -81,13 +72,13 @@ export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoa
         },
         {
             title: 'Joining Date',
-            render: (row) => formatDate(row.createdat),
+            render: (row) => formatDateFun(row.createdat),
         },
         {
             title: 'Activation on',
             render: (row) => row.trial_end === 0
-                ? formatDate(row.createdat)
-                : formatDate(row.trial_end, true),
+                ? formatDateFun(row.createdat)
+                : formatDateFun(row.trial_end, true),
         },
         {
             title: 'Status',
@@ -104,7 +95,7 @@ export default function NewTrialsTable({ loginUserData, refUsers, isAffiliateLoa
         <Table
             rowKey={(record) => record.customerid}
             columns={columns}
-            dataSource={new_trails}
+            dataSource={new_trials}
             pagination={{
                 current: page,
                 pageSize: limit,

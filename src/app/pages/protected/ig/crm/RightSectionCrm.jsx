@@ -316,39 +316,42 @@ const RightSectionCrm = ({ selectedGroup }) => {
     }) => {
 
         return (
-            <div className="flex">
-                <Checkbox
-                    checked={selectedUsers.includes(lead.id)}
-                    onChange={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        setTimeout(() => toggleUserSelection(lead.id, e), 0);
-                        return false;
-                    }}
-                />
+            <div className="flex items-start">
                 <div
                     key={`${lead.id}-${stage.id}`}
-                    className={`border-l-4 border-[#21BF7C] p-3 rounded-md flex gap-2 items-center  shadow-sm ml-2 ${selectedUsers.includes(lead.id) ? "bg-[#D9EDFF]" : "bg-white"
+                    className={`border-l-4 border-[#21BF7C] p-3 rounded-md flex items-center gap-2 w-full shadow-lg ${selectedUsers.includes(lead.id) ? "" : ""
                         }`}
                     draggable
                     onDrag={() => setDraggedItem({ lead, stageId: stage?.id })}
                 >
+                    <Checkbox
+                        checked={selectedUsers.includes(lead.id)}
+                        onChange={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setTimeout(() => toggleUserSelection(lead.id, e), 0);
+                            return false;
+                        }}
+                    />
                     <div
-                        className="flex items-center gap-2 cursor-pointer"
+                        className="flex flex-col cursor-pointer leading-snug text-ellipsis overflow-hidden"
                         onClick={() => {
                             setSelectedLead(lead);
                             setOpenNoteModal(true);
                         }}
                     >
-                        <img
-                            src={lead?.profile_pic}
-                            alt={lead?.fb_name}
-                            className="w-8 h-8 rounded-full"
-                        />
-                        <div className="text-sm line-clamp-2 max-w-[200px] leading-snug text-ellipsis overflow-hidden">
-                            <span className="font-medium">{lead.insta_name}</span>
-                            <span className="text-xs line-clamp-2 text-gray-400">{lead.user_note}</span>
+                        <div className="line-clamp-2 flex items-center gap-2 py-1">
+                            <img
+                                src={lead?.profile_pic}
+                                alt={lead?.insta_name}
+                                className="w-8 h-8 rounded-full "
+                            />
+                            <div className="flex flex-col">
+                                <span className="font-medium text-[14px]">{lead.insta_name}</span>
+                                <span className="font-medium text-[12px] text-[#878787]">{lead.profession}</span>
+                            </div>
                         </div>
+                        <span className="text-[10px] line-clamp-2">{lead.user_note}</span>
                     </div>
                 </div>
             </div>
@@ -358,7 +361,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const DroppableStage = ({ stageId, children }) => {
         return (
             <div
-                className="min-w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md"
+                className="flex-shrink-0 bg-white rounded-lg"
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(stageId)}
             >
@@ -367,7 +370,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
         );
     };
     return (
-        <div className="flex-1 overflow-x-auto max-w-[calc(100vw-600px)] min-h-full relative">
+        <div className="flex-1 overflow-x-auto min-h-full relative flex flex-col overflow-hidden h-full">
             <TopbarRightSection
                 companyName={selectedGroup.name}
                 leadsCount={totalLeadsCount}
@@ -376,16 +379,20 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 selectedGrpData={selectedGrpData}
             />
             {selectedGrpLoader && <div className="absolute z-10 w-[100%] h-full bg-white/50 flex pt-50 justify-center"> <Spin size="large" /> </div>}
-            <div className="flex gap-4 p-4 min-w-max">
+            <div className="flex gap-4 p-3 bg-white overflow-auto flex-grow h-full overflow-x-scroll overflow-y-hidden">
                 {sortedStages.map((stage) => {
                     const selectedUsers = selectedUsersMap[stage.id] || [];
 
-                    const handleSelectAll = (e) => {
+                    const handleSelectAll = (stage) => {
+                        const stageId = stage?.id;
+                        const allLeadIds = stage?.leads?.map((lead) => lead?.id);
+                        const selectedIds = selectedUsersMap[stageId] || [];
+
+                        const isAllSelected = selectedIds?.length === allLeadIds?.length;
+
                         setSelectedUsersMap((prev) => ({
                             ...prev,
-                            [stage.id]: e.target.checked
-                                ? stage.leads.map((lead) => lead.id)
-                                : [],
+                            [stageId]: isAllSelected ? [] : allLeadIds,
                         }));
                     };
 
@@ -425,34 +432,29 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     return (
                         <DroppableStage stageId={stage.id} key={stage.id}>
                             <div
-                                className="min-w-[300px] pb-[10px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
+                                className="pb-[10px] bg-white rounded-lg w-[270px] h-full flex flex-col"
                             >
-                                <div className="bg-[#0087FF] text-white p-3 rounded-md mb-4">
+                                <div className="text-black p-3 rounded-md mb-4 shadow-sm">
                                     <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox
-                                                checked={
-                                                    selectedUsers?.length === stage?.leads?.length &&
-                                                    selectedUsers?.length > 0
-                                                }
-                                                indeterminate={
-                                                    selectedUsers?.length > 0 &&
-                                                    selectedUsers?.length < stage?.leads?.length
-                                                }
-                                                onChange={handleSelectAll}
-                                            />
-                                            <span className="text-sm font-semibold">
-                                                {stage.name}
+                                        <div className="flex flex-col">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-semibold">
+                                                    {stage.name}
+                                                </span>
+
+                                                <span>
+                                                    ({stage?.leads?.length || 0})
+                                                </span>
+
+                                            </div>
+                                            <span
+                                                onClick={() => handleSelectAll(stage)}
+                                                className="cursor-pointer text-blue-600 text-xs underline"
+                                            >
+                                                {selectedUsers?.length === stage?.leads?.length && selectedUsers?.length > 0
+                                                    ? "Unselect All"
+                                                    : "Select All"}
                                             </span>
-                                            <Badge
-                                                count={`${stage?.leads?.length || 0} leads`}
-                                                style={{
-                                                    backgroundColor: "white",
-                                                    color: "#0087FF",
-                                                    fontSize: "10px",
-                                                    padding: "0 6px",
-                                                }}
-                                            />
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <span
@@ -493,7 +495,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                                             >
                                                 <Button
                                                     type="text"
-                                                    icon={<VerticalDotsIcon color={"white"} />}
+                                                    icon={<VerticalDotsIcon color={"black"} />}
 
                                                     className="!text-[#808183] !h-9 btn-hover"
                                                 />

@@ -16,6 +16,7 @@ const useLoginUserDataStore = create((set) => ({
             });
 
             const result = response?.data?.data;
+            console.log(result)
             const userData = {
                 name: `${result.firstname} ${result.lastname}`,
                 url: result.profilepictureurl?.includes("https://stagingbackend.novalya.com")
@@ -28,7 +29,11 @@ const useLoginUserDataStore = create((set) => ({
                 plan_period:result?.plan_period || 1,
                 plan_pkg:result.plan_pkg || "Basic",
                 customerid:result?.customerid || "",
-                randomcode: result?.randomcode || ""
+                randomcode: result?.randomcode || "",
+                email:result?.email || "",
+                firstname:result?.firstname || "",
+                lastname:result?.lastname || "",
+                user_id:result?.user_id || ""
             };
 
             if (response.status === 200) {
