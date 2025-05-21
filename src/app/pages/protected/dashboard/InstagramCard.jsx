@@ -57,7 +57,7 @@ const InstagramCard = ({ data }) => {
                         <LinkRedIcon />
                     </>
                 ) : (
-                    <span className="text-red-500 ">Really?</span>
+                    <span className="text-red-500 instaConfirmUnlink">Really?</span>
                 )}
             </div>
         </div>
