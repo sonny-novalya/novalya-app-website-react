@@ -88,7 +88,7 @@ const IgProspecting = () => {
         if (![0, 33333333333, 44444444444, 55555555555].includes(Number(selectedFolder))) {
             const folder = folders?.find((item) => item.id == selectedFolder);
             return (
-                <div className=" flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+                <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folder ? folder.folder_name : "-"}
                     </span>
@@ -126,7 +126,7 @@ const IgProspecting = () => {
 
         if (folderNames.length === 1) {
             return (
-                <div className=" flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white hover:bg-green-600 cursor-pointer">
+                <div className=" flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folderNames[0]}
                     </span>
@@ -135,7 +135,7 @@ const IgProspecting = () => {
         }
 
         return (
-            <div className=" flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+            <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{folderNames[0]}</span>
                 <Dropdown overlay={<Menu>{folderNames.slice(1).map((name, index) => <Menu.Item key={index}>{name}</Menu.Item>)}</Menu>} trigger={['hover']}>
                     <span className="cursor-pointer">

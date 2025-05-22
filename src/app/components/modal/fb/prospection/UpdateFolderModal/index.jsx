@@ -95,36 +95,42 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
             open={visible}
             onCancel={onClose}
             footer={null}
-            width={900}
-            className="custom-modal p-0"
+            width={800}
+            className="custom-modal custom-modal-p4 !p-0 !top-[50px]"
             closeIcon={null} 
         >
-            <div className="flex flex-col h-[calc(100vh-200px)] p-0 space-y-5 overflow-y-auto">
+            <div className="flex flex-col h-[calc(100vh-140px)] p-0 space-y-5 overflow-y-auto">
             <div className="flex justify-between">
-                    <h2 className="font-medium text-lg">{t("prospecting.Edit Folder")}</h2>
-                    <button
-                        className="h-4 cursor-pointer"
-                        onClick={handleDelete}
-                    >
-                        <DeleteFillIcon />
-                    </button>
-
+                <div className="flex items-center gap-[6px]">
+                    <h2 className="font-[500] text-[20px] mb-0">{t("prospecting.Edit Folder")}</h2>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+                </div>
+                <button
+                    className="h-4 cursor-pointer"
+                    onClick={handleDelete}
+                >
+                    <DeleteFillIcon />
+                </button>
             </div>
                 <input
                     type="text"
                     value={newFolderName}
                     onChange={(e) => setNewFolderName(e.target.value)}
                     placeholder={t("prospecting.Enter folder name")}
-                    className="border border-[#00000014] rounded-md p-4"
+                    className="border border-[#00000014] rounded-[10px] px-5 py-3 min-h-[52px]"
                 />
-                <h2 className="font-medium text-lg mb-4">{t("prospecting.Select Group")}s</h2>
-                <div className="rounded-lg">
-                    <div className="max-h-64 overflow-y-auto border border-[#00000014] rounded-md p-2">
-                        <table className="w-full border-collapse">
+                <div className="flex items-center gap-[6px]">
+                    <h2 className="font-medium text-[20px]">{t("prospecting.Select Group")}s</h2>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+                </div>
+                
+                <div className="rounded-b-[10px] flex-grow overflow-hidden border border-[#00000014] mb-0">
+                    <div className="h-[100%] overflow-x-auto ctm-scroll-2px custom-normal-table px-4">
+                        <table className="edit-folder-table w-full border-collapse">
                             <thead className="bg-[#F6F6F6]">
                                 <tr className="text-left font-normal">
                                     <th className="p-3 w-10"></th>
-                                    <th className="p-3 font-medium">{t("prospecting.Group Name")}</th>
+                                    <th className="p-3 pl-24 font-medium">{t("prospecting.Group Name")}</th>
                                     <th className="p-3 font-medium">{t("prospecting.Members")}</th>
                                     <th className="p-3 font-medium">{t("prospecting.Privacy")}</th>
                                     <th className="p-3 font-medium">{t("prospecting.Messages Sent")}</th>
@@ -148,12 +154,16 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
                                             <img
                                                 src={GroupImg}
                                                 alt="Group"
-                                                className="w-10 h-10 rounded-full object-cover mx-2"
+                                                className="w-16 h-11 rounded-[4px] object-cover mr-5"
                                             />
                                             <span className="text-gray-700 truncate max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{group.name}</span>
                                         </td>
                                         <td className="p-3">{formatNumber(group.total_member)}</td>
-                                        <td className="p-3">🌎</td>
+                                        <td className="p-3">
+                                            <span class="flex justify-center">
+                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9974 0.167969C5.0174 0.167969 0.164062 5.0213 0.164062 11.0013C0.164062 16.9813 5.0174 21.8346 10.9974 21.8346C16.9774 21.8346 21.8307 16.9813 21.8307 11.0013C21.8307 5.0213 16.9774 0.167969 10.9974 0.167969ZM9.91406 19.5921C5.6349 19.0613 2.33073 15.4213 2.33073 11.0013C2.33073 10.3296 2.4174 9.69047 2.55823 9.06214L7.7474 14.2513V15.3346C7.7474 16.5263 8.7224 17.5013 9.91406 17.5013V19.5921ZM17.3891 16.8405C17.1074 15.963 16.3057 15.3346 15.3307 15.3346H14.2474V12.0846C14.2474 11.4888 13.7599 11.0013 13.1641 11.0013H6.66406V8.83464H8.83073C9.42656 8.83464 9.91406 8.34714 9.91406 7.7513V5.58464H12.0807C13.2724 5.58464 14.2474 4.60964 14.2474 3.41797V2.9738C17.4216 4.26297 19.6641 7.37214 19.6641 11.0013C19.6641 13.2546 18.7974 15.3021 17.3891 16.8405Z" fill="#565656"></path></svg>
+                                            </span>
+                                        </td>
                                         <td className="p-3">110</td>
                                     </tr>
                                 ))}
@@ -161,16 +171,18 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
                         </table>
                     </div>
 
-                    <div className="flex justify-between mt-8 space-x-5">
+                    
+                </div>
+                <div className="flex justify-between mt-5 space-x-10">
                         <button
-                            className={`border bg-[#0087FF] text-white w-1/2 py-2 rounded-md ${selectedGroups.length === 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                            className={`border bg-[#0087FF] text-white w-1/2 py-2 border bg-[#0087FF] text-white w-1/2 py-2 rounded-[10px] min-h-[52px] ${selectedGroups.length === 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                             disabled={selectedGroups.length === 0}
                             onClick={handleSave}
                         >
                             Save
                         </button>
                         <button
-                            className="border border-[#0087FF] text-[#0087FF] w-1/2 py-2 rounded-md cursor-pointer"
+                            className="border border-[#0087FF] text-[#0087FF] w-1/2 py-2 rounded-[10px] min-h-[52px] cursor-pointer"
                             onClick={() => {
                                     setSelectedGroups([])
                                     onClose()
@@ -179,7 +191,6 @@ const UpdateFolderModal = ({folderId ,socialType, folderName, visible, onClose, 
                             Cancel
                         </button>
                     </div>
-                </div>
             </div>
         </Modal>
     );
