@@ -82,14 +82,22 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
             <div className="flex items-center gap-6">
               <img src={uploadImgFile} alt="uploadImgFile" />
               <div className="flex-1">
-                <h4 className="text-[24px] m-0 text-[#292D32]">{fileData?.name || "Selected File"}</h4>
+                <h4 className="text-[24px] m-0 text-[#292D32] truncate w-full max-w-96">
+                  {fileData?.name || "Selected File"}
+                </h4>
+
                 <div className="flex items-center gap-4">
-                 {fileData?.size && <span className="text-[16px] text-[#A9ACB4]">{ fileData?.size/(1024*1024)} MB of {fileData?.size/(1024*1024)} MB •</span>}
+                  {fileData?.size && (
+                    <span className="text-[16px] text-[#A9ACB4]">
+                      {(fileData.size / (1024 * 1024)).toFixed(2)} MB of {(fileData.size / (1024 * 1024)).toFixed(2)} MB •
+                    </span>
+                  )}
                   <div className="flex items-center gap-[6px]">
                     <img src={uploadTick} alt="uploadTick" />
                     <span className="text-[14px] text-[#292D32]">Completed</span>
                   </div>
                 </div>
+
               </div>
               <button className='cursor-pointer'>
                 <img src={uploadDel} alt="uploadDel" onClick={()=>handleDelete()} />
