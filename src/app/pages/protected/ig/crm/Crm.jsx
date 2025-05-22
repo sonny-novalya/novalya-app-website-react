@@ -43,10 +43,10 @@ const Crm = () => {
   };
 
 
-  const { fetchCRMGroups, CRMList, fbCRMLoading, error, createCRMGroup, reorderCRMGroups, addGrpLoader, editCRMGroup, selectedGrp } = usefbCRM()
+  const { fetchOnlyGroups, CRMGroupList, fbCRMLoading, error, createCRMGroup, reorderCRMGroups, addGrpLoader, editCRMGroup, selectedGrp } = usefbCRM()
 
   useEffect(() => {
-    fetchCRMGroups({type:'ig'});
+    fetchOnlyGroups({type:'ig'});
   }, []);
 
   const toggleAddGroupModal = () => {
@@ -115,7 +115,7 @@ const Crm = () => {
           >
             <LeftSectionCrm
               isLoading={fbCRMLoading}
-              groups={CRMList}
+              groups={CRMGroupList}
               search={search}
               selectedGroup={selectedGroup}
               setSelectedGroup={setSelectedGroup}
@@ -137,9 +137,9 @@ const Crm = () => {
           createGroup={{ isOpen: openAddGroupModal, onClose: toggleAddGroupModal }}
           showColorPicker={{ isOpen: false, toggle: () => { } }}
           createCRMGroup={createCRMGroup}
-          fetchCRMGroups={fetchCRMGroups}
+          fetchCRMGroups={fetchOnlyGroups}
           addGrpLoader={addGrpLoader}
-          existingGroupNames={CRMList.map(group => group.name.toLowerCase())}
+          existingGroupNames={CRMGroupList.map(group => group.name.toLowerCase())}
         />
       )}
 
@@ -148,10 +148,10 @@ const Crm = () => {
           createGroup={{ isOpen: openEditGroupModal, onClose: toggleEditGrpPop }}
           showColorPicker={{ isOpen: false, toggle: () => { } }}
           editCRMGroup={editCRMGroup}
-          fetchCRMGroups={fetchCRMGroups}
+          fetchCRMGroups={fetchOnlyGroups}
           addGrpLoader={addGrpLoader}
           selectedGrp={selectedGrp}
-          existingGroupNames={CRMList.map(group => group.name.toLowerCase())}
+          existingGroupNames={CRMGroupList.map(group => group.name.toLowerCase())}
         />
       )}
     </Layout>

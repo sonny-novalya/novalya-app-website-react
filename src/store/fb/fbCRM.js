@@ -4,6 +4,7 @@ import apiCall from '../../services/api';
 const usefbCRM = create((set) => ({
 
     CRMList: [],
+    CRMGroupList: [],
     fbCRMLoading: false,
     error: null,
     selectedGrpData: {},
@@ -26,6 +27,24 @@ const usefbCRM = create((set) => ({
             });
 
             set({ CRMList: res?.data?.data || [], fbCRMLoading: false });
+        } catch (error) {
+            set({
+                fbCRMLoading: false,
+                error: error?.message || 'Something went wrong',
+            });
+        }
+    },
+    fetchOnlyGroups: async ({ data, type }) => {
+        set({ fbCRMLoading: true });
+        const SocialType = type === 'ig' ? "instagram" : "facebook"
+        try {
+            const res = await apiCall({
+                method: 'POST',
+                url: `/user/api/${SocialType}/get-groups-info`,
+                data: data
+            });
+
+            set({ CRMGroupList: res?.data?.data || [], fbCRMLoading: false });
         } catch (error) {
             set({
                 fbCRMLoading: false,
