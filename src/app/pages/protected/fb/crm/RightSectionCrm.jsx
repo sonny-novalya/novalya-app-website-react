@@ -18,6 +18,7 @@ import NoteUserModal from "./NoteUserModalNew";
 import groupPhoto from "../../../../../assets/img/groupImg.png"
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
+import user_default from "../../../../../assets/img/user_img_default.jpg";
 import EditstageModal from "./editStageModal";
 
 const RightSectionCrm = ({ selectedGroup }) => {
@@ -339,7 +340,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
           >
             <div className="line-clamp-2 flex items-center gap-2 py-1">
               <img
-                src={lead?.profile_pic}
+                src={lead?.profile_pic?.startsWith("data:image/") ? lead?.profile_pic : user_default }
                 alt={lead?.fb_name}
                 className="w-8 h-8 rounded-full "
               />

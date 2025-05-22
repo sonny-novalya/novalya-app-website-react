@@ -15,7 +15,7 @@ import SendCampaignModal from "./SendCampaignModal";
 import MoveToStageModal from "./MoveToStageModal";
 import AddStageModal from "./AddStageModal";
 import NoteUserModal from "./NoteUserModalNew";
-
+import user_default from "../../../../../assets/img/user_img_default.jpg";
 import { t } from "i18next";
 import usefbCRM from "../../../../../store/fb/fbCRM";
 import EditstageModal from "./editStageModal";
@@ -342,7 +342,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     >
                         <div className="line-clamp-2 flex items-center gap-2 py-1">
                             <img
-                                src={lead?.profile_pic}
+                                src={lead?.profile_pic?.startsWith("data:image/") ? lead?.profile_pic : user_default }
                                 alt={lead?.insta_name}
                                 className="w-8 h-8 rounded-full "
                             />
