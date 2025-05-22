@@ -80,7 +80,7 @@ const InstagramCard = ({ data }) => {
             </div>
 
             <div className="mt-4 ml-30 flex justify-between items-center  ">
-                <p className="font-medium d-ig-card-uname">@{insta_user_name}</p>
+                <p className="font-medium cursor-pointer d-ig-card-uname" onClick={() => window.open(`https://www.instagram.com/${insta_user_id}`, '_blank')}>@{insta_user_name}</p>
                 <Dropdown
                     trigger={["click"]}
                     placement="bottomRight"
