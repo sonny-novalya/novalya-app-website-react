@@ -62,17 +62,19 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
     };
     return (
         <Modal
+            className="crm-common-model"
             open={createGroup.isOpen}
             onCancel={() => {
                 createGroup.onClose();
             }}
             footer={null}
+            width={735}
             centered
-            className="rounded-lg"
+            
         >
-            <div className="bg-gray-50 text-center rounded-t-lg">
-                <h2 className="text-2xl font-medium text-gray-700">{t("crm.Add Group")}</h2>
-            </div>
+            
+            <h2 className="text-[24px] font-[600] leading-[1.25] mb-4">{t("crm.Add Group")}</h2>
+           
 
             <div className="flex flex-col space-y-2">
                 <div className="text-xl text-[#000407] font-medium">{t("crm.Name your group")}</div>

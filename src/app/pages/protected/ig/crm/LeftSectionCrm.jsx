@@ -143,7 +143,7 @@ const SortableItem = ({
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
               onClick={() => onClick(group)}
-              className={`flex items-center space-x-2 p-2 mb-2 rounded-md cursor-pointer border bg-white hover:bg-gray-100 ${selectedGroup?.id === group.id
+              className={`flex items-center space-x-2 p-2.5 mb-2.5 rounded-md cursor-pointer border border bg-white hover:bg-gray-100 ${selectedGroup?.id === group.id
                 ? "border-[#0087FF]"
                 : "border-[#00000040]"
                 }`}
@@ -156,11 +156,11 @@ const SortableItem = ({
               </span>
               <div className="flex flex-col items-center w-full">
                 <div className="flex items-center justify-between w-full">
-                  <span className="capitalize max-w-36 truncate">{group.name}</span>
+                  <span className="capitalize max-w-36 truncate text-[14px] font-[500] leading-[1.25]">{group.name}</span>
                 </div>
                 <div className="flex items-center justify-between w-full">
                   {/* <span className="text-sm text-gray-600">20 leads</span> */}
-                  <span className="text-sm text-gray-400">
+                  <span className="text-[12px] text-[#637381] mt-[2px]">
                     {formatDate(group.createdAt)}
                   </span>
                 </div>
@@ -175,7 +175,7 @@ const SortableItem = ({
                 <Button
                   type="text"
                   icon={<VerticalDotsIcon />}
-                  className="!text-[#808183] !h-9 btn-hover"
+                  className="!text-[#808183] !w-5 !h-5 btn-hover"
                 />
               </Dropdown>
             </div>

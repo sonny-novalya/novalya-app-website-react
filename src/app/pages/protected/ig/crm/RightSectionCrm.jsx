@@ -362,7 +362,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
     const DroppableStage = ({ stageId, children }) => {
         return (
             <div
-                className="flex-shrink-0 bg-white rounded-lg"
+                className="flex-shrink-0 bg-white rounded-[6px] border border-[#E5E6E6]"
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(stageId)}
             >
@@ -380,7 +380,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                 selectedGrpData={selectedGrpData}
             />
             {selectedGrpLoader && <div className="absolute z-10 w-[100%] h-full bg-white/50 flex pt-50 justify-center"> <Spin size="large" /> </div>}
-            <div className="flex gap-4 p-3 bg-white overflow-auto flex-grow h-full overflow-x-scroll overflow-y-hidden">
+            <div className="flex gap-2.5 bg-white overflow-auto flex-grow h-full overflow-x-scroll overflow-y-hidden">
                 {sortedStages.map((stage) => {
                     const selectedUsers = selectedUsersMap[stage.id] || [];
 
@@ -523,7 +523,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
                     );
                 })}
             </div>
-            <div className="flex gap-4 p-4 items-center justify-center border border-[#DADADA] w-fit mx-auto rounded-lg mt-auto">
+            <div className="flex gap-4 px-2.5 py-2 items-center justify-center border border-[rgba(171,171,171,0.42)] w-fit mx-auto rounded-[10px] mt-auto shadow-[0_5px_20px_rgb(228_228_228_/_0.5)]
+">
                 {buttonActions.map((action, index) => {
 
                     if (totalSlectedIds?.length > 1 && action.id === 4) return null
@@ -532,7 +533,7 @@ const RightSectionCrm = ({ selectedGroup }) => {
                         onClick={action.onClick}
                         id={action.id === 3 ? "sync-instaname" : undefined}
                         value={action.id === 3 ? selectedGroup.id : undefined}
-                        className={`flex items-center gap-2 border rounded-md px-4 py-2 hover:shadow transition cursor-pointer ${action.textColor} ${action.borderColor}`}
+                        className={`flex items-center gap-2 border rounded-md px-4 py-2 hover:shadow transition cursor-pointer min-h-[48px] text-[14px] font-medium ${action.textColor} ${action.borderColor}`}
                     >
                         {action.icon}
                         <span className="font-medium">{action.label}</span>

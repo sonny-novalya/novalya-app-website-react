@@ -50,20 +50,20 @@ const MoveToStageModal = ({ visible, onCancel, selectedUsersMap, moveStage, sort
 
     }
     return (
-        <Modal
+        <Modal className="crm-common-model"
             open={visible}
             onCancel={onCancel}
             footer={null}
-            width={600}
+            width={735}
             centered
         >
-            <div className="bg-gray-50 rounded-t-lg pb-4 ">
-                <h2 className="text-xl font-medium ">{t("crm.Move to Stage")}</h2>
-            </div>
-            <h2 className="text-lg font-medium my-3">{t("crm.Where would you like to move")}{" "}
+           
+                <h2 className="text-[24px] font-[600] leading-[1.25] mb-4">{t("crm.Move to Stage")}</h2>
+            
+                <h2 className="text-[16px] font-medium mb-4">{t("crm.Where would you like to move")}{" "}
                 {allIds?.length + " "}{t("crm.users?")}</h2>
             <Select
-                className="w-full rounded-lg bg-white border border-gray-300 px-4 text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="ctm-select-white ctm-select-white-op5 w-full border !border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                 placeholder={t("crm.Select stage")}
                 value={selectedStage || undefined}
                 onChange={(value) => setSelectedStage(value)}
@@ -76,16 +76,16 @@ const MoveToStageModal = ({ visible, onCancel, selectedUsersMap, moveStage, sort
                     </Option>
                 ))}
             </Select>
-            <div className="bg-gray-50 mt-4 rounded-b-lg flex justify-end space-x-4">
+            <div className="mt-4 rounded-b-lg flex justify-end space-x-5">
                 <button
                     onClick={() => console.log("Cancel")}
-                    className="bg-white w-32 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6"
+                    className="min-h-[52px] bg-white w-37.5 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6"
                 >
                     {t("crm.Cancel")}
                 </button>
                 <button
                     onClick={() => moverTaggedUsers()}
-                    className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
+                    className="min-h-[52px] bg-[#21BF7C] w-37.5 text-white rounded-lg py-2 px-6"
                 >
                     {t("crm.Move")}
                 </button>
