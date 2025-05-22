@@ -42,6 +42,7 @@ const Request = () => {
    
 
   const handleMessagePOP = (type) => {
+    setMessageData(null);
     if (type) {
       setPreSelecetdMessage(acceptedData?.selectedMessage);
     } else {
@@ -127,12 +128,15 @@ const Request = () => {
   }, []);
 
   useEffect(() => {
-    if (messageType) {
-      setAcceptedData((prev) => ({ ...prev, selectedMessage: messageData }));
-    } else {
-      setRejecetdData((prev) => ({ ...prev, selectedMessage: messageData }));
+    if (messageData) {
+      if (messageType) {
+        setAcceptedData((prev) => ({ ...prev, selectedMessage: messageData }));
+      } else {
+        setRejecetdData((prev) => ({ ...prev, selectedMessage: messageData }));
+      }
+      setMessageData(null);
     }
-  }, [messageData]);
+  }, [messageData, messageType]);
 
   useEffect(() => {
     setGroupData(CRMList)
