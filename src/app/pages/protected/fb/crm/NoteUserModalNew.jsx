@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from "prop-types";
-import { message, Modal, } from "antd";
+import { message, Modal, Spin, } from "antd";
 import ListPanel from './Notes/ListPanel';
 import { DeleteGreyIcon, EditIcon, MessengerSmallIcon, SyncTripleArrowIcon, TripleDotIcon } from '../../../common/icons/icons';
 import { useLocation } from "react-router-dom";
@@ -9,7 +9,7 @@ import SocialsSection from './Notes/SocialsSection';
 import usefbCRM from '../../../../../store/fb/fbCRM';
 
 const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
-    const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote } = useFbNoteStore();
+    const { createFbNote, getFbNotes, fetchedNotes, deleteUserNote, loading } = useFbNoteStore();
     const { getGroupById } = usefbCRM();
     const [userInfo, setUserInfo] = useState({
         firstName: "",
@@ -340,7 +340,12 @@ const NoteUserModal = ({ visible, onCancel, lead, selectedGroup }) => {
             closeIcon={null}
             wrapClassName="custom-fb-note-modal-wrap"
         >
-            <div className="flex items-stretch justify-center w-full gap-4 h-[calc(100vh-100px)]" >
+            <div className="flex items-stretch justify-center w-full gap-4 h-[calc(100vh-100px)] relative" >
+                {loading && (
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-50 z-50 rounded-lg h-full">
+                        <Spin size="large" />
+                    </div>
+                )}
                 {/* Note Panel */}
                 <div className="bg-white rounded-[10px] border border-[#CFCFCF] w-full px-6 py-3 flex flex-col overflow-y-auto">
                     <div className="flex justify-between items-center mb-3 relative">

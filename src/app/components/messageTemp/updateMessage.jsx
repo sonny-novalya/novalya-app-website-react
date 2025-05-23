@@ -39,6 +39,7 @@ const UpdateMessage = ({containerRef}) => {
   const [isDelete, setIsDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpload,setIsUpload]=useState(false)
+  const [variantErrors, setVariantErrors] = useState(new Set());
   // const [attachment,setAttachment]=useState(false)
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -169,6 +170,14 @@ const UpdateMessage = ({containerRef}) => {
 
         
     }
+
+    if (variable.trim() !== "") {
+      setVariantErrors(prev => {
+        const newErrors = new Set(prev);
+        newErrors.delete(variants.find(v => v.id === selectedVariant.id)?.id);
+        return newErrors;
+      });
+    }
   
     setVariants(updatedVariants);
   };
@@ -233,11 +242,23 @@ const handleSubmit =async ()=>{
         return
       }
 
-      // .some() checks if at least one item matches the condition.
-      if (variants.some(v => v.name.trim() === "")) {
-        message.error("Some variants have an empty message.");
+      const emptyVariants = variants
+        .map((variant, index) => variant.name.trim() === "" ? index + 1 : null)
+        .filter(index => index !== null);
+
+      if (emptyVariants.length > 0) {
+        const errorIds = variants
+          .map((variant, index) => variant.name.trim() === "" ? variant.id : null)
+          .filter(id => id !== null);
+        setVariantErrors(new Set(errorIds));
+
+        message.error(`Please fill all variants`)
+        // message.error(`Please fill in all variants. Empty variants: ${emptyVariants.join(", ")}`)
         return
       }
+
+      // Clear any existing errors
+      setVariantErrors(new Set());
       let file=null
       let is_image_delete = true
       if (attachment) {
@@ -373,14 +394,18 @@ const handleSubmit =async ()=>{
                 </div>
                 <div className="mt-4">
                   {variants?.map((data, i) => {
+                    const hasError = variantErrors.has(data.id);
                     return (
                       <button
+                        key={data.id}
                         onClick={() => handleSelectedVariant(data)}
-                        className={`varient-btn-hover  border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px]  ${
-                          data?.id === selectedVariant?.id
+                        className={`varient-btn-hover flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] ${hasError
+                            ? "border-2 border-red-500"
+                            : "border border-[#0087FF42]"
+                          } ${data?.id === selectedVariant?.id
                             ? "bg-[#0087FF] text-white varient-btn-hover-selected "
-                            : "bg-white"
-                        } hover:bg-[#0087FF] hover:text-white`}
+                            : hasError ? "bg-red-50" : "bg-white"
+                          } hover:bg-[#0087FF] hover:text-white`}
                       >
                         <CreateMessageIcon index={4} />
                         Variant - {i + 1}
@@ -483,14 +508,12 @@ const handleSubmit =async ()=>{
                                         />
                                       </div>
                                     )}
-                                   {visibility?.attachment&&
-                                    <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
-                                      <CreateMessageIcon index={6} />
-                                      
-                                      {attachment ? "Change image" : t("message.Upload image")}
-                                     
-                                    </button>
-                                   }
+                                    {visibility?.attachment&&
+                                      <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
+                                        {attachment ? <img src={attachment} className=' w-fit h-6 object-contain rounded' alt={"previewUrl"} /> :  <CreateMessageIcon index={6} />}
+                                        {attachment ? "Change image" : t("message.Upload image")}
+                                      </button>
+                                    }
                                   </div>
                                   <span className="font-medium text-[14px] leading-[21px] tracking-[0%] text-[#00000080] px-4">
                                     {selectedVariant?.count || 0}/2000

@@ -380,7 +380,14 @@
   "No Thanks":"No Thanks",
   "Support": "Support",
   "Upgrade Your Plan Today.":"Upgrade Your Plan Today.",
-  "Upgrade Now":"Upgrade Now"
+  "Upgrade Now":"Upgrade Now",
+
+  "Automated Messages":"Automated Messages",
+  "Comments with AI":"Comments with AI",
+  "Tags + Sales Pipelines":"Tags + Sales Pipelines",
+  "Priority Support":"Priority Support",
+  "Live Chat Support":"Live Chat Support",
+  "Support reply within 48h":"Support reply within 48h"
 
 },
 "pricing_tooltips": {

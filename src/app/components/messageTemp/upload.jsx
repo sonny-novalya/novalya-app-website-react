@@ -49,10 +49,7 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
       <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen z-[9999]">
         <div className="bg-white px-6 py-5 rounded-[10px] max-w-[800px] mx-auto w-full relative max-h-[90vh] overflow-auto">
           <h3 className="text-[24px] font-medium mb-4">Upload files</h3>
-  
-          { previewUrl? <div className='flex items-center content-center'>
-            <img src={previewUrl}   className=' w-full h-[300px] object-contain'  alt={"previewUrl"}/>
-          </div>: <div className="border-2 border-dashed border-[#CBD0DC] text-center px-6 pt-5 pb-8 rounded-[10px]">
+          <div className="border-2 border-dashed border-[#CBD0DC] text-center px-6 pt-5 pb-8 rounded-[10px]">
             <div className="flex justify-center mb-2">
               <img src={uploadImg} alt="uploadImg" />
             </div>
@@ -76,11 +73,12 @@ const Upload = ({setIsUpload,setAttachment,attachment}) => {
             >
               Browse File
             </button>
-          </div>}
+          </div>
   
          { previewUrl?<div className="border border-[#0087ff33] rounded-[10px] mt-5 px-4 py-2">
             <div className="flex items-center gap-6">
-              <img src={uploadImgFile} alt="uploadImgFile" />
+              {/* <img src={uploadImgFile} alt="uploadImgFile" /> */}
+              <img src={previewUrl} className=' w-14 h-10 object-cover rounded' alt="previewUrl" />
               <div className="flex-1">
                 <h4 className="text-[24px] m-0 text-[#292D32] truncate w-full max-w-96">
                   {fileData?.name || "Selected File"}
