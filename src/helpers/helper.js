@@ -38,7 +38,7 @@ const checkDoamin = (web)=>{
 }
 
 export const detectExtension = (callback) => {
-  let extMode = "Live"; //getCookie('ext-mode');
+  let extMode = "Beta"; //"Live"; //getCookie('ext-mode');
   let liveExtensionId = "iemhbpcnoehagepnbflncegkcgpphmpc"
   if (extMode !== "") {
     if (extMode === "Beta") {
