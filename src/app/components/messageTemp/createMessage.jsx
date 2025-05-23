@@ -141,6 +141,7 @@ const CreateMessage = ({containerRef}) => {
     }else{
       setName(`Message #${Number(totalMessages) + 1}`);
       setVariants(getDefaultVariants());
+      setAttachment(null); 
     }
 
 
