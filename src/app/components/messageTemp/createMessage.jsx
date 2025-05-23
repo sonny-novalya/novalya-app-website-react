@@ -56,18 +56,19 @@ const CreateMessage = ({containerRef}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUpload,setIsUpload]=useState(false)
   // const [attachment,setAttachment]=useState(null)
+  const [variantErrors, setVariantErrors] = useState(new Set());
   const pickerRef = useRef(null);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
   const location =useLocation()
   const [activeDropdownItem, setActiveDropdownItem] = useState(false);
-  const dropdownRef = useRef(null); 
+  const dropdownRef = useRef(null);
 
   const handleVisibilityChange = (val) => {
     console.log(val);
     if (variants.length > 0) {
       let updatedVariants = variants.map(item => ({ ...item })); // Always clone variants initially
-  
+
       if (!val.inputs && !val.attachment) {
         message.error(`${val.label} does not support Name & Attachment, it will be removed if you have selected any.`);
         updatedVariants = updatedVariants.map(item => {
@@ -93,29 +94,29 @@ const CreateMessage = ({containerRef}) => {
           };
         });
       }
-  
+
       setVariants(updatedVariants);
       if (selectedVariant?.id != null) {
         const newSelected = updatedVariants.find(v => v.id === selectedVariant.id);
         setSelectedVariant(newSelected || updatedVariants[0]); // update textarea binding
       }
     }
-  
+
     setVisibility(val);
     setActiveDropdownItem(true)
   };
 
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-          setActiveDropdownItem(false);
-        }
-      };
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveDropdownItem(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleCaretPosition = (e) => {
     setCaretPosition(e.target.selectionStart);
@@ -123,9 +124,9 @@ const CreateMessage = ({containerRef}) => {
 
   useEffect(() => {
     if (visibilityType) {
-    setVisibility(visibilityOptions.find((v) => (v.id === visibilityType)));
+      setVisibility(visibilityOptions.find((v) => (v.id === visibilityType)));
     }else{
-    setVisibility(selecetdMessage?.visibility);
+      setVisibility(selecetdMessage?.visibility);
     }
 
     if(selecetdMessage){
@@ -142,7 +143,7 @@ const CreateMessage = ({containerRef}) => {
       setVariants(getDefaultVariants());
     }
 
-    
+
   }, []);
 
   // once getTemplateVariants gets the variants data then update variants in the state
@@ -183,6 +184,15 @@ const CreateMessage = ({containerRef}) => {
         count: updatedVariants[index].name.length,
       });
     }
+
+    if (variable.trim() !== "") {
+      setVariantErrors(prev => {
+        const newErrors = new Set(prev);
+        newErrors.delete(index);
+        return newErrors;
+      });
+    }
+
     console.log("here 2")
     setVariants(updatedVariants);
   };
@@ -229,16 +239,16 @@ const CreateMessage = ({containerRef}) => {
   };
 
   const handleDelete = () =>{
-   if (isDelete) {
+    if (isDelete) {
     const newVariant=variants.filter((vart)=>vart.id !== selectedVariant?.id)
-    setVariants(newVariant)
-    setIsDelete(false)
-   }else{
-    setIsDelete(true)
-    timeoutRef.current = setTimeout(() => {
+      setVariants(newVariant)
       setIsDelete(false)
-    }, 3000);
-   }
+   }else{
+      setIsDelete(true)
+      timeoutRef.current = setTimeout(() => {
+        setIsDelete(false)
+      }, 3000);
+    }
   }
 
   const handleSubmit = async () => {
@@ -258,9 +268,15 @@ const CreateMessage = ({containerRef}) => {
       .filter(index => index !== null);
 
     if (emptyVariants.length > 0) {
-      message.error(`Please fill in all variants. Empty variants: ${emptyVariants.join(", ")}`)
+      const errorIds = variants
+        .map((variant, index) => variant.name.trim() === "" ? variant.id : null)
+        .filter(id => id !== null);
+      setVariantErrors(new Set(errorIds));
+      message.error(`Please fill all variants`)
+      // message.error(`Please fill in all variants. Empty variants: ${emptyVariants.join(", ")}`)
       return
     }
+    setVariantErrors(new Set());
 
     let uploadData = attachment
     if (!visibility?.attachment) {
@@ -273,7 +289,7 @@ const CreateMessage = ({containerRef}) => {
       attachment: uploadData
     }
     if (data.variants.length < 3) {
-           message.error("Atleast 3 Variants are Required")
+      message.error("Atleast 3 Variants are Required")
       return
     }
     setIsLoading(true)
@@ -282,21 +298,22 @@ const CreateMessage = ({containerRef}) => {
       const res = await apiCall({
         method: 'POST',
         url: '/all/messages/api/create-messages',
-              data})
+        data
+      })
       if (res?.status === 200) {
         message.success("Message Successfully Created")
         if (location.pathname === "/library/messages") {
           fetchMessagesNew(null, searchKeyword, null)
-        }else{
-          fetchMessagesNew({limit:200,page:1})
+        } else {
+          fetchMessagesNew({ limit: 200, page: 1 })
         }
         setIsMessage(false)
-      }else{
+      } else {
         message.error("Message Successfully Created")
       }
       setIsLoading(false)
     } catch (error) {
-        message.error("Message Successfully Created")
+      message.error("Message Successfully Created")
       setIsLoading(false)
     }
   }
@@ -315,13 +332,13 @@ const CreateMessage = ({containerRef}) => {
     });
     return Object.entries(grouped);
   };
-  
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 h-screen creatMessage z-[9999]">
       <div ref={containerRef} className="flex flex-col bg-white px-5 py-4 rounded-[10px] max-w-[1135px] mx-auto w-full relative h-[85vh] overflow-auto">
         <div className="flex items-center gap-[10px] text-[20px] font-[500]">
-            {t("message.Message name")} 
+          {t("message.Message name")}
           <CreateMessageIcon index={0} />
         </div>
         <div className="flex items-center justify-between gap-4 mt-2">
@@ -347,12 +364,10 @@ const CreateMessage = ({containerRef}) => {
             <div className={`pros-dropdownCont absolute top-full left-0 w-full opacity-0 invisible bg-white pb-3 rounded-[10px] ${activeDropdownItem ? " message-dropdown-active" : ""}`}>
               {getGroupedVisibilityOptions(visibilityOptions).map(([platform, options]) => (
                 <div key={platform} className="mt-3 ">
-                  {/* Platform Heading - no background, just light text + border */}
                   <div className="text-gray-500 text-sm font-semibold capitalize border-b border-gray-200 pb-1 mb-2 px-4">
                     {platform}
                   </div>
 
-                  {/* List the options with indent */}
                   <div className="px-2 flex flex-col gap-1">
                     {options.map((visibility) => (
                       <div
@@ -396,20 +411,23 @@ const CreateMessage = ({containerRef}) => {
         <div className="flex gap-3 mt-4 flex-1">
           <div className="w-[200px] bg-[#F5F5F5] rounded p-3">
             <div className="flex items-center gap-[10px] text-[20px] font-[500]">
-               {t("message.Your variants")}
+              {t("message.Your variants")}
               <CreateMessageIcon index={3} />
             </div>
             <div className="mt-4">
               {variants?.map((data, i) => {
+                const hasError = variantErrors.has(data.id);
                 return (
                   <button
-                  key={data.id}
+                    key={data.id}
                     onClick={() => handleSelectedVariant(data)}
-                    className={`varient-btn-hover  border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px]  ${
-                      data?.id === selectedVariant?.id
+                    className={`varient-btn-hover flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] ${hasError
+                      ? "border-2 border-red-500"
+                      : "border border-[#0087FF42]"
+                      } ${data?.id === selectedVariant?.id
                         ? "bg-[#0087FF] text-white varient-btn-hover-selected "
-                        : "bg-white"
-                    } hover:bg-[#0087FF] hover:text-white`}
+                        : hasError ? "bg-red-50" : "bg-white"
+                      } hover:bg-[#0087FF] hover:text-white`}
                   >
                     <CreateMessageIcon index={4} />
                     Variant - {i + 1}
@@ -421,13 +439,13 @@ const CreateMessage = ({containerRef}) => {
                 className="varient-btn-hover bg-white border border-[#0087FF42] flex items-center justify-center gap-[10px] w-full px-3 py-2 rounded-md mb-[6px] hover:bg-[#0087FF] hover:text-white"
               >
                 + {t("message.Add Variant")}
-              </button> 
+              </button>
             </div>
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between gap-[10px] mb-1">
               <div className="flex items-center gap-[10px] text-[20px] font-[500]">
-                 {t("message.Write message")}
+                {t("message.Write message")}
                 <CreateMessageIcon index={5} />
               </div>
               {/* <button
@@ -441,13 +459,13 @@ const CreateMessage = ({containerRef}) => {
                 className="flex space-x-1 items-center bg-[#FF00001C] text-[#FF0000] px-3 py-1 rounded-full text-sm"
               >
                   {isDelete?"Really ?":<>
-                    <span className="">
+                  <span className="">
                     <DeleteFillRedIcon />
                   </span>
                   <span>
                     Delete
                   </span>
-                  </>}
+                </>}
               </button>:""}
             </div>
             <div className="border border-[#E6E6E6] flex flex-col h-[92%] p-3 ">
@@ -464,37 +482,37 @@ const CreateMessage = ({containerRef}) => {
 
               <div className="flex items-center gap-[10px] justify-between">
                 <div className="flex items-center gap-[10px]">
-                {
-                 visibility?.inputs && <>
-                 <button
-                    onClick={() =>
-                      handleVariantText(
-                        "[first name]",
-                        selectedVariant.id,
-                        true
-                      )
-                    }
-                    className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
-                  >
-                     {t("message.First name")}
-                  </button>
-                  <button
-                    onClick={() =>
-                      handleVariantText("[last name]", selectedVariant.id, true)
-                    }
-                    className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
-                  >
-                  {t("message.Last name")}
-                    
-                  </button>
-                 </>
-                }
+                  {
+                    visibility?.inputs && <>
+                      <button
+                        onClick={() =>
+                          handleVariantText(
+                            "[first name]",
+                            selectedVariant.id,
+                            true
+                          )
+                        }
+                        className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
+                      >
+                        {t("message.First name")}
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleVariantText("[last name]", selectedVariant.id, true)
+                        }
+                        className="varient-btn-hover bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
+                      >
+                        {t("message.Last name")}
+
+                      </button>
+                    </>
+                  }
                   <button
                     onClick={() => setIsEmojiPickerOpen(true)}
                     className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-1 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]"
                   >
                     <CreateMessageIcon index={7} />
-                    
+
                     {t("message.Emoji")}
                   </button>
                   {isEmojiPickerOpen && (
@@ -514,10 +532,10 @@ const CreateMessage = ({containerRef}) => {
                   )}
                  {visibility?.attachment&&
                   <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
-                    <CreateMessageIcon index={6} />
-                    {attachment ? "Change image" : t("message.Upload image")}
-                  </button>
-                 }
+                      <CreateMessageIcon index={6} />
+                      {attachment ? "Change image" : t("message.Upload image")}
+                    </button>
+                  }
                 </div>
                 <span className="font-medium text-[14px] leading-[21px] tracking-[0%] text-[#00000080] px-4">
                   {selectedVariant?.count || 0}/2000
@@ -586,7 +604,7 @@ const CreateMessage = ({containerRef}) => {
             onClick={() => handlePreview()}
             className="cursor-pointer flex justify-center gap-2 font-regular text-[21px] text-[#0087FF] border border-[#0087FF] leading-[36px] bg-white px-4 py-1.5 w-full max-w-[200px] rounded-md"
           >
-             {t("message.Preview")}
+            {t("message.Preview")}
           </button>
           <div className="flex gap-4">
             <button
@@ -594,14 +612,14 @@ const CreateMessage = ({containerRef}) => {
                  px-4 py-1.5 w-[200px] rounded-md flex justify-center"
               onClick={() => setIsMessage(false)}
             >
-               {t("message.Cancel")}
+              {t("message.Cancel")}
             </button>
             <button onClick={()=>handleSubmit()} className="cursor-pointer flex white-spin  items-center justify-center gap-2 font-regular text-[21px] text-[white] leading-[36px] bg-[#0087FF] px-4 py-1.5 w-[200px] rounded-md">
-              
+
 
               {
                 isLoading ? <Spin size="small" style={{color:"white"}}/>  :<>  {t("message.Create")}
-                <CreateMessageIcon index={11} /> </>
+                  <CreateMessageIcon index={11} /> </>
               }
             </button>
           </div>
@@ -632,8 +650,8 @@ const visibilityOptions = [
     platform: "facebook"
   },
   { id: "birthday", 
-    label: "Birthday", 
-    icon: BdayIcon, 
+    label: "Birthday",
+    icon: BdayIcon,
     iconLight: BdayWhite,
     inputs: true,
     attachment: true,
@@ -658,8 +676,8 @@ const visibilityOptions = [
     platform: "instagram"
   },
   { id: "ig_crm",
-    label: "CRM", 
-    icon: IgCrm, 
+    label: "CRM",
+    icon: IgCrm,
     iconLight: IgCrmWhite ,  
     inputs: false,
     attachment: true,
