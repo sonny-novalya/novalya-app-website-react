@@ -130,7 +130,6 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
   }
 
-  console.log("selectedGroup", selectedGroup)
   if (!selectedGroup || !selectedGroup.id ) {
     return (
       <div className="flex items-center justify-center h-full text-gray-400">
