@@ -29,9 +29,9 @@ const TopbarRightSection = ({ companyName, leadsCount, onAddStage, setSortedStag
     }
     return (
         <div className="flex justify-between items-center pr-4 py-5 bg-white">
-            <div className="flex items-center gap-2">
-                <span className="text-lg font-medium text-gray-700">{companyName}</span>
-                <div className="flex items-center bg-[#CCE7FF] px-2 space-x-1 rounded">
+            <div className="flex items-center gap-2 mr-4">
+                <span className="text-lg font-medium text-gray-700 leading-[1]">{companyName}</span>
+                <div className="flex items-center bg-[#CCE7FF] px-1.5 space-x-1 rounded-[4px] min-h-[28px]">
                     <TwoUsersIcon />
                     <span className="text-[#0087FF]">
                         {leadsCount}

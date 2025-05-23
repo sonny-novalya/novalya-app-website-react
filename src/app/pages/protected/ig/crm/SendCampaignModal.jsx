@@ -271,14 +271,14 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
             <div className=" mt-7.5 rounded-b-lg flex justify-end space-x-5">
                 <button
                     onClick={onCancel}
-                    className="min-h-[52px] bg-white w-37.5 text-[#0087FF] border border-[#0087FF] rounded-[10px] py-2 px-6"
+                    className="min-h-[50px] bg-white w-37.5 text-[#0087FF] border border-[#0087FF] rounded-[10px] py-2 px-6"
                 >
                     {t('crm.Cancel')}
                 </button>
                 <button
                     id="submit_insta_camping"
                     attr-data={JSON.stringify(campiagnModalData)}
-                    className="min-h-[52px] bg-[#21BF7C] w-37.5 text-white rounded-[10px] py-2 px-6"
+                    className="min-h-[50px] bg-[#21BF7C] w-37.5 text-white rounded-[10px] py-2 px-6"
                 >
                     {t('crm.Send')}
                 </button>

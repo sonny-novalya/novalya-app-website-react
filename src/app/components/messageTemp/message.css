@@ -195,7 +195,7 @@ ul.pros-dropdown li:hover span {
 }
 
 .crm-common-model .ant-modal-content {
-    padding: 20px;
+    padding: 20px !important;
 }
 
 
