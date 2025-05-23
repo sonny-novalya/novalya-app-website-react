@@ -130,8 +130,8 @@ const RightSectionCrm = ({ selectedGroup }) => {
 
   }
 
-  // if (!selectedGroup || !selectedGroup.stage) {
-  if (!selectedGroup ) {
+  console.log("selectedGroup", selectedGroup)
+  if (!selectedGroup || !selectedGroup.id ) {
     return (
       <div className="flex items-center justify-center h-full text-gray-400">
         {t("crm.Select a group to view details")}
