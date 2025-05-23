@@ -16,7 +16,6 @@ const useLoginUserDataStore = create((set) => ({
             });
 
             const result = response?.data?.data;
-            console.log(result)
             const userData = {
                 name: `${result.firstname} ${result.lastname}`,
                 url: result.profilepictureurl?.includes("https://stagingbackend.novalya.com")
@@ -33,7 +32,8 @@ const useLoginUserDataStore = create((set) => ({
                 email:result?.email || "",
                 firstname:result?.firstname || "",
                 lastname:result?.lastname || "",
-                user_id:result?.user_id || ""
+                user_id:result?.user_id || "",
+                subscriptionInfo:result?.subscriptionInfo || null
             };
 
             if (response.status === 200) {
