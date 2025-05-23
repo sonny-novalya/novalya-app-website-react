@@ -536,33 +536,43 @@ const FbProspecting = () => {
             title: (TotalMemberColumn),
             dataIndex: "total_member",
             render: (text, record) => {
-                if (text === null || text == 0) return "-"
 
                 const type = record?.group_type?.toLowerCase()
 
                 if (type === 'member' || type === 'things in common' ){
-                    return `${formatNumber(text)} ${getGroupVolumeTitle(type)}`
+                    if (text === null || text == 0) {
+                        return "-"
+                    } else {
+                        return `${formatNumber(text)} ${getGroupVolumeTitle(type)}`
+                    }
                 }
 
-                const likeCount = text ;
+                const likeCount = text;
                 const commentCount = record?.comment_member;
+
+                const likeCountNum = Number(likeCount) || 0;
+                const commentCountNum = Number(commentCount) || 0;
+
+                const hasLikes = likeCount != null && likeCountNum > 0;
+                const hasComments = commentCount != null && commentCount !== "" && commentCountNum > 0;
+
 
                 return (
                     <span className="flex items-center justify-center">
-                        {likeCount && (
+                        {hasLikes && (
                             <>
-                                {formatNumber(likeCount)} <LikeOutlined style={{ marginRight: 8, marginLeft: 4 }} />
+                                {formatNumber(likeCountNum)} <LikeOutlined style={{ marginRight: 8, marginLeft: 4 }} />
                             </>
                         )}
-                        {commentCount && (
+                        {hasComments && (
                             <div className="flex space-x-2 items-center">
-                                <span>|</span>
+                                {hasLikes && <span>|</span>}
                                 <span>
-                                    {formatNumber(commentCount)} <MessageOutlined />
+                                    {commentCountNum} <MessageOutlined />
                                 </span>
                             </div>
                         )}
-                        {!likeCount && !commentCount && '-'}
+                        {!hasLikes && !hasComments && '-'}
                     </span>
                 );
             }
