@@ -144,7 +144,7 @@ const Birthday = () => {
             setSelectedTag={setSelectedTag} 
           />
           {/* Select Group */}
-         { selectedTag === "yes" &&<div className=" border border-gray-300 p-4 rounded-[6px]">
+         { selectedTag === "Yes" &&<div className=" border border-gray-300 p-4 rounded-[6px]">
             
 
             <div class="flex items-center gap-[6px] mb-4">
