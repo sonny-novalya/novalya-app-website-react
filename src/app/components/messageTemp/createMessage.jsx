@@ -531,8 +531,8 @@ const CreateMessage = ({containerRef}) => {
                     </div>
                   )}
                  {visibility?.attachment&&
-                  <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
-                      <CreateMessageIcon index={6} />
+                    <button onClick={()=>setIsUpload(true)} className="varient-btn-hover flex items-center gap-2 bg-white border border-[#0087FF] text-[14px] text-[#0087FF] px-4 py-2 rounded-md hover:bg-[#0087FF] hover:text-white min-h-[36px]">
+                      {attachment ? <img src={attachment} className=' w-fit h-6 object-contain rounded' alt="previewUrl" /> :  <CreateMessageIcon index={6} />}
                       {attachment ? "Change image" : t("message.Upload image")}
                     </button>
                   }
