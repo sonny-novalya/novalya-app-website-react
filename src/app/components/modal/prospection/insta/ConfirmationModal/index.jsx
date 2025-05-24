@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import { useLocation } from "react-router-dom";
 
-const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType, tempMessageList, keyWordList, CRMList, handleOpenSettings }) => {
+const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, tempMessageList, CRMList, handleOpenSettings }) => {
 
-    const { fbProspection, fetchProspectionData, settingLoading } = SettingStore();
-    const { selectedMessage, selectedStrategy, selectedRequest, selectedInterval, selectedGender, selectedKeyword, reTargetSameUser, existingConvo, action, postTarget } = fbProspection;
+    const { instaProspection, fetchProspectionData, settingLoading } = SettingStore();
+    const { selectedMessage, selectedStrategy, selectedRequest, selectedInterval, selectedGender, selectedKeyword, reTargetSameUser, existingConvo, action, postTarget } = instaProspection;
 
     const handleOpen = (value) => {
         handleOpenSettingsTab(value);
@@ -22,11 +22,10 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
     const [ isEmpty, setIsEmpty] = useState(false)
 
     const messageTitle = tempMessageList.find((item) => item.id == selectedMessage)?.title || t("prospecting.Message");
-    const keywordTitle = keyWordList.find((item) => item.id == selectedKeyword)?.name ?? t("prospecting.None");
 
     useEffect(() => {
         if (groupId) {
-            fetchProspectionData("facebook", groupId);
+            fetchProspectionData("instagram", groupId);
         }
     }, []);
 
@@ -88,14 +87,6 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
                                 handleOpen={handleOpen}
                             />
 
-                            <Filters 
-                                selectedGender={selectedGender} 
-                                keyword={keywordTitle} 
-                                handleOpen={handleOpen} 
-                                postType={postType} 
-                                postTarget={postTarget} 
-                            />
-
                             <AdvOptions
                                 reTargetSameUser={reTargetSameUser}
                                 existingConvo={existingConvo}
@@ -136,9 +127,7 @@ ConfirmationModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     handleOpenSettingsTab: PropTypes.func,
     groupId: PropTypes.string,
-    postType: PropTypes.string,
     tempMessageList: PropTypes.any,
-    keyWordList: PropTypes.any,
     CRMList: PropTypes.any,
     handleOpenSettings: PropTypes.func
 };

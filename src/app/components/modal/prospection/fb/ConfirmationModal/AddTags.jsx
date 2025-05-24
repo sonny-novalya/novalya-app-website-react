@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
 const AddTags = ({ action = 'no', CRMList, handleOpen }) => {
-  const location = useLocation();
-  const isInstagram = location.pathname.split("/")[1] === 'ig'
 
   let parsedAction;
   try {
@@ -34,7 +32,7 @@ const AddTags = ({ action = 'no', CRMList, handleOpen }) => {
         <h2 className="font-[500] text-[24px]">{t("prospecting.Add Tags")}</h2>
         <span
           className="cursor-pointer"
-          onClick={() => handleOpen(isInstagram ? 4 : 5)}>
+          onClick={() => handleOpen(5)}>
           <EditIconSquaredIcon />
         </span>
       </div>

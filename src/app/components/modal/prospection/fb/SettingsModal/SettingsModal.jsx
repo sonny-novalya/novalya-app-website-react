@@ -69,6 +69,8 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
             key: 1,
             children: <SelectMessage
                 tempMessageList={tempMessageList}
+                setActiveKey={setActiveKey}
+                updateTabStatus={updateTabStatus}
             />
         },
         {

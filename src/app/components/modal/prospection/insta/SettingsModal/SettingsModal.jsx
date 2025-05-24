@@ -6,33 +6,28 @@ import { t } from "i18next";
 import { message as MessagePopup } from "antd"
 import SelectMessage from "./SelectMessage";
 import Settings from "./Settings";
-import Filters from "./Filters";
 import AdvOptions from "./AdvOptions";
 import AddTags from "./AddTags";
 
 import SettingStore from "../../../../../../store/prospection/settings-store";
 
-const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, postType, tempMessageList, keyWordList, CRMList, needToFetchSettings, updateGroupSettingStatus }) => {
-    const { fbProspection, updateFbProspection, fetchProspectionData, createSocialTarget, loading: createSocialLoading, settingsAlreadyExists, settingLoading } = SettingStore();
+const InstaSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupId, tempMessageList, CRMList, needToFetchSettings, updateGroupSettingStatus }) => {
+    const { instaProspection, updateInstaProspection, fetchProspectionData, createSocialTarget, loading: createSocialLoading, settingsAlreadyExists, settingLoading } = SettingStore();
 
-    const { selectedMessage, postTarget } = fbProspection;
+    const { selectedMessage, postTarget } = instaProspection;
     
-    const isFacebookPostType = ["post", "post-like"].includes(postType.toString().toLowerCase());
-
     const [visitedTabs, setVisitedTabs] = useState({
         1: true, // Select Message
         2: false, // Settings
-        3: false, // Filters
-        4: false, // Advanced Options
-        5: false, // Add Tags
+        3: false, // Advanced Options
+        4: false, // Add Tags
     });
 
     const [validatedTabs, setValidatedTabs] = useState({
         1: false, // Select Message
         2: true, // Settings
-        3: isFacebookPostType ? false : true, // Filters
-        4: true, // Advanced Options
-        5: true, // Add Tags
+        3: true, // Advanced Options
+        4: true, // Add Tags
     });   
 
     const updateTabStatus = (tab, status, type) => {
@@ -56,12 +51,7 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
             updateTabStatus(1, true, "validate")
         }
 
-        // tab 3 validations
-        if(isFacebookPostType && postTarget){
-            updateTabStatus(3, true, "validate")
-        }
-
-    }, [selectedMessage, postTarget])
+    }, [selectedMessage])
 
     const tabItems = [
         {
@@ -69,6 +59,8 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
             key: 1,
             children: <SelectMessage
                 tempMessageList={tempMessageList}
+                setActiveKey={setActiveKey}
+                updateTabStatus={updateTabStatus}
             />
         },
         {
@@ -77,21 +69,13 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
             children: <Settings/>
         },
         {
-            label: t("prospecting.Filters"),
-            key: 3,
-            children: <Filters
-                keyWordList={keyWordList}
-                postType={postType}
-            />
-        },
-        {
             label: t("prospecting.Advanced Options"),
-            key: 4,
+            key: 3,
             children: <AdvOptions/>
         },
         {
             label: t("prospecting.Add Tags"),
-            key: 5,
+            key: 4,
             children: <AddTags
                 CRMList={CRMList}
             />
@@ -99,8 +83,8 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
     ];
 
     const handleUpdateGroupId = (groupId) => {
-        updateFbProspection({
-            ...fbProspection,
+        updateInstaProspection({
+            ...instaProspection,
             groupId: groupId
         });
     };
@@ -134,17 +118,14 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
             if(activeKey == "1"){
                 MessagePopup.error("Please select a message");
             }
-            else if(activeKey == "3"){
-                MessagePopup.error("Please select which one to Target");
-            }
         }
     };
 
     const handleSave = async () => {
         if (isValidToSubmit()) {
             const prospectionData = {
-                ...fbProspection,
-                prospection_type: "facebook",
+                ...instaProspection,
+                prospection_type: "instagram",
             };
             try {
                 await createSocialTarget({ ...prospectionData });
@@ -163,7 +144,7 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
     useEffect(() => {
         handleUpdateGroupId(groupId);
         if (groupId && needToFetchSettings) {
-            fetchProspectionData("facebook", groupId);
+            fetchProspectionData("instagram", groupId);
         }
     }, [groupId]);      
 
@@ -181,10 +162,8 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
             (
                 visitedTabs[1] &&
                 visitedTabs[2] &&
-                visitedTabs[3] &&
                 validatedTabs[1] &&
-                validatedTabs[2] &&
-                validatedTabs[3]
+                validatedTabs[2]
             ) || settingsAlreadyExists
         );
     };
@@ -263,7 +242,7 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
                         </button>}
                         {(activeKey < tabItems.length) && <button
                             className={`px-12 min-h-[45px]  py-2 rounded-lg bg-[#0087FF] text-white cursor-pointer ${activeKey === tabItems.length ? "opacity-50" : ""}`}
-                            onClick={() => handleTabClick(Number(activeKey) + 1)} // +1 not create any issue on 5th tab because we will hide this button
+                            onClick={() => handleTabClick(Number(activeKey) + 1)} // +1 not create any issue on 4th tab because we will hide this button
                             // disabled={}
                         >
                             {t("prospecting.Next")}
@@ -282,16 +261,15 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
     );
 };
 
-FbSettingsModal.propTypes = {
+InstaSettingsModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     groupId: PropTypes.any,
     activeKey: PropTypes.number,
     setActiveKey: PropTypes.func,
-    postType: PropTypes.string,
     tempMessageList: PropTypes.array,
     keyWordList: PropTypes.array,
     CRMList: PropTypes.array,
 };
 
-export default FbSettingsModal;
+export default InstaSettingsModal;

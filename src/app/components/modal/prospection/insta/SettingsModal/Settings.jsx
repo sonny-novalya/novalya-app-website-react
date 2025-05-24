@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
 const Settings = () => {
-    const { fbProspection, updateFbProspection } = SettingStore();
+    const { instaProspection, updateInstaProspection } = SettingStore();
 
-    const { selectedStrategy, selectedRequest, selectedInterval } = fbProspection;
+    const { selectedStrategy, selectedRequest, selectedInterval } = instaProspection;
     // const { pro_stratagy, norequest, interval } = prospection;
     const [customRequest, setCustomRequest] = useState(selectedRequest);
 
@@ -51,9 +51,9 @@ const Settings = () => {
 
     const handleUpdate = (field, value) => {
         if (field === "norequest" && value === "Custom") {
-            updateFbProspection({ ...fbProspection, selectedRequest: Number(customRequest) });
+            updateInstaProspection({ ...instaProspection, selectedRequest: Number(customRequest) });
         } else {
-            updateFbProspection({ ...fbProspection, [field]: value });
+            updateInstaProspection({ ...instaProspection, [field]: value });
         }
     };
 
@@ -148,7 +148,7 @@ const Settings = () => {
                                     onBlur={() => {
                                         const parsed = Number(customRequest);
                                         if (parsed >= 1 && parsed <= 50) {
-                                            updateFbProspection({ ...fbProspection, selectedRequest: parsed });
+                                            updateInstaProspection({ ...instaProspection, selectedRequest: parsed });
                                         }
                                     }}
                                     placeholder="Enter value"

@@ -6,8 +6,8 @@ import PropTypes from "prop-types";
 
 const AddTags = ({ CRMList }) => {
 
-    const { fbProspection, updateFbProspection } = SettingStore();
-    const { action } = fbProspection;
+    const { instaProspection, updateInstaProspection } = SettingStore();
+    const { action } = instaProspection;
   
     let parsedAction;
     try {
@@ -34,8 +34,8 @@ const AddTags = ({ CRMList }) => {
     const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
 
     const handleSave = (moveGroupId, moveStageId, stage_num) => {
-        updateFbProspection({
-            ...fbProspection,
+        updateInstaProspection({
+            ...instaProspection,
             action: JSON.stringify({
                 moveGroupId: actionType !== "no" ? moveGroupId : null,
                 moveStageId: actionType !== "no" ? moveStageId : null,

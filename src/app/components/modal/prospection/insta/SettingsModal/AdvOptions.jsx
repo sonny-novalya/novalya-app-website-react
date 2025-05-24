@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 
 const AdvOptions = () => {
 
-    const { fbProspection, updateFbProspection } = SettingStore();
-    const { reTargetSameUser, existingConvo } = fbProspection;
+    const { instaProspection, updateInstaProspection } = SettingStore();
+    const { reTargetSameUser, existingConvo } = instaProspection;
 
     const reTargetOptions = [
         {
@@ -32,8 +32,8 @@ const AdvOptions = () => {
 
     const handleSave = (field, value) => {
         // Update the prospection state in the store based on which option is clicked
-        updateFbProspection({
-            ...fbProspection,
+        updateInstaProspection({
+            ...instaProspection,
             [field]: value
         });
     };

@@ -6,18 +6,8 @@ import { useLocation } from "react-router-dom";
 
 const Settings = ({ selectedStrategy, selectedRequest, selectedInterval, handleOpen }) => {
 
-    // const { prospection, updateProspection } = SettingStore();
-    // const handleClick = (field, value) => {
-    //     updateProspection({
-    //         ...prospection,
-    //         [field]: value
-    //     });
-    // };
-    const location = useLocation();
-    const isInstagram = location.pathname.split("/")[1] === "ig";
-
     const strategies = [
-        { value: 1, label: isInstagram ? t("prospecting.Follow + Message") : t("prospecting.Message + Request") },
+        { value: 1, label: t("prospecting.Message + Request") },
         { value: 0, label: t("prospecting.Message Only") },
     ];
 

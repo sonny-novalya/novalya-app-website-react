@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import useMessageSteps from "../../../../../../store/messageTemp/MessageTemp";
 
-const SelectMessage = ({ tempMessageList }) => {
+const SelectMessage = ({ tempMessageList, setActiveKey, updateTabStatus }) => {
     const {
         setIsMessage,
         setStep,
@@ -44,6 +44,8 @@ const SelectMessage = ({ tempMessageList }) => {
     const handleRowClick = (id) => {
         setSelectedRow(id);
         handleUpdate("selectedMessage", id);
+        setActiveKey(2); // auto move to next tab after selecting message
+        updateTabStatus(2, true, "visit"); // auto move to next tab after selecting message
     };
 
     const filteredMessages = useMemo(() => {
@@ -131,6 +133,8 @@ const SelectMessage = ({ tempMessageList }) => {
 
 SelectMessage.propTypes = {
     tempMessageList: PropTypes.array,
+    setActiveKey: PropTypes.func,
+    updateTabStatus: PropTypes.func,
     onComplete: PropTypes.func,
 };
 

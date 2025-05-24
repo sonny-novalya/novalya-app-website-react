@@ -6,116 +6,66 @@ const SettingStore = create((set) => ({
     loading: false,
     settingLoading: false,
     CRMList: [],
-    // prospection: {
-    //     step: 1,
-    //     group: [],
-    //     messageData: [],
-    //     keywordData: [],
-    //     crmGroupData: [],
-    //     stratagy: 0, // 0 set for Follow + message
-    //     norequest: 10, // How many Requests
-    //     interval: "2-4", // make different interval for fb and ig
-    //     selectedinterval: "1", // selected interval custom goes here
-    //     gender: "female",
-    //     keyword: null,
-    //     prospect: "no", // retarget same user
-    //     pro_convo: 0, // Existing conversation
-    //     pro_stratagy: 0, // Request + Message
-    //     action: "no", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
-    //     datevalue: null,
-    //     group_id: null,
-    //     message: null,
-    //     post_target: "Like",
-    //     newMessage: null, // New message data
-    //     keywords: null, // Keywords data
-
-    //     prospect_type: "facebook", // Default platform type (can be "facebook" or "instagram") || comes from api
-    //     user_id: null, // User ID associated with the message || comes from api
-
-    //     // Bottom values
-    //     negative_keyword: null, // Negative keyword data
-    //     resume: null, // Resume data
-    //     search_index: 1, // Search index value
-    //     status: null, // Status of the operation
-    //     stratragy: false, // Strategy flag
-    //     created_at: null, // Timestamp of creation
-    // }, 
-    prospection: {
-        step: 1,
-        group: [],
-        messageData: [],
-        keywordData: [],
-        crmGroupData: [],
-        stratagy: null, // 0 set for Follow + message
-        norequest: null, // How many Requests
-        interval: null, // make different interval for fb and ig
-        selectedinterval: null, // selected interval custom goes here
-        gender: null,
-        keyword: null,
-        prospect: "no", // retarget same user
-        pro_convo: 0, // Existing conversation
-        pro_stratagy: null, // Request + Message
-        action: "{\"moveGroupId\":null,\"moveStageId\":null,\"stage_num\":null}", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string
-        datevalue: null,
-        group_id: null,
-        message: null,
-        post_target: null,
-        newMessage: null, // New message data
-        keywords: null, // Keywords data
-
-        prospect_type: "facebook", // Default platform type (can be "facebook" or "instagram") || comes from api
-        user_id: null, // User ID associated with the message || comes from api
-
-        // Bottom values
-        negative_keyword: null, // Negative keyword data
-        resume: null, // Resume data
-        search_index: 1, // Search index value
-        status: null, // Status of the operation
-        stratragy: false, // Strategy flag
-        created_at: null, // Timestamp of creation
-    }, 
-    initialProspectionStates: {
-        step: 1,
-        group: [],
-        messageData: [],
-        keywordData: [],
-        crmGroupData: [],
-        stratagy: null, // 0 set for Follow + message
-        norequest: null, // How many Requests
-        interval: null, // make different interval for fb and ig
-        selectedinterval: null, // selected interval custom goes here
-        gender: null,
-        keyword: null,
-        prospect: "no", // retarget same user
-        pro_convo: 0, // Existing conversation
-        pro_stratagy: null, // Request + Message
-        action: "{\"moveGroupId\":null,\"moveStageId\":null,\"stage_num\":null}", // it means "{\"moveStageId\":null,\"moveGroupId\":null,\"stage_num\":null}" otherwise pass all items into string  
-        datevalue: null,
-        group_id: null,
-        message: null,
-        post_target: null,
-        newMessage: null, // New message data
-        keywords: null, // Keywords data
-
-        prospect_type: "facebook", // Default platform type (can be "facebook" or "instagram") || comes from api
-        user_id: null, // User ID associated with the message || comes from api
-
-        // Bottom values
-        negative_keyword: null, // Negative keyword data
-        resume: null, // Resume data
-        search_index: 1, // Search index value
-        status: null, // Status of the operation
-        stratragy: false, // Strategy flag
-        created_at: null, // Timestamp of creation
-    }, 
-    setStep: (value) => set(() => ({
-        step: value
+    settingsAlreadyExists: false,
+    fbProspection: {
+        groupId:null,
+        selectedMessage: null,
+        selectedStrategy: null,
+        selectedRequest: null,
+        selectedInterval: null,
+        selectedGender: null,
+        selectedKeyword: null,
+        postTarget: null,
+        reTargetSameUser: null, 
+        existingConvo: null,
+        action: null
+    },
+    defaultFbProspection: {
+        selectedMessage: null,
+        selectedStrategy: 1,
+        selectedRequest: 5,
+        selectedInterval: "3-5",
+        selectedGender: "both",
+        selectedKeyword: null,
+        postTarget: null,
+        reTargetSameUser: "no", 
+        existingConvo: 0,
+        action: "{\"moveGroupId\":null,\"moveStageId\":null,\"stage_num\":null}"
+    },
+    instaProspection: {
+        groupId:null,
+        selectedMessage: null,
+        selectedStrategy: null,
+        selectedRequest: null,
+        selectedInterval: null,
+        selectedGender: null,
+        selectedKeyword: null,
+        postTarget: null,
+        reTargetSameUser: null, 
+        existingConvo: null,
+        action: null
+    },
+    defaultInstaProspection: {
+        selectedMessage: null,
+        selectedStrategy: 1,
+        selectedRequest: 5,
+        selectedInterval: "3-5",
+        selectedGender: "both",
+        selectedKeyword: null,
+        postTarget: null,
+        reTargetSameUser: "no", 
+        existingConvo: 0,
+        action: "{\"moveGroupId\":null,\"moveStageId\":null,\"stage_num\":null}"
+    },
+    updateFbProspection: (newValues) => set(() => ({
+        fbProspection: { ...newValues }
     })),
-    updateProspection: (newValues) => set(() => ({
-        prospection: { ...newValues }
+    updateInstaProspection: (newValues) => set(() => ({
+        instaProspection: { ...newValues }
     })),
+
     fetchProspectionData: async (prospectionType, groupId) => {
-        set({ settingLoading: true });
+        set({ settingLoading: true, settingsAlreadyExists: false });
         try {
             const response = await apiCall({
                 method: 'GET',
@@ -131,50 +81,74 @@ const SettingStore = create((set) => ({
             if (data.status === "success" && Array.isArray(data?.data) && typeof data.data[0] === "object" && data.data[0] !== null) {
                 const responseData = data.data[0];
 
-                set({
-                    prospection: {
-                        group: responseData?.group || [],
-                        messageData: responseData?.messages || [],
-                        keywordData: responseData?.keywords || [],
-                        crmGroupData: responseData?.groups || [],
-                        stratagy: responseData?.stratagy ?? null,
-                        norequest: responseData?.norequest ?? null,
-                        interval: responseData?.interval ?? null,
-                        selectedinterval: responseData?.selectedinterval ?? null,
-                        gender: responseData?.gender ?? null,
-                        keyword: responseData?.keyword ?? null,
-                        prospect: responseData?.prospect ?? "no",
-                        pro_convo: responseData?.pro_convo ?? 0,
-                        pro_stratagy: responseData?.pro_stratagy ?? null,
-                        action: responseData?.action ?? "no",
-                        datevalue: responseData?.datevalue ?? null,
-                        group_id: responseData?.group_id ?? null,
-                        message: responseData?.message ?? null,
-                        post_target: responseData?.post_target ?? null,
-                        newMessage: responseData?.newMessage ?? null,
-                        keywords: responseData?.keywords ?? null,
-                        prospect_type: responseData?.prospection_type ?? "facebook",
-                        user_id: responseData?.user_id ?? null,
-                        negative_keyword: responseData?.negative_keyword ?? null,
-                        resume: responseData?.resume ?? null,
-                        search_index: responseData?.search_index ?? 1,
-                        status: responseData?.status ?? null,
-                        stratragy: responseData?.stratragy ?? false,
-                        created_at: responseData?.created_at ?? null,
-                    },
-                    settingLoading: false
-                });
+                if(prospectionType == "facebook"){
+                    set({
+                        fbProspection: {
+                            groupId: responseData?.group_id ?? null,
+                            selectedMessage: responseData?.message ?? null,
+                            selectedStrategy: responseData?.pro_stratagy ?? null,
+                            selectedRequest: responseData?.norequest ?? null,
+                            selectedInterval: responseData?.interval ?? null,
+                            selectedGender: responseData?.gender ?? null,
+                            selectedKeyword: responseData?.keyword ?? null,
+                            postTarget: responseData?.post_target ?? null,
+                            reTargetSameUser: responseData?.prospect ?? "no", 
+                            existingConvo: responseData?.pro_convo ?? 0,
+                            action: responseData?.action ?? "no"
+                        },
+                        settingLoading: false,
+                        settingsAlreadyExists: true,
+                    });
+                }
+                else if(prospectionType == "instagram"){
+                    set({
+                        instaProspection: {
+                            groupId: responseData?.group_id ?? null,
+                            selectedMessage: responseData?.message ?? null,
+                            selectedStrategy: responseData?.pro_stratagy ?? null,
+                            selectedRequest: responseData?.norequest ?? null,
+                            selectedInterval: responseData?.interval ?? null,
+                            selectedGender: responseData?.gender ?? null,
+                            selectedKeyword: responseData?.keyword ?? null,
+                            postTarget: responseData?.post_target ?? null,
+                            reTargetSameUser: responseData?.prospect ?? "no", 
+                            existingConvo: responseData?.pro_convo ?? 0,
+                            action: responseData?.action ?? "no"
+                        },
+                        settingLoading: false,
+                        settingsAlreadyExists: true,
+                    });
+                }
+                
             } else {
-                set({
-                    prospection: { ...SettingStore.getState().initialProspectionStates },
-                    settingLoading: false
-                });
-        }   
+
+                if(prospectionType == "facebook"){
+                    set({
+                        fbProspection: {
+                            ...SettingStore.getState().fbProspection, // preserve existing keys like groupId
+                            ...SettingStore.getState().defaultFbProspection // override with defaults
+                        },
+                        settingLoading: false
+                    });
+                }
+                else if(prospectionType == "instagram"){
+                    set({
+                        instaProspection: {
+                            ...SettingStore.getState().instaProspection, // preserve existing keys like groupId
+                            ...SettingStore.getState().defaultInstaProspection // override with defaults
+                        },
+                        settingLoading: false
+                    });
+                }
+            }   
         } catch (error) {
             console.error("Error fetching prospection data:", error);
             set({ settingLoading: false });
         }
     },
+    setStep: (value) => set(() => ({
+        step: value
+    })),
     fetchKeywordsList: async (type = 'facebook') => {
         try {
             const response = await apiCall({
@@ -197,19 +171,33 @@ const SettingStore = create((set) => ({
     createSocialTarget: async (prospectionData) => {
         try {
             set({ loading : true})
-            
+            let params = {
+                group_id: prospectionData?.groupId,
+                message: prospectionData?.selectedMessage,
+                norequest: prospectionData?.selectedRequest,
+                interval: prospectionData?.selectedInterval,
+                gender: prospectionData?.selectedGender,
+                prospect: prospectionData?.reTargetSameUser,
+                keyword: prospectionData?.selectedKeyword,
+                action: prospectionData?.action,
+                prospection_type: prospectionData?.prospection_type,
+                pro_stratagy: prospectionData?.selectedStrategy,
+                pro_convo: prospectionData?.existingConvo,
+                post_target: prospectionData?.postTarget,
+            }
+    
             const response = await apiCall({
                 method: 'POST',
                 url: "/target/setting/api/create",
-                data: prospectionData
+                data: params
             });
 
             if (response.status === 200) {
-                set({
-                    prospection: {
-                        ...response.data, // Assuming response data structure fits in the prospection state.
-                    }
-                });
+                // set({
+                //     prospection: {
+                //         ...response.data, // Assuming response data structure fits in the prospection state.
+                //     }
+                // });
             }
             set({ loading: false })
         } catch (error) {

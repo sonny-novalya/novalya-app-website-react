@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
 const AdvOptions = ({ existingConvo, reTargetSameUser, handleOpen }) => {
-    const location = useLocation();
-    const isInstagram = location.pathname.split("/")[1] === 'ig'
 
     return (
         <main className="">
@@ -13,14 +11,14 @@ const AdvOptions = ({ existingConvo, reTargetSameUser, handleOpen }) => {
                 <h2 className="font-[500] text-[24px]">{t("prospecting.Advance Options")}</h2>
                 <span
                     className="cursor-pointer"
-                    onClick={() => handleOpen(isInstagram ? 3 : 4)}>
+                    onClick={() => handleOpen(4)}>
                     <EditIconSquaredIcon />
                 </span>
             </div>
             <div className="flex justify-start border border-[#00000014] rounded-[6px] px-5 pt-3 pb-5">
                 <div className="w-[35%] flex flex-col pr-6">
                     <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Retarget same user")}</h3>
-                    <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2">
+                    <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2 capitalize">
                         {reTargetSameUser}
                     </p>
                 </div>
