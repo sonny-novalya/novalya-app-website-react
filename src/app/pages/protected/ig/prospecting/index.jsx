@@ -33,7 +33,7 @@ const IgProspecting = () => {
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup,initialStoreFiltersIG } = useGroupStore();
+    const { groups, setGroups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup,initialStoreFiltersIG } = useGroupStore();
     const socialType = "ig_followers";
     const prospect_folder = "ig";
 
