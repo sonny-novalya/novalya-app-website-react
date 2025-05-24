@@ -3,7 +3,7 @@ import { TickFillIcon } from "../../../common/icons/icons";
 
 // eslint-disable-next-line react/prop-types
 const AddTag = ({ selectedTag, setSelectedTag }) => {
-    const tagOptions = ["yes", "no"];
+    const tagOptions = ["Yes", "No"];
 
     return (
         <div className="border border-[#DADADA] px-4 pt-4 pb-3 rounded-[6px]">

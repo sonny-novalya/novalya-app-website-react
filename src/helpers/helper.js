@@ -438,3 +438,38 @@ export function getCardType(cardNumber) {
   return '';
 }
 
+export const findPlan = (plan_id) => {
+  const plans = ["Basic","Business","Unlimited","Starter","Essential","Advanced","Leader"]
+ return plans.find(plan => plan_id.toLowerCase().includes(plan.toLowerCase())) || null;
+}
+
+export const findPlanPeriod = (plan_id) => {
+if (plan_id.includes("Monthly")) {
+  return "Monthly"
+}else if (plan_id.includes("Yearly")){
+  return "Yearly"
+}else{
+  return "Quarterly"
+}
+}
+
+export const findPlanCurr = (plan_id) => {
+if (plan_id.includes("USD")) {
+  return "$"
+}else{
+  return "€"
+}
+}
+
+export function getRemainingDays(targetDate) {
+  const now = new Date();
+  const future = new Date(targetDate);
+
+  // Get the difference in milliseconds
+  const diffInMs = future - now;
+
+  // Convert milliseconds to days
+  const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+  return diffInDays > 0 ? diffInDays : 0; // Return 0 if date is in the past
+}

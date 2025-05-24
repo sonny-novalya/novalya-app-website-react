@@ -17,7 +17,7 @@ const SocialStatsPage = ({ isLoading, limit_data }) => {
                 <div>
                     <h2 className="flex items-center text-black font-medium">
                         Software status
-                        <span className="bg-[#00B150] rounded-2xl text-white px-4 ml-2 py-1 flex items-center space-x-2">
+                        <span className="bg-[#00B150] rounded-2xl text-white px-4 ml-3 py-1 flex items-center space-x-3">
                             <span className="w-2 h-2 bg-white rounded-full"></span>
                             <span className='text-sm'>Active</span>
                         </span>

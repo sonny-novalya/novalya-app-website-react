@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { message, Spin } from 'antd';
 import { CameraIcon } from '../../common/icons/icons';
 import useLoginUserDataStore from '../../../../store/loginuser/loginuserdata';
+import newUserLogo from "../../../../assets/img/new_user.png"
 
 const ProfileComponent = ({ loginUserData, userDataLoading }) => {
     const [editFields, setEditFields] = useState({
@@ -297,9 +298,13 @@ const ProfileComponent = ({ loginUserData, userDataLoading }) => {
     const [imgUrl, setImgUrl] = useState('');
 
     useEffect(() => {
-        if (loginUserData?.profilepictureurl) {
-            setImgUrl(getUpdatedImageUrl(loginUserData.profilepictureurl));
-        }
+        const url = loginUserData?.profilepictureurl;
+        if (!url) return;
+
+        const isDefaultProfile = url.includes("/uploads/userprofile/profile.png");
+        const updatedUrl = isDefaultProfile ? newUserLogo : getUpdatedImageUrl(url);
+
+        setImgUrl(updatedUrl);
     }, [loginUserData?.profilepictureurl]);
 
 

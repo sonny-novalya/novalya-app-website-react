@@ -397,7 +397,7 @@ export const LogoutIcon = () => (
 
 export const SendIcon = () => (
     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fillRule="evenodd" clipRule="evenodd" d="M4.22172 3.45344C-1.08953 5.22969 -1.08953 8.12594 4.22172 9.89344L6.56672 10.6722L7.34547 13.0172C9.11297 18.3284 12.018 18.3284 13.7855 13.0172L16.4192 5.12469C17.5917 1.58094 15.6667 -0.352809 12.123 0.828441L4.22172 3.45344ZM9.07797 8.87844C8.94672 9.00969 8.78047 9.07094 8.61422 9.07094C8.44797 9.07094 8.28172 9.00969 8.15047 8.87844C7.89672 8.62469 7.89672 8.20469 8.15047 7.95094L11.4755 4.60844C11.7292 4.35469 12.1492 4.35469 12.403 4.60844C12.6567 4.86219 12.6567 5.28219 12.403 5.53594L9.07797 8.87844Z" fill="black" />
+        <path fillRule="evenodd" clipRule="evenodd" d="M4.22172 3.45344C-1.08953 5.22969 -1.08953 8.12594 4.22172 9.89344L6.56672 10.6722L7.34547 13.0172C9.11297 18.3284 12.018 18.3284 13.7855 13.0172L16.4192 5.12469C17.5917 1.58094 15.6667 -0.352809 12.123 0.828441L4.22172 3.45344ZM9.07797 8.87844C8.94672 9.00969 8.78047 9.07094 8.61422 9.07094C8.44797 9.07094 8.28172 9.00969 8.15047 8.87844C7.89672 8.62469 7.89672 8.20469 8.15047 7.95094L11.4755 4.60844C11.7292 4.35469 12.1492 4.35469 12.403 4.60844C12.6567 4.86219 12.6567 5.28219 12.403 5.53594L9.07797 8.87844Z" fill="#fff" />
     </svg>
 )
 export const TwoUsersIcon = () => (
@@ -513,24 +513,8 @@ export const upgradeToPremiumIcon = () => (
 );
 
 export const CollapsedLeftIcon = () => (
-    <svg width="44" height="45" viewBox="0 0 44 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#filter0_d_2389_1556)">
-            <circle cx="14" cy="14" r="14" transform="matrix(1 0 0 -1 8 36.3711)" fill="#0176DF" />
-        </g>
-        <path d="M24.4984 15.1461C24.3401 15.1461 24.1818 15.2044 24.0568 15.3294L18.6234 20.7627C17.7401 21.6461 17.7401 23.0961 18.6234 23.9794L24.0568 29.4127C24.2984 29.6544 24.6984 29.6544 24.9401 29.4127C25.1818 29.1711 25.1818 28.7711 24.9401 28.5294L19.5068 23.0961C19.1068 22.6961 19.1068 22.0461 19.5068 21.6461L24.9401 16.2127C25.1818 15.9711 25.1818 15.5711 24.9401 15.3294C24.8151 15.2127 24.6568 15.1461 24.4984 15.1461Z" fill="white" />
-        <defs>
-            <filter id="filter0_d_2389_1556" x="0" y="0.371094" width="44" height="44" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                <feMorphology radius="2" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_2389_1556" />
-                <feOffset />
-                <feGaussianBlur stdDeviation="3" />
-                <feComposite in2="hardAlpha" operator="out" />
-                <feColorMatrix type="matrix" values="0 0 0 0 0.109804 0 0 0 0 0.458824 0 0 0 0 0.992157 0 0 0 0.3 0" />
-                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2389_1556" />
-                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2389_1556" result="shape" />
-            </filter>
-        </defs>
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.82012 12.433C5.92779 12.433 6.03546 12.3934 6.12046 12.3084L9.81512 8.6137C10.4158 8.01304 10.4158 7.02704 9.81512 6.42637L6.12046 2.7317C5.95612 2.56737 5.68413 2.56737 5.51979 2.7317C5.35546 2.89603 5.35546 3.16803 5.51979 3.33237L9.21446 7.02704C9.48646 7.29904 9.48646 7.74104 9.21446 8.01304L5.51979 11.7077C5.35546 11.872 5.35546 12.144 5.51979 12.3084C5.60479 12.3877 5.71246 12.433 5.82012 12.433Z" fill="white"/>
     </svg>
 )
 

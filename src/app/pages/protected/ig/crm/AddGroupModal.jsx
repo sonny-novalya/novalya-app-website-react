@@ -62,32 +62,41 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
     };
     return (
         <Modal
+            className="crm-common-model"
             open={createGroup.isOpen}
             onCancel={() => {
                 createGroup.onClose();
             }}
             footer={null}
+            width={745}
             centered
-            className="rounded-lg"
+            
         >
-            <div className="bg-gray-50 text-center rounded-t-lg">
-                <h2 className="text-2xl font-medium text-gray-700">{t("crm.Add Group")}</h2>
+            
+            
+            <div class="flex items-center gap-[6px] mb-2.5">
+                <h2 className="text-[20px] font-[500] leading-[1.25] mb-1">{t("crm.Add Group")}</h2>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path>
+                </svg>
             </div>
-
-            <div className="flex flex-col space-y-2">
-                <div className="text-xl text-[#000407] font-medium">{t("crm.Name your group")}</div>
-                <input
-                    value={groupName}
-                    onChange={(e) => setGroupName(e.target.value)}
-                    placeholder={t("crm.Write group name ...")}
-                    className="p-3 rounded-lg border border-[#DADADA] focus:outline-none focus:border-[#0087FF] "
-                />
-
-                <div className="text-xl text-[#000407] font-medium mt-2">
-                    {t("crm.Select the color")}
+            <input
+                value={groupName}
+                onChange={(e) => setGroupName(e.target.value)}
+                placeholder={t("crm.Write group name ...")}
+                className="min-h-[52px] w-full rounded-[10px] px-[24px] py-[12px] border border-[#DADADA] focus:outline-none focus:border-[#0087FF] "
+            />
+            <div className="flex flex-col space-y-3">
+                 <div class="flex items-center gap-[6px] mt-5">
+                    <div className="text-[20px] text-[#000407] font-[500] mb-1">{t("crm.Select the color")}</div>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path>
+                    </svg>
                 </div>
 
-                <div className="flex mb-4 space-x-4">
+                
+
+                <div className="flex space-x-5">
                     {colorOptions.map((col, index) => (
                         <div
                             key={index}
@@ -100,16 +109,16 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
                     ))}
                 </div>
 
-                <div className="rounded-lg mt-4 flex space-x-5">
+                <div className="rounded-lg mt-2 flex space-x-5">
                     <RgbaColorPicker
                         color={color}
                         className="mb-4"
                         onChange={handleColorChangeInternal}
                     />
                     <div>
-                        <div className="text-sm font-medium">
-                            <h2 className="mb-2">Hex</h2>
-                            <span className="rounded-lg border border-gray-300 p-2">{`#${(color.r << 16 | color.g << 8 | color.b).toString(16).padStart(6, '0').toUpperCase()}`}</span>
+                        <div className="text-sm font-medium flex flex-col">
+                            <h2 className="mb-2 text-[16px]">Hex</h2>
+                            <span className="min-w-[90px] rounded-[7px] border border-gray-300 p-2.5 text-[#000000]">{`#${(color.r << 16 | color.g << 8 | color.b).toString(16).padStart(6, '0').toUpperCase()}`}</span>
                         </div>
                         <div
                             style={{
@@ -121,18 +130,18 @@ const AddGroupModal = ({ createGroup, createCRMGroup, fetchCRMGroups, addGrpLoad
                 </div>
             </div>
 
-            <div className="bg-gray-50 mt-2 rounded-b-lg flex justify-end space-x-4">
+            <div className=" mt-5 rounded-b-lg flex justify-end space-x-5">
                 <button
                     onClick={() => {
                         createGroup.onClose();
                     }}
-                    className="bg-white w-32 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6"
+                    className="min-h-[50px] bg-white w-37.5 text-[#0087FF] border border-[#0087FF] rounded-[10px] py-2 px-6"
                 >
                     {t("crm.Cancel")}
                 </button>
                 <button
                     onClick={handleSubmit}
-                    className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
+                    className="min-h-[50px] bg-[#21BF7C] w-37.5 text-white rounded-[10px] py-2 px-6"
                 >
                     {!addGrpLoader ? t("crm.Add") : <Spin size="small" style={{ color: "white" }} />}
                 </button>
