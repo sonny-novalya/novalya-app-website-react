@@ -69,7 +69,26 @@ const AddTags = ({ CRMList }) => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    const handleGroupSelection = (id) => {
+
+        const selectedGroupDataTemp = CRMList?.find((item) => item.id == id);
+        const sortedStagesTemp = selectedGroupDataTemp?.stage?.sort((a, b) => a.stage_num - b.stage_num) || [];
+
+        setSelectedGroupId(id);
+        if(sortedStagesTemp.length > 0){
+            setSelectedStageId(sortedStagesTemp[0]?.id);
+            setSelectedStageNum(sortedStagesTemp[0]?.stage_num);
+            handleSave(id, sortedStagesTemp[0]?.id, sortedStagesTemp[0]?.stage_num);
+        }else{
+            setSelectedStageId(null);
+            setSelectedStageNum(null);
+            handleSave(id, null, null);       
+        }
+        setShowDropdown(false);
+    }
       
+    
       
     return (
         <div className="">
@@ -138,11 +157,7 @@ const AddTags = ({ CRMList }) => {
                                                 className={`flex items-center gap-5 p-3 cursor-pointer  ${isSelected ? "bg-blue-100" : "hover:bg-[#D6E6F4]"
                                                     }`}
                                                 onClick={() => {
-                                                    setSelectedGroupId(group.id);
-                                                    setSelectedStageId(null);
-                                                    setSelectedStageNum(null);
-                                                    handleSave(group.id, null, null);
-                                                    setShowDropdown(false);
+                                                    handleGroupSelection(group.id)
                                                 }}
                                             >
                                                 <span

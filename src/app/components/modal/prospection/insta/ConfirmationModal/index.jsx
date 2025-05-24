@@ -1,7 +1,6 @@
 import { Modal, Spin } from "antd";
 import PropTypes from "prop-types";
 import Settings from "./Settings";
-import Filters from "./Filters";
 import AdvOptions from "./AdvOptions";
 import AddTags from "./AddTags";
 import { t } from "i18next";
