@@ -170,7 +170,7 @@ const Plans = () => {
                  }} />
                 <label for="aug-fb-insta">
                 <span class="aug-check-span"></span>
-                 <span>3 {t("pricing.months")}</span> <span class="aug-discount-label aug-discount-month">{t("pricing.Save")+" -20%"}</span>
+                 <span>3 {t("pricing.months")}</span> <span class="aug-discount-label aug-discount-month">{t("pricing.Save")+" -10%"}</span>
                 </label>
               </div>
               <div class="aug-plans-btn">
@@ -178,7 +178,7 @@ const Plans = () => {
                              onClick={() => {setIsAnnual("year");
                   setMonthDivision(12)
                  }} />
-                <label for="aug-insta"><span class="aug-check-span"></span> <span>12 {t("pricing.months")}</span><span class="aug-discount-label aug-discount-yearly">{t("pricing.Save")+" -35%"}</span>
+                <label for="aug-insta"><span class="aug-check-span"></span> <span>12 {t("pricing.months")}</span><span class="aug-discount-label aug-discount-yearly">{t("pricing.Save")+" -25%"}</span>
                 </label>
               </div>
             </div>
@@ -190,14 +190,13 @@ const Plans = () => {
       <div class="container">
         <div class="aug-plan-discount-cards">
           <div class="aug-starter-discont-cards aug-starter-side--card">
-            <h3 class="aug-card-lg-hd">BASIC</h3>
+            <h3 class="aug-card-lg-hd">STARTER</h3>
             <p class="aug-card-sm-hd">{t("pricing.To kick off your business")}</p>
             <ul class="aug-card-section-list">
-              <li><img src={checkedCard} alt="" /><span>{ "1200 " +t("pricing.Facebook Messages per month")}</span></li>
-              <li><img src={checkedCard} alt="" /><span>{"800 " + t("pricing.Instagram Messages per month")}</span></li>
-              <li><img src={checkedCard} alt="" /><span>{"800 " + t("pricing.AI Credits per month")}</span></li>
-              <li><img src={checkedCard} alt="" /><span>{"10 " + t("pricing.Tags + Pipelines")}</span></li>
-              <li class="rael-humans-gray"><img src={checkedCardDark} alt="" /><span>{t("pricing.Live chat with real humanss")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{ "300 " +t("pricing.Automated Messages")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{"50 " + t("pricing.Comments with AI")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{"5 " + t("pricing.Tags + Sales Pipelines")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{t("pricing.Support reply within 48h")}</span></li>
             </ul>
             <h1 class="aug-card-discount-text">
               {
@@ -218,14 +217,13 @@ const Plans = () => {
             <div class="aug-popular">
               <img src={popular} alt="" />
             </div>
-            <h3 class="aug-card-lg-hd">BUSINESS</h3>
+            <h3 class="aug-card-lg-hd">ESSENTIAL</h3>
             <p class="aug-card-sm-hd">{t("pricing.To get to the next level")}</p>
             <ul class="aug-card-section-list">
-              <li><img src={checkedCard} alt="" /><span>{ "2400 "+t("pricing.Facebook Messages per month")}</span></li>
-              <li><img src={checkedCard} alt="" /><span> {"1600 "+ t("pricing.Instagram Messages per month")}</span></li>
-              <li><img src={checkedCard} alt="" /><span> {"2000 "+ t("pricing.AI Credits per month")}</span></li>
-              <li><img src={checkedCard} alt="" /><span> {"25 "+ t("pricing.Tags + Pipelines")}</span></li>
-              <li><img src={checkedCard} alt="" /><span>{t("pricing.Live chat with real humanss")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{ "800 " +t("pricing.Automated Messages")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{"200 " + t("pricing.Comments with AI")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{"10 " + t("pricing.Tags + Sales Pipelines")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{t("pricing.Live Chat Support")}</span></li>
             </ul>
             <h1 class="aug-card-discount-text">
               {
@@ -243,14 +241,13 @@ const Plans = () => {
             <button class="aug-card-chose-btn" onClick={()=>handleBuyNow(plan2?.plan_id)}>{t("pricing.Start Free Trial")}</button>
           </div>
           <div class="aug-starter-discont-cards aug-starter-side--card">
-            <h3 class="aug-card-lg-hd">UNLIMITED</h3>
+            <h3 class="aug-card-lg-hd">ADVANCED</h3>
             <p class="aug-card-sm-hd">{t("pricing.To unlock your full potential")}</p>
             <ul class="aug-card-section-list">
-              <li><img src={checkedCard} alt="" /><span>{t("pricing.Facebook Messages per month Unlimited")}</span></li>
-              <li><img src={checkedCard} alt="" /><span> {t("pricing.Instagram Messages per month Unlimited")}</span></li>
-              <li><img src={checkedCard} alt="" /><span> {t("pricing.AI Credits per month Unlimited")}</span></li>
-              <li><img src={checkedCard} alt="" /><span> {t("pricing.Tags + Pipelines Unlimited")}</span></li>
-              <li><img src={checkedCard} alt="" /><span>{t("pricing.Live chat with real humanss")}</span></li>
+             <li><img src={checkedCard} alt="" /><span>{ "1500 " +t("pricing.Automated Messages")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{"500 " + t("pricing.Comments with AI")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{"25 " + t("pricing.Tags + Sales Pipelines")}</span></li>
+              <li><img src={checkedCard} alt="" /><span>{t("pricing.Priority Support")}</span></li>
             </ul>
             <h1 class="aug-card-discount-text">
               {
@@ -276,9 +273,9 @@ const Plans = () => {
         <div class="aug-price-table">
           <ul class="aug-card-facebook-heading">
             <li class="aug-fb-hd">Facebook</li>
-            <li class="aug-plan-hd">BASIC</li>
-            <li class="aug-plan-hd">BUSINESS</li>
-            <li class="aug-plan-hd">UNLIMITED</li>
+            <li class="aug-plan-hd">STARTER</li>
+            <li class="aug-plan-hd">ESSENTIAL</li>
+            <li class="aug-plan-hd">ADVANCED</li>
           </ul>
           <ul class="aug-card-facebook-list">
             <li>
@@ -445,9 +442,9 @@ const Plans = () => {
         <div class="aug-price-table">
           <ul class="aug-card-facebook-heading">
             <li class="aug-fb-hd">Instagram</li>
-            <li class="aug-plan-hd">BASIC</li>
-            <li class="aug-plan-hd">BUSINESS</li>
-            <li class="aug-plan-hd">UNLIMITED</li>
+            <li class="aug-plan-hd">STARTER</li>
+            <li class="aug-plan-hd">ESSENTIAL</li>
+            <li class="aug-plan-hd">ADVANCED</li>
           </ul>
           <ul class="aug-card-facebook-list">
             <li>
@@ -537,10 +534,9 @@ const Plans = () => {
         <div class="aug-price-table">
           <ul class="aug-card-facebook-heading">
             <li class="aug-fb-hd">{t("pricing.Support")}</li>
-            <li class="aug-plan-hd">BASIC</li>
-            <li class="aug-plan-hd">BUSINESS</li>
-            <li class="aug-plan-hd">Unlimited
-            </li>
+            <li class="aug-plan-hd">STARTER</li>
+            <li class="aug-plan-hd">ESSENTIAL</li>
+            <li class="aug-plan-hd">ADVANCED</li>
           </ul>
           <ul class="aug-card-facebook-list">
             <li>
