@@ -195,7 +195,7 @@ const FbSettingsModal = ({ visible, onClose, activeKey = 1, setActiveKey, groupI
         <Modal className="pro-setting-modal" open={visible} onCancel={handleCloseSettings} footer={null} width={1225} centered>
             <div className="flex h-[calc(100vh-80px)] p-0 relative">
                 {settingLoading && (
-                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-10 z-50 rounded-lg h-full">
+                    <div className="absolute inset-0 flex justify-center items-center bg-gray-100 opacity-80 z-50 rounded-lg h-full">
                         <Spin size="large" />
                     </div>
                 )}
