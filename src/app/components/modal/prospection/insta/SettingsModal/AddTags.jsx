@@ -4,9 +4,10 @@ import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const AddTags = ({ CRMList, groupId }) => {
-    const { prospection, updateProspection } = SettingStore();
-    let { action } = prospection;
+const AddTags = ({ CRMList }) => {
+
+    const { instaProspection, updateInstaProspection } = SettingStore();
+    const { action } = instaProspection;
   
     let parsedAction;
     try {
@@ -33,16 +34,15 @@ const AddTags = ({ CRMList, groupId }) => {
     const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
 
     const handleSave = (moveGroupId, moveStageId, stage_num) => {
-        updateProspection({
-            ...prospection,
-            group_id: groupId,
+        updateInstaProspection({
+            ...instaProspection,
             action: JSON.stringify({
                 moveGroupId: actionType !== "no" ? moveGroupId : null,
                 moveStageId: actionType !== "no" ? moveStageId : null,
                 stage_num: actionType !== "no" ? stage_num : null,
             }),
         });
-    };
+    }; 
 
     const addTagsOptions = [
         { label: t("prospecting.No"), value: "no" },
@@ -69,6 +69,24 @@ const AddTags = ({ CRMList, groupId }) => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    const handleGroupSelection = (id) => {
+
+        const selectedGroupDataTemp = CRMList?.find((item) => item.id == id);
+        const sortedStagesTemp = selectedGroupDataTemp?.stage?.sort((a, b) => a.stage_num - b.stage_num) || [];
+
+        setSelectedGroupId(id);
+        if(sortedStagesTemp.length > 0){
+            setSelectedStageId(sortedStagesTemp[0]?.id);
+            setSelectedStageNum(sortedStagesTemp[0]?.stage_num);
+            handleSave(id, sortedStagesTemp[0]?.id, sortedStagesTemp[0]?.stage_num);
+        }else{
+            setSelectedStageId(null);
+            setSelectedStageNum(null);
+            handleSave(id, null, null);       
+        }
+        setShowDropdown(false);
+    }
       
       
     return (
@@ -138,11 +156,7 @@ const AddTags = ({ CRMList, groupId }) => {
                                                 className={`flex items-center gap-5 p-3 cursor-pointer  ${isSelected ? "bg-blue-100" : "hover:bg-[#D6E6F4]"
                                                     }`}
                                                 onClick={() => {
-                                                    setSelectedGroupId(group.id);
-                                                    setSelectedStageId(null);
-                                                    setSelectedStageNum(null);
-                                                    handleSave(group.id, null, null);
-                                                    setShowDropdown(false);
+                                                    handleGroupSelection(group.id)
                                                 }}
                                             >
                                                 <span
@@ -244,7 +258,6 @@ const AddTags = ({ CRMList, groupId }) => {
 
 AddTags.propTypes = {
     CRMList: PropTypes.array,
-    groupId: PropTypes.any,
     onComplete: PropTypes.func,
 };
 

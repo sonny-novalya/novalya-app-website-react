@@ -4,61 +4,62 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-const Settings = ({ isInstagram, groupId }) => {
-    const { prospection, updateProspection } = SettingStore();
+const Settings = () => {
+    const { fbProspection, updateFbProspection } = SettingStore();
 
-    const { pro_stratagy, norequest, interval } = prospection;
-    const [customRequest, setCustomRequest] = useState(interval);
+    const { selectedStrategy, selectedRequest, selectedInterval } = fbProspection;
+    // const { pro_stratagy, norequest, interval } = prospection;
+    const [customRequest, setCustomRequest] = useState(selectedRequest);
+
+    // const strategies = [
+    //     { value: 1, label: t("prospecting.Follow + Message") },
+    //     { value: 0, label: t("prospecting.Message Only") },
+    // ];
 
     const strategies = [
-        { value: 1, label: t("prospecting.Follow + Message") },
-        { value: 0, label: t("prospecting.Message Only") },
-    ];
-
-    const FbStrategies = [
         { value: 1, label: t("prospecting.Message + Request") },
         { value: 0, label: t("prospecting.Message Only") },
     ];
 
     const requestOptions = ["5", "10", "20", "30", "50", "Custom"];
 
-    const fbIntervalOptions = [
+    const intervalOptions = [
         { label: t("prospecting.Medium"), value: "1-3", time: t("prospecting.1 to 3 minutes") },
         { label: t("prospecting.Slow"), value: "3-5", time: t("prospecting.3 to 5 minutes") },
         { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
     ];
 
-    const igIntervalOptions = [
-        { label: t("prospecting.Fast"), value: "2-4", time: t("prospecting.2 to 4 minutes") },
-        { label: t("prospecting.Medium"), value: "4-6", time: t("prospecting.4 to 6 minutes") },
-        { label: t("prospecting.Slow"), value: "6-10", time: t("prospecting.6 to 10 minutes") },
-        { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
-    ];
+    // const igIntervalOptions = [
+    //     { label: t("prospecting.Fast"), value: "2-4", time: t("prospecting.2 to 4 minutes") },
+    //     { label: t("prospecting.Medium"), value: "4-6", time: t("prospecting.4 to 6 minutes") },
+    //     { label: t("prospecting.Slow"), value: "6-10", time: t("prospecting.6 to 10 minutes") },
+    //     { label: t("prospecting.Very Slow"), value: "10-15", time: t("prospecting.10 to 15 minutes") },
+    // ];
 
-    const intervalList = isInstagram ? igIntervalOptions : fbIntervalOptions;
-    const newStratagies = isInstagram ? strategies : FbStrategies;
+    // const intervalList = isInstagram ? igIntervalOptions : fbIntervalOptions;
+    // const newStratagies = isInstagram ? strategies : FbStrategies;
 
-    useEffect(() => {
-        if (
-            !requestOptions.includes(String(norequest)) &&
-            Number(norequest) >= 1 &&
-            Number(norequest) <= 50
-        ) {
-            setCustomRequest(norequest);
-        }
-    }, [norequest]);
+    // useEffect(() => {
+    //     if (
+    //         !requestOptions.includes(String(norequest)) &&
+    //         Number(norequest) >= 1 &&
+    //         Number(norequest) <= 50
+    //     ) {
+    //         setCustomRequest(norequest);
+    //     }
+    // }, [norequest]);
 
     const handleUpdate = (field, value) => {
-        if (field === "norequest") {
-            if (value === "Custom") {
-                updateProspection({ ...prospection, group_id: groupId, norequest: Number(customRequest) });
-            } else {
-                updateProspection({ ...prospection, group_id: groupId, norequest: value });
-            }
+        if (field === "norequest" && value === "Custom") {
+            updateFbProspection({ ...fbProspection, selectedRequest: Number(customRequest) });
         } else {
-            updateProspection({ ...prospection, group_id: groupId, [field]: value });
+            updateFbProspection({ ...fbProspection, [field]: value });
         }
     };
+
+    const displayCustomInput = !requestOptions
+        .filter(option => option !== "Custom")
+        .includes(String(selectedRequest));
 
     return (
         <div className="">
@@ -76,16 +77,16 @@ const Settings = ({ isInstagram, groupId }) => {
                         </svg>
                     </p>
                     <div className="grid grid-cols-1 gap-3">
-                        {newStratagies.map((option) => (
+                        {strategies.map((option) => (
                             <button
                                 key={option.value}
-                                className={`relative flex items-center justify-center px-4 py-3 min-h-[52px] rounded-[10px] border text-[#0087FF] cursor-pointer ${pro_stratagy === option.value
+                                className={`relative flex items-center justify-center px-4 py-3 min-h-[52px] rounded-[10px] border text-[#0087FF] cursor-pointer ${selectedStrategy === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("pro_stratagy", option.value)}
+                                onClick={() => handleUpdate("selectedStrategy", option.value)}
                             >
                                 {option.label}
-                                {pro_stratagy === option.value && (
+                                {selectedStrategy === option.value && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>
@@ -104,22 +105,22 @@ const Settings = ({ isInstagram, groupId }) => {
                             <path d="M8 7.87524V11.2086" stroke="black" strokeOpacity="0.75" strokeLinecap="round"/>
                             <path d="M8.00521 6.45866C8.46545 6.45866 8.83854 6.08556 8.83854 5.62533C8.83854 5.16509 8.46545 4.79199 8.00521 4.79199C7.54497 4.79199 7.17188 5.16509 7.17188 5.62533C7.17188 6.08556 7.54497 6.45866 8.00521 6.45866Z" fill="black" fillOpacity="0.75"/>
                         </svg>
-                        </p>
+                    </p>
                     <div className="grid grid-cols-3 gap-x-4 gap-y-3">
                         {requestOptions.map((option) => {
                             const isCustom = option === "Custom";
                             const isSelected = isCustom
-                                ? !requestOptions.includes(String(norequest)) &&
-                                Number(norequest) >= 1 &&
-                                Number(norequest) <= 50
-                                : Number(norequest) === Number(option);
+                                ? !requestOptions.includes(String(selectedRequest)) &&
+                                Number(selectedRequest) >= 1 &&
+                                Number(selectedRequest) <= 50
+                                : Number(selectedRequest) === Number(option);
 
                             return (
                                 <button
                                     key={option}
                                     className={`font-[500] relative flex items-center justify-center px-4 py-3 min-h-[52px] rounded-[10px] border text-[#0087FF] cursor-pointer ${isSelected ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"
                                         }`}
-                                    onClick={() => handleUpdate("norequest", isCustom ? "Custom" : Number(option))}
+                                    onClick={() => handleUpdate("selectedRequest", isCustom ? "Custom" : Number(option))}
                                 >
                                     {isCustom ? t("prospecting.Custom") : option}
                                     {isSelected && (
@@ -130,7 +131,7 @@ const Settings = ({ isInstagram, groupId }) => {
                                 </button>
                             );
                         })}
-                        {norequest !== undefined && !requestOptions.includes(String(norequest)) && (
+                        {selectedRequest && displayCustomInput && (
                             <>
                                 <p className="col-span-1 text-xs my-auto">({t("prospecting.Min-Max-50")})</p>
                                 <input
@@ -147,7 +148,7 @@ const Settings = ({ isInstagram, groupId }) => {
                                     onBlur={() => {
                                         const parsed = Number(customRequest);
                                         if (parsed >= 1 && parsed <= 50) {
-                                            updateProspection({ ...prospection, norequest: parsed });
+                                            updateFbProspection({ ...fbProspection, selectedRequest: parsed });
                                         }
                                     }}
                                     placeholder="Enter value"
@@ -170,20 +171,20 @@ const Settings = ({ isInstagram, groupId }) => {
                     </svg>
                 </p>
                 <div className="grid grid-cols-4 gap-5">
-                    {intervalList.map((option) => (
+                    {intervalOptions.map((option) => (
                         <button
                             key={option.value}
                             className={`relative cursor-pointer text-left`}
-                            onClick={() => handleUpdate("interval", option.value)}
+                            onClick={() => handleUpdate("selectedInterval", option.value)}
                         >
                             <span className="block mb-[6px] text-[14px] text-[#000407] opacity-50 mr-12">{option.time}</span>
-                            <div className={`min-h-[52px] justify-center items-center flex flex-col px-4 py-3 rounded-[10px] border transition ${interval === option.value
+                            <div className={`min-h-[52px] justify-center items-center flex flex-col px-4 py-3 rounded-[10px] border transition ${selectedInterval === option.value
                                 ? "bg-[#CCE7FF] border-[#CCE7FF] text-[#0087FF] shadow-sm"
                                 : "bg-white border-[#dadada] text-gray-700"
                                 }`}>
                                 <span className="text-sm font-medium">{option.label}</span>
                             </div>
-                            {interval === option.value && (
+                            {selectedInterval === option.value && (
                                 <span className="absolute -right-2 top-3">
                                     <TickFillIcon />
                                 </span>
@@ -197,8 +198,8 @@ const Settings = ({ isInstagram, groupId }) => {
 };
 
 Settings.propTypes = {
-    isInstagram: PropTypes.bool,
-    groupId: PropTypes.string,
+    // isInstagram: PropTypes.bool,
+    // groupId: PropTypes.string,
 };
 
 export default Settings;

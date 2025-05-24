@@ -10,10 +10,9 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import { useLocation } from "react-router-dom";
 
 const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, postType, tempMessageList, keyWordList, CRMList, handleOpenSettings }) => {
-    const { prospection, fetchProspectionData, settingLoading } = SettingStore();
-    const { message, pro_stratagy, norequest, interval, gender, keyword, prospect, pro_convo, action, post_target } = prospection;
-    const location = useLocation();
-    const isInstagram = location.pathname.split("/")[1] === "ig";
+
+    const { fbProspection, fetchProspectionData, settingLoading } = SettingStore();
+    const { selectedMessage, selectedStrategy, selectedRequest, selectedInterval, selectedGender, selectedKeyword, reTargetSameUser, existingConvo, action, postTarget } = fbProspection;
 
     const handleOpen = (value) => {
         handleOpenSettingsTab(value);
@@ -22,24 +21,22 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
 
     const [ isEmpty, setIsEmpty] = useState(false)
 
-    const messageTitle = tempMessageList.find((item) => item.id == message)?.title || t("prospecting.Message");
-    const keywordTitle = keyWordList.find((item) => item.id == keyword)?.name ?? t("prospecting.None");
+    const messageTitle = tempMessageList.find((item) => item.id == selectedMessage)?.title || t("prospecting.Message");
+    const keywordTitle = keyWordList.find((item) => item.id == selectedKeyword)?.name ?? t("prospecting.None");
 
     useEffect(() => {
-        const type = isInstagram ? 'instagram' : 'facebook'
-        if (groupId)
-            fetchProspectionData(type, groupId);
+        if (groupId) {
+            fetchProspectionData("facebook", groupId);
+        }
     }, []);
 
     useEffect(() => {
-        if (!settingLoading && prospection) {
-            if (prospection?.message === null || prospection?.message === undefined) {
-                setIsEmpty(true);
-            } else {
-                setIsEmpty(false);
-            }
+        if (!settingLoading && selectedMessage) {
+            setIsEmpty(false);
+        }else{
+            setIsEmpty(true);
         }
-    }, [settingLoading, prospection?.message]);
+    }, [settingLoading, selectedMessage]);
     
 
     return (
@@ -66,7 +63,7 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
                         onClick={()=>{
                             onClose()
                             setIsEmpty(false)
-                            handleOpen(1)
+                            handleOpen("open")
                         }}
                         >
                         Open Settings
@@ -83,21 +80,34 @@ const ConfirmationModal = ({ visible, onClose, handleOpenSettingsTab, groupId, p
                             <h3 className="flex items-center border border-[#00000024] rounded-[6px] p-4 text-[#0087FF] cursor-pointer min-h-[62px] tracking-[.32px] mb-5" onClick={() => handleOpen(1)}>
                                 {messageTitle}
                             </h3>
+
                             <Settings
-                                proStratagy={pro_stratagy}
-                                norequest={norequest}
-                                interval={interval}
+                                selectedStrategy={selectedStrategy}
+                                selectedRequest={selectedRequest}
+                                selectedInterval={selectedInterval}
                                 handleOpen={handleOpen}
                             />
-                            {!isInstagram && (
-                                <Filters gender={gender} keyword={keywordTitle} handleOpen={handleOpen} postType={postType} postTarget={post_target} />
-                            )}
+
+                            <Filters 
+                                selectedGender={selectedGender} 
+                                keyword={keywordTitle} 
+                                handleOpen={handleOpen} 
+                                postType={postType} 
+                                postTarget={postTarget} 
+                            />
+
                             <AdvOptions
-                                prospect={prospect}
-                                pro_convo={pro_convo}
+                                reTargetSameUser={reTargetSameUser}
+                                existingConvo={existingConvo}
                                 handleOpen={handleOpen}
                             />
-                            <AddTags action={action} CRMList={CRMList} handleOpen={handleOpen} />
+
+                            <AddTags 
+                                action={action} 
+                                CRMList={CRMList} 
+                                handleOpen={handleOpen} 
+                            />
+
                         </div>
                         <div className="flex justify-end space-x-10 pr-4 mt-7">
                             <button
