@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
+import { SearchOutlined, LikeOutlined, MessageOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import FbSettingsModal from "../../../../components/modal/prospection/fb/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/prospection/fb/ConfirmationModal";
@@ -10,7 +10,7 @@ import useFbProspectingStore from "../../../../../store/fb/prospecting";
 import { useSearchParams } from "react-router-dom";
 import useGroupStore from "../../../../../store/group/groupStore";
 import { formatNumber } from "../../../../../helpers/formatGroupMembers";
-import { DeleteFillRedIcon, EditIcon2, FacebookIcon, SendIconBlue, SendIconGray, SettingsIconWhite, SyncBlueIcon } from "../../../common/icons/icons";
+import { EditIcon2, FacebookIcon, SendIconBlue, SendIconGray, SettingsIconWhite, SyncBlueIcon } from "../../../common/icons/icons";
 import UpdateFolderModal from "../../../../components/modal/prospection/common/UpdateFolderModal";
 import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
@@ -19,7 +19,7 @@ import { useRef } from "react";
 import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
 import useKeyWordStore from "../../../../../store/keyword/keywordStore";
 import SettingStore from "../../../../../store/prospection/settings-store";
-
+import { getGroupVolumeTitle } from "../../../../../helpers/getGroupVolumeTitle";
 
 
 const FbProspecting = () => {
@@ -113,9 +113,9 @@ const FbProspecting = () => {
         if (![0, 11111111111, 22222222222].includes(Number(selectedFolder))) {
             const folder = folders?.find((item) => item.id == selectedFolder);
             return (
-                <div className="flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600  cursor-pointer ">
+                <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folder ? folder.folder_name : t("prospecting.None")}
+                        {folder ? folder.folder_name : "-"}
                     </span>
                 </div>
             );
@@ -123,7 +123,7 @@ const FbProspecting = () => {
 
         if (folderIds === null) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                {t("prospecting.None")}
+                -
             </span>
         </div>;
 
@@ -144,12 +144,12 @@ const FbProspecting = () => {
 
         if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                {t("prospecting.None")}
+                -
             </span>
         </div>;
         if (folderNames.length === 1) {
             return (
-                <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 rounded-[20px] text-white hover:bg-green-600 cursor-pointer">
+                <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folderNames[0]}
                     </span>
@@ -158,7 +158,7 @@ const FbProspecting = () => {
         }
 
         return (
-            <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 rounded-[20px] text-white hover:bg-green-600 cursor-pointer">
+            <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{folderNames[0]}</span>
                 <Dropdown overlay={<Menu>{folderNames.slice(1).map((name, index) => <Menu.Item key={index}>{name}</Menu.Item>)}</Menu>} trigger={['hover']}>
                     <span className="cursor-pointer">
@@ -202,7 +202,7 @@ const FbProspecting = () => {
 
     const GroupNameColumn = (
         <div className="flex items-center space-x-2 justify-center pr-12">
-            <span>{t("prospecting.Group Name")}</span>
+            <span>Title</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
                     className="w-3 h-6 border-none cursor-pointer"
@@ -357,8 +357,8 @@ const FbProspecting = () => {
     );
 
     const TotalMemberColumn = (
-        <div className="flex items-center space-x-2 justify-center">
-            <span>{t("prospecting.Total Members")}</span>
+        <div className="flex items-center space-x-2 justify-center w-32">
+            <span>Volume</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
                 <button
                     className="w-3 h-6 border-none cursor-pointer"
@@ -430,7 +430,6 @@ const FbProspecting = () => {
                     </svg>
                 </button>
             )}
-
         </div>
     );
 
@@ -553,10 +552,49 @@ const FbProspecting = () => {
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
             title: (TotalMemberColumn),
-            dataIndex: "total_member", render: (text) => (
-                <span>{formatNumber(text)}</span>
-            )
-        },
+            dataIndex: "total_member",
+            render: (text, record) => {
+
+                const type = record?.group_type?.toLowerCase()
+
+                if (type === 'member' || type === 'things in common' ){
+                    if (text === null || text == 0) {
+                        return "-"
+                    } else {
+                        return `${formatNumber(text)} ${getGroupVolumeTitle(type)}`
+                    }
+                }
+
+                const likeCount = text;
+                const commentCount = record?.comment_member;
+
+                const likeCountNum = Number(likeCount) || 0;
+                const commentCountNum = Number(commentCount) || 0;
+
+                const hasLikes = likeCount != null && likeCountNum > 0;
+                const hasComments = commentCount != null && commentCount !== "" && commentCountNum > 0;
+
+
+                return (
+                    <span className="flex items-center justify-center">
+                        {hasLikes && (
+                            <>
+                                {formatNumber(likeCountNum)} <LikeOutlined style={{ marginRight: 8, marginLeft: 4 }} />
+                            </>
+                        )}
+                        {hasComments && (
+                            <div className="flex space-x-2 items-center">
+                                {hasLikes && <span>|</span>}
+                                <span>
+                                    {commentCountNum} <MessageOutlined />
+                                </span>
+                            </div>
+                        )}
+                        {!hasLikes && !hasComments && '-'}
+                    </span>
+                );
+            }
+        },        
         {
             title: t("prospecting.Folder"),
             dataIndex: "grp_folder_ids",
@@ -565,21 +603,22 @@ const FbProspecting = () => {
         {
             title: t("prospecting.Settings"),
             render: (_, record) => (
-                <button
-                    className="bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
+                <div className="flex justify-center">
+                    <button
+                        className="ml-2 bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
                     style={{
                         backgroundColor: record.settings ? '#868686' : '#2b7fff'
                     }}
-                    onClick={() => handleOpenSettings(record.id, record.group_type)}
-                >
-                    <span>
-                        <SettingsIconWhite />
-                    </span>
-                    
-                    <span className="!text-white">
-                        {t("prospecting.Settings")}
-                    </span>
-                </button>
+                        onClick={() => handleOpenSettings(record.id, record.group_type)}
+                    >
+                        <span>
+                            <SettingsIconWhite />
+                        </span>
+                        <span className="!text-white">
+                            {t("prospecting.Settings")}
+                        </span>
+                    </button>
+                </div>
             ),
         },
         {
@@ -591,7 +630,7 @@ const FbProspecting = () => {
             )
         },
         {
-            title: t("prospecting.Action"),
+            title: "More",
             render: (_, record) => (
                 <div ref={(el) => setDropdownRef(record.id, el)} className="relative text-center">
                     <Button
@@ -697,7 +736,7 @@ const FbProspecting = () => {
                             buttonsData.map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
-                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#00519729] text-[#0087FF]"}`}
+                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => {
                                             setFolderUpdateId(folder.id)
                                             handleFolderClick(folder.id)
@@ -714,7 +753,7 @@ const FbProspecting = () => {
                             folders.map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
-                                        className={` px-4 text-sm py-[7px] rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={` px-4 text-sm py-[7px] rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">

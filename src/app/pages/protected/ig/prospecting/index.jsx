@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
-import { SearchOutlined, MoreOutlined, FilterOutlined } from "@ant-design/icons";
+import { SearchOutlined, MoreOutlined, FilterOutlined, LikeOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
 import InstaSettingsModal from "../../../../components/modal/prospection/insta/SettingsModal/SettingsModal";
 import ConfirmationModal from "../../../../components/modal/prospection/insta/ConfirmationModal";
@@ -18,6 +18,7 @@ import Layout from "../../Layout";
 import SettingStore from "../../../../../store/prospection/settings-store";
 import useMessageSteps from "../../../../../store/messageTemp/MessageTemp";
 import useKeyWordStore from "../../../../../store/keyword/keywordStore";
+import { getGroupVolumeTitle } from "../../../../../helpers/getGroupVolumeTitle";
 
 const IgProspecting = () => {
     const [searchParams] = useSearchParams();
@@ -32,7 +33,7 @@ const IgProspecting = () => {
     const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, setGroups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup,initialStoreFiltersIG } = useGroupStore();
+    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup,initialStoreFiltersIG } = useGroupStore();
     const socialType = "ig_followers";
     const prospect_folder = "ig";
 
@@ -83,7 +84,7 @@ const IgProspecting = () => {
     };
 
     const handleOpenConfirmModal = (groupId) => {
-        setPrimaryGroupId(groupId);
+        setPrimaryGroupId(groupId)
         setConfirmModalOpen(true);
     };
 
@@ -104,9 +105,9 @@ const IgProspecting = () => {
         if (![0, 33333333333, 44444444444, 55555555555].includes(Number(selectedFolder))) {
             const folder = folders?.find((item) => item.id == selectedFolder);
             return (
-                <div className=" flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+                <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {folder ? folder.folder_name : t("prospecting.None")}
+                        {folder ? folder.folder_name : "-"}
                     </span>
                 </div>
             );
@@ -115,7 +116,7 @@ const IgProspecting = () => {
 
         if (folderIds === null) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                {t("prospecting.None")}
+                -
             </span>
         </div>;
 
@@ -136,13 +137,13 @@ const IgProspecting = () => {
 
         if (folderNames.length === 0) return <div className="flex items-center justify-center space-x-2 p-2 rounded-lg">
             <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
-                {t("prospecting.None")}
+                -
             </span>
         </div>;
 
         if (folderNames.length === 1) {
             return (
-                <div className=" flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 rounded-[20px] text-white hover:bg-green-600 cursor-pointer">
+                <div className=" flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                     <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">
                         {folderNames[0]}
                     </span>
@@ -151,7 +152,7 @@ const IgProspecting = () => {
         }
 
         return (
-            <div className=" flex items-center justify-center space-x-2 bg-green-500 px-2 py-1 rounded-md text-white hover:bg-green-600 cursor-pointer">
+            <div className="flex items-center justify-center space-x-2 bg-[#BCE7D5] rounded-[20px] px-3 py-1 text-white cursor-pointer">
                 <span className="font-semibold max-w-72 overflow-hidden text-ellipsis whitespace-nowrap">{folderNames[0]}</span>
                 <Dropdown overlay={<Menu>{folderNames.slice(1).map((name, index) => <Menu.Item key={index}>{name}</Menu.Item>)}</Menu>} trigger={['hover']}>
                     <span className="cursor-pointer">
@@ -277,7 +278,7 @@ const IgProspecting = () => {
 
     const GroupNameColumn = (
         <div className="flex items-center space-x-2 justify-center pr-12">
-            <span>{t("prospecting.Group Name")}</span>
+            <span>Title</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "name" ? (
                 <button
                     className="w-3 h-6 border-none cursor-pointer"
@@ -357,7 +358,7 @@ const IgProspecting = () => {
 
     const TotalMemberColumn = (
         <div className="flex items-center space-x-2 justify-center">
-            <span>{t("prospecting.Total Members")}</span>
+            <span>Volume</span>
             {storeFilters.sort_by === 0 && storeFilters.field === "total_member" ? (
                 <button
                     className="w-3 h-6 border-none cursor-pointer"
@@ -551,9 +552,28 @@ const IgProspecting = () => {
         // { title: "Messages sent", dataIndex: "messagesSent" },
         {
             title: (TotalMemberColumn),
-            dataIndex: "total_member", render: (text) => (
-                <span>{formatNumber(text)}</span>
-            )
+            dataIndex: "total_member",
+            render: (text, record) => {
+                if (text === null || text == 0) return "-"
+
+                const type = record?.group_type?.toLowerCase()
+
+                if (type === 'insta_profile' || type === 'insta_hashtag') {
+                    return `${formatNumber(text)} ${getGroupVolumeTitle(type)}`
+                }
+
+                const likeCount = text;
+
+                return (
+                    <span className="flex items-center justify-center">
+                        {likeCount && (
+                            <>
+                                {formatNumber(likeCount)} <LikeOutlined style={{ marginRight: 8, marginLeft: 4 }} />
+                            </>
+                        )}
+                    </span>
+                );
+            }
         },
         {
             title: t("prospecting.Folder"),
@@ -563,20 +583,22 @@ const IgProspecting = () => {
         {
             title: t("prospecting.Settings"),
             render: (_, record) => (
-                <button
-                    className=" bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
+                <div className="flex justify-center">
+                    <button
+                        className="ml-2 bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
                     style={{
                         backgroundColor: record.settings ? '#868686' : '#2b7fff'
                     }}
                     onClick={() => handleOpenSettings(record.id)}
-                >
-                    <span>
-                        <SettingsIconWhite />
-                    </span>
-                    <span className="!text-white">
-                        {t("prospecting.Settings")}
-                    </span>
-                </button>
+                    >
+                        <span>
+                            <SettingsIconWhite />
+                        </span>
+                        <span className="!text-white">
+                            {t("prospecting.Settings")}
+                        </span>
+                    </button>
+                </div>
             ),
         },
         {
@@ -588,7 +610,7 @@ const IgProspecting = () => {
             )
         },
         {
-            title: t("prospecting.Action"),
+            title: "More",
             render: (_, record) => (
                 <div ref={(el) => setDropdownRef(record.id, el)} className="relative">
                     <Button
@@ -725,7 +747,7 @@ const IgProspecting = () => {
                             buttonsData.map((folder, index) => (
                                 <div className="flex items-center " key={index}>
                                     <button
-                                        className={`min-h-[34px] px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] bg-[#D7E5F3] text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={`min-h-[34px] px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">
@@ -739,7 +761,7 @@ const IgProspecting = () => {
                             [...(Array.isArray(folders) ? folders : [])].map((folder, index) => (
                                 <div className="flex items-center" key={index}>
                                     <button
-                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#D7E5F3] text-[#005199]" : "bg-[#F2F2F2] text-[#00000080]"}`}
+                                        className={`px-4 text-sm py-1.5 rounded cursor-pointer hover:bg-[#D7E5F3] hover:text-[#005199] ${selectedFolder == folder.id ? "bg-[#00519729] text-[#0087FF]" : "bg-[#F2F2F2] text-[#00000080]"}`}
                                         onClick={() => handleFolderClick(folder.id)}
                                     >
                                         <div className="flex space-x-2 items-center">
