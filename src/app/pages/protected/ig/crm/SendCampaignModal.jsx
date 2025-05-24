@@ -59,14 +59,17 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
     };
 
     return (
-        <Modal open={visible} onCancel={onCancel} footer={null} width={800} centered>
-            <div className="bg-gray-50 rounded-t-lg border-b-[#DADADA] border-b pb-4">
-                <h2 className="text-xl font-medium">{t('crm.SendCampaignToPeople', { count: peopleCount })}</h2>
+        <Modal className="crm-common-model" open={visible} onCancel={onCancel} footer={null} width={800} centered>
+            <div className="!border-b-[#0000001a] border-b pb-5">
+                <h2 className="text-[24px] font-[600] leading-[1.25]">{t('crm.SendCampaignToPeople', { count: peopleCount })}</h2>
             </div>
 
             {/* Time Interval */}
-            <h2 className="text-lg font-medium mt-3">{t("crm.Select the time interval")}</h2>
-            <div className="border border-gray-300 p-4 rounded-lg mt-4">
+            <div className="flex items-center gap-[6px] mt-1">
+                <h2 className="text-[20px] font-[500] text-[#000407]">{t("crm.Select the time interval")}</h2>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+            </div>
+            <div className="border border-[#DADADA] p-4 rounded-[6px] mt-4">
                 <div className="grid grid-cols-4 gap-3">
                     {intervalList.map((option) => (
                         <button
@@ -74,17 +77,17 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
                             className="relative"
                             onClick={() => handleIntervalChange(option.value)}
                         >
-                            <span className="text-xs text-gray-500 mr-20">{option.time}</span>
+                            <span className="block text-left text-[14px] text-[#00040780] mb-1.5">{option.time}</span>
                             <div
-                                className={`flex flex-col items-start p-4 rounded-lg border transition ${campiagnModalData.time_interval === option.value
+                                className={`flex flex-col items-center p-4 rounded-[10px] border transition ${campiagnModalData.time_interval === option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF] text-[#0087FF] shadow-sm"
-                                    : "bg-white border-gray-300 text-gray-700"
+                                    : "bg-white border-[#CCE7FF] text-[#0087FF]"
                                     }`}
                             >
-                                <span className="text-sm font-medium">{option.label}</span>
+                                <span className="text-[14px] text-[#0087FF] font-[400]">{option.label}</span>
                             </div>
                             {campiagnModalData.time_interval === option.value && (
-                                <span className="absolute -right-2 top-3">
+                                <span className="absolute -right-2 top-5">
                                     <TickFillIcon />
                                 </span>
                             )}
@@ -94,9 +97,13 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
             </div>
 
             {/* Message Selector */}
-            <h2 className="text-lg font-medium my-3">{t('crm.Select a message')}</h2>
+            <div className="flex items-center gap-[6px] mt-4 mb-2.5">
+                <h2 className="text-[20px] font-[500]">{t('crm.Select a message')}</h2>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+            </div>
+                
             <Select
-                className="w-full"
+                className="ctm-select-white w-full border !border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                 placeholder='Select Message'
                 value={campiagnModalData.message_id}
                 onChange={handleMessageChange}
@@ -110,9 +117,13 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
                 ))}
             </Select>
 
-            <h2 className="text-lg font-medium my-3">{t('crm.Select the next action')}</h2>
+            <div className="flex items-center gap-[6px] mt-4 mb-2.5">
+                <h2 className="text-[20px] font-[500]">{t('crm.Select the next action')}</h2>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+            </div>
+            
             <Select
-                className="w-full"
+                className="ctm-select-white w-full border !border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                 placeholder='Select Action'
                 value={selectedAction}
                 onChange={(value) => {
@@ -168,9 +179,13 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
 
             {selectedAction === "move_to_group" && (
                 <>
-                    <h2 className="text-lg font-medium my-3">Select Group</h2>
-                    <Select
-                        className="w-full"
+                    <div className="flex items-center gap-[6px] mt-4 mb-2.5">
+                        <h2 className="text-[20px] font-[500]">Select Group</h2>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+                    </div>
+                    
+                    <Select 
+                        className="ctm-select-white w-full border !border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                         placeholder="Select Group"
                         value={selectedGroupId}
                         onChange={(groupId) => {
@@ -193,9 +208,13 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
 
                     {selectedGroup && selectedGroup.stage && (
                         <>
-                            <h2 className="text-lg font-medium my-3">Select Stage</h2>
+                        <div className="flex items-center gap-[6px] mt-4 mb-2.5">
+                            <h2 className="text-[20px] font-[500]">Select Stage</h2>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+                        </div>
+                            
                             <Select
-                                className="w-full"
+                                className="ctm-select-white w-full border !border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                                 placeholder="Select Stage"
                                 value={campiagnModalData.moveStageId}
                                 onChange={(stageId) => {
@@ -220,9 +239,13 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
 
             {selectedAction === "move_to_stage" && (
                 <>
-                    <h2 className="text-lg font-medium my-3">Select Stage</h2>
+                    <div className="flex items-center gap-[6px] mt-4 mb-2.5">
+                        <h2 className="text-[20px] font-[500]">Select Stage</h2>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.9987 13.1666C10.4045 13.1666 13.1654 10.4057 13.1654 6.99992C13.1654 3.59416 10.4045 0.833252 6.9987 0.833252C3.59294 0.833252 0.832031 3.59416 0.832031 6.99992C0.832031 10.4057 3.59294 13.1666 6.9987 13.1666Z" stroke="black" stroke-opacity="0.75" stroke-width="0.9"></path><path d="M7 6.87524V10.2086" stroke="black" stroke-opacity="0.75" stroke-linecap="round"></path><path d="M6.9974 5.45866C7.45763 5.45866 7.83073 5.08556 7.83073 4.62533C7.83073 4.16509 7.45763 3.79199 6.9974 3.79199C6.53716 3.79199 6.16406 4.16509 6.16406 4.62533C6.16406 5.08556 6.53716 5.45866 6.9974 5.45866Z" fill="black" fill-opacity="0.75"></path></svg>
+                    </div>
+                    
                     <Select
-                        className="w-full"
+                        className="ctm-select-white w-full border !border-[#DADADA] bg-white p-2 rounded-[10px] text-[#808183] min-h-[48px] outline-none focus:outline-none text-[14px] font-normal leading-[21px] mb-2"
                         placeholder='Select Stage'
                         value={campiagnModalData.moveStageId}
                         onChange={(stageId) => {
@@ -245,17 +268,17 @@ const SendCampaignModal = ({ visible, onCancel, userIds, peopleCount, stages, gr
                 </>
             )}
 
-            <div className="bg-gray-50 mt-4 rounded-b-lg flex justify-end space-x-4">
+            <div className=" mt-7.5 rounded-b-lg flex justify-end space-x-5">
                 <button
                     onClick={onCancel}
-                    className="bg-white w-32 text-[#0087FF] border border-[#0087FF] rounded-lg py-2 px-6"
+                    className="min-h-[50px] bg-white w-37.5 text-[#0087FF] border border-[#0087FF] rounded-[10px] py-2 px-6"
                 >
                     {t('crm.Cancel')}
                 </button>
                 <button
                     id="submit_insta_camping"
                     attr-data={JSON.stringify(campiagnModalData)}
-                    className="bg-[#21BF7C] w-32 text-white rounded-lg py-2 px-6"
+                    className="min-h-[50px] bg-[#21BF7C] w-37.5 text-white rounded-[10px] py-2 px-6"
                 >
                     {t('crm.Send')}
                 </button>

@@ -172,10 +172,6 @@ ul.pros-dropdown li:hover span {
     filter: invert(1);
 }
 
-
-
-
-
 .custom-normal-table table  {
     border-collapse: separate;
     border-spacing: 0 10px;
@@ -196,4 +192,20 @@ ul.pros-dropdown li:hover span {
 }
 .custom-modal-p4 .ant-modal-content {
     padding: 16px !important;
+}
+
+.crm-common-model .ant-modal-content {
+    padding: 20px !important;
+}
+
+
+.ctm-select-white .ant-select-selector {
+    border: 0px solid #d9d9d9 !important;
+    border-radius: 10px;
+}
+.ctm-select-white span.ant-select-selection-placeholder {
+    color: #000407 !important;
+}
+.ctm-select-white-op5 span.ant-select-selection-placeholder {
+    color: #00040780 !important;
 }
