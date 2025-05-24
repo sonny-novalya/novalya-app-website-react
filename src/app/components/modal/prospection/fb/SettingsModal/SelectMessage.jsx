@@ -11,19 +11,19 @@ const SelectMessage = ({ tempMessageList }) => {
         setIsMessage,
         setStep,
         setBackStep,
-        setPreviewMessage,
+         setPreviewMessage,
         setSelecetdMessage
     } = useMessageSteps();
 
-    const { prospection, updateProspection } = SettingStore();
-    const { message } = prospection;
+    const { fbProspection, updateFbProspection } = SettingStore();
+    const { selectedMessage } = fbProspection;
 
     const [selectedRow, setSelectedRow] = useState(null);
     const [searchText, setSearchText] = useState('');
 
     const handleUpdate = (field, value) => {
-        updateProspection({
-            ...prospection,
+        updateFbProspection({
+            ...fbProspection,
             [field]: value
         });
     };
@@ -43,7 +43,7 @@ const SelectMessage = ({ tempMessageList }) => {
 
     const handleRowClick = (id) => {
         setSelectedRow(id);
-        handleUpdate("message", id);
+        handleUpdate("selectedMessage", id);
     };
 
     const filteredMessages = useMemo(() => {
@@ -53,8 +53,8 @@ const SelectMessage = ({ tempMessageList }) => {
     }, [searchText, tempMessageList]);
 
     useEffect(() => {
-        setSelectedRow(message ? message  : null);
-    }, [message]);
+        setSelectedRow(selectedMessage ? selectedMessage  : null);
+    }, [selectedMessage]); 
 
     return (
         <div className="w-full h-full bg-white rounded-lg flex flex-col">

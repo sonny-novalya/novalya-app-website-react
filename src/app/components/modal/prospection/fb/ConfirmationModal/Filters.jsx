@@ -2,7 +2,7 @@ import { t } from "i18next";
 import { EditIconSquaredIcon } from "../../../../../pages/common/icons/icons";
 import PropTypes from "prop-types";
 
-const Filters = ({ gender, keyword, postTarget, handleOpen, postType }) => {
+const Filters = ({ selectedGender, keyword, postTarget, handleOpen, postType }) => {
   
   return (
     <main className="">
@@ -18,7 +18,7 @@ const Filters = ({ gender, keyword, postTarget, handleOpen, postType }) => {
         <div className="w-[35%] flex flex-col pr-6">
           <h3 className="font-[500] text-[20px] mb-2">{t("prospecting.Gender")}</h3>
           <p className="flex justify-center items-center w-full border border-[#DBDBDB] text-[#808183] min-h-[50px] rounded-[10px] p-2 capitalize">
-            {gender}
+            {selectedGender}
           </p>
         </div>
         {
@@ -42,7 +42,7 @@ const Filters = ({ gender, keyword, postTarget, handleOpen, postType }) => {
 };
 
 Filters.propTypes = {
-  gender: PropTypes.string,
+  selectedGender: PropTypes.string,
   keyword: PropTypes.string,
   postType: PropTypes.string,
   postTarget: PropTypes.string,

@@ -4,9 +4,10 @@ import { t } from "i18next";
 import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
-const AddTags = ({ CRMList, groupId }) => {
-    const { prospection, updateProspection } = SettingStore();
-    let { action } = prospection;
+const AddTags = ({ CRMList }) => {
+
+    const { fbProspection, updateFbProspection } = SettingStore();
+    const { action } = fbProspection;
   
     let parsedAction;
     try {
@@ -33,16 +34,15 @@ const AddTags = ({ CRMList, groupId }) => {
     const [selectedStageNum, setSelectedStageNum] = useState(parsedAction?.stage_num || null);
 
     const handleSave = (moveGroupId, moveStageId, stage_num) => {
-        updateProspection({
-            ...prospection,
-            group_id: groupId,
+        updateFbProspection({
+            ...fbProspection,
             action: JSON.stringify({
                 moveGroupId: actionType !== "no" ? moveGroupId : null,
                 moveStageId: actionType !== "no" ? moveStageId : null,
                 stage_num: actionType !== "no" ? stage_num : null,
             }),
         });
-    };
+    }; 
 
     const addTagsOptions = [
         { label: t("prospecting.No"), value: "no" },
@@ -244,7 +244,6 @@ const AddTags = ({ CRMList, groupId }) => {
 
 AddTags.propTypes = {
     CRMList: PropTypes.array,
-    groupId: PropTypes.any,
     onComplete: PropTypes.func,
 };
 

@@ -5,10 +5,11 @@ import SettingStore from "../../../../../../store/prospection/settings-store";
 import PropTypes from "prop-types";
 
 const Filters = ({ keyWordList, postType }) => {
-    const { prospection, updateProspection } = SettingStore();
+    
+    const { fbProspection, updateFbProspection } = SettingStore();
+    const { selectedGender, selectedKeyword, postTarget } = fbProspection;
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-    const { gender: propGender, keyword, post_target } = prospection;
 
     const genders = [
         { label: t("prospecting.Male"), value: "male", icon: <MaleGenderIcon /> },
@@ -32,8 +33,8 @@ const Filters = ({ keyWordList, postType }) => {
     };
 
     const handleUpdate = (field, value) => {
-        updateProspection({
-            ...prospection,
+        updateFbProspection({
+            ...fbProspection,
             [field]: value
         });
 
@@ -73,11 +74,11 @@ const Filters = ({ keyWordList, postType }) => {
                         {genders.map((gender) => (
                             <button
                                 key={gender.value}
-                                className={`relative flex justify-center min-h-[52px] rounded-[10px] items-center gap-1 px-4 py-3 border text-[#0087FF] cursor-pointer w-full ${propGender === gender.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
-                                onClick={() => handleUpdate("gender", gender.value)}
+                                className={`relative flex justify-center min-h-[52px] rounded-[10px] items-center gap-1 px-4 py-3 border text-[#0087FF] cursor-pointer w-full ${selectedGender === gender.value ? "bg-[#CCE7FF] border-[#CCE7FF]" : "bg-white border-[#0087FF]"}`}
+                                onClick={() => handleUpdate("selectedGender", gender.value)}
                             >
                                 {gender.icon} {gender.label}
-                                {propGender === gender.value && (
+                                {selectedGender === gender.value && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>
@@ -92,27 +93,27 @@ const Filters = ({ keyWordList, postType }) => {
                     postType && !["post", "post-like"].includes(postType.toString().toLowerCase())
                         ?
                         <div className="border border-gray-300 px-4 pt-3 pb-5 rounded-lg">
-                            <p className="font-[500] text-[20px] text-gray-800 mb-3 flex items-center">{t("prospecting.Keywords")}</p>
+                            <p className="font-[500] text-[20px] text-gray-800 mb-3 flex items-center">{t("prospecting.Keywords")} <span className="text-gray-500 ml-[10px] mt-[3px] text-sm">Optional</span></p>
                             <div className="relative">
                                 <button
                                     className="flex justify-between items-center px-4 py-3 rounded-[10px] border text-[#0087FF] w-full cursor-pointer"
                                     onClick={toggleDropdown}
                                 >
-                                    {keyword && updatedKeywordList.find(k => k.id == keyword)?.name || "Select Keyword"}
+                                    {selectedKeyword && updatedKeywordList.find(k => k.id == selectedKeyword)?.name || "Select Keyword"}
                                     <UpperArrowIcon className={`transform transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                                 </button>
 
                                 {dropdownOpen && (
                                     <div ref={dropdownRef} className="absolute w-full bg-white border border-[#DADADA] mt-2 rounded-md shadow-md z-10">
                                         {updatedKeywordList.map((option) => {
-                                            const isSelected = (option.id === "none" && keyword === null) || keyword === option.id;
+                                            const isSelected = (option.id === "none" && selectedKeyword === null) || selectedKeyword === option.id;
                                             const valueToUpdate = option.id === "none" ? null : option.id;
 
                                             return (
                                                 <button
                                                     key={option.id}
                                                     className={`relative flex items-center justify-between px-4 py-3 rounded-md cursor-pointer w-full ${isSelected ? "bg-[#CCE7FF] border-[#DADADA]" : "bg-white border-[#0087FF]"}`}
-                                                    onClick={() => handleUpdate("keyword", valueToUpdate)}
+                                                    onClick={() => handleUpdate("selectedKeyword", valueToUpdate)}
                                                 >
                                                     {option.name}
                                                     {isSelected && (
@@ -136,17 +137,17 @@ const Filters = ({ keyWordList, postType }) => {
                                 {PostTargetData.map((option) => (
                                     <button
                                         key={option.value}
-                                        className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${post_target == option.value
+                                        className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${postTarget == option.value
                                             ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                             : "bg-white border-[#0087FF]"
                                             }`}
-                                        onClick={() => updateProspection({
-                                            ...prospection,
-                                            post_target: option.value
+                                        onClick={() => updateFbProspection({
+                                            ...fbProspection,
+                                            postTarget: option.value
                                         })}
                                     >
                                         {option.label}
-                                        {post_target === option.value && (
+                                        {postTarget === option.value && (
                                             <span className="absolute -right-2 -top-2">
                                                 <TickFillIcon />
                                             </span>

@@ -126,7 +126,9 @@ const useGroupStore = create((set) => ({
         } catch (error) {
             console.error("Error deleting group:", error);
         }
-    }
+    },
+
+    setGroups: (val) => set(() => ({ groups:val})),
 
 }));
 

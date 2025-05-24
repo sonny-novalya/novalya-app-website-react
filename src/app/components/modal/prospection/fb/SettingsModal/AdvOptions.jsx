@@ -4,10 +4,11 @@ import { t } from "i18next";
 import PropTypes from "prop-types";
 
 const AdvOptions = () => {
-    const { prospection, updateProspection } = SettingStore();
-    const { prospect, pro_convo } = prospection;
 
-    const reTargetUserData = [
+    const { fbProspection, updateFbProspection } = SettingStore();
+    const { reTargetSameUser, existingConvo } = fbProspection;
+
+    const reTargetOptions = [
         {
             label: t("prospecting.Yes"),
             value: "yes"
@@ -18,7 +19,7 @@ const AdvOptions = () => {
         }
     ];
 
-    const existingConversationData = [
+    const existingConversationOptions = [
         {
             label: t("prospecting.Yes"),
             value: 1
@@ -31,8 +32,8 @@ const AdvOptions = () => {
 
     const handleSave = (field, value) => {
         // Update the prospection state in the store based on which option is clicked
-        updateProspection({
-            ...prospection,
+        updateFbProspection({
+            ...fbProspection,
             [field]: value
         });
     };
@@ -49,17 +50,17 @@ const AdvOptions = () => {
                         {t("prospecting.Retarget same user")}
                     </p>
                     <div className="grid grid-cols-2 gap-5">
-                        {reTargetUserData.map((option) => (
+                        {reTargetOptions.map((option) => (
                             <button
                                 key={option.value}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${prospect == option.value
+                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${reTargetSameUser == option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"
                                     }`}
-                                onClick={() => handleSave('prospect', option.value)}
+                                onClick={() => handleSave('reTargetSameUser', option.value)}
                             >
                                 {option.label}
-                                {prospect === option.value && (
+                                {reTargetSameUser === option.value && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>
@@ -75,17 +76,17 @@ const AdvOptions = () => {
                         {t("prospecting.Existing conversation")}
                     </p>
                     <div className="grid grid-cols-2 gap-5">
-                        {existingConversationData.map((option) => (
+                        {existingConversationOptions.map((option) => (
                             <button
                                 key={option.value}
-                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${pro_convo == option.value
+                                className={`relative flex items-center justify-center px-4 py-3 rounded-md border text-[#0087FF] cursor-pointer ${existingConvo == option.value
                                     ? "bg-[#CCE7FF] border-[#CCE7FF]"
                                     : "bg-white border-[#0087FF]"
                                     }`}
-                                onClick={() => handleSave('pro_convo', option.value)}
+                                onClick={() => handleSave('existingConvo', option.value)}
                             >
                                 {option.label}
-                                {pro_convo === option.value && (
+                                {existingConvo === option.value && (
                                     <span className="absolute -right-2 -top-2">
                                         <TickFillIcon />
                                     </span>
