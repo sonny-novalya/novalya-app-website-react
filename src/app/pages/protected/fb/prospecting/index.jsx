@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 import { Table, Button, Input, Dropdown, Menu } from "antd";
 import { SearchOutlined, LikeOutlined, MessageOutlined } from "@ant-design/icons";
 import GroupImg from "../../../../../assets/img/groupImg.png";
-import SettingsModal from "../../../../components/modal/fb/prospection/SettingsModal/SettingsModal";
-import ConfirmationModal from "../../../../components/modal/fb/prospection/ConfirmationModal";
-import CreateFolderModal from "../../../../components/modal/fb/prospection/CreateFolderModal";
+import FbSettingsModal from "../../../../components/modal/prospection/fb/SettingsModal/SettingsModal";
+import ConfirmationModal from "../../../../components/modal/prospection/fb/ConfirmationModal";
+import CreateFolderModal from "../../../../components/modal/prospection/common/CreateFolderModal";
 import useFbProspectingStore from "../../../../../store/fb/prospecting";
 import { useSearchParams } from "react-router-dom";
 import useGroupStore from "../../../../../store/group/groupStore";
 import { formatNumber } from "../../../../../helpers/formatGroupMembers";
 import { EditIcon2, FacebookIcon, SendIconBlue, SendIconGray, SettingsIconWhite, SyncBlueIcon } from "../../../common/icons/icons";
-import UpdateFolderModal from "../../../../components/modal/fb/prospection/UpdateFolderModal";
+import UpdateFolderModal from "../../../../components/modal/prospection/common/UpdateFolderModal";
 import { t } from "i18next";
 import { getGroupTypeNames } from "../../../../../helpers/getGroupTypeNames";
 import Layout from "../../Layout";
@@ -35,7 +35,7 @@ const FbProspecting = () => {
     // const [folderId, setFolderId] = useState(null);
     const [folderName, setFolderName] = useState("");
     const { folders = [], setFolders } = useFbProspectingStore();
-    const { groups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup, folderUpdateId, setFolderUpdateId ,initialStoreFilters} = useGroupStore();
+    const { groups, setGroups, fetchGroups, storeFilters, updateFilters, loading, totalPages, totalGrp, deleteGroup, folderUpdateId, setFolderUpdateId ,initialStoreFilters} = useGroupStore();
     const socialType = "fb_groups";
     const prospect_folder = "fb";
 
@@ -51,16 +51,34 @@ const FbProspecting = () => {
 
     const { CRMList, fetchCRMGroups } = SettingStore();
 
+    const [needToFetchSettings, setNeedToFetchSettings] = useState(true);
 
     const dropdownRefs = useRef({});
 
+
+    // to change the buttons color realtime after settings update
+    const updateGroupSettingStatus = (groupId) => {
+        const groupIndex = groups.findIndex(item => item.id == groupId);
+        if (groupIndex !== -1) {
+            const clonedGroups = [...groups];
+            clonedGroups[groupIndex] = { ...clonedGroups[groupIndex], settings: true };
+            setGroups(clonedGroups); 
+        }
+    }
+
     const handleOpenSettingsTab = (value) => {
-        setActiveKey(value);
+
+        if(value == "open"){ // means user try to send but setting not already saved 
+            setNeedToFetchSettings(true); // we aleady have the settings in store then no need to fetch again
+            setActiveKey(1); // open first tab
+        }else{
+            setNeedToFetchSettings(false); // we aleady have the settings in store then no need to fetch again
+            setActiveKey(value);
+        }
         setModalOpen(true);
     };
 
     const handleOpenSettings = (groupId, groupType) => {
-        localStorage.setItem("selectedGroupId", groupId);
         setPostType(groupType)
         setActiveKey(1);
         setPrimaryGroupId(groupId);
@@ -588,6 +606,9 @@ const FbProspecting = () => {
                 <div className="flex justify-center">
                     <button
                         className="ml-2 bg-blue-500 text-white px-4 py-1 rounded-md flex space-x-1 items-center cursor-pointer"
+                    style={{
+                        backgroundColor: record.settings ? '#868686' : '#2b7fff'
+                    }}
                         onClick={() => handleOpenSettings(record.id, record.group_type)}
                     >
                         <span>
@@ -604,11 +625,7 @@ const FbProspecting = () => {
             title: t("prospecting.Send"),
             render: (_, record) => (
                 <button onClick={() => handleOpenConfirmModal(record.id, record.group_type)} className="cursor-pointer mt-1">
-                    {
-                        record.id?.toString() === primaryGroupId?.toString()
-                            ? <SendIconBlue />
-                            : <SendIconGray />
-                    }
+                    {record.settings ? <SendIconBlue /> : <SendIconGray />}
                 </button>
             )
         },
@@ -686,12 +703,12 @@ const FbProspecting = () => {
         };
     }, [openDropdownKey]);
 
-    useEffect(() => {
-        const savedGroupId = localStorage.getItem("selectedGroupId");
-        if (savedGroupId) {
-            setPrimaryGroupId(savedGroupId);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const savedGroupId = localStorage.getItem("selectedGroupId");
+    //     if (savedGroupId) {
+    //         setPrimaryGroupId(savedGroupId);
+    //     }
+    // }, []);
 
     useEffect(() => {
         fetchGroups({...storeFilters,type:"facebook"});
@@ -852,8 +869,8 @@ const FbProspecting = () => {
 
                 {/* Settings Modal - Open only when modalOpen is true */}
                 {modalOpen && (
-                    <SettingsModal
-                        visible={modalOpen}
+                    <FbSettingsModal
+                        visible={modalOpen} 
                         onClose={handleCloseModal}
                         groupId={primaryGroupId}
                         socialType={socialType}
@@ -863,6 +880,8 @@ const FbProspecting = () => {
                         keyWordList={keyWordList}
                         CRMList={CRMList}
                         tempMessageList={tempMessageList}
+                        needToFetchSettings={needToFetchSettings}
+                        updateGroupSettingStatus={updateGroupSettingStatus}
                     />
                 )}
 
